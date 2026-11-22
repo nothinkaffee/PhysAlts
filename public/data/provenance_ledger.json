@@ -1,0 +1,165 @@
+{
+  "name": "PhysAlts Cryptographic Data Provenance Ledger",
+  "atlasDomain": "physics",
+  "schemaVersion": "2.0.0",
+  "jsonSchemaDraft": "https://json-schema.org/draft/2020-12/schema",
+  "schemaRef": "physalts_schema.json",
+  "generatedAt": "2026-11-22T22:39:47.192Z",
+  "merkleRootSha256": "15ec7595952483443241837e7dd67d7b9e7424d254d5fa6f4d5b1fb297a6d639",
+  "summary": {
+    "totalSourceFiles": 7,
+    "totalSourceBytes": 2730502,
+    "totalUnifiedRecords": 4321,
+    "totalDistinctCountries": 165,
+    "byRecordType": {
+      "Hub": 4168,
+      "TimelineEvent": 65,
+      "SpaceMission": 36,
+      "DomainCatalog": 52
+    }
+  },
+  "datasets": [
+    {
+      "file": "curated_flagships.json",
+      "sha256": "9ca761c9f7f093a618c865eb1628ebb30d7ca3e453fd1d4b92b82be6f626c152",
+      "byteSize": 130337,
+      "recordType": "Hub",
+      "tier": "curated_flagship",
+      "recordCount": 70,
+      "distinctCountries": 40,
+      "upstreamSources": [
+        "Official Institution Websites",
+        "Nobel Prize Archive",
+        "Wikipedia API",
+        "INSPIRE-HEP"
+      ],
+      "license": "Curated Nominative Fair Use + CC-BY-SA Reference Metadata",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": "2.0",
+      "modifiedAt": "2026-11-22T22:11:24.326Z"
+    },
+    {
+      "file": "domains_catalog.json",
+      "sha256": "cb06e29e9ce3c7f103b601cfcb854d1a25f0adc1e286e901bcb2afaf1d840f3d",
+      "byteSize": 56085,
+      "recordType": "DomainCatalog",
+      "tier": "curated_taxonomy",
+      "recordCount": 52,
+      "distinctCountries": 0,
+      "upstreamSources": [
+        "APS Physics Taxonomy",
+        "arXiv Physics Categories",
+        "Particle Data Group",
+        "CODATA"
+      ],
+      "license": "Curated Taxonomy + CC0/CC-BY-SA References",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": "2.0",
+      "modifiedAt": "2026-11-22T22:11:24.334Z"
+    },
+    {
+      "file": "history_timeline.json",
+      "sha256": "87f42ec809f6d12985c9ce3921cc0b9aa2a3ab91959bf9b382c57e13ee1b0c2f",
+      "byteSize": 58743,
+      "recordType": "TimelineEvent",
+      "tier": "curated_timeline",
+      "recordCount": 65,
+      "distinctCountries": 23,
+      "upstreamSources": [
+        "Nobel Prize Archive",
+        "Stanford Encyclopedia of Philosophy",
+        "Wikipedia CC-BY-SA"
+      ],
+      "license": "Curated Factual Chronology + CC-BY-SA Reference Links",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": "2.0",
+      "modifiedAt": "2026-11-22T22:08:26.092Z"
+    },
+    {
+      "file": "physics_hubs.json",
+      "sha256": "cdbde05dbaec877fd10ffd6eb7d89cdb5990dcb6211216f89df5753ebfc8c815",
+      "byteSize": 2368007,
+      "recordType": "Hub",
+      "tier": "global_index",
+      "recordCount": 4032,
+      "distinctCountries": 156,
+      "upstreamSources": [
+        "OpenAlex Institutions API (Field 31)",
+        "ROR v2 Organizations API"
+      ],
+      "license": "CC0 (OpenAlex, ROR v2)",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": null,
+      "modifiedAt": "2026-11-22T21:57:28.430Z"
+    },
+    {
+      "file": "private_startups.json",
+      "sha256": "403fdffa8d7bf2483e828935f6afa7818b3d875ba71e71c7e632d68547dddab6",
+      "byteSize": 46005,
+      "recordType": "Hub",
+      "tier": "private_startup",
+      "recordCount": 66,
+      "distinctCountries": 14,
+      "upstreamSources": [
+        "Official Company Websites",
+        "Fusion Industry Association",
+        "QED-C",
+        "ROR v2"
+      ],
+      "license": "Curated Nominative Fair Use",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": "2.0",
+      "modifiedAt": "2026-11-22T22:04:32.041Z"
+    },
+    {
+      "file": "space_frontier.json",
+      "sha256": "9120c4ddfd1626888d01c63085390bb589ea6fc10ead4bf6a243c8cfc5c7b9ca",
+      "byteSize": 41466,
+      "recordType": "SpaceMission",
+      "tier": "curated_space",
+      "recordCount": 36,
+      "distinctCountries": 12,
+      "upstreamSources": [
+        "NASA",
+        "ESA",
+        "JAXA",
+        "CNSA",
+        "ISRO",
+        "Wikipedia CC-BY-SA"
+      ],
+      "license": "Public Domain Agency Facts + CC-BY-SA Reference Links",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": "2.0",
+      "modifiedAt": "2026-11-22T22:08:26.092Z"
+    },
+    {
+      "file": "verification_report.json",
+      "sha256": "0aceed1b6c9acd6dc30a7a50abd35abca9643f9cca465906138d3e33f0e2bed0",
+      "byteSize": 29859,
+      "recordType": "AuditReport",
+      "tier": "verification",
+      "recordCount": 721,
+      "distinctCountries": 0,
+      "upstreamSources": [
+        "PhysAlts Automated Schema & Live HTTP Verifier"
+      ],
+      "license": "CC0 (Generated Audit Telemetry)",
+      "schemaVersion": "2.0.0",
+      "datasetVersion": null,
+      "modifiedAt": "2026-11-22T22:39:44.489Z"
+    }
+  ],
+  "generatedArtifacts": {
+    "schema": {
+      "file": "physalts_schema.json",
+      "sha256": "4f860adfbeb66547bd911a189e2081467bc98d9b65eddb75b6280cc9ce5f1adc",
+      "byteSize": 11616
+    },
+    "unifiedNdjson": {
+      "file": "physalts_unified.ndjson",
+      "sha256": "5b497715bcaf6c2f041a598e0abd5c2bc0bc13e3e7009ecf27325d3ad1854545",
+      "byteSize": 3554737,
+      "rowCount": 4321
+    }
+  }
+}

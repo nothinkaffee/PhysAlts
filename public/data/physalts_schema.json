@@ -1,0 +1,527 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://physalts.org/schemas/atlas-engine-v2.schema.json",
+  "title": "Atlas Engine Unified Record Schema (PhysAlts v1 & Future AI Atlas v2)",
+  "description": "Formal Draft 2020-12 JSON Schema defining reusable record contracts across geographic research hubs, chronological milestones, frontier missions, domain taxonomies, and unified NDJSON warehouse exports.",
+  "version": "2.0.0",
+  "$defs": {
+    "UrlString": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https?://"
+    },
+    "NullableUrlString": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/UrlString"
+        },
+        {
+          "type": "string",
+          "maxLength": 0
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "Latitude": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90
+    },
+    "Longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+    },
+    "ContentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$",
+      "description": "Deterministic SHA-256 hex digest of canonicalized record payload."
+    },
+    "Hub": {
+      "type": "object",
+      "title": "Hub",
+      "description": "Geographic research institution, university department, national lab, observatory, private institute, or deep-tech company.",
+      "required": [
+        "id",
+        "name",
+        "lat",
+        "lng",
+        "branch",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "city": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "lat": {
+          "$ref": "#/$defs/Latitude"
+        },
+        "lng": {
+          "$ref": "#/$defs/Longitude"
+        },
+        "zoom": {
+          "type": "number",
+          "minimum": 1,
+          "maximum": 22
+        },
+        "group": {
+          "type": "string",
+          "enum": [
+            "uni",
+            "lab",
+            "company",
+            "institute",
+            "observatory"
+          ]
+        },
+        "entityType": {
+          "type": "string",
+          "enum": [
+            "uni",
+            "lab",
+            "institute",
+            "company"
+          ]
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foundedYear": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 800,
+          "maximum": 2150
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "active",
+            "planned",
+            "historical",
+            "merged"
+          ]
+        },
+        "pinned": {
+          "type": "boolean"
+        },
+        "url": {
+          "$ref": "#/$defs/NullableUrlString"
+        },
+        "wiki": {
+          "$ref": "#/$defs/NullableUrlString"
+        },
+        "wikiSlug": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "nobel": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "next": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "projects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fundingStage": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "focusArea": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceApi": {
+          "type": "string"
+        },
+        "verifiedSource": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": true
+    },
+    "TimelineEvent": {
+      "type": "object",
+      "title": "TimelineEvent",
+      "description": "Chronological milestone in the history of science/physics (or AI in v2) optionally anchored to geographic coordinates.",
+      "required": [
+        "id",
+        "year",
+        "title",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "year": {
+          "type": "integer",
+          "minimum": -3500,
+          "maximum": 2150
+        },
+        "endYear": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": -3500,
+          "maximum": 2150
+        },
+        "eraId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "figure": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "lat": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Latitude"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lng": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/Longitude"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "branch": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "impact": {
+          "type": "string"
+        },
+        "officialUrl": {
+          "$ref": "#/$defs/NullableUrlString"
+        },
+        "wikiUrl": {
+          "$ref": "#/$defs/NullableUrlString"
+        }
+      },
+      "additionalProperties": true
+    },
+    "SpaceMission": {
+      "type": "object",
+      "title": "SpaceMission",
+      "description": "Spaceborne observatory, orbital laboratory, or deep-space probe mapped along logarithmic light-time distance.",
+      "required": [
+        "id",
+        "name",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "agency": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "zoneId": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "distanceAU": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "lightTimeSec": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "lightTimeLabel": {
+          "type": "string"
+        },
+        "launchYear": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 1957,
+          "maximum": 2150
+        },
+        "status": {
+          "type": "string"
+        },
+        "branch": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "physicsDiscoveries": {
+          "type": "string"
+        },
+        "instruments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "officialUrl": {
+          "$ref": "#/$defs/NullableUrlString"
+        },
+        "wikiUrl": {
+          "$ref": "#/$defs/NullableUrlString"
+        }
+      },
+      "additionalProperties": true
+    },
+    "DomainCatalog": {
+      "type": "object",
+      "title": "DomainCatalog",
+      "description": "Hierarchical taxonomy node representing a major branch or specialized subdomain, equations, open problems, and flagship facilities.",
+      "required": [
+        "id",
+        "name",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string"
+        },
+        "parentDomainId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "level": {
+          "type": "string",
+          "enum": [
+            "domain",
+            "subdomain",
+            "topic"
+          ]
+        },
+        "branch": {
+          "type": "string"
+        },
+        "color": {
+          "type": "string"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keyEquations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "openProblems": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "keyConcepts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "flagshipHubIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "officialUrl": {
+          "$ref": "#/$defs/NullableUrlString"
+        },
+        "wikiUrl": {
+          "$ref": "#/$defs/NullableUrlString"
+        }
+      },
+      "additionalProperties": true
+    },
+    "UnifiedNdjsonRecord": {
+      "type": "object",
+      "title": "UnifiedNdjsonRecord",
+      "description": "Canonical NDJSON warehouse row ready for BigQuery, Firestore, DuckDB, PostgreSQL/PostGIS, or Capacitor SQLite.",
+      "required": [
+        "_recordType",
+        "_atlasDomain",
+        "_sourceDataset",
+        "_schemaVersion",
+        "_contentHash"
+      ],
+      "properties": {
+        "_recordType": {
+          "type": "string",
+          "enum": [
+            "Hub",
+            "TimelineEvent",
+            "SpaceMission",
+            "DomainCatalog"
+          ]
+        },
+        "_atlasDomain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "_sourceDataset": {
+          "type": "string",
+          "minLength": 1
+        },
+        "_tier": {
+          "type": "string"
+        },
+        "_schemaVersion": {
+          "type": "string"
+        },
+        "_contentHash": {
+          "$ref": "#/$defs/ContentHash"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "_recordType": {
+                "const": "Hub"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/Hub"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "_recordType": {
+                "const": "TimelineEvent"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/TimelineEvent"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "_recordType": {
+                "const": "SpaceMission"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/SpaceMission"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "_recordType": {
+                "const": "DomainCatalog"
+              }
+            }
+          },
+          "then": {
+            "$ref": "#/$defs/DomainCatalog"
+          }
+        }
+      ]
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/UnifiedNdjsonRecord"
+    }
+  ]
+}

@@ -1,0 +1,938 @@
+{
+  "generatedAt": "2026-11-22T22:39:44.486Z",
+  "mode": "standard",
+  "durationSec": 69.9,
+  "summary": {
+    "totalDatasets": 6,
+    "presentDatasets": 6,
+    "missingDatasets": 0,
+    "totalEntities": 4277,
+    "totalCountries": 165,
+    "linksChecked": 721,
+    "linksOk": 563,
+    "linksBotProtected": 52,
+    "linksBroken": 106,
+    "passRatePct": 85.3,
+    "strictOkRatePct": 78.09,
+    "schemaErrorsCount": 0
+  },
+  "datasets": {
+    "curated_flagships.json": {
+      "status": "ok",
+      "entities": 70,
+      "schemaErrors": 0,
+      "linksScheduled": 151,
+      "linksChecked": 151,
+      "linksOk": 127,
+      "linksBotProtected": 16,
+      "linksBroken": 8,
+      "sampling": "100%"
+    },
+    "history_timeline.json": {
+      "status": "ok",
+      "entities": 65,
+      "schemaErrors": 0,
+      "linksScheduled": 130,
+      "linksChecked": 130,
+      "linksOk": 87,
+      "linksBotProtected": 7,
+      "linksBroken": 36,
+      "sampling": "100%"
+    },
+    "space_frontier.json": {
+      "status": "ok",
+      "entities": 36,
+      "schemaErrors": 0,
+      "linksScheduled": 72,
+      "linksChecked": 72,
+      "linksOk": 36,
+      "linksBotProtected": 0,
+      "linksBroken": 36,
+      "sampling": "100%"
+    },
+    "domains_catalog.json": {
+      "status": "ok",
+      "entities": 8,
+      "schemaErrors": 0,
+      "linksScheduled": 152,
+      "linksChecked": 152,
+      "linksOk": 134,
+      "linksBotProtected": 13,
+      "linksBroken": 5,
+      "sampling": "100%"
+    },
+    "private_startups.json": {
+      "status": "ok",
+      "entities": 66,
+      "schemaErrors": 0,
+      "linksScheduled": 66,
+      "linksChecked": 66,
+      "linksOk": 60,
+      "linksBotProtected": 5,
+      "linksBroken": 1,
+      "sampling": "100%"
+    },
+    "physics_hubs.json": {
+      "status": "ok",
+      "entities": 4032,
+      "schemaErrors": 0,
+      "linksScheduled": 150,
+      "linksChecked": 150,
+      "linksOk": 119,
+      "linksBotProtected": 11,
+      "linksBroken": 20,
+      "sampling": "stratified-150"
+    }
+  },
+  "schemaErrors": [],
+  "brokenLinks": [
+    {
+      "file": "curated_flagships.json",
+      "id": "parissaclay",
+      "name": "Paris-Saclay Physics",
+      "url": "https://www.universite-paris-saclay.fr/en/quantum",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "utokyo",
+      "name": "University of Tokyo Physics",
+      "url": "https://gwcenter.icrr.u-tokyo.ac.jp/en/",
+      "status": 0,
+      "reason": "EHOSTUNREACH: connect EHOSTUNREACH 157.82.231.108:443"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ictp",
+      "name": "Abdus Salam ICTP",
+      "url": "https://www.ictp.it/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ictp",
+      "name": "Abdus Salam ICTP",
+      "url": "https://www.ictp.it/home/physics-without-frontiers",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ictp",
+      "name": "Abdus Salam ICTP",
+      "url": "https://www.ictp.it/opportunity/ictp-postgraduate-diploma-programme",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "kaist",
+      "name": "KAIST Physics",
+      "url": "https://capp.ibs.re.kr/",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND capp.ibs.re.kr"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "nairobi",
+      "name": "University of Nairobi Physics",
+      "url": "https://physics.uonbi.ac.ke/",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "unam_fisica",
+      "name": "UNAM Instituto de Física",
+      "url": "https://www.hawc-observatory.org/",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "theodoric_freiberg_1304",
+      "name": "Rainbow Refraction Explained with Water-Filled Glass Spheres",
+      "url": "https://en.wikipedia.org/wiki/Theodoric_of_Freiberg",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "newton_principia_1687",
+      "name": "Philosophiæ Naturalis Principia Mathematica",
+      "url": "https://en.wikipedia.org/wiki/Philosophi%C3%A6_Naturalis_Principia_Mathematica",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "rutherford_1911",
+      "name": "Discovery of the Atomic Nucleus",
+      "url": "https://en.wikipedia.org/wiki/Rutherford_scattering_experiments",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "general_relativity_1915",
+      "name": "General Theory of Relativity",
+      "url": "https://en.wikipedia.org/wiki/General_relativity",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "dirac_1928",
+      "name": "The Dirac Equation & Prediction of Antimatter",
+      "url": "https://en.wikipedia.org/wiki/Dirac_equation",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "nuclear_fission_1938",
+      "name": "Discovery & Theoretical Explanation of Nuclear Fission",
+      "url": "https://en.wikipedia.org/wiki/Discovery_of_nuclear_fission",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "transistor_1947",
+      "name": "Invention of the Point-Contact Transistor",
+      "url": "https://en.wikipedia.org/wiki/History_of_the_transistor",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "qed_1948",
+      "name": "Renormalized Quantum Electrodynamics (QED)",
+      "url": "https://en.wikipedia.org/wiki/Quantum_electrodynamics",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "cern_founded_1954",
+      "name": "Founding of CERN (European Organization for Nuclear Research)",
+      "url": "https://en.wikipedia.org/wiki/CERN",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "wu_parity_1956",
+      "name": "Wu Experiment: Parity Violation in Weak Interactions",
+      "url": "https://en.wikipedia.org/wiki/Wu_experiment",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "laser_1960",
+      "name": "First Working Optical Laser",
+      "url": "https://en.wikipedia.org/wiki/Laser",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "cmb_1964",
+      "name": "Discovery of the Cosmic Microwave Background (CMB)",
+      "url": "https://en.wikipedia.org/wiki/Discovery_of_cosmic_microwave_background_radiation",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "bell_theorem_1964",
+      "name": "Bell's Theorem & Experimental Test of Quantum Nonlocality",
+      "url": "https://en.wikipedia.org/wiki/Bell%27s_theorem",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "standard_model_1964_1974",
+      "name": "Quarks, Electroweak Unification & the Standard Model",
+      "url": "https://en.wikipedia.org/wiki/Standard_Model",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "wz_bosons_1983",
+      "name": "Discovery of the W and Z Bosons at CERN",
+      "url": "https://en.wikipedia.org/wiki/W_and_Z_bosons",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "high_tc_1986",
+      "name": "High-Temperature Cuprate Superconductivity",
+      "url": "https://en.wikipedia.org/wiki/High-temperature_superconductivity",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "bec_1995",
+      "name": "First Gaseous Bose-Einstein Condensate",
+      "url": "https://en.wikipedia.org/wiki/Bose%E2%80%93Einstein_condensate",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "neutrino_oscillations_1998",
+      "name": "Neutrino Oscillations & Proof That Neutrinos Have Mass",
+      "url": "https://en.wikipedia.org/wiki/Neutrino_oscillation",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "accelerating_universe_1998",
+      "name": "Accelerating Expansion of the Universe (Dark Energy)",
+      "url": "https://en.wikipedia.org/wiki/Accelerating_expansion_of_the_universe",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "graphene_2004",
+      "name": "Isolation of Two-Dimensional Graphene",
+      "url": "https://en.wikipedia.org/wiki/Graphene",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "higgs_boson_2012",
+      "name": "Discovery of the Higgs Boson (125 GeV)",
+      "url": "https://en.wikipedia.org/wiki/Higgs_boson",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "ligo_gw150914_2015",
+      "name": "First Direct Detection of Gravitational Waves (GW150914)",
+      "url": "https://en.wikipedia.org/wiki/First_observation_of_gravitational_waves",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "eht_m87_2019",
+      "name": "First Horizon-Scale Image of a Black Hole (M87*)",
+      "url": "https://en.wikipedia.org/wiki/Event_Horizon_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "jwst_2022",
+      "name": "James Webb Space Telescope First Deep Field",
+      "url": "https://en.wikipedia.org/wiki/James_Webb_Space_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "nif_ignition_2022",
+      "name": "First Laboratory Controlled Fusion Ignition (Q_target > 1)",
+      "url": "https://en.wikipedia.org/wiki/Fusion_ignition",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "rubin_lsst_2025",
+      "name": "Vera C. Rubin Observatory First Light & LSST Survey",
+      "url": "https://en.wikipedia.org/wiki/Vera_C._Rubin_Observatory",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "sparc_fusion_2027",
+      "name": "SPARC High-Field Compact Fusion Tokamak Target Operations",
+      "url": "https://en.wikipedia.org/wiki/SPARC_(tokamak)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "hyper_k_2027",
+      "name": "Hyper-Kamiokande Operations Begin",
+      "url": "https://en.wikipedia.org/wiki/Hyper-Kamiokande",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "elt_chile_2028",
+      "name": "ESO Extremely Large Telescope (ELT) First Light",
+      "url": "https://en.wikipedia.org/wiki/Extremely_Large_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "ska_2029",
+      "name": "Square Kilometre Array (SKAO) Full Science Operations",
+      "url": "https://en.wikipedia.org/wiki/Square_Kilometre_Array",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "dune_2031",
+      "name": "DUNE (Deep Underground Neutrino Experiment) Beam Operations",
+      "url": "https://en.wikipedia.org/wiki/Deep_Underground_Neutrino_Experiment",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "lisa_2035",
+      "name": "LISA Space Gravitational-Wave Observatory Launch",
+      "url": "https://en.wikipedia.org/wiki/Laser_Interferometer_Space_Antenna",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "iter_burning_2035",
+      "name": "ITER Research Operations & Burning Plasma Campaign",
+      "url": "https://en.wikipedia.org/wiki/ITER",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "einstein_telescope_2035",
+      "name": "Einstein Telescope Underground Gravitational-Wave Observatory",
+      "url": "https://en.wikipedia.org/wiki/Einstein_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "einstein_telescope_2035",
+      "name": "Einstein Telescope Underground Gravitational-Wave Observatory",
+      "url": "https://www.et-gw.eu/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "fcc_2045",
+      "name": "Future Circular Collider (FCC-ee) Precision Higgs Factory",
+      "url": "https://en.wikipedia.org/wiki/Future_Circular_Collider",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "iss_ams02",
+      "name": "ISS & Alpha Magnetic Spectrometer (AMS-02)",
+      "url": "https://en.wikipedia.org/wiki/Alpha_Magnetic_Spectrometer",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "hubble",
+      "name": "Hubble Space Telescope (HST)",
+      "url": "https://en.wikipedia.org/wiki/Hubble_Space_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "fermi_glast",
+      "name": "Fermi Gamma-ray Space Telescope",
+      "url": "https://en.wikipedia.org/wiki/Fermi_Gamma-ray_Space_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "ixpe",
+      "name": "Imaging X-ray Polarimetry Explorer (IXPE)",
+      "url": "https://en.wikipedia.org/wiki/Imaging_X-ray_Polarimetry_Explorer",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "xmm_newton",
+      "name": "XMM-Newton X-ray Observatory",
+      "url": "https://en.wikipedia.org/wiki/XMM-Newton",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "chandra",
+      "name": "Chandra X-ray Observatory",
+      "url": "https://en.wikipedia.org/wiki/Chandra_X-ray_Observatory",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "apollo_llr",
+      "name": "Apollo 11–17 Lunar Laser Ranging & ALSEP",
+      "url": "https://en.wikipedia.org/wiki/Lunar_Laser_Ranging_experiments",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "lro",
+      "name": "Lunar Reconnaissance Orbiter (LRO)",
+      "url": "https://en.wikipedia.org/wiki/Lunar_Reconnaissance_Orbiter",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "chandrayaan3",
+      "name": "Chandrayaan-3 (Vikram & Pragyan)",
+      "url": "https://en.wikipedia.org/wiki/Chandrayaan-3",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "change4",
+      "name": "Chang'e-4 & Yutu-2",
+      "url": "https://en.wikipedia.org/wiki/Chang%27e_4",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "artemis_gateway",
+      "name": "Artemis Program & Lunar Gateway",
+      "url": "https://en.wikipedia.org/wiki/Lunar_Gateway",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "soho",
+      "name": "Solar and Heliospheric Observatory (SOHO)",
+      "url": "https://en.wikipedia.org/wiki/Solar_and_Heliospheric_Observatory",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "planck_obs",
+      "name": "Planck Space Observatory",
+      "url": "https://en.wikipedia.org/wiki/Planck_(spacecraft)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "gaia",
+      "name": "Gaia Astrometry Observatory",
+      "url": "https://en.wikipedia.org/wiki/Gaia_(spacecraft)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "jwst",
+      "name": "James Webb Space Telescope (JWST)",
+      "url": "https://en.wikipedia.org/wiki/James_Webb_Space_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "euclid",
+      "name": "Euclid Dark Universe Telescope",
+      "url": "https://en.wikipedia.org/wiki/Euclid_(spacecraft)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "roman",
+      "name": "Nancy Grace Roman Space Telescope",
+      "url": "https://en.wikipedia.org/wiki/Nancy_Grace_Roman_Space_Telescope",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "lisa_space",
+      "name": "LISA (Laser Interferometer Space Antenna)",
+      "url": "https://en.wikipedia.org/wiki/Laser_Interferometer_Space_Antenna",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "solar_orbiter",
+      "name": "Solar Orbiter (SolO)",
+      "url": "https://en.wikipedia.org/wiki/Solar_Orbiter",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "bepicolombo",
+      "name": "BepiColombo",
+      "url": "https://en.wikipedia.org/wiki/BepiColombo",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "parker_solar_probe",
+      "name": "Parker Solar Probe",
+      "url": "https://en.wikipedia.org/wiki/Parker_Solar_Probe",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "hayabusa2",
+      "name": "Hayabusa2",
+      "url": "https://en.wikipedia.org/wiki/Hayabusa2",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "osiris_rex",
+      "name": "OSIRIS-REx / OSIRIS-APEX",
+      "url": "https://en.wikipedia.org/wiki/OSIRIS-REx",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "curiosity",
+      "name": "Mars Science Laboratory (Curiosity)",
+      "url": "https://en.wikipedia.org/wiki/Curiosity_(rover)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "perseverance",
+      "name": "Mars 2020 (Perseverance & Ingenuity)",
+      "url": "https://en.wikipedia.org/wiki/Perseverance_(rover)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "insight",
+      "name": "InSight Mars Seismology Lander",
+      "url": "https://en.wikipedia.org/wiki/InSight",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "dart",
+      "name": "DART (Double Asteroid Redirection Test)",
+      "url": "https://en.wikipedia.org/wiki/Double_Asteroid_Redirection_Test",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "psyche",
+      "name": "Psyche Mission to 16 Psyche",
+      "url": "https://en.wikipedia.org/wiki/Psyche_(spacecraft)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "juno",
+      "name": "Juno Jupiter Polar Orbiter",
+      "url": "https://en.wikipedia.org/wiki/Juno_(spacecraft)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "juice",
+      "name": "JUICE (Jupiter Icy Moons Explorer)",
+      "url": "https://en.wikipedia.org/wiki/Jupiter_Icy_Moons_Explorer",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "europa_clipper",
+      "name": "Europa Clipper",
+      "url": "https://en.wikipedia.org/wiki/Europa_Clipper",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "cassini_huygens",
+      "name": "Cassini–Huygens",
+      "url": "https://en.wikipedia.org/wiki/Cassini%E2%80%93Huygens",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "dragonfly",
+      "name": "Dragonfly Titan Rotorcraft",
+      "url": "https://en.wikipedia.org/wiki/Dragonfly_(Titan_space_probe)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "new_horizons",
+      "name": "New Horizons",
+      "url": "https://en.wikipedia.org/wiki/New_Horizons",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "voyager2",
+      "name": "Voyager 2",
+      "url": "https://en.wikipedia.org/wiki/Voyager_2",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "voyager1",
+      "name": "Voyager 1",
+      "url": "https://en.wikipedia.org/wiki/Voyager_1",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "quantum",
+      "name": "Quantum Science, AMO & Photonics",
+      "url": "https://magis.stanford.edu/",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND magis.stanford.edu"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "quantum",
+      "name": "Quantum Science, AMO & Photonics",
+      "url": "https://ab-initio.mit.edu/book/",
+      "status": 0,
+      "reason": "ECONNREFUSED: connect ECONNREFUSED 18.25.16.113:443"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "astro",
+      "name": "Astrophysics & Cosmology",
+      "url": "https://cosmology.amsterdam/education/cosmology/",
+      "status": 0,
+      "reason": "ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE: C0EC1544E97F0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../deps/openssl/openssl/ssl"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "gravity",
+      "name": "Gravitational Waves, Relativity & Fundamental Theory",
+      "url": "https://www.et-gw.eu/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "condensed",
+      "name": "Condensed Matter, Materials & Statistical Physics",
+      "url": "https://www.cems.riken.jp/en/",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.cems.riken.jp"
+    },
+    {
+      "file": "private_startups.json",
+      "id": "dt_ictp",
+      "name": "Abdus Salam ICTP",
+      "url": "https://www.ictp.it/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210136004",
+      "name": "University of Bisha",
+      "url": "http://www.ub.edu.sa",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I2800875726",
+      "name": "Fritz Haber Institute of the Max Planck Society",
+      "url": "http://www.fhi-berlin.mpg.de",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4405266797",
+      "name": "Indian Institute of Geomagnetism",
+      "url": "https://www.iigm.res.in",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-02cc2hs63",
+      "name": "Institute and Observatory of Geophysics of Antananarivo",
+      "url": "https://ioga.univ-antananarivo.mg",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND ioga.univ-antananarivo.mg"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I15807432",
+      "name": "Osaka Prefecture University",
+      "url": "http://www.osakafu-u.ac.jp/english/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I18167132",
+      "name": "Universidade Presbiteriana Mackenzie",
+      "url": "http://up.mackenzie.br/upm/",
+      "status": 0,
+      "reason": "TypeError: redirect count exceeded"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I50441567",
+      "name": "Universitat de les Illes Balears",
+      "url": "https://www.uib.cat",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-00ern2s92",
+      "name": "Département de Physique Nucléaire",
+      "url": "http://irfu.cea.fr/sphn/index.php",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-04ynn1b95",
+      "name": "Astronomy and Space",
+      "url": "http://www.csiro.au/en/Research/Astronomy",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4400600953",
+      "name": "Masdar Institute of Science and Technology",
+      "url": "http://www2.masdar.ac.ae",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www2.masdar.ac.ae"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-03v7tny92",
+      "name": "Institute of Physics Rosario",
+      "url": "https://www.ifir-conicet.gov.ar/index.php/es/",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I55061410",
+      "name": "U.S. Air Force Institute of Technology",
+      "url": "https://www.afit.edu",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I154549908",
+      "name": "Indian Institute of Technology Jodhpur",
+      "url": "https://iitj.ac.in",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-04sqtxy36",
+      "name": "Research Institute \"Quantum\"",
+      "url": "http://www.rdi-kvant.ru/Page.aspx?id=171",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-04qdwq068",
+      "name": "QuantIC",
+      "url": "https://www.quantic.ac.uk",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.quantic.ac.uk"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-049wyn804",
+      "name": "Data Fusion Research Center",
+      "url": "http://www.dfrc.ch",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-04e25k642",
+      "name": "Metal Plasma (Brazil)",
+      "url": "http://www.metalplasma.com.br",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.metalplasma.com.br"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I108743333",
+      "name": "Inner Mongolia University for Nationalities",
+      "url": "http://www.imun.edu.cn",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210091629",
+      "name": "Illawarra Health and Medical Research Institute",
+      "url": "https://www.ihmri.org.au",
+      "status": 0,
+      "reason": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR: C0EC1544E97F0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:../deps/openssl/openssl/ssl/reco"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210143353",
+      "name": "Institut Universitaire des Systèmes Thermiques Industriels",
+      "url": "http://iusti.univ-provence.fr",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND iusti.univ-provence.fr"
+    }
+  ]
+}

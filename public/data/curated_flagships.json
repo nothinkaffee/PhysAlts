@@ -1,0 +1,3172 @@
+{
+  "meta": {
+    "name": "PhysAlts Curated Flagships",
+    "version": "2.0",
+    "updatedAt": "2026-11-22",
+    "description": "Authoritative curated global physics hubs uniting all 50 core flagships and 20 additional regional & underrepresented-country institutions."
+  },
+  "hubs": [
+    {
+      "id": "cern",
+      "name": "CERN",
+      "city": "Geneva, Switzerland",
+      "group": "lab",
+      "branch": "particle",
+      "pinned": true,
+      "lat": 46.233,
+      "lng": 6.0557,
+      "zoom": 16.4,
+      "url": "https://home.cern/",
+      "wiki": "https://en.wikipedia.org/wiki/CERN",
+      "wikiSlug": "CERN",
+      "summary": "Home of the 27 km Large Hadron Collider, smashing protons at 99.999999% the speed of light to probe the building blocks of matter.",
+      "nobel": "Confirmed the Higgs boson (2012) and W/Z bosons (Rubbia & van der Meer, 1984).",
+      "stages": {
+        "highschool": "Beamline for Schools competition (run your own real particle beam experiment at CERN) & Science Gateway.",
+        "undergrad": "Paid CERN Summer Student Programme (8–13 weeks) & Technical Studentships (4–14 months).",
+        "masters": "CERN Doctoral/Master's thesis placements via member-state universities & Technical Studentships.",
+        "phd": "CERN Doctoral Student Programme (up to 36 months) or join ATLAS/CMS/LHCb via your home PhD.",
+        "postdoc": "CERN Research Fellowships (2–3 years) in experimental or theoretical particle physics.",
+        "assoc_prof": "Scientific Associate sabbaticals (1–12 months) & physics working-group convenerships.",
+        "prof": "Experiment Spokesperson, Collaboration Board leadership, and Visiting Scientist chairs."
+      },
+      "next": [
+        "eth",
+        "fermilab",
+        "desy",
+        "icecube"
+      ],
+      "country": "Switzerland",
+      "foundedYear": 1954,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "High-Luminosity LHC (HL-LHC)",
+          "status": "upcoming",
+          "url": "https://hilumilhc.web.cern.ch/"
+        },
+        {
+          "name": "Future Circular Collider (FCC) Feasibility Study",
+          "status": "upcoming",
+          "url": "https://fcc.web.cern.ch/"
+        }
+      ]
+    },
+    {
+      "id": "icecube",
+      "name": "IceCube Neutrino Observatory",
+      "city": "South Pole, Antarctica",
+      "group": "lab",
+      "branch": "particle",
+      "pinned": true,
+      "lat": -89.99,
+      "lng": -63.45,
+      "zoom": 13.5,
+      "url": "https://icecube.wisc.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/IceCube_Neutrino_Observatory",
+      "wikiSlug": "IceCube_Neutrino_Observatory",
+      "summary": "A cubic-kilometer neutrino telescope buried 2 km beneath Antarctic ice, catching ghostly particles from distant black holes.",
+      "nobel": "Pioneered high-energy neutrino astronomy across 58 partner universities worldwide.",
+      "stages": {
+        "highschool": "IceCube Masterclasses (analyze real South Pole neutrino events with physicists).",
+        "undergrad": "NSF REU at UW–Madison WIPAC or summer projects at DESY, RWTH Aachen, or Geneva.",
+        "masters": "MSc thesis inside any of the 58 IceCube member universities (e.g. TU Munich, RWTH Aachen, Uppsala).",
+        "phd": "PhD in astroparticle physics; opportunity to deploy hardware at the South Pole during Austral summer.",
+        "postdoc": "WIPAC / DESY / IceCube-Gen2 postdoctoral fellowships leading real-time multimessenger alerts.",
+        "assoc_prof": "Institution PI leading an IceCube-Gen2 instrumentation or analysis working group.",
+        "prof": "Collaboration Spokesperson & multi-national NSF/BMBF infrastructure leadership."
+      },
+      "next": [
+        "superk",
+        "desy",
+        "gransasso",
+        "cern"
+      ],
+      "country": "Antarctica",
+      "foundedYear": 2010,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "IceCube Upgrade",
+          "status": "ongoing",
+          "url": "https://icecube.wisc.edu/science/beyond/"
+        },
+        {
+          "name": "IceCube-Gen2 Optical & Radio Array",
+          "status": "upcoming",
+          "url": "https://www.icecube-gen2.de/"
+        }
+      ]
+    },
+    {
+      "id": "mit",
+      "name": "MIT Physics",
+      "city": "Cambridge, MA, USA",
+      "group": "uni",
+      "branch": "quantum",
+      "pinned": true,
+      "lat": 42.3601,
+      "lng": -71.0942,
+      "zoom": 16.4,
+      "shanghai": "Shanghai #1",
+      "tuition": "Funded PhD",
+      "visa": "F-1 + 3yr OPT",
+      "url": "https://physics.mit.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/MIT_Department_of_Physics",
+      "wikiSlug": "MIT_Department_of_Physics",
+      "summary": "Ranked #1 in the world for physics; co-built LIGO, leads compact fusion research, and pioneers ultracold quantum matter.",
+      "nobel": "30+ physics laureates including Rainer Weiss (LIGO 2017) and Wolfgang Ketterle (2001).",
+      "stages": {
+        "highschool": "MIT RSI (Research Science Institute) summer program & MIT OpenCourseWare 8.01–8.04.",
+        "undergrad": "MIT Summer Research Program (MSRP) paid summer research for visiting undergrads.",
+        "masters": "MIT admits directly to the fully funded PhD from undergrad (SM awarded along the way).",
+        "phd": "5–6 year fully funded PhD in Quantum, Astro, Nuclear, Condensed Matter, or Theory.",
+        "postdoc": "Pappalardo Fellowships in Physics (3-year independent flagship postdoc).",
+        "assoc_prof": "Tenure-track / Associate Professor faculty searches across MIT's four physics divisions.",
+        "prof": "Endowed chairs, Kavli Institute / RLE / LNS directorships, and visiting professorships."
+      },
+      "next": [
+        "ligo",
+        "cfs",
+        "princeton",
+        "cern"
+      ],
+      "country": "United States",
+      "foundedYear": 1861,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "MIT Plasma Science and Fusion Center (PSFC)",
+          "status": "ongoing",
+          "url": "https://www.psfc.mit.edu/"
+        },
+        {
+          "name": "Center for Ultracold Atoms (MIT-Harvard)",
+          "status": "ongoing",
+          "url": "https://www.rle.mit.edu/cua_pub/"
+        }
+      ]
+    },
+    {
+      "id": "eth",
+      "name": "ETH Zurich Physics",
+      "city": "Zurich, Switzerland",
+      "group": "uni",
+      "branch": "quantum",
+      "pinned": true,
+      "lat": 47.4086,
+      "lng": 8.5074,
+      "zoom": 16.4,
+      "shanghai": "Top 15",
+      "tuition": "~CHF 1,460/yr",
+      "visa": "CH Student Permit",
+      "url": "https://www.phys.ethz.ch/studies/master.html",
+      "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
+      "wikiSlug": "ETH_Zurich",
+      "summary": "Albert Einstein's alma mater on Hönggerberg campus—one of Europe's cleanest, most affordable English-taught physics Master's.",
+      "nobel": "20+ Nobel laureates including Einstein, Wolfgang Pauli, Felix Bloch, and Didier Queloz.",
+      "stages": {
+        "highschool": "Swiss Physics Olympiad & ETH Youth Academy public lectures.",
+        "undergrad": "ETH Student Summer Research Fellowship & direct application to the English MSc.",
+        "masters": "90 ECTS English MSc (~CHF 730/semester); Excellence Scholarship (ESOP) covers full living costs.",
+        "phd": "Salaried Swiss PhD positions (~CHF 50k+/yr) in Quantum Center, Particle, or Astro groups.",
+        "postdoc": "ETH Zurich Postdoctoral Fellowships & Swiss National Science Foundation (SNSF) Ambizione.",
+        "assoc_prof": "SNSF Eccellenza / ERC Consolidator & ETH Tenure-Track Assistant/Associate Professorships.",
+        "prof": "Full Professor chairs at D-PHYS & Pauli Center for Theoretical Studies."
+      },
+      "next": [
+        "cern",
+        "bern",
+        "psi",
+        "mpq"
+      ],
+      "country": "Switzerland",
+      "foundedYear": 1855,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ETH Zurich Quantum Center",
+          "status": "ongoing",
+          "url": "https://qc.ethz.ch/"
+        },
+        {
+          "name": "Pauli Center for Theoretical Studies",
+          "status": "ongoing",
+          "url": "https://www.paulicenter.ch/"
+        }
+      ]
+    },
+    {
+      "id": "ligo",
+      "name": "LIGO Hanford",
+      "city": "Richland, WA, USA",
+      "group": "lab",
+      "branch": "gravity",
+      "pinned": true,
+      "lat": 46.4551,
+      "lng": -119.4076,
+      "zoom": 15.8,
+      "url": "https://www.ligo.caltech.edu/WA",
+      "wiki": "https://en.wikipedia.org/wiki/LIGO",
+      "wikiSlug": "LIGO",
+      "summary": "Two 4 km laser arms in the Washington desert that heard spacetime ripple from colliding black holes a billion light-years away.",
+      "nobel": "Rainer Weiss, Barry Barish & Kip Thorne (2017 Nobel Prize in Physics).",
+      "stages": {
+        "highschool": "GWOSC Open Data workshops & LIGO Exploration Center (LExC) hands-on interferometry.",
+        "undergrad": "Caltech LIGO SURF 10-week paid summer research fellowships at Hanford, Livingston, or Caltech.",
+        "masters": "MSc projects in gravitational-wave data analysis or quantum squeezing via LVK partner universities.",
+        "phd": "PhD at Caltech, MIT, or 100+ LIGO Scientific Collaboration universities worldwide.",
+        "postdoc": "LIGO Laboratory Postdocs & NASA Einstein Fellowships in gravitational-wave astrophysics.",
+        "assoc_prof": "LVK Observational Science / Instrumentation working-group leadership.",
+        "prof": "Cosmic Explorer & LISA next-generation observatory executive leadership."
+      },
+      "next": [
+        "mit",
+        "superk",
+        "slac",
+        "paranal"
+      ],
+      "country": "United States",
+      "foundedYear": 1994,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Advanced LIGO+ (O4/O5 Observing Runs)",
+          "status": "ongoing",
+          "url": "https://www.ligo.caltech.edu/"
+        },
+        {
+          "name": "Cosmic Explorer Next-Gen Concept",
+          "status": "upcoming",
+          "url": "https://cosmicexplorer.org/"
+        }
+      ]
+    },
+    {
+      "id": "parissaclay",
+      "name": "Paris-Saclay Physics",
+      "city": "Orsay, France",
+      "group": "uni",
+      "branch": "quantum",
+      "lat": 48.7098,
+      "lng": 2.167,
+      "zoom": 15.8,
+      "shanghai": "Shanghai #8",
+      "tuition": "€250–€3.8k/yr",
+      "visa": "FR Student Visa",
+      "url": "https://www.universite-paris-saclay.fr/en/node/79657",
+      "wiki": "https://en.wikipedia.org/wiki/Paris-Saclay_University",
+      "wikiSlug": "Paris-Saclay_University",
+      "summary": "Ranked #8 globally in physics, uniting CNRS, CEA Saclay, SOLEIL synchrotron, and Alain Aspect's quantum optics legacy.",
+      "nobel": "Alain Aspect (2022 quantum entanglement), Albert Fert (2007), Pierre-Gilles de Gennes (1991).",
+      "stages": {
+        "highschool": "Fête de la Science open-lab days at Institut d'Optique and SOLEIL.",
+        "undergrad": "Paid French lab stages (internships) at CNRS / CEA Saclay labs.",
+        "masters": "English MSc in Quantum, Astro, or Fundamental Physics with €10,000/yr IDEX scholarships.",
+        "phd": "Funded French Contrat Doctoral across EDPIF / PHENIICS doctoral schools.",
+        "postdoc": "CNRS / CEA Saclay & MSCA postdoctoral fellowships.",
+        "assoc_prof": "Maître de Conférences (MCF) or CNRS Chargé de Recherche permanent research posts.",
+        "prof": "CNRS Directeur de Recherche & Professeur des Universités chairs."
+      },
+      "next": [
+        "cern",
+        "oxford",
+        "iter",
+        "esrf"
+      ],
+      "country": "France",
+      "foundedYear": 2019,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SOLEIL Synchrotron Upgrade",
+          "status": "ongoing",
+          "url": "https://www.synchrotron-soleil.fr/en"
+        },
+        {
+          "name": "Quantum Saclay Initiative",
+          "status": "ongoing",
+          "url": "https://www.universite-paris-saclay.fr/en/quantum"
+        }
+      ]
+    },
+    {
+      "id": "oxford",
+      "name": "Oxford Physics",
+      "city": "Oxford, UK",
+      "group": "uni",
+      "branch": "gravity",
+      "lat": 51.7592,
+      "lng": -1.2546,
+      "zoom": 16.6,
+      "shanghai": "Shanghai #9",
+      "tuition": "Clarendon Aid",
+      "visa": "UK + 2yr Grad",
+      "url": "https://www.physics.ox.ac.uk/",
+      "wiki": "https://en.wikipedia.org/wiki/Department_of_Physics,_University_of_Oxford",
+      "wikiSlug": "Department_of_Physics,_University_of_Oxford",
+      "summary": "Ranked #9 worldwide; a powerhouse in quantum computing, cosmology, atmospheric physics, and mathematical theory.",
+      "nobel": "Roger Penrose (2020 black hole theorems) and Anthony Leggett (2003).",
+      "stages": {
+        "highschool": "British Physics Olympiad (hosted at Oxford) & UNIQ summer school.",
+        "undergrad": "Oxford Physics Summer Internships & visiting student terms.",
+        "masters": "1-year MSc in Mathematical & Theoretical Physics with Clarendon & Rhodes scholarships.",
+        "phd": "3.5–4 year DPhil across 6 sub-departments (Astro, Atomic, Condensed, Particle, Theory, AOPP).",
+        "postdoc": "Royal Society University Research Fellowships & Oxford College Junior Research Fellowships (JRFs).",
+        "assoc_prof": "Associate Professor of Physics coupled with a Tutorial Fellowship at an Oxford College.",
+        "prof": "Statutory Chairs (e.g., Wykeham / Rouse Ball / Savilian Professorships)."
+      },
+      "next": [
+        "cambridge",
+        "parissaclay",
+        "qutech",
+        "meerkat"
+      ],
+      "country": "United Kingdom",
+      "foundedYear": 1096,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "UK National Quantum Computing Centre Hub",
+          "status": "ongoing",
+          "url": "https://www.nqcc.ac.uk/"
+        },
+        {
+          "name": "Beecroft Institute for Particle Astrophysics and Cosmology",
+          "status": "ongoing",
+          "url": "https://www.physics.ox.ac.uk/research/group/beecroft-institute-particle-astrophysics-and-cosmology"
+        }
+      ]
+    },
+    {
+      "id": "cambridge",
+      "name": "Cavendish Laboratory",
+      "city": "Cambridge, UK",
+      "group": "uni",
+      "branch": "condensed",
+      "lat": 52.2092,
+      "lng": 0.0925,
+      "zoom": 16.6,
+      "shanghai": "Top 15",
+      "tuition": "Gates Aid",
+      "visa": "UK + 2yr Grad",
+      "url": "https://www.phy.cam.ac.uk/",
+      "wiki": "https://en.wikipedia.org/wiki/Cavendish_Laboratory",
+      "wikiSlug": "Cavendish_Laboratory",
+      "summary": "Where the electron, neutron, and DNA structure were discovered—now housing the brand-new Ray Dolby Centre.",
+      "nobel": "30 Nobel laureates including J.J. Thomson, Rutherford, Paul Dirac, and Didier Queloz.",
+      "stages": {
+        "highschool": "Isaac Physics problem-solving platform (built at Cavendish) & Senior Physics Challenge.",
+        "undergrad": "Cavendish Undergraduate Research Opportunities Programme (UROP).",
+        "masters": "1-year MASt in Physics (Part III) or MPhil with Gates Cambridge full funding.",
+        "phd": "Funded PhD at Cavendish / DAMTP / Institute of Astronomy.",
+        "postdoc": "Herchel Smith & College Junior Research Fellowships.",
+        "assoc_prof": "University Associate Professor in Experimental or Theoretical Physics.",
+        "prof": "Cavendish Professor of Physics & Maxwell Centre research leadership."
+      },
+      "next": [
+        "oxford",
+        "gottingen",
+        "cern"
+      ],
+      "country": "United Kingdom",
+      "foundedYear": 1874,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Ray Dolby Centre (Cavendish III)",
+          "status": "ongoing",
+          "url": "https://www.phy.cam.ac.uk/"
+        },
+        {
+          "name": "Simons Observatory Cosmology Collaboration",
+          "status": "ongoing",
+          "url": "https://simonsobservatory.org/"
+        }
+      ]
+    },
+    {
+      "id": "utokyo",
+      "name": "University of Tokyo Physics",
+      "city": "Tokyo, Japan",
+      "group": "uni",
+      "branch": "particle",
+      "pinned": true,
+      "lat": 35.7134,
+      "lng": 139.7623,
+      "zoom": 16.4,
+      "shanghai": "Shanghai #6",
+      "tuition": "~¥535k + MEXT",
+      "visa": "JP Student Visa",
+      "url": "https://www.u-tokyo.ac.jp/en/prospective-students/mext_scholarship.html",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_Tokyo",
+      "wikiSlug": "University_of_Tokyo",
+      "summary": "Ranked #6 globally in physics; operates Super-Kamiokande, KAGRA gravitational waves, and Kavli IPMU.",
+      "nobel": "Takaaki Kajita (2015), Masatoshi Koshiba (2002), Yoichiro Nambu (2008), Syukuro Manabe (2021).",
+      "stages": {
+        "highschool": "UTokyo Global Science Course outreach & Kavli IPMU public lectures.",
+        "undergrad": "UTokyo Amgen / UTRIP 6-week paid summer research internship for international undergrads.",
+        "masters": "English GSGC Master's/PhD track with full MEXT government scholarship & stipend.",
+        "phd": "Funded 3-year PhD at Hongo campus, ICRR, ISSP, or Kavli IPMU.",
+        "postdoc": "JSPS Postdoctoral Fellowship for Research in Japan & Kavli IPMU Fellowships.",
+        "assoc_prof": "Associate Professor appointments in School of Science or Kavli IPMU.",
+        "prof": "Full Professor & Principal Investigator roles leading Hyper-K / KAGRA."
+      },
+      "next": [
+        "superk",
+        "kek",
+        "riken",
+        "kaist"
+      ],
+      "country": "Japan",
+      "foundedYear": 1877,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Hyper-Kamiokande Neutrino Detector",
+          "status": "upcoming",
+          "url": "https://www.hyperk.org/"
+        },
+        {
+          "name": "KAGRA Underground Gravitational-Wave Telescope",
+          "status": "ongoing",
+          "url": "https://gwcenter.icrr.u-tokyo.ac.jp/en/"
+        }
+      ]
+    },
+    {
+      "id": "superk",
+      "name": "Super-Kamiokande",
+      "city": "Hida, Japan",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 36.4267,
+      "lng": 137.3104,
+      "zoom": 15.2,
+      "url": "https://www-sk.icrr.u-tokyo.ac.jp/en/sk/",
+      "wiki": "https://en.wikipedia.org/wiki/Super-Kamiokande",
+      "wikiSlug": "Super-Kamiokande",
+      "summary": "A gleaming cathedral of 11,000 golden photomultipliers holding 50,000 tons of ultrapure water 1 km inside a Japanese mountain.",
+      "nobel": "Two Nobel Prizes (2002 & 2015) for supernova neutrinos and proving neutrinos have mass.",
+      "stages": {
+        "highschool": "Kamioka Lab VR virtual tour & public neutrino observatory center.",
+        "undergrad": "Summer neutrino data-analysis projects via UTRIP or T2K/Hyper-K partner labs.",
+        "masters": "University of Tokyo ICRR English MSc (GSGC/MEXT) working directly on Super-K / Hyper-K.",
+        "phd": "PhD with ICRR Tokyo, Kyoto, or international Hyper-Kamiokande collaboration groups.",
+        "postdoc": "ICRR & JSPS postdocs commissioning the 260,000-ton Hyper-Kamiokande detector.",
+        "assoc_prof": "Collaboration run-coordinator & detector subsystem PI.",
+        "prof": "Hyper-Kamiokande international spokesperson & national funding leadership."
+      },
+      "next": [
+        "utokyo",
+        "icecube",
+        "ligo",
+        "kek"
+      ],
+      "country": "Japan",
+      "foundedYear": 1996,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SK-Gd (Gadolinium-Loaded Supernova Neutrino Search)",
+          "status": "ongoing",
+          "url": "https://www-sk.icrr.u-tokyo.ac.jp/en/sk/"
+        },
+        {
+          "name": "Hyper-Kamiokande Construction",
+          "status": "upcoming",
+          "url": "https://www.hyperk.org/"
+        }
+      ]
+    },
+    {
+      "id": "perimeter",
+      "name": "Perimeter Institute",
+      "city": "Waterloo, Canada",
+      "group": "uni",
+      "branch": "gravity",
+      "lat": 43.4651,
+      "lng": -80.5276,
+      "zoom": 16.6,
+      "shanghai": "Elite Theory",
+      "tuition": "100% Funded",
+      "visa": "CA + PGWP",
+      "url": "https://perimeterinstitute.ca/",
+      "wiki": "https://en.wikipedia.org/wiki/Perimeter_Institute_for_Theoretical_Physics",
+      "wikiSlug": "Perimeter_Institute_for_Theoretical_Physics",
+      "summary": "An architectural glass sanctuary dedicated purely to foundational theory—quantum gravity, cosmology, and quantum foundations.",
+      "nobel": "Visiting chairs include Roger Penrose and Juan Maldacena; Event Horizon Telescope hub.",
+      "stages": {
+        "highschool": "ISSYP (International Summer School for Young Physicists) — 2-week intensive theoretical physics camp.",
+        "undergrad": "Undergraduate Theoretical Physics Summer Program (paid 4-month research stay).",
+        "masters": "Perimeter Scholars International (PSI): 1-year 100% funded Master's covering tuition, meals & housing.",
+        "phd": "Funded PhD jointly with University of Waterloo, supervised by Perimeter faculty.",
+        "postdoc": "3-year Perimeter Postdoctoral Fellowships (quantum gravity, cosmology, quantum matter).",
+        "assoc_prof": "Junior Faculty / Associate Faculty chairs with zero mandatory undergraduate teaching load.",
+        "prof": "Senior Faculty & Distinguished Visiting Research Chairs."
+      },
+      "next": [
+        "princeton",
+        "triumf",
+        "ictp",
+        "oxford"
+      ],
+      "country": "Canada",
+      "foundedYear": 1999,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Perimeter Institute Quantum Intelligence Lab (PIQuIL)",
+          "status": "ongoing",
+          "url": "https://perimeterinstitute.ca/research/research-initiatives/perimeter-institute-quantum-intelligence-lab"
+        },
+        {
+          "name": "Event Horizon Telescope Theoretical Initiative",
+          "status": "ongoing",
+          "url": "https://eventhorizontelescope.org/"
+        }
+      ]
+    },
+    {
+      "id": "qutech",
+      "name": "QuTech & TU Delft",
+      "city": "Delft, Netherlands",
+      "group": "uni",
+      "branch": "quantum",
+      "lat": 51.999,
+      "lng": 4.3736,
+      "zoom": 16.4,
+      "shanghai": "Top 35",
+      "tuition": "EU €2.5k / Intl",
+      "visa": "NL + Search Yr",
+      "url": "https://qutech.nl/",
+      "wiki": "https://en.wikipedia.org/wiki/Delft_University_of_Technology",
+      "wikiSlug": "Delft_University_of_Technology",
+      "summary": "Building fault-tolerant silicon & superconducting quantum processors alongside Europe's first multi-node quantum internet.",
+      "nobel": "Delivered the first loophole-free Bell test of quantum entanglement (2015).",
+      "stages": {
+        "highschool": "Quantum Inspire (run real quantum circuits online on QuTech's Starmon processors).",
+        "undergrad": "QuTech Academy free edX courses & summer lab visits.",
+        "masters": "2-year English MSc in Applied Physics or Quantum Information Science & Technology (QIST).",
+        "phd": "Salaried 4-year Dutch PhD employee contracts with full benefits.",
+        "postdoc": "QuTech / NWO Veni postdoc grants building multi-node quantum repeaters.",
+        "assoc_prof": "TU Delft Tenure-Track / Associate Professor + NWO Vidi / ERC Consolidator.",
+        "prof": "QuTech Division Director & Full Professor of Quantum Engineering."
+      },
+      "next": [
+        "asml",
+        "mpq",
+        "iqm",
+        "unsw"
+      ],
+      "country": "Netherlands",
+      "foundedYear": 2014,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Quantum Internet Alliance (European Quantum Network)",
+          "status": "ongoing",
+          "url": "https://quantuminternetalliance.org/"
+        },
+        {
+          "name": "Quantum Inspire Cloud Processors",
+          "status": "ongoing",
+          "url": "https://www.quantum-inspire.com/"
+        }
+      ]
+    },
+    {
+      "id": "asml",
+      "name": "ASML (EUV Physics)",
+      "city": "Veldhoven, Netherlands",
+      "group": "lab",
+      "branch": "quantum",
+      "lat": 51.4063,
+      "lng": 5.4152,
+      "zoom": 15.8,
+      "url": "https://www.asml.com/en/company/about-asml/locations/veldhoven",
+      "wiki": "https://en.wikipedia.org/wiki/ASML_Holding",
+      "wikiSlug": "ASML_Holding",
+      "summary": "The only company on Earth building 13.5 nm Extreme Ultraviolet lithography machines—shooting lasers at molten tin droplets 50,000 times/sec.",
+      "nobel": "Industrial pinnacle of plasma physics, Bragg multilayer mirrors, and picometer optics.",
+      "stages": {
+        "highschool": "ASML Junior Academy & STEM robotics / optics challenges.",
+        "undergrad": "ASML Technology Scholarships & 6-month paid engineering/physics internships.",
+        "masters": "Paid MSc graduation thesis projects in EUV optics, plasma, or metrology.",
+        "phd": "Direct R&D physicist recruitment or joint industrial PhDs with ARCNL Amsterdam.",
+        "postdoc": "Senior Design Engineer / Research Scientist roles (High-NA EUV).",
+        "assoc_prof": "Joint academic-industry research collaborations via ARCNL & TU Eindhoven.",
+        "prof": "ASML Fellow / Principal Architect or academic advisory board."
+      },
+      "next": [
+        "qutech",
+        "icfo",
+        "iqm"
+      ],
+      "country": "Netherlands",
+      "foundedYear": 1984,
+      "entityType": "company",
+      "status": "active",
+      "projects": [
+        {
+          "name": "High-NA EUV Lithography (0.55 NA TWINSCAN EXE)",
+          "status": "ongoing",
+          "url": "https://www.asml.com/en/products/euv-lithography-systems"
+        },
+        {
+          "name": "ARCNL Fundamental EUV Plasma Research",
+          "status": "ongoing",
+          "url": "https://arcnl.nl/"
+        }
+      ]
+    },
+    {
+      "id": "iter",
+      "name": "ITER Fusion Tokamak",
+      "city": "Cadarache, France",
+      "group": "lab",
+      "branch": "fusion",
+      "lat": 43.7069,
+      "lng": 5.7775,
+      "zoom": 15.8,
+      "url": "https://www.iter.org/",
+      "wiki": "https://en.wikipedia.org/wiki/ITER",
+      "wikiSlug": "ITER",
+      "summary": "A 35-nation mega-engineering effort in southern France assembling the largest superconducting tokamak ever built to tame star-core fusion.",
+      "nobel": "Unites EU, USA, Japan, South Korea, India, China, and Russia on burning-plasma physics.",
+      "stages": {
+        "highschool": "ITER virtual tours & European Fusion Education Network (FuseNet) high-school modules.",
+        "undergrad": "Paid ITER undergraduate internships (up to 6 months) in cryogenics, magnets, or plasma.",
+        "masters": "Erasmus Mundus FUSION-EP Joint Master's with direct thesis links to ITER & CEA WEST.",
+        "phd": "EUROfusion / FuseNet funded PhDs in tokamak burning-plasma physics.",
+        "postdoc": "ITER Monaco Postdoctoral Fellowships (2-year international fusion fellowships).",
+        "assoc_prof": "ITPA (International Tokamak Physics Activity) topical-group leadership.",
+        "prof": "ITER Science Division leadership & national fusion program directors."
+      },
+      "next": [
+        "cfs",
+        "esrf",
+        "parissaclay",
+        "cern"
+      ],
+      "country": "France",
+      "foundedYear": 2007,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ITER Tokamak Assembly & Cryostat Commissioning",
+          "status": "ongoing",
+          "url": "https://www.iter.org/construction/construction"
+        },
+        {
+          "name": "ITER Deuterium-Tritium Burning Plasma Campaign",
+          "status": "upcoming",
+          "url": "https://www.iter.org/sci/Goals"
+        }
+      ]
+    },
+    {
+      "id": "cfs",
+      "name": "Commonwealth Fusion (SPARC)",
+      "city": "Devens, MA, USA",
+      "group": "lab",
+      "branch": "fusion",
+      "lat": 42.5372,
+      "lng": -71.6156,
+      "zoom": 16,
+      "url": "https://cfs.energy/",
+      "wiki": "https://en.wikipedia.org/wiki/Commonwealth_Fusion_Systems",
+      "wikiSlug": "Commonwealth_Fusion_Systems",
+      "summary": "MIT spinout constructing SPARC, a compact high-field tokamak powered by 20-tesla high-temperature superconducting magnets.",
+      "nobel": "Turns Bednorz & Müller's 1987 Nobel superconductivity discovery into compact fusion magnets.",
+      "stages": {
+        "highschool": "MIT PSFC fusion outreach & virtual SPARC magnet demonstrations.",
+        "undergrad": "Paid undergrad co-ops in plasma physics, cryogenics, and HTS magnet testing.",
+        "masters": "MSc engineering & applied-physics roles on SPARC diagnostics and ARC power plant.",
+        "phd": "Joint research PhDs with MIT Plasma Science & Fusion Center (PSFC).",
+        "postdoc": "Staff Plasma Physicist & Magnet Scientist roles at Devens HQ.",
+        "assoc_prof": "Collaborative burning-plasma modeling grants with CFS & DOE.",
+        "prof": "Scientific Advisory Board & multi-institution fusion consortia."
+      },
+      "next": [
+        "mit",
+        "iter"
+      ],
+      "country": "United States",
+      "foundedYear": 2018,
+      "entityType": "company",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SPARC Compact High-Field Tokamak",
+          "status": "ongoing",
+          "url": "https://cfs.energy/technology/"
+        },
+        {
+          "name": "ARC Commercial Fusion Power Plant",
+          "status": "upcoming",
+          "url": "https://cfs.energy/"
+        }
+      ]
+    },
+    {
+      "id": "fermilab",
+      "name": "Fermilab",
+      "city": "Batavia, IL, USA",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 41.8321,
+      "lng": -88.2571,
+      "zoom": 15.2,
+      "url": "https://www.fnal.gov/",
+      "wiki": "https://en.wikipedia.org/wiki/Fermilab",
+      "wikiSlug": "Fermilab",
+      "summary": "America's premier particle physics campus—iconic Wilson Hall, restored prairie with bison, and the upcoming DUNE neutrino beam.",
+      "nobel": "Discovered the bottom quark (1977), top quark (1995), and tau neutrino (2000).",
+      "stages": {
+        "highschool": "TARGET & QuarkNet high-school summer physics internships.",
+        "undergrad": "Paid international undergrad internships (SIST, IPM, DOE SULI).",
+        "masters": "MSc thesis placements via DUNE & CMS partner universities.",
+        "phd": "URA Visiting Scholars & Fermilab Joint PhD Fellowships.",
+        "postdoc": "Lederman Fellowship & Wilson Fellowship (flagship 3–5 year postdocs).",
+        "assoc_prof": "Fermilab Associate Scientist & DUNE consortium leadership.",
+        "prof": "Fermilab Distinguished Scientist & DOE HEPAP advisory panels."
+      },
+      "next": [
+        "cern",
+        "slac",
+        "icecube"
+      ],
+      "country": "United States",
+      "foundedYear": 1967,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "DUNE (Deep Underground Neutrino Experiment) & LBNF",
+          "status": "upcoming",
+          "url": "https://www.dunescience.org/"
+        },
+        {
+          "name": "PIP-II Superconducting Linac Upgrade",
+          "status": "ongoing",
+          "url": "https://pip2.fnal.gov/"
+        }
+      ]
+    },
+    {
+      "id": "slac",
+      "name": "SLAC & Stanford",
+      "city": "Menlo Park, CA, USA",
+      "group": "lab",
+      "branch": "condensed",
+      "lat": 37.4175,
+      "lng": -122.2025,
+      "zoom": 15.4,
+      "url": "https://www6.slac.stanford.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/SLAC_National_Accelerator_Laboratory",
+      "wikiSlug": "SLAC_National_Accelerator_Laboratory",
+      "summary": "A 3.2 km linear accelerator slicing straight across California hills, now driving LCLS-II to film atoms in femtosecond motion.",
+      "nobel": "4 Nobel Prizes in Physics & Chemistry (quarks, charm quark, tau lepton, structural biology).",
+      "stages": {
+        "highschool": "SLAC SAGE-S summer camp & public virtual accelerator tours.",
+        "undergrad": "DOE SULI paid 10-week internships in X-ray laser science, cosmology (Rubin), or accelerators.",
+        "masters": "Stanford Applied Physics MS or visiting international MSc thesis projects.",
+        "phd": "Funded Stanford Physics / Applied Physics PhD working at LCLS-II or KIPAC.",
+        "postdoc": "Panofsky Fellowship & KIPAC Postdoctoral Fellowships.",
+        "assoc_prof": "SLAC / Stanford Photon Science & Particle Astrophysics Associate Professor.",
+        "prof": "Full Professor & LCLS / Rubin Observatory executive leadership."
+      },
+      "next": [
+        "fermilab",
+        "ligo",
+        "paranal"
+      ],
+      "country": "United States",
+      "foundedYear": 1962,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "LCLS-II High-Repetition X-Ray Free-Electron Laser",
+          "status": "ongoing",
+          "url": "https://lcls.slac.stanford.edu/"
+        },
+        {
+          "name": "LSST Camera for Vera C. Rubin Observatory",
+          "status": "ongoing",
+          "url": "https://rubinobservatory.org/"
+        }
+      ]
+    },
+    {
+      "id": "desy",
+      "name": "DESY",
+      "city": "Hamburg, Germany",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 53.5758,
+      "lng": 9.8794,
+      "zoom": 15.8,
+      "url": "https://www.desy.de/index_eng.html",
+      "wiki": "https://en.wikipedia.org/wiki/DESY",
+      "wikiSlug": "DESY",
+      "summary": "Germany's flagship accelerator center operating PETRA III and the 3.4 km European XFEL; discovered the gluon in 1979.",
+      "nobel": "Proved the existence of gluons, confirming quantum chromodynamics.",
+      "stages": {
+        "highschool": "DESY Schülerlabor (hands-on particle & vacuum physics labs for school students).",
+        "undergrad": "Paid international DESY Summer Student Programme (open to all nationalities).",
+        "masters": "Tuition-free English MSc at University of Hamburg with paid DESY thesis work.",
+        "phd": "Salaried TVöD PhD contracts via PIER Helmholtz Graduate School.",
+        "postdoc": "DESY Fellowships (2–3 years) in Particle, Astroparticle, or Photon Science.",
+        "assoc_prof": "Helmholtz Young Investigator Group Leader (independent 5-year funding).",
+        "prof": "Lead Scientist (W3) joint professorships with University of Hamburg."
+      },
+      "next": [
+        "cern",
+        "ess",
+        "gottingen",
+        "icecube"
+      ],
+      "country": "Germany",
+      "foundedYear": 1959,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "PETRA IV Diffraction-Limited Synchrotron Upgrade",
+          "status": "upcoming",
+          "url": "https://www.desy.de/research/facilities__projects/petra_iv/index_eng.html"
+        },
+        {
+          "name": "European XFEL (Schenefeld/Hamburg)",
+          "status": "ongoing",
+          "url": "https://www.xfel.eu/"
+        }
+      ]
+    },
+    {
+      "id": "mpq",
+      "name": "Max Planck Quantum Optics",
+      "city": "Garching, Germany",
+      "group": "lab",
+      "branch": "quantum",
+      "lat": 48.2602,
+      "lng": 11.6669,
+      "zoom": 16.4,
+      "url": "https://www.mpq.mpg.de/en",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_of_Quantum_Optics",
+      "wikiSlug": "Max_Planck_Institute_of_Quantum_Optics",
+      "summary": "World epicenter of attosecond laser flashes, optical frequency combs, and ultracold quantum simulators.",
+      "nobel": "Theodor Hänsch (2005 Nobel) and Ferenc Krausz (2023 Nobel for attosecond pulses).",
+      "stages": {
+        "highschool": "PhotonLab Munich (student laser & quantum-optics laboratory at MPQ).",
+        "undergrad": "Paid summer research internships & HiWi student assistant roles.",
+        "masters": "Tuition-free English MSc at TUM or LMU Munich with paid MPQ thesis supervision.",
+        "phd": "IMPRS for Quantum Science and Technology (IMPRS-QST) salaried PhDs.",
+        "postdoc": "MPQ / Munich Center for Quantum Science & Technology (MCQST) Fellowships.",
+        "assoc_prof": "Max Planck Research Group Leader (W2 independent group).",
+        "prof": "Max Planck Director (Scientific Member of the Max Planck Society)."
+      },
+      "next": [
+        "eth",
+        "gottingen",
+        "icfo",
+        "qutech"
+      ],
+      "country": "Germany",
+      "foundedYear": 1981,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Laboratory for Attosecond Physics (LAP)",
+          "status": "ongoing",
+          "url": "https://www.attoworld.de/"
+        },
+        {
+          "name": "Munich Center for Quantum Science and Technology (MCQST)",
+          "status": "ongoing",
+          "url": "https://www.mcqst.de/"
+        }
+      ]
+    },
+    {
+      "id": "psi",
+      "name": "Paul Scherrer Institute",
+      "city": "Villigen, Switzerland",
+      "group": "lab",
+      "branch": "condensed",
+      "lat": 47.5364,
+      "lng": 8.2232,
+      "zoom": 15.8,
+      "url": "https://www.psi.ch/en/research/large-research-facilities",
+      "wiki": "https://en.wikipedia.org/wiki/Paul_Scherrer_Institute",
+      "wikiSlug": "Paul_Scherrer_Institute",
+      "summary": "Switzerland's mega-facility hub running the Swiss Light Source, SwissFEL X-ray laser, and world-leading muon beams.",
+      "nobel": "Key European center for ultracold neutrons and precision muon experiments.",
+      "stages": {
+        "highschool": "PSI iLab (student hands-on radioactivity, spectroscopy & vacuum lab).",
+        "undergrad": "Summer student internships & ETH/EPFL semester projects.",
+        "masters": "Joint MSc theses directly via ETH Zurich and EPFL.",
+        "phd": "Salaried Swiss PhDs in muon physics, X-ray lasers, and condensed matter.",
+        "postdoc": "PSI-FELLOW-III-3i (Marie Curie co-funded international postdoc program).",
+        "assoc_prof": "Beamline Group Leader & joint ETH/EPFL professorships.",
+        "prof": "PSI Division Head & Swiss large-facility strategy leadership."
+      },
+      "next": [
+        "eth",
+        "cern",
+        "esrf"
+      ],
+      "country": "Switzerland",
+      "foundedYear": 1988,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SLS 2.0 (Swiss Light Source Upgrade)",
+          "status": "ongoing",
+          "url": "https://www.psi.ch/en/sls"
+        },
+        {
+          "name": "SwissFEL X-Ray Free-Electron Laser",
+          "status": "ongoing",
+          "url": "https://www.psi.ch/en/swissfel"
+        }
+      ]
+    },
+    {
+      "id": "esrf",
+      "name": "ESRF Synchrotron",
+      "city": "Grenoble, France",
+      "group": "lab",
+      "branch": "condensed",
+      "lat": 45.2078,
+      "lng": 5.6897,
+      "zoom": 16,
+      "url": "https://www.esrf.fr/home.html",
+      "wiki": "https://en.wikipedia.org/wiki/European_Synchrotron_Radiation_Facility",
+      "wikiSlug": "European_Synchrotron_Radiation_Facility",
+      "summary": "The iconic 844 m silver synchrotron ring nestled in the French Alps, producing X-rays 100 billion times brighter than hospital scanners.",
+      "nobel": "Powered Nobel Prize discoveries in ribosome and GPCR molecular physics.",
+      "stages": {
+        "highschool": "Synchrotron@School hands-on beamline day for high-school classes.",
+        "undergrad": "Paid ESRF Summer Student Programme (4 weeks in Grenoble).",
+        "masters": "Université Grenoble Alpes English MSc in Condensed Matter with ESRF thesis.",
+        "phd": "Funded 3-year ESRF PhD contracts in X-ray imaging, magnetism, and high-pressure physics.",
+        "postdoc": "ESRF Postdoc & Junior Beamline Scientist positions.",
+        "assoc_prof": "Beamline Responsible Scientist & ERC user-group PI.",
+        "prof": "Director of Research & European synchrotron consortia leadership."
+      },
+      "next": [
+        "psi",
+        "ess",
+        "iter"
+      ],
+      "country": "France",
+      "foundedYear": 1988,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ESRF-EBS (Extremely Brilliant Source)",
+          "status": "ongoing",
+          "url": "https://www.esrf.fr/about/upgrade"
+        }
+      ]
+    },
+    {
+      "id": "ess",
+      "name": "European Spallation Source",
+      "city": "Lund, Sweden",
+      "group": "lab",
+      "branch": "condensed",
+      "lat": 55.7336,
+      "lng": 13.2483,
+      "zoom": 15.6,
+      "url": "https://europeanspallationsource.se/",
+      "wiki": "https://en.wikipedia.org/wiki/European_Spallation_Source",
+      "wikiSlug": "European_Spallation_Source",
+      "summary": "Europe's brand-new pulsed neutron super-microscope in southern Sweden, sitting right beside the MAX IV synchrotron.",
+      "nobel": "Probes quantum magnets and high-Tc superconductors at atomic resolution.",
+      "stages": {
+        "highschool": "Lund Science Village outreach & virtual neutron-scattering demos.",
+        "undergrad": "Paid ESS & MAX IV summer internships in Sweden.",
+        "masters": "Lund University English MSc in Physics with ESS instrument thesis.",
+        "phd": "Salaried 4-year Swedish PhDs in neutron scattering and accelerator physics.",
+        "postdoc": "ESS Instrument Scientist & Postdoc positions.",
+        "assoc_prof": "Lead Instrument Scientist & Nordic neutron-science PI.",
+        "prof": "Science Directorate & ERIC international consortium chairs."
+      },
+      "next": [
+        "bohr",
+        "desy",
+        "esrf"
+      ],
+      "country": "Sweden",
+      "foundedYear": 2014,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ESS Pulsed Spallation Neutron Source Commissioning",
+          "status": "ongoing",
+          "url": "https://europeanspallationsource.se/"
+        }
+      ]
+    },
+    {
+      "id": "gransasso",
+      "name": "INFN Gran Sasso",
+      "city": "Assergi, Italy",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 42.4526,
+      "lng": 13.575,
+      "zoom": 15.2,
+      "url": "https://www.lngs.infn.it/en",
+      "wiki": "https://en.wikipedia.org/wiki/Laboratori_Nazionali_del_Gran_Sasso",
+      "wikiSlug": "Laboratori_Nazionali_del_Gran_Sasso",
+      "summary": "Three colossal underground caverns beneath 1,400 m of Apennine rock hunting for dark matter (XENONnT) and solar neutrinos.",
+      "nobel": "Detected CNO-cycle solar neutrinos and leads global dark-matter sensitivity.",
+      "stages": {
+        "highschool": "INFN Open Days & International Dark Matter Day school workshops.",
+        "undergrad": "LNGS Summer Internship Program for physics undergraduates.",
+        "masters": "MSc theses via Italian & international XENONnT / Borexino / LEGEND groups.",
+        "phd": "Gran Sasso Science Institute (GSSI) fully funded international PhD fellowships.",
+        "postdoc": "INFN Postdoctoral Fellowships for non-Italian & Italian citizens.",
+        "assoc_prof": "INFN Primo Ricercatore & underground experiment technical coordinator.",
+        "prof": "LNGS Director & global dark-matter collaboration spokespersons."
+      },
+      "next": [
+        "icecube",
+        "superk",
+        "ictp"
+      ],
+      "country": "Italy",
+      "foundedYear": 1987,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "XENONnT Direct Dark Matter Search",
+          "status": "ongoing",
+          "url": "https://xenonexperiment.org/"
+        },
+        {
+          "name": "LEGEND-200 / LEGEND-1000 Neutrinoless Double-Beta Decay",
+          "status": "ongoing",
+          "url": "https://legend-exp.org/"
+        }
+      ]
+    },
+    {
+      "id": "ictp",
+      "name": "Abdus Salam ICTP",
+      "city": "Trieste, Italy",
+      "group": "lab",
+      "branch": "gravity",
+      "lat": 45.7037,
+      "lng": 13.7192,
+      "zoom": 16.4,
+      "url": "https://www.ictp.it/",
+      "wiki": "https://en.wikipedia.org/wiki/International_Centre_for_Theoretical_Physics",
+      "wikiSlug": "International_Centre_for_Theoretical_Physics",
+      "summary": "Overlooking the Adriatic Sea, founded by Nobel laureate Abdus Salam to launch physicists from every country on Earth.",
+      "nobel": "Founded by Abdus Salam (1979 Nobel Prize for electroweak unification).",
+      "stages": {
+        "highschool": "ICTP Physics Without Frontiers & open recorded lecture archive.",
+        "undergrad": "ICTP Summer Schools & Physics Without Frontiers regional workshops.",
+        "masters": "Fully funded 1-year ICTP Postgraduate Diploma bridging undergrads to top global PhDs.",
+        "phd": "Joint ICTP–SISSA funded PhDs in High-Energy, Condensed Matter, and Cosmology.",
+        "postdoc": "ICTP Postdoctoral Fellowships (2–3 years) in Trieste.",
+        "assoc_prof": "ICTP Regular Associateships (funded recurring research visits for faculty from developing nations).",
+        "prof": "ICTP Senior Associates & Research Section Heads."
+      },
+      "next": [
+        "ictpsaifr",
+        "perimeter",
+        "iisc"
+      ],
+      "country": "Italy",
+      "foundedYear": 1964,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ICTP Physics Without Frontiers",
+          "status": "ongoing",
+          "url": "https://www.ictp.it/home/physics-without-frontiers"
+        },
+        {
+          "name": "ICTP Postgraduate Diploma Programme",
+          "status": "ongoing",
+          "url": "https://www.ictp.it/opportunity/ictp-postgraduate-diploma-programme"
+        }
+      ]
+    },
+    {
+      "id": "icfo",
+      "name": "ICFO Photonics",
+      "city": "Barcelona, Spain",
+      "group": "lab",
+      "branch": "quantum",
+      "lat": 41.2755,
+      "lng": 1.9866,
+      "zoom": 16.6,
+      "url": "https://www.icfo.eu/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_of_Photonic_Sciences",
+      "wikiSlug": "Institute_of_Photonic_Sciences",
+      "summary": "Mediterranean research hub pushing quantum optics, graphene photonics, and quantum communication networks.",
+      "nobel": "Top European ERC hub for attosecond and quantum-light experiments.",
+      "stages": {
+        "highschool": "ICFO Young Photonics Congress & high-school research mentorship.",
+        "undergrad": "Paid ICFO International Summer Fellows (open worldwide).",
+        "masters": "Barcelona Master in Photonics (Europhotonics Erasmus Mundus) with ICFO fellowships.",
+        "phd": "ICFOstepstone & La Caixa INPhINIT funded doctoral fellowships.",
+        "postdoc": "ICFO+ & MSCA Postdoctoral Fellowships.",
+        "assoc_prof": "ICFO Group Leader (tenure-track) & ERC Starting/Consolidator grants.",
+        "prof": "ICREA Research Professor at ICFO."
+      },
+      "next": [
+        "mpq",
+        "asml",
+        "qutech"
+      ],
+      "country": "Spain",
+      "foundedYear": 2002,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "QuantumCAT Catalonia Quantum Hub",
+          "status": "ongoing",
+          "url": "https://www.icfo.eu/"
+        },
+        {
+          "name": "European Quantum Communication Infrastructure (EuroQCI)",
+          "status": "ongoing",
+          "url": "https://digital-strategy.ec.europa.eu/en/policies/european-quantum-communication-infrastructure-euroqci"
+        }
+      ]
+    },
+    {
+      "id": "iqm",
+      "name": "IQM Quantum Computers",
+      "city": "Espoo, Finland",
+      "group": "lab",
+      "branch": "quantum",
+      "lat": 60.1793,
+      "lng": 24.8364,
+      "zoom": 16.2,
+      "url": "https://www.meetiqm.com/",
+      "wiki": "https://en.wikipedia.org/wiki/IQM_Quantum_Computers",
+      "wikiSlug": "IQM_Quantum_Computers",
+      "summary": "Europe's superconducting quantum hardware builder, spun out of Aalto University's world-renowned low-temperature labs.",
+      "nobel": "Built on Nordic milli-kelvin cryogenics and superconducting qubit physics.",
+      "stages": {
+        "highschool": "IQM Academy free introductory quantum computing platform.",
+        "undergrad": "Aalto University Science Institute (AScI) paid summer internships.",
+        "masters": "Aalto English MSc in Engineering Physics + paid thesis roles at IQM.",
+        "phd": "Industrial quantum-hardware PhDs with Aalto & VTT Finland.",
+        "postdoc": "Quantum Engineer / Cryogenic Physicist R&D positions in Espoo or Munich.",
+        "assoc_prof": "Joint European Quantum Flagship academic-industry grants.",
+        "prof": "Chief Quantum Scientist / Academic Advisory Board."
+      },
+      "next": [
+        "qutech",
+        "asml",
+        "ess"
+      ],
+      "country": "Finland",
+      "foundedYear": 2018,
+      "entityType": "company",
+      "status": "active",
+      "projects": [
+        {
+          "name": "IQM Radiance On-Premises Superconducting QPUs",
+          "status": "ongoing",
+          "url": "https://www.meetiqm.com/"
+        },
+        {
+          "name": "European EuroHPC Quantum Integration (Q-EXA)",
+          "status": "ongoing",
+          "url": "https://www.lrz.de/en"
+        }
+      ]
+    },
+    {
+      "id": "triumf",
+      "name": "TRIUMF Cyclotron",
+      "city": "Vancouver, Canada",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 49.2478,
+      "lng": -123.2306,
+      "zoom": 16.2,
+      "url": "https://www.triumf.ca/",
+      "wiki": "https://en.wikipedia.org/wiki/TRIUMF",
+      "wikiSlug": "TRIUMF",
+      "summary": "Home to the world's largest cyclotron on the forested UBC campus, producing rare isotopes and medical radioisotopes.",
+      "nobel": "Key contributor to Arthur McDonald's 2015 Nobel solar-neutrino discovery.",
+      "stages": {
+        "highschool": "TRIUMF Saturday Morning Lectures & High School Fellowship.",
+        "undergrad": "Paid 4–8 month undergraduate co-op placements in nuclear & particle physics.",
+        "masters": "Funded MSc via UBC, SFU, or UVic conducting thesis experiments at TRIUMF.",
+        "phd": "Funded Canadian PhDs using ISAC / ARIEL rare-isotope beams.",
+        "postdoc": "TRIUMF Postdoctoral Fellowships in Nuclear, Accelerator, or Particle Physics.",
+        "assoc_prof": "TRIUMF Research Scientist & joint Canadian university faculty.",
+        "prof": "Division Head & Canada Research Chair (Tier 1)."
+      },
+      "next": [
+        "perimeter",
+        "cern",
+        "superk"
+      ],
+      "country": "Canada",
+      "foundedYear": 1968,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ARIEL (Advanced Rare Isotope Laboratory)",
+          "status": "ongoing",
+          "url": "https://www.triumf.ca/ariel"
+        },
+        {
+          "name": "TUCAN Ultracold Neutron Electric Dipole Moment Search",
+          "status": "ongoing",
+          "url": "https://www.triumf.ca/"
+        }
+      ]
+    },
+    {
+      "id": "kek",
+      "name": "KEK Accelerator Lab",
+      "city": "Tsukuba, Japan",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 36.1489,
+      "lng": 140.075,
+      "zoom": 15.2,
+      "url": "https://www.kek.jp/en/",
+      "wiki": "https://en.wikipedia.org/wiki/KEK",
+      "wikiSlug": "KEK",
+      "summary": "Operates SuperKEKB / Belle II at world-record collision luminosity to test why matter survived over antimatter.",
+      "nobel": "Experimentally confirmed Kobayashi-Maskawa CP violation (2008 Nobel Prize).",
+      "stages": {
+        "highschool": "KEK Open Campus & Belle II virtual detector explorer.",
+        "undergrad": "KEK Summer Student Program (international undergrads).",
+        "masters": "SOKENDAI English 5-year MSc/PhD program directly inside KEK.",
+        "phd": "Funded SOKENDAI / Belle II / J-PARC doctoral tracks.",
+        "postdoc": "KEK & JSPS Postdoctoral Fellowships.",
+        "assoc_prof": "KEK Associate Professor (IPNS / Accelerator Lab).",
+        "prof": "KEK Full Professor & Belle II / ILC international leadership."
+      },
+      "next": [
+        "utokyo",
+        "superk",
+        "riken"
+      ],
+      "country": "Japan",
+      "foundedYear": 1971,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Belle II / SuperKEKB High-Luminosity Flavor Factory",
+          "status": "ongoing",
+          "url": "https://www.belle2.org/"
+        },
+        {
+          "name": "J-PARC Neutrino Beamline for T2K & Hyper-K",
+          "status": "ongoing",
+          "url": "https://j-parc.jp/c/en/"
+        }
+      ]
+    },
+    {
+      "id": "riken",
+      "name": "RIKEN Wako",
+      "city": "Saitama, Japan",
+      "group": "lab",
+      "branch": "condensed",
+      "lat": 35.7785,
+      "lng": 139.6134,
+      "zoom": 16,
+      "url": "https://www.riken.jp/en/",
+      "wiki": "https://en.wikipedia.org/wiki/RIKEN",
+      "wikiSlug": "RIKEN",
+      "summary": "Japan's flagship science institute where element 113 (Nihonium) was synthesized and superconducting quantum chips are built.",
+      "nobel": "Hideki Yukawa (1949) & Shin'ichirō Tomonaga (1965) did foundational work here.",
+      "stages": {
+        "highschool": "RIKEN Open Day & Quantum Science outreach.",
+        "undergrad": "RIKEN Student Trainee summer research stays.",
+        "masters": "RIKEN International Program Associate (IPA) for MSc/PhD students.",
+        "phd": "Paid RIKEN Junior Research Associate (JRA) & IPA fellowships.",
+        "postdoc": "RIKEN Special Postdoctoral Researchers (SPDR — 3-year flagship grant).",
+        "assoc_prof": "RIKEN Hakubi Team Leader (independent 5–7 year lab startup).",
+        "prof": "RIKEN Chief Scientist & Center Director (CEMS / RQC / Nishina)."
+      },
+      "next": [
+        "utokyo",
+        "kek",
+        "kaist"
+      ],
+      "country": "Japan",
+      "foundedYear": 1917,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "RIKEN Center for Quantum Computing (RQC)",
+          "status": "ongoing",
+          "url": "https://rqc.riken.jp/"
+        },
+        {
+          "name": "RIBF (Radioactive Isotope Beam Factory)",
+          "status": "ongoing",
+          "url": "https://www.nishina.riken.jp/index_e.html"
+        }
+      ]
+    },
+    {
+      "id": "kaist",
+      "name": "KAIST Physics",
+      "city": "Daejeon, South Korea",
+      "group": "uni",
+      "branch": "quantum",
+      "lat": 36.372,
+      "lng": 127.3604,
+      "zoom": 16,
+      "shanghai": "Top 75",
+      "tuition": "Full Aid",
+      "visa": "KR D-2 Visa",
+      "url": "https://physics.kaist.ac.kr/",
+      "wiki": "https://en.wikipedia.org/wiki/KAIST",
+      "wikiSlug": "KAIST",
+      "summary": "South Korea's top science university, leading axion dark-matter searches, metamaterials, and quantum optics.",
+      "nobel": "Hosts flagship Institute for Basic Science (IBS) fundamental physics centers.",
+      "stages": {
+        "highschool": "KAIST International Undergraduate Admission (full tuition + stipend).",
+        "undergrad": "KAIST Summer Research Internships in Physics & IBS Centers.",
+        "masters": "100% English MS/PhD with KAIST International Scholarship (tuition + monthly stipend).",
+        "phd": "Funded PhD with KAIST & IBS Center for Axion and Precision Physics.",
+        "postdoc": "IBS Research Fellow & KAIST Postdoc fellowships.",
+        "assoc_prof": "Tenure-track / Associate Professor (international English-taught faculty).",
+        "prof": "Full Professor & IBS Center Director."
+      },
+      "next": [
+        "utokyo",
+        "cqt",
+        "riken"
+      ],
+      "country": "South Korea",
+      "foundedYear": 1971,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "IBS Center for Axion and Precision Physics Research (CAPP)",
+          "status": "ongoing",
+          "url": "https://capp.ibs.re.kr/"
+        }
+      ]
+    },
+    {
+      "id": "cqt",
+      "name": "Centre for Quantum Tech",
+      "city": "Singapore",
+      "group": "lab",
+      "branch": "quantum",
+      "lat": 1.2966,
+      "lng": 103.7805,
+      "zoom": 16.4,
+      "url": "https://www.quantumlah.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Centre_for_Quantum_Technologies",
+      "wikiSlug": "Centre_for_Quantum_Technologies",
+      "summary": "Asia's premier quantum physics center building orbital quantum-encryption satellites and trapped-ion atomic clocks.",
+      "nobel": "Founded by Artur Ekert, inventor of entanglement-based quantum cryptography.",
+      "stages": {
+        "highschool": "CQT Quantum Shorts & Singapore Physics Olympiad mentorship.",
+        "undergrad": "Paid international undergrad internships in quantum optics & information.",
+        "masters": "NUS MSc in Physics with CQT research projects.",
+        "phd": "Fully funded CQT PhD Scholarships (open to all nationalities).",
+        "postdoc": "CQT Research Fellow & Lee Kuan Yew Postdoctoral Fellowships.",
+        "assoc_prof": "NRF Fellowship (up to S$3M independent 5-year research grant).",
+        "prof": "CQT Principal Investigator & NRF Investigatorship."
+      },
+      "next": [
+        "unsw",
+        "kaist",
+        "qutech"
+      ],
+      "country": "Singapore",
+      "foundedYear": 2007,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SpeQtral Space Quantum Key Distribution",
+          "status": "ongoing",
+          "url": "https://www.quantumlah.org/"
+        },
+        {
+          "name": "National Quantum Office (Singapore)",
+          "status": "ongoing",
+          "url": "https://www.quantumlah.org/"
+        }
+      ]
+    },
+    {
+      "id": "iisc",
+      "name": "IISc Bengaluru",
+      "city": "Bengaluru, India",
+      "group": "uni",
+      "branch": "condensed",
+      "lat": 13.0219,
+      "lng": 77.5671,
+      "zoom": 16,
+      "shanghai": "Top 100",
+      "tuition": "Low + Aid",
+      "visa": "IN Student",
+      "url": "https://physics.iisc.ac.in/",
+      "wiki": "https://en.wikipedia.org/wiki/Indian_Institute_of_Science",
+      "wikiSlug": "Indian_Institute_of_Science",
+      "summary": "India's top fundamental research campus—a green sanctuary of condensed matter, 2D materials, and astrophysics.",
+      "nobel": "C.V. Raman (1930 Nobel Prize in Physics) served as its first Indian Director.",
+      "stages": {
+        "highschool": "IISc 4-year BS (Research) in Physics admission.",
+        "undergrad": "Indian Academy of Sciences Summer Research Fellowship at IISc.",
+        "masters": "Integrated PhD / MSc in Physical Sciences (English) with stipend.",
+        "phd": "Funded PhD in Condensed Matter, Astro, High-Energy, or Quantum Tech.",
+        "postdoc": "C.V. Raman Postdoctoral Fellowship & Ramanujan Fellowship.",
+        "assoc_prof": "Associate Professor in Department of Physics or CHEP.",
+        "prof": "Full Professor & National Science Chair."
+      },
+      "next": [
+        "ictp",
+        "cqt",
+        "cern"
+      ],
+      "country": "India",
+      "foundedYear": 1909,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "IISc Quantum Technology Initiative (IQTI)",
+          "status": "ongoing",
+          "url": "https://physics.iisc.ac.in/"
+        }
+      ]
+    },
+    {
+      "id": "paranal",
+      "name": "ESO Paranal Observatory",
+      "city": "Atacama Desert, Chile",
+      "group": "lab",
+      "branch": "astro",
+      "pinned": true,
+      "lat": -24.6275,
+      "lng": -70.4045,
+      "zoom": 16.2,
+      "url": "https://www.eso.org/public/teles-instr/paranal-observatory/",
+      "wiki": "https://en.wikipedia.org/wiki/Paranal_Observatory",
+      "wikiSlug": "Paranal_Observatory",
+      "summary": "Four giant 8.2 m mirror domes perched atop a Martian-red Andean peak—the sharpest optical eyes on Earth.",
+      "nobel": "Reinhard Genzel (2020 Nobel) tracked stars whipping around the Milky Way's central black hole here.",
+      "stages": {
+        "highschool": "ESO Astronomy Camp in the Italian Alps & open VLT archive imagery.",
+        "undergrad": "ESO Summer Research Programme (6-week paid astrophysics stay in Garching).",
+        "masters": "ESO Studentships (1–2 years in Chile or Germany during MSc/PhD).",
+        "phd": "IMPRS Astrophysics / ESO Studentships observing directly on the VLT.",
+        "postdoc": "ESO Fellowship (3–4 years in Chile or Garching with 25% observatory duties).",
+        "assoc_prof": "ESO Staff Astronomer & VLT/ELT instrument PI.",
+        "prof": "ESO Director for Science & Extremely Large Telescope (ELT) leadership."
+      },
+      "next": [
+        "meerkat",
+        "ligo",
+        "slac",
+        "ictpsaifr"
+      ],
+      "country": "Chile",
+      "foundedYear": 1998,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Extremely Large Telescope (ELT — Cerro Armazones)",
+          "status": "upcoming",
+          "url": "https://elt.eso.org/"
+        },
+        {
+          "name": "VLT Interferometer GRAVITY+ Upgrade",
+          "status": "ongoing",
+          "url": "https://www.eso.org/public/teles-instr/paranal-observatory/vlt/"
+        }
+      ]
+    },
+    {
+      "id": "ictpsaifr",
+      "name": "ICTP-SAIFR",
+      "city": "São Paulo, Brazil",
+      "group": "lab",
+      "branch": "gravity",
+      "lat": -23.527,
+      "lng": -46.6656,
+      "zoom": 16.2,
+      "url": "https://www.ictp-saifr.org/",
+      "wiki": "https://en.wikipedia.org/wiki/ICTP_South_American_Institute_for_Fundamental_Research",
+      "wikiSlug": "ICTP_South_American_Institute_for_Fundamental_Research",
+      "summary": "Latin America's vibrant partner to ICTP Trieste, hosting free international schools in cosmology and theoretical physics.",
+      "nobel": "Connected directly with ICTP Trieste, Perimeter Institute, and Fermilab.",
+      "stages": {
+        "highschool": "ICTP-SAIFR High School Physics Minicourses & outreach.",
+        "undergrad": "Free intensive Journeys into Theoretical Physics for Latin American undergrads.",
+        "masters": "FAPESP-funded Master's fellowships in Theoretical Physics at IFT-UNESP.",
+        "phd": "FAPESP funded PhD with international travel grants to ICTP & Perimeter.",
+        "postdoc": "ICTP-SAIFR / FAPESP 2–3 year theoretical physics postdocs.",
+        "assoc_prof": "IFT-UNESP & ICTP-SAIFR Associate Faculty.",
+        "prof": "Distinguished Visiting Professors & Scientific Council."
+      },
+      "next": [
+        "ictp",
+        "paranal",
+        "perimeter"
+      ],
+      "country": "Brazil",
+      "foundedYear": 2011,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "South American Cosmology & Fundamental Physics Schools",
+          "status": "ongoing",
+          "url": "https://www.ictp-saifr.org/"
+        }
+      ]
+    },
+    {
+      "id": "meerkat",
+      "name": "MeerKAT / SKA-Mid",
+      "city": "Karoo, South Africa",
+      "group": "lab",
+      "branch": "astro",
+      "pinned": true,
+      "lat": -30.713,
+      "lng": 21.443,
+      "zoom": 15.4,
+      "url": "https://www.sarao.ac.za/science/meerkat/about-meerkat/",
+      "wiki": "https://en.wikipedia.org/wiki/MeerKAT",
+      "wikiSlug": "MeerKAT",
+      "summary": "64 gleaming white radio dishes spread across the silent Karoo desert, forming the heart of the Square Kilometre Array.",
+      "nobel": "Tests Einstein's general relativity using millisecond binary pulsars.",
+      "stages": {
+        "highschool": "SARAO Schools Programme & Karoo astronomy outreach.",
+        "undergrad": "SARAO Undergraduate Bursaries & NASSP honours prep.",
+        "masters": "NASSP / SARAO MSc bursaries + open MeerKAT data via UCT, Oxford & Manchester.",
+        "phd": "Funded SKA / MeerKAT PhDs in radio astronomy and pulsar timing.",
+        "postdoc": "SARAO / SKAO Postdoctoral Fellowships in Cape Town or Manchester.",
+        "assoc_prof": "MeerKAT Large Survey Project (LSP) co-PI.",
+        "prof": "SARAO / SKAO Science Leadership & Research Chairs."
+      },
+      "next": [
+        "paranal",
+        "unsw",
+        "oxford"
+      ],
+      "country": "South Africa",
+      "foundedYear": 2018,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SKA-Mid 197-Dish Radio Array Construction",
+          "status": "upcoming",
+          "url": "https://www.skao.int/"
+        },
+        {
+          "name": "MeerTIME Relativistic Pulsar Timing Survey",
+          "status": "ongoing",
+          "url": "https://www.sarao.ac.za/"
+        }
+      ]
+    },
+    {
+      "id": "unsw",
+      "name": "UNSW Sydney Quantum",
+      "city": "Sydney, Australia",
+      "group": "uni",
+      "branch": "quantum",
+      "pinned": true,
+      "lat": -33.9173,
+      "lng": 151.2313,
+      "zoom": 16.2,
+      "shanghai": "Top 100",
+      "tuition": "RTP Full Aid",
+      "visa": "AU 500 + 485",
+      "url": "https://www.unsw.edu.au/science/our-schools/physics",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_New_South_Wales",
+      "wikiSlug": "University_of_New_South_Wales",
+      "summary": "World leader in single-atom silicon spin qubits, building quantum processors out of the same silicon that runs modern chips.",
+      "nobel": "Leads Australia's CQC2T with world-record silicon spin-qubit coherence.",
+      "stages": {
+        "highschool": "Australian Science Olympiads & UNSW Quantum Engineering outreach.",
+        "undergrad": "UNSW Taste of Research summer scholarships in silicon quantum computing.",
+        "masters": "English MPhil / Master of Physics with Australian Government RTP full scholarships.",
+        "phd": "Funded 3.5-year PhD inside CQC2T & Silicon Quantum Computing.",
+        "postdoc": "ARC DECRA Fellowships & CQC2T Postdocs.",
+        "assoc_prof": "ARC Future Fellowship & UNSW Associate Professor.",
+        "prof": "ARC Laureate Fellowship & Scientia Professor."
+      },
+      "next": [
+        "cqt",
+        "qutech",
+        "meerkat"
+      ],
+      "country": "Australia",
+      "foundedYear": 1949,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ARC Centre of Excellence for Quantum Computation (CQC2T)",
+          "status": "ongoing",
+          "url": "https://www.cqc2t.org/"
+        }
+      ]
+    },
+    {
+      "id": "miletus",
+      "name": "Miletus (Anaximander)",
+      "city": "Aydın, Ancient Ionia",
+      "group": "hist",
+      "branch": "history",
+      "lat": 37.5302,
+      "lng": 27.2784,
+      "zoom": 15.8,
+      "url": "https://en.wikipedia.org/wiki/Miletus",
+      "wiki": "https://en.wikipedia.org/wiki/Anaximander",
+      "wikiSlug": "Anaximander",
+      "summary": "Where physics began (c. 610 BCE): Anaximander proposed that Earth floats freely in space with no pillars holding it up.",
+      "nobel": "Birthplace of naturalistic cosmology—explaining the universe through law instead of myth.",
+      "stages": {
+        "highschool": "Great starting point: read Carlo Rovelli's 'Anaximander' to see how scientific thinking began.",
+        "undergrad": "Follow the Rabbit Hole button to trace 2,600 years from Miletus → Bern → Göttingen → CERN.",
+        "masters": "History & Philosophy of Physics tracks (e.g., Oxford, Cambridge, Perimeter, MPIWG Berlin).",
+        "phd": "Max Planck Institute for the History of Science (MPIWG) doctoral fellowships.",
+        "postdoc": "Foundations of Physics & History of Science postdoctoral fellowships.",
+        "assoc_prof": "Interdisciplinary Physics & Philosophy faculty appointments.",
+        "prof": "Distinguished lectures on the conceptual evolution of spacetime."
+      },
+      "next": [
+        "bern",
+        "gottingen",
+        "bohr"
+      ],
+      "country": "Turkey",
+      "foundedYear": -600,
+      "entityType": "history",
+      "status": "historic",
+      "projects": [
+        {
+          "name": "Miletus Archaeological & Scientific Heritage",
+          "status": "completed",
+          "url": "https://en.wikipedia.org/wiki/Miletus"
+        }
+      ]
+    },
+    {
+      "id": "bern",
+      "name": "Bern Patent Office (Einstein)",
+      "city": "Bern, Switzerland",
+      "group": "hist",
+      "branch": "history",
+      "lat": 46.948,
+      "lng": 7.45,
+      "zoom": 17,
+      "url": "https://www.unibe.ch/index_eng.html",
+      "wiki": "https://en.wikipedia.org/wiki/Annus_mirabilis_papers",
+      "wikiSlug": "Annus_mirabilis_papers",
+      "summary": "On Kramgasse in 1905, 26-year-old patent clerk Albert Einstein rewrote space, time, light, and energy (E = mc²) in four papers.",
+      "nobel": "Albert Einstein (1921 Nobel Prize for the photoelectric effect).",
+      "stages": {
+        "highschool": "Einsteinhaus Bern museum & visual special-relativity explorations.",
+        "undergrad": "University of Bern undergraduate physics & Albert Einstein Center outreach.",
+        "masters": "University of Bern English MSc at the Albert Einstein Center for Fundamental Physics (AEC).",
+        "phd": "Salaried Swiss PhD in neutrino physics, lattice QCD, or space instruments (JUICE/CHEOPS).",
+        "postdoc": "SNSF & AEC Postdoctoral Fellowships in Bern.",
+        "assoc_prof": "AEC Associate Professor in Fundamental or Space Physics.",
+        "prof": "Albert Einstein Center Directorship & ESA mission PIs."
+      },
+      "next": [
+        "eth",
+        "gottingen",
+        "princeton",
+        "cern"
+      ],
+      "country": "Switzerland",
+      "foundedYear": 1905,
+      "entityType": "history",
+      "status": "historic",
+      "projects": [
+        {
+          "name": "Albert Einstein Center for Fundamental Physics (Univ. of Bern)",
+          "status": "ongoing",
+          "url": "https://www.unibe.ch/index_eng.html"
+        }
+      ]
+    },
+    {
+      "id": "gottingen",
+      "name": "Göttingen (Quantum Birth)",
+      "city": "Göttingen, Germany",
+      "group": "hist",
+      "branch": "history",
+      "lat": 51.5344,
+      "lng": 9.9323,
+      "zoom": 16.4,
+      "url": "https://www.uni-goettingen.de/en/18500.html",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_G%C3%B6ttingen",
+      "wikiSlug": "University_of_Göttingen",
+      "summary": "In the 1920s, Max Born, Werner Heisenberg, and Emmy Noether forged matrix quantum mechanics and symmetry theorems here.",
+      "nobel": "40+ Nobel laureates affiliated (Born, Heisenberg, Otto Stern, Maria Goeppert Mayer).",
+      "stages": {
+        "highschool": "XLAB Göttingen Experimental Laboratory for Young People.",
+        "undergrad": "DAAD RISE summer projects at Göttingen & local Max Planck Institutes.",
+        "masters": "Tuition-free English MSc in Physics right beside Max Planck Institutes.",
+        "phd": "IMPRS Physics of Biological and Complex Systems / Solar System Science.",
+        "postdoc": "Humboldt Research Fellowships & Max Planck postdocs.",
+        "assoc_prof": "W2 Professorships & Heisenberg Programme fellowships.",
+        "prof": "W3 Full Professorships & Max Planck Directors."
+      },
+      "next": [
+        "bohr",
+        "mpq",
+        "princeton",
+        "cambridge"
+      ],
+      "country": "Germany",
+      "foundedYear": 1737,
+      "entityType": "history",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Max Planck Institute for Dynamics and Self-Organization",
+          "status": "ongoing",
+          "url": "https://www.ds.mpg.de/en"
+        }
+      ]
+    },
+    {
+      "id": "bohr",
+      "name": "Niels Bohr Institute",
+      "city": "Copenhagen, Denmark",
+      "group": "hist",
+      "branch": "history",
+      "lat": 55.6966,
+      "lng": 12.5714,
+      "zoom": 16.8,
+      "url": "https://nbi.ku.dk/english/",
+      "wiki": "https://en.wikipedia.org/wiki/Niels_Bohr_Institute",
+      "wikiSlug": "Niels_Bohr_Institute",
+      "summary": "Founded by Niels Bohr in 1921—where Heisenberg, Pauli, and Dirac debated the meaning of quantum reality into the night.",
+      "nobel": "Niels Bohr (1922), Aage Bohr & Ben Mottelson (1975).",
+      "stages": {
+        "highschool": "Niels Bohr Archive & Danish Physics Olympiad outreach.",
+        "undergrad": "Summer research exchanges in quantum, astro, and biophysics.",
+        "masters": "2-year English MSc in Physics at University of Copenhagen (NBI).",
+        "phd": "Salaried 3-year Danish PhD fellowships across NBI & Center for Quantum Devices.",
+        "postdoc": "Niels Bohr International Academy (NBIA) & Villum / Carlsberg Postdocs.",
+        "assoc_prof": "NBI Associate Professor & Villum Young Investigator grants.",
+        "prof": "Full Professor & Center of Excellence Directors."
+      },
+      "next": [
+        "gottingen",
+        "ess",
+        "cern"
+      ],
+      "country": "Denmark",
+      "foundedYear": 1921,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Novo Nordisk Foundation Quantum Computing Programme",
+          "status": "ongoing",
+          "url": "https://nbi.ku.dk/english/"
+        },
+        {
+          "name": "Cosmic Dawn Center (DAWN)",
+          "status": "ongoing",
+          "url": "https://cosmicdawn.dk/"
+        }
+      ]
+    },
+    {
+      "id": "princeton",
+      "name": "Princeton & IAS",
+      "city": "Princeton, NJ, USA",
+      "group": "hist",
+      "branch": "gravity",
+      "lat": 40.3316,
+      "lng": -74.6677,
+      "zoom": 16.2,
+      "url": "https://www.ias.edu/sns",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Advanced_Study",
+      "wikiSlug": "Institute_for_Advanced_Study",
+      "summary": "Einstein's final home, Oppenheimer's Institute for Advanced Study, and where Feynman earned his PhD.",
+      "nobel": "Einstein, Feynman, Wigner, Yang, Lee, Anderson, David Gross, and Edward Witten.",
+      "stages": {
+        "highschool": "Princeton Plasma Physics Lab (PPPL) high-school internships & public lectures.",
+        "undergrad": "Princeton REU in Physics, Astro, & Plasma Physics (PPPL).",
+        "masters": "Princeton admits directly to its fully funded PhD program (MA awarded en route).",
+        "phd": "5-year fully funded PhD at Jadwin Hall, PPPL, or Astrophysics.",
+        "postdoc": "IAS School of Natural Sciences 5-year Memberships & Dicke Fellowships.",
+        "assoc_prof": "Princeton Associate Professor & IAS Visiting Faculty.",
+        "prof": "IAS Permanent Faculty & Princeton Endowed Chairs."
+      },
+      "next": [
+        "mit",
+        "perimeter",
+        "bern",
+        "cern"
+      ],
+      "country": "United States",
+      "foundedYear": 1930,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Princeton Plasma Physics Laboratory (PPPL / NSTX-U)",
+          "status": "ongoing",
+          "url": "https://www.pppl.gov/"
+        },
+        {
+          "name": "IAS School of Natural Sciences Theoretical Physics",
+          "status": "ongoing",
+          "url": "https://www.ias.edu/sns"
+        }
+      ]
+    },
+    {
+      "id": "caltech",
+      "name": "Caltech Physics (PMA)",
+      "city": "Pasadena, CA, USA",
+      "group": "uni",
+      "branch": "gravity",
+      "lat": 34.1377,
+      "lng": -118.1253,
+      "zoom": 16.4,
+      "shanghai": "Shanghai #3",
+      "tuition": "Funded PhD",
+      "visa": "F-1 + 3yr OPT",
+      "url": "https://www.caltech.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/California_Institute_of_Technology",
+      "wikiSlug": "California_Institute_of_Technology",
+      "summary": "Home of Richard Feynman's lectures, Kip Thorne's black-hole theory, LIGO HQ, and NASA's Jet Propulsion Laboratory.",
+      "nobel": "Feynman, Gell-Mann, Millikan, Anderson, Fowler, Politzer, and Kip Thorne (2017).",
+      "stages": {
+        "highschool": "Caltech Feynman Lectures online & JPL public space-physics tours.",
+        "undergrad": "Caltech WAVE Fellows & SURF paid 10-week summer research fellowships.",
+        "masters": "Direct-entry funded PhD program from undergrad across PMA & Astronomy.",
+        "phd": "5–6 year funded PhD in Quantum Information (IQIM), LIGO, Astro, or Particle Physics.",
+        "postdoc": "Burke, DuBridge, and Sherman Fairchild Postdoctoral Fellowships.",
+        "assoc_prof": "Caltech Tenure-Track / Associate Professor appointments.",
+        "prof": "Endowed Professorships & JPL / LIGO Executive Directorships."
+      },
+      "next": [
+        "ligo",
+        "mit",
+        "slac",
+        "berkeley"
+      ],
+      "country": "United States",
+      "foundedYear": 1891,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Institute for Quantum Information and Matter (IQIM)",
+          "status": "ongoing",
+          "url": "https://iqim.caltech.edu/"
+        },
+        {
+          "name": "LIGO Laboratory Headquarters",
+          "status": "ongoing",
+          "url": "https://www.ligo.caltech.edu/"
+        }
+      ]
+    },
+    {
+      "id": "berkeley",
+      "name": "UC Berkeley & LBNL",
+      "city": "Berkeley, CA, USA",
+      "group": "uni",
+      "branch": "particle",
+      "lat": 37.8724,
+      "lng": -122.2578,
+      "zoom": 16.2,
+      "shanghai": "Shanghai #4",
+      "tuition": "Funded PhD",
+      "visa": "F-1 + 3yr OPT",
+      "url": "https://physics.berkeley.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Lawrence_Berkeley_National_Laboratory",
+      "wikiSlug": "Lawrence_Berkeley_National_Laboratory",
+      "summary": "Birthplace of Ernest Lawrence's cyclotron, 16 chemical elements, dark energy acceleration, and the Advanced Light Source.",
+      "nobel": "30+ physics laureates including Lawrence, Oppenheimer's school, Smoot, Perlmutter, and Clauser.",
+      "stages": {
+        "highschool": "Berkeley Lab K-12 STEM & Cosmic Ray outreach programs.",
+        "undergrad": "DOE SULI internships at Berkeley Lab & UC Berkeley Physics REU.",
+        "masters": "Direct-entry funded PhD from undergrad with LBNL national-lab co-advising.",
+        "phd": "Funded PhD in Cosmology (DESI), Quantum, Condensed Matter, and Particle Physics.",
+        "postdoc": "Miller Research Fellowship & Chamberlain Fellowship at LBNL.",
+        "assoc_prof": "Joint UC Berkeley Faculty + LBNL Senior Scientist appointments.",
+        "prof": "Full Professor & LBNL Division Directorships."
+      },
+      "next": [
+        "slac",
+        "caltech",
+        "fermilab",
+        "mit"
+      ],
+      "country": "United States",
+      "foundedYear": 1868,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "DESI (Dark Energy Spectroscopic Instrument)",
+          "status": "ongoing",
+          "url": "https://www.desi.lbl.gov/"
+        },
+        {
+          "name": "Advanced Light Source Upgrade (ALS-U)",
+          "status": "ongoing",
+          "url": "https://als.lbl.gov/"
+        }
+      ]
+    },
+    {
+      "id": "epfl",
+      "name": "EPFL Physics & SPC",
+      "city": "Lausanne, Switzerland",
+      "group": "uni",
+      "branch": "fusion",
+      "lat": 46.5191,
+      "lng": 6.5668,
+      "zoom": 16.2,
+      "shanghai": "Top 30",
+      "tuition": "~CHF 1,460/yr",
+      "visa": "CH Student Permit",
+      "url": "https://www.epfl.ch/schools/sb/research/iphys/",
+      "wiki": "https://en.wikipedia.org/wiki/EPFL",
+      "wikiSlug": "EPFL",
+      "summary": "Lakeside Swiss powerhouse operating the TCV fusion tokamak, quantum photonics labs, and a direct bridge to CERN.",
+      "nobel": "Swiss Plasma Center leads European tokamak control and fusion plasma physics.",
+      "stages": {
+        "highschool": "EPFL Science Outreach & Swiss Physics Olympiad camps.",
+        "undergrad": "EPFL Excellence in Research paid summer internships.",
+        "masters": "2-year English MSc in Physics or Nuclear/Fusion Engineering (~CHF 730/sem).",
+        "phd": "Salaried 4-year Swiss PhD in EPFL Doctoral Program in Physics (EDPY).",
+        "postdoc": "EPFL Fellows & SNSF Postdoctoral Mobility grants.",
+        "assoc_prof": "EPFL Tenure-Track Assistant / Associate Professor.",
+        "prof": "Full Professor & Swiss Plasma Center Leadership."
+      },
+      "next": [
+        "cern",
+        "eth",
+        "iter",
+        "psi"
+      ],
+      "country": "Switzerland",
+      "foundedYear": 1853,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "TCV (Tokamak à Configuration Variable)",
+          "status": "ongoing",
+          "url": "https://www.epfl.ch/research/domains/swiss-plasma-center/"
+        },
+        {
+          "name": "EPFL Center for Quantum Science and Engineering (QSE)",
+          "status": "ongoing",
+          "url": "https://www.epfl.ch/schools/sb/research/iphys/"
+        }
+      ]
+    },
+    {
+      "id": "tum",
+      "name": "TU Munich & LMU (MCQST)",
+      "city": "Munich, Germany",
+      "group": "uni",
+      "branch": "quantum",
+      "lat": 48.2624,
+      "lng": 11.668,
+      "zoom": 15.8,
+      "shanghai": "Top 30",
+      "tuition": "Tuition-Free*",
+      "visa": "DE + 18mo Job",
+      "url": "https://www.ph.tum.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Technical_University_of_Munich",
+      "wikiSlug": "Technical_University_of_Munich",
+      "summary": "Garching research campus uniting TUM, LMU, FRM II neutron reactor, ESO HQ, and Max Planck institutes for quantum & astro.",
+      "nobel": "Rudolf Mössbauer (1961), Klaus von Klitzing (1985), Reinhard Genzel (2020), Ferenc Krausz (2023).",
+      "stages": {
+        "highschool": "TUM Schülerforschungszentrum & Munich Quantum Valley public demos.",
+        "undergrad": "DAAD RISE summer projects & HiWi research assistantships.",
+        "masters": "English MSc in Physics, Quantum Science & Tech (QST), or TMP with low/zero EU tuition.",
+        "phd": "Salaried TV-L E13 PhD positions via MCQST & ORIGINS Excellence Clusters.",
+        "postdoc": "MCQST Distinguished Postdoc & Humboldt Fellowships.",
+        "assoc_prof": "TUM Faculty Tenure Track (W2/W3) & ERC Consolidator grants.",
+        "prof": "W3 Full Professorships & Max Planck Fellow chairs."
+      },
+      "next": [
+        "mpq",
+        "eth",
+        "desy",
+        "paranal"
+      ],
+      "country": "Germany",
+      "foundedYear": 1868,
+      "entityType": "uni",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ORIGINS Excellence Cluster (Universe & Astroparticle)",
+          "status": "ongoing",
+          "url": "https://www.origins-cluster.de/en/"
+        },
+        {
+          "name": "FRM II Research Neutron Source (MLZ)",
+          "status": "ongoing",
+          "url": "https://mlz-garching.de/englisch.html"
+        }
+      ]
+    },
+    {
+      "id": "alma",
+      "name": "ALMA Radio Observatory",
+      "city": "Chajnantor Plateau, Chile",
+      "group": "lab",
+      "branch": "astro",
+      "lat": -23.0234,
+      "lng": -67.7538,
+      "zoom": 15.4,
+      "url": "https://www.almaobservatory.org/en/home/",
+      "wiki": "https://en.wikipedia.org/wiki/Atacama_Large_Millimeter_Array",
+      "wikiSlug": "Atacama_Large_Millimeter_Array",
+      "summary": "66 high-precision radio antennas at 5,000 m altitude in the Atacama Desert—key anchor of the Event Horizon Telescope black-hole image.",
+      "nobel": "Co-imaged the M87* and Sagittarius A* supermassive black hole shadows.",
+      "stages": {
+        "highschool": "ALMA Kids & open millimeter-wave astronomy data explorers.",
+        "undergrad": "NRAO / ESO summer student programs working on ALMA interferometry.",
+        "masters": "MSc projects via ESO, NAOJ, NRAO, or Chilean university partners.",
+        "phd": "Joint international PhDs analyzing ALMA protoplanetary disks and black holes.",
+        "postdoc": "ALMA / ESO / NAOJ / NRAO Fellowships in Santiago, Garching, or Charlottesville.",
+        "assoc_prof": "ALMA Regional Center (ARC) scientist & Large Program PI.",
+        "prof": "ALMA Board & international millimeter-astronomy leadership."
+      },
+      "next": [
+        "paranal",
+        "meerkat",
+        "slac",
+        "ictpsaifr"
+      ],
+      "country": "Chile",
+      "foundedYear": 2013,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "ALMA Wideband Sensitivity Upgrade (WSU)",
+          "status": "upcoming",
+          "url": "https://www.almaobservatory.org/en/home/"
+        },
+        {
+          "name": "Event Horizon Telescope Millimeter VLBI",
+          "status": "ongoing",
+          "url": "https://eventhorizontelescope.org/"
+        }
+      ]
+    },
+    {
+      "id": "snolab",
+      "name": "SNOLAB Underground",
+      "city": "Sudbury, Canada",
+      "group": "lab",
+      "branch": "particle",
+      "lat": 46.4719,
+      "lng": -81.1867,
+      "zoom": 15.6,
+      "url": "https://www.snolab.ca/",
+      "wiki": "https://en.wikipedia.org/wiki/SNOLAB",
+      "wikiSlug": "SNOLAB",
+      "summary": "A class-2000 cleanroom physics lab 2 km underground inside an active nickel mine—hunting dark matter (DEAP, SuperCDMS) and solar neutrinos.",
+      "nobel": "Arthur B. McDonald (2015 Nobel Prize for solving the solar neutrino problem).",
+      "stages": {
+        "highschool": "SNOLAB Virtual Underground Tour & Canadian astroparticle outreach.",
+        "undergrad": "Paid Canadian & international co-op terms via McDonald Institute.",
+        "masters": "Funded MSc at Queen's, Carleton, Laurentian, or UofT working underground.",
+        "phd": "McDonald Institute / SNOLAB funded PhDs in dark matter & neutrinoless double-beta decay.",
+        "postdoc": "SNOLAB Research Scientist & McDonald Institute Postdoctoral Fellowships.",
+        "assoc_prof": "Experiment Technical Coordinator & Canadian university faculty.",
+        "prof": "SNOLAB Executive Director & international dark-matter spokespersons."
+      },
+      "next": [
+        "gransasso",
+        "icecube",
+        "triumf",
+        "perimeter"
+      ],
+      "country": "Canada",
+      "foundedYear": 2012,
+      "entityType": "lab",
+      "status": "active",
+      "projects": [
+        {
+          "name": "SNO+ Neutrinoless Double-Beta Decay Experiment",
+          "status": "ongoing",
+          "url": "https://snoplus.phy.queensu.ca/"
+        },
+        {
+          "name": "SuperCDMS SNOLAB Dark Matter Search",
+          "status": "upcoming",
+          "url": "https://supercdms.slac.stanford.edu/"
+        }
+      ]
+    },
+    {
+      "id": "yukawa",
+      "name": "Kyoto & Yukawa Institute",
+      "city": "Kyoto, Japan",
+      "group": "uni",
+      "branch": "gravity",
+      "lat": 35.0285,
+      "lng": 135.7815,
+      "zoom": 16.4,
+      "shanghai": "Top 35",
+      "tuition": "~¥535k + MEXT",
+      "visa": "JP Student Visa",
+      "url": "https://www.yukawa.kyoto-u.ac.jp/en-GB/",
+      "wiki": "https://en.wikipedia.org/wiki/Yukawa_Institute_for_Theoretical_Physics",
+      "wikiSlug": "Yukawa_Institute_for_Theoretical_Physics",
+      "summary": "Founded to honor Japan's first Nobel laureate Hideki Yukawa—an international hub for string theory, holography, and quantum gravity.",
+      "nobel": "Hideki Yukawa (1949), Shin'ichirō Tomonaga (1965), Makoto Kobayashi & Toshihide Maskawa (2008).",
+      "stages": {
+        "highschool": "Kyoto University Science Open Lectures & Yukawa Hall archive.",
+        "undergrad": "Kyoto University Amgen / Summer research visits.",
+        "masters": "English MSc/PhD tracks at Kyoto Physics with full MEXT scholarships.",
+        "phd": "Funded PhD at YITP in quantum gravity, cosmology, and condensed matter theory.",
+        "postdoc": "YITP Special Postdoctoral Fellowships & JSPS Fellowships.",
+        "assoc_prof": "YITP Associate Professor & international workshop organizer.",
+        "prof": "YITP Director & Distinguished Theoretical Physics Chairs."
+      },
+      "next": [
+        "utokyo",
+        "superk",
+        "perimeter",
+        "princeton"
+      ],
+      "country": "Japan",
+      "foundedYear": 1953,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "YITP Holography, Quantum Gravity & Quantum Information Program",
+          "status": "ongoing",
+          "url": "https://www.yukawa.kyoto-u.ac.jp/en-GB/"
+        }
+      ]
+    },
+    {
+      "id": "aei",
+      "name": "Max Planck Gravitational Physics",
+      "city": "Potsdam, Germany",
+      "group": "lab",
+      "branch": "gravity",
+      "lat": 52.4167,
+      "lng": 12.971,
+      "zoom": 16.4,
+      "url": "https://www.aei.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Gravitational_Physics",
+      "wikiSlug": "Max_Planck_Institute_for_Gravitational_Physics",
+      "summary": "The Albert Einstein Institute—leading numerical relativity, LIGO/LISA waveform modeling, and quantum gravity from Potsdam & Hannover.",
+      "nobel": "Built the core laser technology for LIGO and leads the upcoming ESA LISA space interferometer.",
+      "stages": {
+        "highschool": "Einstein Online (world-class interactive relativity portal run by AEI).",
+        "undergrad": "Paid summer research visits in numerical relativity & laser interferometry.",
+        "masters": "Tuition-free English MSc at Univ. of Potsdam or Leibniz Hannover with AEI thesis.",
+        "phd": "IMPRS for Mathematical and Physical Aspects of Gravitation (salaried PhDs).",
+        "postdoc": "AEI Postdoctoral Fellowships in Astrophysical Relativity & Quantum Gravity.",
+        "assoc_prof": "Max Planck Independent Research Group Leader.",
+        "prof": "AEI Director & LISA Consortium Leadership."
+      },
+      "next": [
+        "ligo",
+        "gottingen",
+        "bern",
+        "perimeter"
+      ],
+      "country": "Germany",
+      "foundedYear": 1995,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "LISA Space Gravitational-Wave Observatory (Core Contribution)",
+          "status": "upcoming",
+          "url": "https://www.lisamission.org/"
+        },
+        {
+          "name": "GEO600 Gravitational-Wave Detector",
+          "status": "ongoing",
+          "url": "https://www.geo600.org/"
+        }
+      ]
+    },
+    {
+      "id": "jila",
+      "name": "JILA & CU Boulder",
+      "city": "Boulder, CO, USA",
+      "group": "lab",
+      "branch": "quantum",
+      "lat": 40.0074,
+      "lng": -105.2689,
+      "zoom": 16.6,
+      "shanghai": "Top 25",
+      "tuition": "Funded PhD",
+      "visa": "F-1 + 3yr OPT",
+      "url": "https://jila.colorado.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/JILA",
+      "wikiSlug": "JILA",
+      "summary": "Joint NIST & CU Boulder institute at the foot of the Rockies—home of the first Bose-Einstein condensate and world's most precise atomic clocks.",
+      "nobel": "Eric Cornell & Carl Wieman (2001 BEC), John Hall (2005 frequency combs), David Wineland (2012 NIST).",
+      "stages": {
+        "highschool": "CU Wizards & JILA public atomic-physics demonstrations.",
+        "undergrad": "NSF Physics & JILA REU paid 10-week summer research program.",
+        "masters": "Funded CU Boulder Physics PhD (MS awarded along the way).",
+        "phd": "5–6 year funded PhD in AMO physics, optical lattice clocks, and ultracold molecules.",
+        "postdoc": "NRC Research Associateship & JILA Postdoctoral Fellowships.",
+        "assoc_prof": "JILA Fellow / NIST Physicist & CU Boulder Associate Professor.",
+        "prof": "JILA Chair & National Quantum Initiative leadership."
+      },
+      "next": [
+        "mpq",
+        "mit",
+        "qutech",
+        "cqt"
+      ],
+      "country": "United States",
+      "foundedYear": 1962,
+      "entityType": "institute",
+      "status": "active",
+      "projects": [
+        {
+          "name": "Strontium Optical Lattice Clocks (Sub-10^-19 Precision)",
+          "status": "ongoing",
+          "url": "https://jila.colorado.edu/"
+        },
+        {
+          "name": "Q-SEnSE NSF Quantum Leap Challenge Institute",
+          "status": "ongoing",
+          "url": "https://www.colorado.edu/physics/"
+        }
+      ]
+    },
+    {
+      "id": "sesame",
+      "name": "SESAME Synchrotron",
+      "city": "Allan, Jordan",
+      "country": "Jordan",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "condensed",
+      "foundedYear": 2017,
+      "status": "active",
+      "pinned": true,
+      "lat": 32.1097,
+      "lng": 35.8331,
+      "zoom": 16,
+      "url": "https://www.sesame.org.jo/",
+      "wiki": "https://en.wikipedia.org/wiki/Synchrotron-Light_for_Experimental_Science_and_Applications_in_the_Middle_East",
+      "wikiSlug": "Synchrotron-Light_for_Experimental_Science_and_Applications_in_the_Middle_East",
+      "summary": "The Middle East's first synchrotron light source and the world's first solar-powered accelerator, uniting scientists from Cyprus, Egypt, Iran, Israel, Jordan, Pakistan, Palestine, and Turkey.",
+      "nobel": "Modeled after CERN as a UNESCO-backed beacon of science diplomacy and X-ray spectroscopy.",
+      "stages": {
+        "highschool": "SESAME science-diplomacy outreach and regional physics demonstrations.",
+        "undergrad": "SESAME Users' Meeting & summer training fellowships across member states.",
+        "masters": "Beamline MSc thesis experiments in XAFS, infrared, and crystallography.",
+        "phd": "Doctoral beamtime proposals funded via ICTP-SESAME & OPEN-SESAME programs.",
+        "postdoc": "SESAME Beamline Scientist & international synchrotron fellowships.",
+        "assoc_prof": "Principal Investigator on SESAME materials, catalysis, and cultural-heritage beamlines.",
+        "prof": "SESAME Council & Scientific Advisory Committee leadership."
+      },
+      "projects": [
+        {
+          "name": "BEATS Hard X-Ray Tomography Beamline",
+          "status": "ongoing",
+          "url": "https://www.sesame.org.jo/"
+        },
+        {
+          "name": "HESEB Soft X-Ray Beamline (Helmholtz-SESAME)",
+          "status": "ongoing",
+          "url": "https://www.sesame.org.jo/"
+        }
+      ],
+      "next": [
+        "cern",
+        "esrf",
+        "weizmann",
+        "ictp"
+      ]
+    },
+    {
+      "id": "iceland_sci",
+      "name": "University of Iceland Science Institute",
+      "city": "Reykjavik, Iceland",
+      "country": "Iceland",
+      "group": "uni",
+      "entityType": "uni",
+      "branch": "condensed",
+      "foundedYear": 1966,
+      "status": "active",
+      "pinned": false,
+      "lat": 64.1394,
+      "lng": -21.9554,
+      "zoom": 16,
+      "tuition": "Low Public Fee",
+      "visa": "EEA / IS Student",
+      "url": "https://english.hi.is/",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_Iceland",
+      "wikiSlug": "University_of_Iceland",
+      "summary": "North Atlantic hub for condensed matter, polaritonics, theoretical high-energy physics, astrophysics, and geothermal geophysics at Dunhagi.",
+      "nobel": "Active partner in Nordita, CERN, and European polaritonics and nanotechnology networks.",
+      "stages": {
+        "highschool": "Icelandic Physics Olympiad & University of Iceland Science Web (Vísindavefurinn).",
+        "undergrad": "BSc in Physics & summer research grants via the Icelandic Student Innovation Fund.",
+        "masters": "English-taught MSc in Physics with nominal public registration fees (~ISK 75,000/yr).",
+        "phd": "Salaried PhD fellowships funded by Rannís (Icelandic Research Fund).",
+        "postdoc": "Rannís Postdoctoral Fellowships & Nordic Nordita collaborations.",
+        "assoc_prof": "Associate Professor in Physics at the School of Engineering and Natural Sciences.",
+        "prof": "Research Professor at the Science Institute (Raunvísindastofnun)."
+      },
+      "projects": [
+        {
+          "name": "Science Institute Quantum & Polaritonics Group",
+          "status": "ongoing",
+          "url": "https://english.hi.is/"
+        }
+      ],
+      "next": [
+        "bohr",
+        "ess",
+        "cern"
+      ]
+    },
+    {
+      "id": "kbfi",
+      "name": "NICPB (KBFI) Estonia",
+      "city": "Tallinn, Estonia",
+      "country": "Estonia",
+      "group": "lab",
+      "entityType": "institute",
+      "branch": "particle",
+      "foundedYear": 1980,
+      "status": "active",
+      "pinned": false,
+      "lat": 59.3976,
+      "lng": 24.6615,
+      "zoom": 16,
+      "url": "https://kbfi.ee/?lang=en",
+      "wiki": "https://en.wikipedia.org/wiki/National_Institute_of_Chemical_Physics_and_Biophysics",
+      "wikiSlug": "National_Institute_of_Chemical_Physics_and_Biophysics",
+      "summary": "Estonia's premier fundamental physics research institute—leading CMS particle physics, primordial black holes, gravitational waves, and high-field NMR.",
+      "nobel": "Drives Estonia's full CERN membership and Baltic particle-cosmology theory.",
+      "stages": {
+        "highschool": "Estonian Physics Olympiad & CERN Baltic Group outreach.",
+        "undergrad": "Summer research placements at KBFI High Energy and Computational Physics lab.",
+        "masters": "English MSc via University of Tartu or TalTech with KBFI thesis advising.",
+        "phd": "Funded Estonian doctoral fellowships on CMS, dark matter, and LISA cosmology.",
+        "postdoc": "ETAg Mobilitas Pluss & MSCA Postdoctoral Fellowships at KBFI.",
+        "assoc_prof": "Senior Researcher & CERN CMS/FCC group leadership.",
+        "prof": "Lead Research Scientist & Baltic physics consortium leadership."
+      },
+      "projects": [
+        {
+          "name": "CERN CMS & FCC-ee Estonian Research Group",
+          "status": "ongoing",
+          "url": "https://kbfi.ee/?lang=en"
+        },
+        {
+          "name": "Estonian Centre of Excellence in Fundamental Universe",
+          "status": "ongoing",
+          "url": "https://kbfi.ee/?lang=en"
+        }
+      ],
+      "next": [
+        "cern",
+        "iqm",
+        "ess"
+      ]
+    },
+    {
+      "id": "yerphi",
+      "name": "Alikhanyan National Lab (YerPhI)",
+      "city": "Yerevan, Armenia",
+      "country": "Armenia",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "particle",
+      "foundedYear": 1943,
+      "status": "active",
+      "pinned": false,
+      "lat": 40.2016,
+      "lng": 44.4872,
+      "zoom": 16,
+      "url": "https://www.aanl.am/",
+      "wiki": "https://en.wikipedia.org/wiki/Yerevan_Physics_Institute",
+      "wikiSlug": "Yerevan_Physics_Institute",
+      "summary": "Founded by Abram and Artem Alikhanian in 1943; pioneered high-altitude Mount Aragats cosmic-ray stations, transition radiation detectors, and theoretical physics.",
+      "nobel": "Historic hub of cosmic-ray astrophysics, string theory, and nuclear physics in the Caucasus.",
+      "stages": {
+        "highschool": "Armenian Physics Olympiad & Aragats Cosmic Ray station outreach.",
+        "undergrad": "Undergraduate research internships in cosmic-ray, accelerator, and theoretical physics.",
+        "masters": "MSc thesis collaborations with Yerevan State University & Jefferson Lab / CERN.",
+        "phd": "Funded doctoral tracks in high-energy astrophysics, QCD, and accelerator physics.",
+        "postdoc": "AANL international visiting & postdoctoral research fellowships.",
+        "assoc_prof": "Division Leader in Cosmic Ray Physics or Theoretical Physics.",
+        "prof": "AANL Directorate & international collaboration spokesperson."
+      },
+      "projects": [
+        {
+          "name": "Aragats Space Environmental Center (ASEC) Cosmic-Ray Network",
+          "status": "ongoing",
+          "url": "https://www.aanl.am/"
+        }
+      ],
+      "next": [
+        "cern",
+        "desy",
+        "ictp"
+      ]
+    },
+    {
+      "id": "udelar",
+      "name": "UdelaR Instituto de Física",
+      "city": "Montevideo, Uruguay",
+      "country": "Uruguay",
+      "group": "uni",
+      "entityType": "uni",
+      "branch": "gravity",
+      "foundedYear": 1849,
+      "status": "active",
+      "pinned": false,
+      "lat": -34.9182,
+      "lng": -56.1665,
+      "zoom": 16.2,
+      "tuition": "Tuition-Free",
+      "url": "https://www.fcien.edu.uy/",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_the_Republic_(Uruguay)",
+      "wikiSlug": "University_of_the_Republic_(Uruguay)",
+      "summary": "Uruguay's flagship public physics center (Facultad de Ciencias & Ingeniería), globally recognized for loop quantum gravity, nonlinear optics, and biophysics.",
+      "nobel": "Home to Rodolfo Gambini's pioneering contributions to loop quantum gravity and canonical relativity.",
+      "stages": {
+        "highschool": "Olimpiada Uruguaya de Física & open university science outreach.",
+        "undergrad": "Tuition-free Licenciatura en Física with early lab integration.",
+        "masters": "PEDECIBA Física Master's program with national ANII scholarships.",
+        "phd": "PEDECIBA / ANII funded PhD in Quantum Gravity, Optics, or Condensed Matter.",
+        "postdoc": "ANII & ICTP-SAIFR regional postdoctoral mobility grants.",
+        "assoc_prof": "Profesor Agregado (Grado 4) in Facultad de Ciencias / Ingeniería.",
+        "prof": "Profesor Titular (Grado 5) & PEDECIBA Scientific Committee."
+      },
+      "projects": [
+        {
+          "name": "PEDECIBA Physics & Quantum Gravity Research Program",
+          "status": "ongoing",
+          "url": "https://www.fcien.edu.uy/"
+        }
+      ],
+      "next": [
+        "auger",
+        "ictpsaifr",
+        "perimeter"
+      ]
+    },
+    {
+      "id": "ghana_grao",
+      "name": "Ghana Radio Astronomy Observatory",
+      "city": "Kuntunse, Accra, Ghana",
+      "country": "Ghana",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "astro",
+      "foundedYear": 2017,
+      "status": "active",
+      "pinned": true,
+      "lat": 5.7501,
+      "lng": -0.3054,
+      "zoom": 15.8,
+      "url": "https://www.ug.edu.gh/",
+      "wiki": "https://en.wikipedia.org/wiki/Ghana_Radio_Astronomy_Observatory",
+      "wikiSlug": "Ghana_Radio_Astronomy_Observatory",
+      "summary": "West Africa's flagship 32-meter radio telescope converted from a telecommunications dish—anchoring the African VLBI Network (AVN) alongside the University of Ghana.",
+      "nobel": "First SKA African partner country outside South Africa to operate a converted VLBI radio observatory.",
+      "stages": {
+        "highschool": "PRAGSAC & Ghana Space Science and Technology Institute (GSSTI) outreach.",
+        "undergrad": "University of Ghana BSc Physics & DARA (Development in Africa with Radio Astronomy) training.",
+        "masters": "MPhil in Physics / Astrophysics with DARA & SARAO scholarships.",
+        "phd": "Joint African-European PhD tracks in radio interferometry and pulsar science.",
+        "postdoc": "AVN / SARAO visiting fellowships linking Kuntunse with MeerKAT and EVN.",
+        "assoc_prof": "Senior Lecturer at University of Ghana / GSSTI Observatory Scientist.",
+        "prof": "African VLBI Network (AVN) & SKA Africa leadership."
+      },
+      "projects": [
+        {
+          "name": "African VLBI Network (AVN) 32m Dish Operations",
+          "status": "ongoing",
+          "url": "https://www.sarao.ac.za/"
+        }
+      ],
+      "next": [
+        "meerkat",
+        "ictp_eaifr",
+        "oxford"
+      ]
+    },
+    {
+      "id": "nairobi",
+      "name": "University of Nairobi Physics",
+      "city": "Nairobi, Kenya",
+      "country": "Kenya",
+      "group": "uni",
+      "entityType": "uni",
+      "branch": "applied",
+      "foundedYear": 1970,
+      "status": "active",
+      "pinned": false,
+      "lat": -1.2797,
+      "lng": 36.8072,
+      "zoom": 16,
+      "url": "https://physics.uonbi.ac.ke/",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_Nairobi",
+      "wikiSlug": "University_of_Nairobi",
+      "summary": "East Africa's leading university physics department, advancing laser spectroscopy, condensed matter, solar photovoltaics, astrophysics, and nuclear instrumentation.",
+      "nobel": "Key node of the African Laser Centre and Kenya's SKA/AVN astronomy initiative.",
+      "stages": {
+        "highschool": "Kenya Science & Engineering Fair and University of Nairobi astronomy club.",
+        "undergrad": "BSc in Physics, Astronomy & Astrophysics, or Microprocessor Instrumentation.",
+        "masters": "MSc in Physics supported by ISP (Uppsala) and DAAD East Africa fellowships.",
+        "phd": "Funded doctoral tracks in laser physics, photovoltaics, and astrophysics.",
+        "postdoc": "ICTP / ISP / African Laser Centre postdoctoral exchanges.",
+        "assoc_prof": "Associate Professor in Department of Physics (Chiromo Campus).",
+        "prof": "Chair of Physics & East African Regional Science Consortia."
+      },
+      "projects": [
+        {
+          "name": "Laser Physics & Spectroscopy Group (Chiromo)",
+          "status": "ongoing",
+          "url": "https://physics.uonbi.ac.ke/"
+        }
+      ],
+      "next": [
+        "ictp_eaifr",
+        "meerkat",
+        "ictp"
+      ]
+    },
+    {
+      "id": "tribhuvan",
+      "name": "Tribhuvan Univ. Central Dept. of Physics",
+      "city": "Kirtipur, Kathmandu, Nepal",
+      "country": "Nepal",
+      "group": "uni",
+      "entityType": "uni",
+      "branch": "astro",
+      "foundedYear": 1969,
+      "status": "active",
+      "pinned": false,
+      "lat": 27.6815,
+      "lng": 85.2886,
+      "zoom": 16,
+      "url": "https://cdp.tu.edu.np/",
+      "wiki": "https://en.wikipedia.org/wiki/Tribhuvan_University",
+      "wikiSlug": "Tribhuvan_University",
+      "summary": "Nepal's premier postgraduate physics department in the Himalayan foothills, researching plasma physics, condensed matter, atmospheric physics, and astrophysics.",
+      "nobel": "Partner in ICTP Physics Without Frontiers and Himalayan high-altitude atmospheric studies.",
+      "stages": {
+        "highschool": "Nepal Physical Society Olympiad & astronomy outreach.",
+        "undergrad": "BSc Physics across Tribhuvan University constituent campuses.",
+        "masters": "MSc Physics at Kirtipur with thesis tracks in plasma, solid state, and astrophysics.",
+        "phd": "PhD fellowships via University Grants Commission Nepal & ICTP sandwich programs.",
+        "postdoc": "ICTP / TWAS international visiting fellowships for Nepali physicists.",
+        "assoc_prof": "Associate Professor at Central Department of Physics (CDP).",
+        "prof": "Head of Department & Nepal Physical Society leadership."
+      },
+      "projects": [
+        {
+          "name": "Himalayan Atmospheric & Space Plasma Physics Research",
+          "status": "ongoing",
+          "url": "https://cdp.tu.edu.np/"
+        }
+      ],
+      "next": [
+        "iisc",
+        "tifr",
+        "ictp"
+      ]
+    },
+    {
+      "id": "ncp_pakistan",
+      "name": "National Centre for Physics (NCP)",
+      "city": "Islamabad, Pakistan",
+      "country": "Pakistan",
+      "group": "lab",
+      "entityType": "institute",
+      "branch": "particle",
+      "foundedYear": 1999,
+      "status": "active",
+      "pinned": false,
+      "lat": 33.749,
+      "lng": 73.1369,
+      "zoom": 15.8,
+      "url": "https://www.ncp.edu.pk/",
+      "wiki": "https://en.wikipedia.org/wiki/National_Centre_for_Physics",
+      "wikiSlug": "National_Centre_for_Physics",
+      "summary": "Inspired by Abdus Salam's ICTP vision, NCP operates a 5 MV Pelletron accelerator and leads Pakistan's Associate Membership in CERN (CMS & ALICE) and SESAME.",
+      "nobel": "Direct institutional legacy of Nobel laureate Abdus Salam and Riazuddin.",
+      "stages": {
+        "highschool": "National Physics Talent Contest (NPTC) & IPhO training camps.",
+        "undergrad": "NCP Summer Internship Programme & International Nathiagali Summer College.",
+        "masters": "MPhil research theses in experimental HEP, ion-beam physics, and theory.",
+        "phd": "PhD fellowships with CERN CMS/ALICE hardware & analysis placements.",
+        "postdoc": "NCP Research Fellowships & CERN Associate Member staff fellowships.",
+        "assoc_prof": "Principal Scientist in Experimental High Energy or Accelerator Physics.",
+        "prof": "Director General & CERN/SESAME national delegation lead."
+      },
+      "projects": [
+        {
+          "name": "CERN CMS & ALICE Pakistani Collaboration",
+          "status": "ongoing",
+          "url": "https://www.ncp.edu.pk/"
+        },
+        {
+          "name": "5 MV Tandem Pelletron Ion Beam Facility",
+          "status": "ongoing",
+          "url": "https://www.ncp.edu.pk/"
+        }
+      ],
+      "next": [
+        "cern",
+        "sesame",
+        "ictp"
+      ]
+    },
+    {
+      "id": "ictp_eaifr",
+      "name": "ICTP-EAIFR Kigali",
+      "city": "Kigali, Rwanda",
+      "country": "Rwanda",
+      "group": "lab",
+      "entityType": "institute",
+      "branch": "condensed",
+      "foundedYear": 2018,
+      "status": "active",
+      "pinned": true,
+      "lat": -1.9579,
+      "lng": 30.0645,
+      "zoom": 16.2,
+      "tuition": "Full Scholarships",
+      "url": "https://eaifr.ictp.it/",
+      "wiki": "https://en.wikipedia.org/wiki/East_African_Institute_for_Fundamental_Research",
+      "wikiSlug": "East_African_Institute_for_Fundamental_Research",
+      "summary": "UNESCO Category 2 partner institute of Abdus Salam ICTP hosted at the University of Rwanda—training a new generation of African physicists in HEP, condensed matter, and geophysics.",
+      "nobel": "Modeled directly on ICTP Trieste to elevate fundamental physics across Sub-Saharan Africa.",
+      "stages": {
+        "highschool": "East African Physics outreach & open online lecture series.",
+        "undergrad": "Regional preparatory schools in theoretical and computational physics.",
+        "masters": "Fully funded 2-year English MSc in High Energy, Condensed Matter, or Geophysics.",
+        "phd": "Funded PhD tracks co-supervised with ICTP Trieste and global partners.",
+        "postdoc": "ICTP-EAIFR Visiting & Postdoctoral Research Fellowships in Kigali.",
+        "assoc_prof": "EAIFR Resident Faculty & ICTP Regular Associates.",
+        "prof": "Institute Director & African Strategy for Fundamental and Applied Physics (ASFAP) chairs."
+      },
+      "projects": [
+        {
+          "name": "ICTP-EAIFR Postgraduate Physics & HPC Training Program",
+          "status": "ongoing",
+          "url": "https://eaifr.ictp.it/"
+        }
+      ],
+      "next": [
+        "ictp",
+        "meerkat",
+        "nairobi",
+        "ghana_grao"
+      ]
+    },
+    {
+      "id": "auger",
+      "name": "Pierre Auger Observatory",
+      "city": "Malargüe, Argentina",
+      "country": "Argentina",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "astro",
+      "foundedYear": 2004,
+      "status": "active",
+      "pinned": true,
+      "lat": -35.4959,
+      "lng": -69.5852,
+      "zoom": 14.5,
+      "url": "https://www.auger.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Pierre_Auger_Observatory",
+      "wikiSlug": "Pierre_Auger_Observatory",
+      "summary": "The world's largest cosmic-ray observatory—spanning 3,000 km² of the Argentine Pampa Amarilla with 1,660 water-Cherenkov detectors and 27 fluorescence telescopes.",
+      "nobel": "Proved that ultra-high-energy cosmic rays above 8 EeV originate outside the Milky Way.",
+      "stages": {
+        "highschool": "Pierre Auger Open Data Portal & Malargüe Visitor Center.",
+        "undergrad": "Auger Open Data analysis projects & summer stays at partner universities.",
+        "masters": "MSc theses across 17 member countries (Argentina, Germany, Italy, France, USA, etc.).",
+        "phd": "PhD fellowships working on AugerPrime scintillator and radio-detector upgrades.",
+        "postdoc": "Astroparticle physics postdocs in Mendoza, Buenos Aires, KIT Karlsruhe, or INFN.",
+        "assoc_prof": "Collaboration Task Leader & national funding PI.",
+        "prof": "Pierre Auger Observatory Spokesperson & International Finance Board."
+      },
+      "projects": [
+        {
+          "name": "AugerPrime Surface & Radio Detector Upgrade",
+          "status": "ongoing",
+          "url": "https://www.auger.org/observatory/augerprime"
+        }
+      ],
+      "next": [
+        "icecube",
+        "paranal",
+        "ictpsaifr",
+        "udelar"
+      ]
+    },
+    {
+      "id": "gmt_lco",
+      "name": "Las Campanas & Giant Magellan Telescope",
+      "city": "Atacama Region, Chile",
+      "country": "Chile",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "astro",
+      "foundedYear": 1971,
+      "status": "active",
+      "pinned": false,
+      "lat": -29.0146,
+      "lng": -70.6926,
+      "zoom": 15.6,
+      "url": "https://giantmagellan.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Giant_Magellan_Telescope",
+      "wikiSlug": "Giant_Magellan_Telescope",
+      "summary": "Home of the twin 6.5 m Magellan Telescopes and the construction site of the 25.4 m Giant Magellan Telescope (seven 8.4 m monolithic mirrors) under pristine Andean skies.",
+      "nobel": "Site of the 1987A supernova discovery and next-generation exoplanet biosignature imaging.",
+      "stages": {
+        "highschool": "Carnegie Science & GMT educational astronomy portals.",
+        "undergrad": "Carnegie Observatories Summer Undergraduate Research Program (CASSI).",
+        "masters": "MSc instrumentation & astrophysics projects with GMT consortium universities.",
+        "phd": "PhDs at Carnegie, Harvard, Chicago, Arizona, ANU, KASI, FAPESP, or Chilean universities.",
+        "postdoc": "Carnegie Fellows & Las Campanas Instrumentation Fellowships.",
+        "assoc_prof": "GMT First-Light Instrument PI & Consortium Faculty.",
+        "prof": "GMTO Observatory Leadership & Science Advisory Committee."
+      },
+      "projects": [
+        {
+          "name": "Giant Magellan Telescope (25.4m ELT Class)",
+          "status": "upcoming",
+          "url": "https://giantmagellan.org/"
+        },
+        {
+          "name": "Magellan 6.5m Twin Optical Telescopes",
+          "status": "ongoing",
+          "url": "https://www.lco.cl/"
+        }
+      ],
+      "next": [
+        "paranal",
+        "alma",
+        "caltech"
+      ]
+    },
+    {
+      "id": "fast_china",
+      "name": "FAST Radio Telescope (Tianyan)",
+      "city": "Pingtang, Guizhou, China",
+      "country": "China",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "astro",
+      "foundedYear": 2016,
+      "status": "active",
+      "pinned": true,
+      "lat": 25.6529,
+      "lng": 106.8566,
+      "zoom": 15.6,
+      "url": "https://fast.bao.ac.cn/",
+      "wiki": "https://en.wikipedia.org/wiki/Five-hundred-meter_Aperture_Spherical_Telescope",
+      "wikiSlug": "Five-hundred-meter_Aperture_Spherical_Telescope",
+      "summary": "The world's largest filled-aperture radio telescope (500 m diameter) cradled in a natural karst depression in Guizhou—having discovered over 900 pulsars and nanohertz gravitational-wave evidence.",
+      "nobel": "World-leading sensitivity for fast radio bursts (FRBs), pulsars, and neutral hydrogen mapping.",
+      "stages": {
+        "highschool": "NAOC Astronomy Outreach & FAST science museum.",
+        "undergrad": "Chinese Academy of Sciences (NAOC) summer research programs.",
+        "masters": "MSc in Radio Astronomy via UCAS / NAOC / Peking / Tsinghua.",
+        "phd": "ANSO & UCAS International PhD Scholarships utilizing FAST open-sky time.",
+        "postdoc": "CAS President's International Fellowship Initiative (PIFI) at NAOC.",
+        "assoc_prof": "FAST Key Science Project co-PI & Pulsar Timing Array member.",
+        "prof": "NAOC Chief Scientist & International Radio Astronomy Boards."
+      },
+      "projects": [
+        {
+          "name": "FAST Open-Sky International Pulsar & FRB Surveys",
+          "status": "ongoing",
+          "url": "https://fast.bao.ac.cn/"
+        }
+      ],
+      "next": [
+        "meerkat",
+        "alma",
+        "utokyo"
+      ]
+    },
+    {
+      "id": "tifr",
+      "name": "Tata Institute of Fundamental Research (TIFR)",
+      "city": "Mumbai, India",
+      "country": "India",
+      "group": "lab",
+      "entityType": "institute",
+      "branch": "particle",
+      "foundedYear": 1945,
+      "status": "active",
+      "pinned": true,
+      "lat": 18.9067,
+      "lng": 72.8058,
+      "zoom": 16.2,
+      "url": "https://www.tifr.res.in/",
+      "wiki": "https://en.wikipedia.org/wiki/Tata_Institute_of_Fundamental_Research",
+      "wikiSlug": "Tata_Institute_of_Fundamental_Research",
+      "summary": "Founded by Homi J. Bhabha on the Arabian Sea shore in Colaba—India's powerhouse for string theory, CMS particle physics, superconducting qubits, and the Giant Metrewave Radio Telescope (NCRA).",
+      "nobel": "Cradle of India's nuclear, space, and high-energy theoretical physics traditions.",
+      "stages": {
+        "highschool": "HBCSE (TIFR) Indian National Physics Olympiad & IPhO training.",
+        "undergrad": "TIFR Visiting Students' Research Programme (VSRP) paid summer fellowships.",
+        "masters": "TIFR Integrated PhD (I-PhD) in Physics with full fellowship stipend.",
+        "phd": "Funded PhD across TIFR Mumbai, ICTS Bengaluru, NCRA Pune, and TIFR Hyderabad.",
+        "postdoc": "TIFR Visiting Fellow & ICTS Postdoctoral Fellowships.",
+        "assoc_prof": "TIFR Reader / Associate Professor in Theoretical or Experimental Physics.",
+        "prof": "TIFR Senior Professor & National Megascience Leadership (LIGO-India / CERN)."
+      },
+      "projects": [
+        {
+          "name": "Giant Metrewave Radio Telescope (uGMRT / NCRA-TIFR)",
+          "status": "ongoing",
+          "url": "https://www.gmrt.ncra.tifr.res.in/"
+        },
+        {
+          "name": "ICTS-TIFR Theoretical Physics & LIGO-India Contributions",
+          "status": "upcoming",
+          "url": "https://www.icts.res.in/"
+        }
+      ],
+      "next": [
+        "iisc",
+        "cern",
+        "ictp",
+        "tribhuvan"
+      ]
+    },
+    {
+      "id": "kaust",
+      "name": "KAUST Physical Science & Engineering",
+      "city": "Thuwal, Saudi Arabia",
+      "country": "Saudi Arabia",
+      "group": "uni",
+      "entityType": "uni",
+      "branch": "applied",
+      "foundedYear": 2009,
+      "status": "active",
+      "pinned": false,
+      "lat": 22.3095,
+      "lng": 39.1047,
+      "zoom": 15.8,
+      "tuition": "100% Funded Fellowship",
+      "url": "https://www.kaust.edu.sa/",
+      "wiki": "https://en.wikipedia.org/wiki/King_Abdullah_University_of_Science_and_Technology",
+      "wikiSlug": "King_Abdullah_University_of_Science_and_Technology",
+      "summary": "Red Sea international graduate research university with world-class nanofabrication, spintronics, photonics, perovskite solar physics, and Shaheen III supercomputing.",
+      "nobel": "Attracts global researchers with fully funded English-taught MS and PhD fellowships.",
+      "stages": {
+        "highschool": "Saudi Research Science Institute (SRSI) hosted at KAUST.",
+        "undergrad": "KAUST Visiting Student Research Program (VSRP) — paid 3–6 month global internships.",
+        "masters": "100% funded English MS in Applied Physics (full tuition, housing & stipend).",
+        "phd": "100% funded PhD in Spintronics, Photonics, Quantum Materials, or Computational Physics.",
+        "postdoc": "KAUST Global Fellowship Program (3-year independent postdocs).",
+        "assoc_prof": "Associate Professor in Physical Science and Engineering (PSE).",
+        "prof": "Full Professor & KAUST Center Directorships."
+      },
+      "projects": [
+        {
+          "name": "KAUST Photovoltaics & Quantum Photonics Labs",
+          "status": "ongoing",
+          "url": "https://www.kaust.edu.sa/en/study/applied-physics"
+        }
+      ],
+      "next": [
+        "sesame",
+        "eth",
+        "icfo"
+      ]
+    },
+    {
+      "id": "weizmann",
+      "name": "Weizmann Institute of Science",
+      "city": "Rehovot, Israel",
+      "country": "Israel",
+      "group": "lab",
+      "entityType": "institute",
+      "branch": "quantum",
+      "foundedYear": 1934,
+      "status": "active",
+      "pinned": false,
+      "lat": 31.9075,
+      "lng": 34.8092,
+      "zoom": 16,
+      "tuition": "100% Funded Fellowship",
+      "url": "https://www.weizmann.ac.il/physics/",
+      "wiki": "https://en.wikipedia.org/wiki/Weizmann_Institute_of_Science",
+      "wikiSlug": "Weizmann_Institute_of_Science",
+      "summary": "Multidisciplinary graduate research campus renowned for topological condensed matter, trapped-ion quantum computing, ATLAS particle physics, and ULTRASAT ultraviolet astronomy.",
+      "nobel": "Home to breakthroughs in fractional quantum Hall anyons, twisted 2D materials, and quantum optics.",
+      "stages": {
+        "highschool": "Davidson Institute of Science Education & International Safe Cracking Physics Tournament.",
+        "undergrad": "Kupcinet-Getz International Science School (paid 8-week summer research).",
+        "masters": "Feinberg Graduate School tuition-free English MSc in Physics with full living stipend.",
+        "phd": "Fully funded 4.5-year PhD in Condensed Matter, Particle, Astro, or Complex Systems.",
+        "postdoc": "Koshland, Azrieli, and Weizmann Postdoctoral Fellowships.",
+        "assoc_prof": "Senior Scientist / Associate Professor with independent lab startup.",
+        "prof": "Professor & Faculty of Physics Dean / Center Chairs."
+      },
+      "projects": [
+        {
+          "name": "ULTRASAT Wide-Field Ultraviolet Space Telescope",
+          "status": "upcoming",
+          "url": "https://www.weizmann.ac.il/ultrasat/"
+        },
+        {
+          "name": "Weizmann Quantum Initiative (Trapped Ions & Topology)",
+          "status": "ongoing",
+          "url": "https://www.weizmann.ac.il/physics/"
+        }
+      ],
+      "next": [
+        "cern",
+        "mpq",
+        "sesame",
+        "mit"
+      ]
+    },
+    {
+      "id": "warsaw_camk",
+      "name": "University of Warsaw Physics & CAMK",
+      "city": "Warsaw, Poland",
+      "country": "Poland",
+      "group": "uni",
+      "entityType": "uni",
+      "branch": "astro",
+      "foundedYear": 1816,
+      "status": "active",
+      "pinned": false,
+      "lat": 52.2121,
+      "lng": 20.9827,
+      "zoom": 16,
+      "tuition": "EU Free / Low Intl",
+      "url": "https://www.fuw.edu.pl/home.html",
+      "wiki": "https://en.wikipedia.org/wiki/Faculty_of_Physics,_University_of_Warsaw",
+      "wikiSlug": "Faculty_of_Physics,_University_of_Warsaw",
+      "summary": "Central Europe's flagship physics center (FUW & Nicolaus Copernicus Astronomical Center), leading the OGLE gravitational microlensing survey, quantum optics, and mathematical relativity.",
+      "nobel": "Legacy of Marian Smoluchowski, Leopold Infeld, and Andrzej Trautman's gravitational-wave proofs.",
+      "stages": {
+        "highschool": "Polish Physics Olympiad & FUW Science Festival.",
+        "undergrad": "BSc & research internships at FUW Ochota Campus and CAMK PAN.",
+        "masters": "English MSc in Quantum Physics, Particle Physics, or Astrophysics.",
+        "phd": "Funded Doctoral School of Exact and Natural Sciences (NCN & GeoPlanet).",
+        "postdoc": "NCN Sonatina / Polonez Bis (MSCA co-funded) Postdoctoral Fellowships.",
+        "assoc_prof": "University Professor & NCN Sonata Bis independent group leader.",
+        "prof": "Full Professor & OGLE / CTAO / Virgo consortium leadership."
+      },
+      "projects": [
+        {
+          "name": "OGLE (Optical Gravitational Lensing Experiment)",
+          "status": "ongoing",
+          "url": "https://ogle.astrouw.edu.pl/"
+        },
+        {
+          "name": "Centre of New Technologies (CeNT) Quantum Optical Devices",
+          "status": "ongoing",
+          "url": "https://www.fuw.edu.pl/home.html"
+        }
+      ],
+      "next": [
+        "desy",
+        "eli_beamlines",
+        "cern",
+        "aei"
+      ]
+    },
+    {
+      "id": "eli_beamlines",
+      "name": "ELI Beamlines & Charles Univ. Physics",
+      "city": "Dolní Břežany, Prague, Czechia",
+      "country": "Czechia",
+      "group": "lab",
+      "entityType": "lab",
+      "branch": "quantum",
+      "foundedYear": 2015,
+      "status": "active",
+      "pinned": true,
+      "lat": 49.9639,
+      "lng": 14.4517,
+      "zoom": 16,
+      "url": "https://www.eli-beams.eu/",
+      "wiki": "https://en.wikipedia.org/wiki/ELI_Beamlines",
+      "wikiSlug": "ELI_Beamlines",
+      "summary": "Europe's Extreme Light Infrastructure laser hub near Prague—firing 10-petawatt pulses (L4-Aton) for laser-plasma wakefield acceleration, laboratory astrophysics, and X-ray science.",
+      "nobel": "Directly inspired by Gérard Mourou and Donna Strickland's 2018 Nobel chirped pulse amplification.",
+      "stages": {
+        "highschool": "ELI Beamlines Open Days & Czech Physics Olympiad.",
+        "undergrad": "ELI Summer School (ELISS) & Charles University Matfyz research internships.",
+        "masters": "English MSc at Charles University (MFF UK) with ELI Beamlines thesis.",
+        "phd": "Funded Czech & European PhDs in ultra-intense laser-plasma physics.",
+        "postdoc": "ELI ERIC International Postdoctoral & Beamline Scientist Fellowships.",
+        "assoc_prof": "Group Leader in Laser-Plasma Acceleration or Secondary X-Ray Sources.",
+        "prof": "ELI ERIC Science Directorate & European High-Power Laser Consortia."
+      },
+      "projects": [
+        {
+          "name": "L4-Aton 10-Petawatt Laser System",
+          "status": "ongoing",
+          "url": "https://www.eli-beams.eu/"
+        },
+        {
+          "name": "ELI ERIC User Access Program (Czechia, Hungary, Romania)",
+          "status": "ongoing",
+          "url": "https://eli-laser.eu/"
+        }
+      ],
+      "next": [
+        "mpq",
+        "desy",
+        "warsaw_camk",
+        "cern"
+      ]
+    },
+    {
+      "id": "unam_fisica",
+      "name": "UNAM Instituto de Física",
+      "city": "Mexico City, Mexico",
+      "country": "Mexico",
+      "group": "uni",
+      "entityType": "institute",
+      "branch": "astro",
+      "foundedYear": 1938,
+      "status": "active",
+      "pinned": false,
+      "lat": 19.3247,
+      "lng": -99.1763,
+      "zoom": 16,
+      "tuition": "Public / CONAHCYT Aid",
+      "url": "https://www.fisica.unam.mx/",
+      "wiki": "https://en.wikipedia.org/wiki/National_Autonomous_University_of_Mexico",
+      "wikiSlug": "National_Autonomous_University_of_Mexico",
+      "summary": "Mexico's premier physics research center in Ciudad Universitaria—co-leading the HAWC Gamma-Ray Observatory at 4,100 m on Sierra Negra, nuclear physics, and quantum optics.",
+      "nobel": "Foundational hub of Latin American astroparticle, nuclear, and complex-systems physics.",
+      "stages": {
+        "highschool": "Olimpiada Mexicana de Física & UNAM Universum Science Museum.",
+        "undergrad": "UNAM Facultad de Ciencias BSc Physics & Verano de la Investigación Científica.",
+        "masters": "Posgrado en Ciencias Físicas UNAM with national CONAHCYT stipends.",
+        "phd": "Funded PhD collaborating with HAWC, CERN ALICE, and Pierre Auger.",
+        "postdoc": "DGAPA-UNAM Postdoctoral Fellowships in Mexico City & Ensenada.",
+        "assoc_prof": "Investigador Titular A/B at Instituto de Física or ICN-UNAM.",
+        "prof": "Investigador Emérito & Mexican Physical Society leadership."
+      },
+      "projects": [
+        {
+          "name": "HAWC High-Altitude Water Cherenkov Gamma-Ray Observatory",
+          "status": "ongoing",
+          "url": "https://www.hawc-observatory.org/"
+        }
+      ],
+      "next": [
+        "fermilab",
+        "ictpsaifr",
+        "auger"
+      ]
+    },
+    {
+      "id": "bitp_kyiv",
+      "name": "Bogolyubov Institute (BITP)",
+      "city": "Kyiv, Ukraine",
+      "country": "Ukraine",
+      "group": "lab",
+      "entityType": "institute",
+      "branch": "gravity",
+      "foundedYear": 1966,
+      "status": "active",
+      "pinned": false,
+      "lat": 50.3511,
+      "lng": 30.4955,
+      "zoom": 16,
+      "url": "https://bitp.kiev.ua/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Bogolyubov_Institute_for_Theoretical_Physics",
+      "wikiSlug": "Bogolyubov_Institute_for_Theoretical_Physics",
+      "summary": "Founded by Nikolay Bogolyubov in Feofaniya Park, Kyiv—internationally renowned for quark-gluon plasma theory, high-Tc superconductivity, cosmology, and quantum field theory.",
+      "nobel": "Home to foundational advances in statistical physics, color-charge quark theory, and mathematical QFT.",
+      "stages": {
+        "highschool": "Ukrainian Physics Olympiad & Kyiv Academic University youth lectures.",
+        "undergrad": "Kyiv Academic University (KAU) & Taras Shevchenko Univ. physics tracks.",
+        "masters": "Research MSc at BITP in theoretical physics, astrophysics, and condensed matter.",
+        "phd": "Funded PhD tracks & Simons Foundation / CERN Ukraine solidarity fellowships.",
+        "postdoc": "International visiting & collaborative fellowships with CERN, DESY, and ICTP.",
+        "assoc_prof": "Leading Research Fellow in QFT, Cosmology, or Quantum Many-Body Theory.",
+        "prof": "Department Head & National Academy of Sciences of Ukraine (NASU) Fellow."
+      },
+      "projects": [
+        {
+          "name": "CERN ALICE & Relativistic Heavy-Ion Theory Group",
+          "status": "ongoing",
+          "url": "https://bitp.kiev.ua/en/"
+        }
+      ],
+      "next": [
+        "warsaw_camk",
+        "cern",
+        "desy",
+        "ictp"
+      ]
+    }
+  ]
+}

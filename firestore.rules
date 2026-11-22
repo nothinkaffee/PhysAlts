@@ -1,19 +1,181 @@
 rules_version = '2';
+
+// PhysAlts — Hardened Cloud Firestore Security Rules
+// Compatible paths:
+//   - /artifacts/{appId}/public/data/{col}/{docId}
+//   - /artifacts/{appId}/users/{userId}/{document=**}
+//
+// Security & Compliance Controls (SOC 2 CC6.1 / GDPR Art. 17 & Art. 25):
+//   - Strict schema & coordinate bounds validation on community node creation
+//   - Whitelisted keys to prevent arbitrary payload injection / NoSQL bloat
+//   - HTTPS-only enforcement on optional external URLs (prevents javascript:/http: injection)
+//   - Immutable public community nodes (update/delete denied for clients)
+//   - Strict owner-only access on user profile documents, with explicit delete
+//     permission to guarantee GDPR Art. 17 Right to Erasure from the client.
+
 service cloud.firestore {
   match /databases/{database}/documents {
+
+    // ── Helper Validation Functions ─────────────────────────────────────────
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidAppId(appId) {
+      return appId is string && appId.size() >= 1 && appId.size() <= 64;
+    }
+
+    function isValidString(val, minLen, maxLen) {
+      return val is string && val.size() >= minLen && val.size() <= maxLen;
+    }
+
+    function isOptionalString(data, field, maxLen) {
+      return !(field in data) || (data[field] is string && data[field].size() <= maxLen);
+    }
+
+    function isOptionalBool(data, field) {
+      return !(field in data) || (data[field] is bool);
+    }
+
+    function isOptionalNumber(data, field, minVal, maxVal) {
+      return !(field in data) || (data[field] is number && data[field] >= minVal && data[field] <= maxVal);
+    }
+
+    function isValidLat(val) {
+      return val is number && val >= -90 && val <= 90;
+    }
+
+    function isValidLng(val) {
+      return val is number && val >= -180 && val <= 180;
+    }
+
+    // Optional URL must either be omitted, empty string "", or a valid https:// URL
+    function isValidOptionalHttpsUrl(data, field, maxLen) {
+      return !(field in data) || (
+        data[field] is string &&
+        (
+          data[field].size() == 0 ||
+          (data[field].size() <= maxLen && data[field].matches('^https://.+'))
+        )
+      );
+    }
+
+    function isOptionalStringList(data, field, maxItems) {
+      return !(field in data) || (data[field] is list && data[field].size() <= maxItems);
+    }
+
+    function isOptionalMap(data, field, maxKeys) {
+      return !(field in data) || (data[field] is map && data[field].size() <= maxKeys);
+    }
+
+    // Validate public community physics node submission
+    function isValidPhysicsNode(data) {
+      return data.keys().hasAll(['name', 'lat', 'lng'])
+        && data.keys().hasOnly([
+          'id', 'name', 'city', 'country',
+          'lat', 'lng', 'zoom',
+          'group', 'entityType', 'branch', 'status',
+          'pinned', 'isLive', 'verified', 'verifiedSource',
+          'sourceApi', 'url', 'wiki', 'wikiSlug',
+          'summary', 'nobel', 'shanghai', 'tuition', 'visa',
+          'stages', 'next', 'projects',
+          'era', 'year', 'founded', 'foundedYear', 'scale',
+          'rorId', 'openAlexId',
+          'createdAt', 'updatedAt'
+        ])
+        && isValidString(data.name, 2, 160)
+        && isValidLat(data.lat)
+        && isValidLng(data.lng)
+        && isOptionalString(data, 'id', 120)
+        && isOptionalString(data, 'city', 120)
+        && isOptionalString(data, 'country', 80)
+        && isOptionalNumber(data, 'zoom', 0, 24)
+        && isOptionalString(data, 'group', 32)
+        && isOptionalString(data, 'entityType', 32)
+        && isOptionalString(data, 'branch', 40)
+        && isOptionalString(data, 'status', 32)
+        && isOptionalBool(data, 'pinned')
+        && isOptionalBool(data, 'isLive')
+        && isOptionalBool(data, 'verified')
+        && isOptionalString(data, 'verifiedSource', 120)
+        && isOptionalString(data, 'sourceApi', 64)
+        && isValidOptionalHttpsUrl(data, 'url', 512)
+        && isValidOptionalHttpsUrl(data, 'wiki', 512)
+        && isOptionalString(data, 'wikiSlug', 180)
+        && isOptionalString(data, 'summary', 2000)
+        && isOptionalString(data, 'nobel', 600)
+        && isOptionalString(data, 'shanghai', 64)
+        && isOptionalString(data, 'tuition', 80)
+        && isOptionalString(data, 'visa', 80)
+        && isOptionalMap(data, 'stages', 10)
+        && isOptionalStringList(data, 'next', 20)
+        && isOptionalStringList(data, 'projects', 20)
+        && isOptionalString(data, 'era', 64)
+        && isOptionalNumber(data, 'year', -5000, 3000)
+        && isOptionalNumber(data, 'founded', -5000, 3000)
+        && isOptionalNumber(data, 'foundedYear', -5000, 3000)
+        && isOptionalString(data, 'scale', 64)
+        && isOptionalString(data, 'rorId', 64)
+        && isOptionalString(data, 'openAlexId', 64)
+        && isOptionalNumber(data, 'createdAt', 0, 9999999999999)
+        && isOptionalNumber(data, 'updatedAt', 0, 9999999999999);
+    }
+
+    // Validate owner-scoped user preference / shortlist documents
+    function isValidUserPayload(data) {
+      return data.keys().hasOnly([
+          'stage', 'shortlist', 'updatedAt', 'createdAt',
+          'preferences', 'filter', 'branch', 'year', 'scale',
+          'consentVersion', 'theme'
+        ])
+        && isOptionalString(data, 'stage', 40)
+        && isOptionalStringList(data, 'shortlist', 500)
+        && isOptionalNumber(data, 'updatedAt', 0, 9999999999999)
+        && isOptionalNumber(data, 'createdAt', 0, 9999999999999)
+        && isOptionalMap(data, 'preferences', 20)
+        && isOptionalString(data, 'filter', 40)
+        && isOptionalString(data, 'branch', 40)
+        && isOptionalNumber(data, 'year', -5000, 3000)
+        && isOptionalString(data, 'scale', 64)
+        && isOptionalString(data, 'consentVersion', 32)
+        && isOptionalString(data, 'theme', 32);
+    }
+
+    // ── Public Atlas Data Collections ───────────────────────────────────────
     match /artifacts/{appId}/public/data/{col}/{docId} {
-      allow read: if true;
-      allow create: if request.auth != null
-                    && col == "physics_nodes"
-                    && request.resource.data.name is string
-                    && request.resource.data.name.size() > 1
-                    && request.resource.data.lat is number
-                    && request.resource.data.lng is number;
+      allow read: if isValidAppId(appId);
+
+      // Authenticated users may submit validated new community physics nodes
+      allow create: if isValidAppId(appId)
+                    && isSignedIn()
+                    && col == 'physics_nodes'
+                    && isValidString(docId, 1, 128)
+                    && isValidPhysicsNode(request.resource.data);
+
+      // Public nodes are append-only from clients; prevent tampering or deletion
       allow update, delete: if false;
     }
 
+    // ── Private User State (Anonymous UID Scoped) ───────────────────────────
     match /artifacts/{appId}/users/{userId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      allow read: if isValidAppId(appId) && isOwner(userId);
+
+      allow create, update: if isValidAppId(appId)
+                            && isOwner(userId)
+                            && isValidUserPayload(request.resource.data);
+
+      // Explicit owner delete required for GDPR Article 17 (Right to Erasure)
+      allow delete: if isValidAppId(appId) && isOwner(userId);
+    }
+
+    // ── Default Deny Fallback ───────────────────────────────────────────────
+    match /{document=**} {
+      allow read, write: if false;
     }
   }
 }

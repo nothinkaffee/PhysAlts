@@ -1,0 +1,129 @@
+name: Security, Data Integrity & QA Audit
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: "security-and-qa-${{ github.ref }}"
+  cancel-in-progress: true
+
+jobs:
+  verify-and-audit:
+    name: Schema, Link, Dependency & Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Run strict schema, hygiene & live link audit
+        run: node scripts/verify_and_audit.mjs --strict
+
+      - name: Run npm dependency vulnerability audit (high+)
+        id: npm_audit
+        run: |
+          set +e
+          npm audit --audit-level=high --json > npm-audit-report.json
+          AUDIT_EXIT=$?
+          set -e
+
+          node -e '
+            const fs = require("fs");
+            let summary = "### Dependency Vulnerability Audit (`npm audit --audit-level=high`)\n\n";
+            try {
+              const r = JSON.parse(fs.readFileSync("npm-audit-report.json", "utf8"));
+              const v = r.metadata?.vulnerabilities || {};
+              summary += `| Severity | Count |\n|---|---|\n`;
+              summary += `| Critical | ${v.critical ?? 0} |\n`;
+              summary += `| High | ${v.high ?? 0} |\n`;
+              summary += `| Moderate | ${v.moderate ?? 0} |\n`;
+              summary += `| Low | ${v.low ?? 0} |\n`;
+              summary += `| **Total** | **${v.total ?? 0}** |\n`;
+            } catch (err) {
+              summary += `Could not parse npm audit JSON output: ${err.message}\n`;
+            }
+            fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary + "\n");
+            console.log(summary);
+          '
+          npm audit --audit-level=high || true
+
+      - name: Security hygiene — secret scan & Firestore rules check
+        run: |
+          echo "Checking for accidentally committed secrets or private keys..."
+          FOUND_SECRET=0
+
+          # Scan tracked source files (excluding vendor bundles, docs, lockfiles, and audit reports)
+          FILES=$(git ls-files | grep -Ev '^(public/vendor/|docs/|package-lock\.json|public/data/verification_report\.json)' || true)
+
+          if [ -n "$FILES" ]; then
+            if echo "$FILES" | xargs grep -En '(-----BEGIN (RSA |EC |DSA |OPENSSH )?PRIVATE KEY-----|ghp_[0-9A-Za-z]{36}|github_pat_[0-9A-Za-z_]{20,}|AKIA[0-9A-Z]{16}|sk-[A-Za-z0-9]{20,}|AIza[0-9A-Za-z_-]{35})' ; then
+              echo "::error::Potential hardcoded secret or API key detected in tracked files!"
+              FOUND_SECRET=1
+            fi
+          fi
+
+          if [ "$FOUND_SECRET" -ne 0 ]; then
+            exit 1
+          fi
+          echo "Secret scan passed: zero hardcoded credentials detected."
+
+          echo "Validating firestore.rules presence and core security invariants..."
+          test -s firestore.rules
+          grep -q "rules_version = '2';" firestore.rules
+          grep -q "request.auth != null" firestore.rules
+          grep -q "allow update, delete: if false;" firestore.rules
+          grep -q "allow delete:" firestore.rules
+
+          node -e '
+            const fs = require("fs");
+            const rules = fs.readFileSync("firestore.rules", "utf8");
+            let depth = 0;
+            for (const ch of rules) {
+              if (ch === "{") depth++;
+              else if (ch === "}") depth--;
+              if (depth < 0) {
+                console.error("Unbalanced closing brace in firestore.rules");
+                process.exit(1);
+              }
+            }
+            if (depth !== 0) {
+              console.error("Unbalanced braces in firestore.rules, remaining depth:", depth);
+              process.exit(1);
+            }
+            console.log("firestore.rules structural validation passed.");
+          '
+
+          echo "Validating public/privacy.html presence..."
+          test -s public/privacy.html
+          echo "Security hygiene checks passed."
+
+      - name: Upload verification report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: physalts-verification-report
+          path: public/data/verification_report.json
+          if-no-files-found: warn
+          retention-days: 30

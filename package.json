@@ -7,6 +7,9 @@
   "scripts": {
     "dev": "node scripts/dev_server.mjs",
     "scrape": "node scripts/scrape_physics.mjs",
+    "verify": "node scripts/verify_and_audit.mjs",
+    "build:css": "node scripts/build_css.mjs",
+    "build:db": "node scripts/build_provenance_and_db.mjs",
     "cap:add:android": "npx cap add android",
     "cap:add:ios": "npx cap add ios",
     "cap:sync": "npx cap sync",

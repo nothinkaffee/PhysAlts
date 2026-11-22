@@ -1,35 +1,517 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PhysAlts — Privacy &amp; Open Data</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#030509" />
+  <meta name="description" content="PhysAlts Privacy Policy (GDPR Articles 13-17), Data Controls, and Open Science Data Attribution." />
+  <title>PhysAlts — Privacy Policy &amp; Open Data Attribution</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; background: #05070c; color: #e6ebf2; max-width: 720px; margin: 48px auto; padding: 0 20px; line-height: 1.65; }
-    h1, h2 { color: #ffffff; }
-    a { color: #cbd5e1; }
-    .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12); border-radius: 18px; padding: 20px 24px; margin: 20px 0; }
+    :root {
+      --bg-0: #030509;
+      --bg-1: #0a101d;
+      --glass-bg: linear-gradient(155deg, rgba(22, 27, 38, 0.72) 0%, rgba(11, 15, 24, 0.84) 100%);
+      --glass-border: rgba(255, 255, 255, 0.13);
+      --text-primary: #f4f7fb;
+      --text-secondary: #b9c4d4;
+      --text-muted: #8a97ab;
+      --accent: #7dd3fc;
+      --accent-soft: rgba(125, 211, 252, 0.14);
+      --ok: #6ee7b7;
+      --ok-soft: rgba(110, 231, 183, 0.12);
+      --warn: #fcd34d;
+      --warn-soft: rgba(252, 211, 77, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background:
+        radial-gradient(circle at 18% 8%, rgba(56, 189, 248, 0.12) 0%, transparent 42%),
+        radial-gradient(circle at 86% 18%, rgba(129, 140, 248, 0.10) 0%, transparent 44%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-0) 60%);
+      background-attachment: fixed;
+      color: var(--text-primary);
+      font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.68;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: calc(28px + env(safe-area-inset-top, 0px))
+               calc(20px + env(safe-area-inset-right, 0px))
+               calc(56px + env(safe-area-inset-bottom, 0px))
+               calc(20px + env(safe-area-inset-left, 0px));
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .back-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text-primary);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: background 0.18s ease, border-color 0.18s ease;
+    }
+
+    .back-pill:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.28);
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: var(--ok-soft);
+      border: 1px solid rgba(110, 231, 183, 0.28);
+      color: var(--ok);
+    }
+
+    .badge-info {
+      background: var(--accent-soft);
+      border-color: rgba(125, 211, 252, 0.28);
+      color: var(--accent);
+    }
+
+    header.hero {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      padding: 28px 28px 24px;
+      backdrop-filter: blur(24px) saturate(160%);
+      -webkit-backdrop-filter: blur(24px) saturate(160%);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+      margin-bottom: 22px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.55rem, 3.2vw, 2.15rem);
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      padding: 24px 26px;
+      margin: 18px 0;
+      backdrop-filter: blur(24px) saturate(155%);
+      -webkit-backdrop-filter: blur(24px) saturate(155%);
+      box-shadow: 0 18px 46px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      margin: 16px 0 6px;
+      font-size: 0.96rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    p {
+      margin: 0 0 12px;
+      color: var(--text-secondary);
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    ul {
+      margin: 8px 0 12px;
+      padding-left: 20px;
+      color: var(--text-secondary);
+    }
+
+    li {
+      margin-bottom: 6px;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.88em;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 1px 6px;
+      color: #f8fafc;
+    }
+
+    .callout {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: var(--accent-soft);
+      border: 1px solid rgba(125, 211, 252, 0.28);
+      color: #e0f2fe;
+      font-size: 14px;
+    }
+
+    .callout-warn {
+      background: var(--warn-soft);
+      border-color: rgba(252, 211, 77, 0.30);
+      color: #fef3c7;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .mini-box {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 14px;
+      padding: 14px 16px;
+    }
+
+    .mini-box h3 {
+      margin-top: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+      min-width: 540px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 11px 13px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      vertical-align: top;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.06);
+      color: #ffffff;
+      font-weight: 600;
+      font-size: 12.5px;
+      letter-spacing: 0.02em;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    td {
+      color: var(--text-secondary);
+    }
+
+    .toc {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 14px 0 0;
+    }
+
+    .toc a {
+      font-size: 12.5px;
+      padding: 5px 11px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #dbeafe;
+    }
+
+    .toc a:hover {
+      background: rgba(255, 255, 255, 0.13);
+      text-decoration: none;
+    }
+
+    footer {
+      margin-top: 28px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      header.hero, .card {
+        padding: 20px 18px;
+        border-radius: 18px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>PhysAlts Privacy Policy &amp; Open Data Attribution</h1>
-  <p>Last updated: November 2026</p>
+  <main class="wrap">
+    <nav class="topbar" aria-label="Primary navigation">
+      <a class="back-pill" href="./index.html">&larr; Back to PhysAlts Globe</a>
+      <span style="font-size: 12.5px; color: var(--text-muted);">Effective Date: November 2026 &middot; GDPR Art. 13&ndash;17</span>
+    </nav>
 
-  <div class="card">
-    <h2>1. Data We Collect</h2>
-    <p>PhysAlts uses Firebase Anonymous Authentication solely to sync your saved physics shortlist and selected career stage across sessions. We do not collect your name, email address, phone number, advertising ID, or GPS location.</p>
-  </div>
+    <header class="hero">
+      <h1>PhysAlts Privacy Policy &amp; Open Data Attribution</h1>
+      <p class="subtitle">
+        Privacy-by-design global atlas for physics departments, national laboratories, observatories, and academic pathways.
+        Zero PII collection, zero advertising SDKs, and one-click local + cloud data erasure.
+      </p>
+      <div class="badge-row" role="list" aria-label="Privacy guarantees">
+        <span class="badge" role="listitem">Zero PII Collected</span>
+        <span class="badge" role="listitem">Zero GPS Tracking</span>
+        <span class="badge" role="listitem">Zero Ad SDKs / Cookies</span>
+        <span class="badge badge-info" role="listitem">1-Click GDPR Export &amp; Erase</span>
+      </div>
+      <div class="toc" aria-label="Section links">
+        <a href="#controller">1. Data Controller</a>
+        <a href="#minimization">2. Data Minimization</a>
+        <a href="#lawful-basis">3. Lawful Basis</a>
+        <a href="#gdpr-rights">4. Your GDPR Rights</a>
+        <a href="#subprocessors">5. Open Science APIs &amp; Sub-processors</a>
+        <a href="#trademarks">6. Institutional Naming &amp; Trademarks</a>
+      </div>
+    </header>
 
-  <div class="card">
-    <h2>2. Third-Party Open Science APIs</h2>
-    <p>When you search or open a facility card, your device makes direct read-only requests to public open-science registries: OpenAlex (CC0), Research Organization Registry ROR v2 (CC0), INSPIRE-HEP (CC0), Wikimedia REST API (CC-BY-SA), and Esri World Imagery map tiles.</p>
-  </div>
+    <section id="controller" class="card">
+      <h2>1. Data Controller &amp; Contact</h2>
+      <p>
+        <strong>PhysAlts</strong> (App ID: <code>org.physalts.app</code>) is operated as an independent open-science
+        educational atlas. For privacy inquiries, GDPR data-subject requests, institutional data corrections, or
+        takedown notices, contact the Data Controller at:
+      </p>
+      <ul>
+        <li>
+          <strong>Privacy Contact Email:</strong>
+          <a href="mailto:privacy@physalts.org"><code>privacy@physalts.org</code></a>
+          <span style="color: var(--warn); font-size: 13px;">(Placeholder contact &mdash; replace with your verified operator email prior to commercial/store release)</span>
+        </li>
+        <li><strong>Response SLA:</strong> Within 30 calendar days in accordance with GDPR Article 12(3).</li>
+      </ul>
+    </section>
 
-  <div class="card">
-    <h2>3. Institutional Naming &amp; Trademarks</h2>
-    <p>University, laboratory, and observatory names are listed for factual educational directory purposes under nominative fair use. PhysAlts is an independent platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.</p>
-  </div>
+    <section id="minimization" class="card">
+      <h2>2. Data Minimization &amp; What We Collect (GDPR Art. 5 &amp; Art. 13)</h2>
+      <p>
+        PhysAlts is engineered under strict <strong>Data Minimization</strong> and <strong>Privacy by Design</strong>
+        principles (GDPR Art. 25). You can explore the entire global physics atlas without creating an account or
+        providing any personally identifiable information.
+      </p>
 
-  <p><a href="./index.html">&larr; Back to PhysAlts</a></p>
+      <div class="grid-2">
+        <div class="mini-box">
+          <h3>What We Store (Essential App State Only)</h3>
+          <ul>
+            <li><strong>Anonymous Firebase UID:</strong> When optional cloud sync is enabled, Firebase Anonymous Authentication generates a random, non-identifying token solely to isolate your saved preferences.</li>
+            <li><strong>Shortlist &amp; Career Stage Preference:</strong> The IDs of physics hubs you bookmark and your selected academic stage (e.g., Undergrad, MSc, PhD, Postdoc), stored in your browser's <code>localStorage</code> and optionally synced to your owner-only Firestore profile document.</li>
+            <li><strong>Optional Community Submissions:</strong> If you submit a public physics facility node, only the institutional metadata (name, coordinates, HTTPS URL, summary) is stored publicly &mdash; never your identity.</li>
+          </ul>
+        </div>
+
+        <div class="mini-box">
+          <h3>What We NEVER Collect</h3>
+          <ul>
+            <li><strong>Zero PII:</strong> No name, email address, phone number, postal address, or government ID.</li>
+            <li><strong>Zero GPS / Location Tracking:</strong> PhysAlts never requests device GPS or background location permissions.</li>
+            <li><strong>Zero Advertising or Behavioral SDKs:</strong> No ad networks, cross-app trackers, IDFA/GAID access, or session-replay tools.</li>
+            <li><strong>Zero Third-Party Tracking Cookies:</strong> No marketing, analytics, or cross-site cookies are set.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="margin-top: 14px;">
+        <strong>Retention Period:</strong> Local preferences remain on your device until you clear browser storage or use
+        the in-app erase button. Optional anonymous cloud records persist only until you trigger erasure in-app or
+        request deletion via email.
+      </p>
+    </section>
+
+    <section id="lawful-basis" class="card">
+      <h2>3. Lawful Basis for Processing (GDPR Article 6)</h2>
+      <ul>
+        <li>
+          <strong>Performance of a Service Requested by You &mdash; GDPR Art. 6(1)(b):</strong>
+          Storing your bookmarked shortlist and career-stage filter locally and syncing them under an anonymous UID is
+          strictly necessary to provide the persistent shortlist feature you invoke.
+        </li>
+        <li>
+          <strong>Legitimate Interest &mdash; GDPR Art. 6(1)(f):</strong>
+          Enforcing Firestore authentication tokens and schema validation rules to protect platform integrity, prevent
+          spam/payload abuse, and maintain reliable public-data availability.
+        </li>
+      </ul>
+      <p>
+        We do not perform automated decision-making or profiling (GDPR Art. 22), and we never sell or rent user data.
+      </p>
+    </section>
+
+    <section id="gdpr-rights" class="card">
+      <h2>4. Your GDPR Rights (Articles 15, 16, 17 &amp; 20)</h2>
+      <p>Under the EU/UK General Data Protection Regulation (and equivalent laws such as CCPA/CPRA), you have the right to:</p>
+      <ul>
+        <li><strong>Right of Access (Art. 15) &amp; Data Portability (Art. 20):</strong> Inspect and download a machine-readable JSON copy of all locally stored and cloud-synced preferences associated with your session.</li>
+        <li><strong>Right to Rectification (Art. 16):</strong> Update your selected career stage or shortlist directly in the app at any time, or request correction of public institutional entries.</li>
+        <li><strong>Right to Erasure / &ldquo;Right to be Forgotten&rdquo; (Art. 17):</strong> Permanently delete both your local device state and your cloud Firestore profile document at any time.</li>
+        <li><strong>Right to Restrict Processing, Object &amp; Lodge a Complaint:</strong> Contact us or file a complaint with your local Data Protection Supervisory Authority.</li>
+      </ul>
+
+      <div class="callout">
+        <strong>Self-Service In-App Privacy &amp; Data Controls:</strong>
+        Open the <strong>Privacy &amp; Data Controls</strong> panel inside <a href="./index.html">PhysAlts</a> to:
+        <br />
+        &bull; <strong>Export My Data (JSON)</strong> &mdash; instantaneously downloads your shortlist, career stage, and anonymous session metadata.<br />
+        &bull; <strong>Permanently Erase Local + Cloud Data</strong> &mdash; deletes your owner-scoped Firestore profile document (enforced by <code>firestore.rules</code>), wipes local storage, and resets your anonymous session in one click.
+      </div>
+    </section>
+
+    <section id="subprocessors" class="card">
+      <h2>5. Open Science APIs, Map Tiles &amp; Infrastructure Sub-processors</h2>
+      <p>
+        When you browse the 3D globe or open a facility card, your browser or mobile app makes direct read-only HTTPS
+        requests to open-science registries and map tile providers. Standard network metadata (such as IP address and
+        user-agent header) is processed by those services to deliver the requested public resources.
+      </p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Service / Provider</th>
+              <th>Purpose</th>
+              <th>License / Compliance</th>
+              <th>Data Transmitted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>OpenAlex</strong><br /><code>api.openalex.org</code></td>
+              <td>Physics university &amp; lab bibliometrics, works counts, and research topics</td>
+              <td>CC0 1.0 Public Domain</td>
+              <td>Read-only institution search queries</td>
+            </tr>
+            <tr>
+              <td><strong>ROR v2</strong><br /><code>api.ror.org</code></td>
+              <td>Canonical Research Organization Registry IDs and facility coordinates</td>
+              <td>CC0 1.0 Public Domain</td>
+              <td>Read-only organization queries</td>
+            </tr>
+            <tr>
+              <td><strong>INSPIRE-HEP</strong><br /><code>inspirehep.net</code></td>
+              <td>High-energy physics literature and laboratory metadata</td>
+              <td>CC0 1.0 Public Domain</td>
+              <td>Read-only institutional lookup queries</td>
+            </tr>
+            <tr>
+              <td><strong>Wikimedia REST API</strong><br /><code>en.wikipedia.org</code></td>
+              <td>Concise encyclopedic summaries and public facility thumbnails</td>
+              <td>CC BY-SA 4.0</td>
+              <td>Read-only article slug lookups</td>
+            </tr>
+            <tr>
+              <td><strong>Esri World Imagery</strong><br /><code>services.arcgisonline.com</code></td>
+              <td>High-resolution satellite basemap tiles for the 3D globe</td>
+              <td>Esri Attribution Terms</td>
+              <td>Tile viewport coordinates (z/x/y) only</td>
+            </tr>
+            <tr>
+              <td><strong>Google Cloud / Firebase</strong><br />(Optional Cloud Sync)</td>
+              <td>Anonymous Auth &amp; Firestore storage for user shortlist sync</td>
+              <td>SOC 2 Type II, ISO 27001, GDPR DPA</td>
+              <td>Anonymous UID, shortlist IDs, career stage</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="trademarks" class="card">
+      <h2>6. Institutional Naming, Trademarks &amp; Corrections</h2>
+      <p>
+        University, national laboratory, observatory, and experiment names (such as CERN, NASA, ESO, LIGO, MIT, ETH
+        Zurich, and others) are presented solely for factual, educational directory purposes under
+        <strong>nominative fair use</strong>.
+      </p>
+      <ul>
+        <li><strong>Zero Trademarked Logo Scraping:</strong> PhysAlts does not scrape, host, or redistribute protected institutional logos or crests.</li>
+        <li><strong>Non-Affiliation Notice:</strong> PhysAlts is an independent open-science project and is not affiliated with, sponsored by, or endorsed by CERN, NASA, ESO, or any listed university or laboratory.</li>
+        <li><strong>Corrections &amp; Takedown Requests:</strong> Institutional representatives wishing to update coordinates, URLs, program details, or request removal of a listing may email <a href="mailto:privacy@physalts.org"><code>privacy@physalts.org</code></a> (placeholder &mdash; see Section 1) or open an issue in the public PhysAlts repository.</li>
+      </ul>
+
+      <div class="callout callout-warn">
+        <strong>Note for Self-Hosters &amp; Forks:</strong> Before publishing a production deployment or mobile store
+        listing, replace the placeholder email <code>privacy@physalts.org</code> with your live operational privacy
+        contact and execute the Google Cloud / Firebase Data Processing Addendum (DPA) in your GCP Console.
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        <a href="./index.html">&larr; Return to PhysAlts</a>
+        &nbsp;&middot;&nbsp;
+        Open Data powered by OpenAlex (CC0), ROR v2 (CC0), INSPIRE-HEP (CC0), and Wikimedia (CC BY-SA 4.0).
+      </p>
+    </footer>
+  </main>
 </body>
 </html>

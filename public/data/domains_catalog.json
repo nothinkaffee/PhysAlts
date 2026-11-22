@@ -1,0 +1,793 @@
+{
+  "meta": {
+    "name": "PhysAlts Domains, Subdomains & Open Materials",
+    "version": "2.0",
+    "updatedAt": "2026-11-22",
+    "description": "Structured taxonomy of 8 major physics domains and 44 subdomains paired with vetted open courses, textbooks, datasets, archives, and global flagship experiments."
+  },
+  "domains": [
+    {
+      "id": "particle",
+      "name": "Particle, Nuclear & High-Energy Physics",
+      "desc": "Fundamental constituents of matter, gauge interactions, neutrinos, dark matter, nuclear structure, and particle accelerators.",
+      "subdomains": [
+        {
+          "id": "collider_electroweak",
+          "name": "Collider, Electroweak & Higgs Physics",
+          "summary": "Probing the 125 GeV Higgs boson, electroweak symmetry breaking, top quark, and beyond-Standard-Model signatures at TeV energy scales.",
+          "keyQuestions": [
+            "What is the exact shape of the Higgs self-interaction potential?",
+            "Why is the electroweak scale 17 orders of magnitude lighter than the Planck scale?"
+          ],
+          "materials": [
+            { "title": "Review of Particle Physics (PDG)", "type": "reference", "provider": "Particle Data Group (LBNL)", "url": "https://pdg.lbl.gov/" },
+            { "title": "CERN Open Data Portal (LHC Collision Datasets)", "type": "dataset", "provider": "CERN", "url": "https://opendata.cern.ch/" },
+            { "title": "Quantum Field Theory & Standard Model Lecture Notes", "type": "book", "provider": "David Tong (University of Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/qft.html" }
+          ],
+          "projects": [
+            { "name": "High-Luminosity LHC (HL-LHC)", "status": "upcoming", "location": "Geneva, Switzerland", "url": "https://hilumilhc.web.cern.ch/" },
+            { "name": "Future Circular Collider (FCC)", "status": "upcoming", "location": "Geneva Basin, Switzerland/France", "url": "https://fcc.web.cern.ch/" }
+          ]
+        },
+        {
+          "id": "qcd_lattice",
+          "name": "Quantum Chromodynamics & Lattice QCD",
+          "summary": "Understanding color confinement, asymptotic freedom, hadron masses, and quark-gluon plasma through perturbation theory and supercomputer lattice simulations.",
+          "keyQuestions": [
+            "How does color confinement emerge rigorously from the Yang-Mills mass gap?",
+            "How do quarks and gluons assemble the proton's spin and mass?"
+          ],
+          "materials": [
+            { "title": "arXiv High Energy Physics — Lattice (hep-lat)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/archive/hep-lat" },
+            { "title": "Gauge Theory Lecture Notes", "type": "book", "provider": "David Tong (University of Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/gaugetheory.html" },
+            { "title": "INSPIRE-HEP Literature Database", "type": "reference", "provider": "CERN / DESY / Fermilab / SLAC", "url": "https://inspirehep.net/" }
+          ],
+          "projects": [
+            { "name": "Electron-Ion Collider (EIC)", "status": "upcoming", "location": "Brookhaven National Lab, NY, USA", "url": "https://www.bnl.gov/eic/" },
+            { "name": "ALICE Heavy-Ion Experiment", "status": "ongoing", "location": "CERN, Geneva", "url": "https://alice-collaboration.web.cern.ch/" }
+          ]
+        },
+        {
+          "id": "neutrino_physics",
+          "name": "Neutrino Physics & Oscillations",
+          "summary": "Measuring neutrino mass ordering, leptonic CP violation, Majorana versus Dirac nature, and astrophysical neutrinos from supernovae and blazars.",
+          "keyQuestions": [
+            "Are neutrinos their own antiparticles (Majorana fermions)?",
+            "Did leptonic CP violation drive the matter-antimatter asymmetry of the universe?"
+          ],
+          "materials": [
+            { "title": "PDG Neutrino Masses, Mixing, and Oscillations Review", "type": "reference", "provider": "Particle Data Group", "url": "https://pdg.lbl.gov/" },
+            { "title": "IceCube Public Neutrino Datasets", "type": "dataset", "provider": "IceCube Collaboration (UW–Madison)", "url": "https://icecube.wisc.edu/science/data-releases/" },
+            { "title": "MIT 8.701 Introduction to Nuclear and Particle Physics", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-701-introduction-to-nuclear-and-particle-physics-fall-2020/" }
+          ],
+          "projects": [
+            { "name": "DUNE (Deep Underground Neutrino Experiment)", "status": "upcoming", "location": "Illinois & South Dakota, USA", "url": "https://www.dunescience.org/" },
+            { "name": "Hyper-Kamiokande", "status": "upcoming", "location": "Hida, Japan", "url": "https://www.hyperk.org/" }
+          ]
+        },
+        {
+          "id": "dark_matter_searches",
+          "name": "Direct & Indirect Dark Matter Detection",
+          "summary": "Ultra-low-background underground xenon and cryogenic detectors, axion haloscopes, and cosmic-ray telescopes hunting non-baryonic dark matter.",
+          "keyQuestions": [
+            "Is dark matter made of WIMPs, ultralight axions, sterile neutrinos, or primordial black holes?",
+            "How does dark matter couple to Standard Model particles beyond gravity?"
+          ],
+          "materials": [
+            { "title": "arXiv High Energy Physics — Phenomenology (hep-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/archive/hep-ph" },
+            { "title": "TASI & Perimeter Recorded Dark Matter Lectures", "type": "course", "provider": "Perimeter Institute (PIRSA)", "url": "https://pirsa.org/" }
+          ],
+          "projects": [
+            { "name": "XENONnT Underground Detector", "status": "ongoing", "location": "INFN Gran Sasso, Italy", "url": "https://xenonexperiment.org/" },
+            { "name": "LZ (LUX-ZEPLIN) Dark Matter Experiment", "status": "ongoing", "location": "SURF, South Dakota, USA", "url": "https://lz.lbl.gov/" }
+          ]
+        },
+        {
+          "id": "nuclear_heavy_ion",
+          "name": "Nuclear Structure, Rare Isotopes & Astrophysics",
+          "summary": "Exploring exotic neutron-rich nuclei, the r-process origin of heavy elements, nuclear equation of state in neutron stars, and superheavy elements.",
+          "keyQuestions": [
+            "Where are the drip-line boundaries of nuclear stability and the island of superheavy elements?",
+            "How does dense nuclear matter behave inside merging neutron stars?"
+          ],
+          "materials": [
+            { "title": "NNDC National Nuclear Data Center (NuDat)", "type": "dataset", "provider": "Brookhaven National Laboratory", "url": "https://www.nndc.bnl.gov/" },
+            { "title": "MIT 8.701 Nuclear & Particle Physics", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-701-introduction-to-nuclear-and-particle-physics-fall-2020/" }
+          ],
+          "projects": [
+            { "name": "FRIB (Facility for Rare Isotope Beams)", "status": "ongoing", "location": "Michigan State University, USA", "url": "https://frib.msu.edu/" },
+            { "name": "FAIR (Facility for Antiproton and Ion Research)", "status": "upcoming", "location": "Darmstadt, Germany", "url": "https://fair-center.eu/" }
+          ]
+        },
+        {
+          "id": "accelerator_beam",
+          "name": "Accelerator & Plasma Wakefield Physics",
+          "summary": "Superconducting RF cavities, high-field magnets, muon collider cooling, and laser/beam-driven plasma wakefield acceleration.",
+          "keyQuestions": [
+            "Can plasma wakefield accelerators shrink multi-kilometer colliders to tabletop scales?",
+            "Can intense short-lived muon beams be cooled rapidly enough for a 10 TeV collider?"
+          ],
+          "materials": [
+            { "title": "CERN Accelerator School (CAS) Proceedings", "type": "book", "provider": "CERN", "url": "https://cas.web.cern.ch/" },
+            { "title": "arXiv Accelerator Physics (physics.acc-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.acc-ph/recent" }
+          ],
+          "projects": [
+            { "name": "AWAKE Proton-Driven Plasma Wakefield Experiment", "status": "ongoing", "location": "CERN, Geneva", "url": "https://awake.web.cern.ch/" },
+            { "name": "PIP-II Superconducting Linac", "status": "ongoing", "location": "Fermilab, Illinois, USA", "url": "https://pip2.fnal.gov/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "quantum",
+      "name": "Quantum Science, AMO & Photonics",
+      "desc": "Quantum information processing, trapped atoms and ions, attosecond lasers, quantum optics, EUV photonics, and quantum networks.",
+      "subdomains": [
+        {
+          "id": "quantum_computing",
+          "name": "Quantum Computing & Fault-Tolerant Error Correction",
+          "summary": "Superconducting qubits, trapped ions, neutral-atom tweezers, silicon spin qubits, photonic architectures, and surface/qLDPC error correction.",
+          "keyQuestions": [
+            "How many physical qubits and what gate fidelities are needed for utility-scale fault tolerance?",
+            "Which quantum algorithms deliver provable exponential advantage in chemistry and materials?"
+          ],
+          "materials": [
+            { "title": "IBM Quantum Learning & Qiskit Courses", "type": "course", "provider": "IBM Quantum", "url": "https://learning.quantum.ibm.com/" },
+            { "title": "John Preskill's Quantum Computation Lecture Notes (Ph219)", "type": "book", "provider": "Caltech IQIM", "url": "https://www.preskill.caltech.edu/ph219/" },
+            { "title": "arXiv Quantum Physics (quant-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/archive/quant-ph" }
+          ],
+          "projects": [
+            { "name": "European Quantum Flagship", "status": "ongoing", "location": "European Union", "url": "https://qt.eu/" },
+            { "name": "US National Quantum Initiative", "status": "ongoing", "location": "United States", "url": "https://www.quantum.gov/" }
+          ]
+        },
+        {
+          "id": "quantum_optics",
+          "name": "Quantum Optics, Entanglement & Cavity QED",
+          "summary": "Nonclassical states of light, Bell inequality tests, squeezed states for metrology, and strong light-matter coupling in cavities and circuits.",
+          "keyQuestions": [
+            "How can squeezed and entangled states push interferometers past the standard quantum limit?",
+            "Where is the boundary between macroscopic quantum superposition and decoherence?"
+          ],
+          "materials": [
+            { "title": "MIT 8.05 Quantum Physics II", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-05-quantum-physics-ii-fall-2013/" },
+            { "title": "Feynman Lectures on Physics Vol. III (Quantum Mechanics)", "type": "book", "provider": "Caltech", "url": "https://www.feynmanlectures.caltech.edu/III_toc.html" }
+          ],
+          "projects": [
+            { "name": "Munich Center for Quantum Science and Technology (MCQST)", "status": "ongoing", "location": "Munich, Germany", "url": "https://www.mcqst.de/" }
+          ]
+        },
+        {
+          "id": "ultracold_clocks",
+          "name": "Ultracold Atoms, BECs & Optical Lattice Clocks",
+          "summary": "Laser-cooled nanokelvin gases, optical-lattice quantum simulators, atom interferometers, and optical clocks accurate to 1 second in the age of the universe.",
+          "keyQuestions": [
+            "Can nuclear-transition thorium-229 clocks detect tiny drifts in fundamental constants?",
+            "Can optical-clock geodesy measure gravitational redshift across millimeter height changes?"
+          ],
+          "materials": [
+            { "title": "NIST Atomic Spectra Database", "type": "dataset", "provider": "NIST", "url": "https://www.nist.gov/pml/atomic-spectra-database" },
+            { "title": "MIT 8.421 Atomic and Optical Physics I", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-421-atomic-and-optical-physics-i-spring-2014/" }
+          ],
+          "projects": [
+            { "name": "JILA Optical Lattice Clocks & Q-SEnSE", "status": "ongoing", "location": "Boulder, CO, USA", "url": "https://jila.colorado.edu/" },
+            { "name": "MAGIS-100 Atom Interferometer", "status": "upcoming", "location": "Fermilab, Illinois, USA", "url": "https://magis.stanford.edu/" }
+          ]
+        },
+        {
+          "id": "attosecond_lasers",
+          "name": "Attosecond & High-Intensity Laser Physics",
+          "summary": "High-harmonic generation producing 10⁻¹⁸-second light bursts to film electron motion inside atoms and petawatt lasers probing strong-field QED.",
+          "keyQuestions": [
+            "How fast does photoionization and charge migration unfold in molecules?",
+            "Can multi-petawatt lasers create electron-positron pairs directly from the quantum vacuum?"
+          ],
+          "materials": [
+            { "title": "2023 Nobel Prize in Physics Scientific Background (Attosecond Pulses)", "type": "reference", "provider": "Nobel Prize Committee", "url": "https://www.nobelprize.org/prizes/physics/2023/summary/" },
+            { "title": "Laboratory for Attosecond Physics Educational Resources", "type": "reference", "provider": "MPQ & LMU Munich", "url": "https://www.attoworld.de/" }
+          ],
+          "projects": [
+            { "name": "Extreme Light Infrastructure (ELI ERIC)", "status": "ongoing", "location": "Czechia, Hungary, Romania", "url": "https://eli-laser.eu/" }
+          ]
+        },
+        {
+          "id": "nanophotonics_euv",
+          "name": "Nanophotonics, Metamaterials & EUV Optics",
+          "summary": "Photonic crystals, topological photonics, integrated silicon photonics, and extreme ultraviolet plasma-driven Bragg mirror optics.",
+          "keyQuestions": [
+            "How can integrated photonic chips replace copper interconnects for ultra-low-energy AI and quantum computing?",
+            "What physical limits govern sub-nanometer optical lithography?"
+          ],
+          "materials": [
+            { "title": "Photonic Crystals: Molding the Flow of Light (Open Textbook)", "type": "book", "provider": "MIT Photonic Crystals Group", "url": "https://ab-initio.mit.edu/book/" },
+            { "title": "arXiv Optics (physics.optics)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.optics/recent" }
+          ],
+          "projects": [
+            { "name": "ARCNL Advanced Research Center for Nanolithography", "status": "ongoing", "location": "Amsterdam, Netherlands", "url": "https://arcnl.nl/" },
+            { "name": "ICFO Institute of Photonic Sciences", "status": "ongoing", "location": "Barcelona, Spain", "url": "https://www.icfo.eu/" }
+          ]
+        },
+        {
+          "id": "quantum_networks",
+          "name": "Quantum Communication & Quantum Internet",
+          "summary": "Entanglement distribution over optical fibers and satellites, quantum repeaters, quantum key distribution (QKD), and distributed quantum sensing.",
+          "keyQuestions": [
+            "How can quantum memories and repeaters extend entanglement across continents?",
+            "Can entangled space-based clock networks achieve unprecedented global synchronization?"
+          ],
+          "materials": [
+            { "title": "QuTech Academy Open Quantum Internet Courses", "type": "course", "provider": "QuTech / TU Delft", "url": "https://qutech.nl/academy/" }
+          ],
+          "projects": [
+            { "name": "Quantum Internet Alliance (QIA)", "status": "ongoing", "location": "Delft & Europe", "url": "https://quantuminternetalliance.org/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "astro",
+      "name": "Astrophysics & Cosmology",
+      "desc": "Cosmic evolution, dark energy, the Cosmic Microwave Background, black holes, exoplanets, and multi-wavelength sky surveys.",
+      "subdomains": [
+        {
+          "id": "observational_cosmology",
+          "name": "Observational Cosmology & Dark Energy",
+          "summary": "Mapping baryon acoustic oscillations, galaxy clustering, weak lensing, and Type Ia supernovae to test whether dark energy evolves over cosmic time.",
+          "keyQuestions": [
+            "Is the Hubble tension a systematic measurement discrepancy or evidence for new early-universe physics?",
+            "Does dark energy evolve dynamically rather than remaining Einstein's cosmological constant?"
+          ],
+          "materials": [
+            { "title": "Cosmology Lecture Notes", "type": "book", "provider": "Daniel Baumann (University of Amsterdam / Cambridge)", "url": "https://cosmology.amsterdam/education/cosmology/" },
+            { "title": "Sloan Digital Sky Survey (SDSS) Open Data", "type": "dataset", "provider": "SDSS Collaboration", "url": "https://www.sdss.org/" },
+            { "title": "MIT 8.902 Astrophysics II", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-902-astrophysics-ii-fall-2004/" }
+          ],
+          "projects": [
+            { "name": "DESI (Dark Energy Spectroscopic Instrument)", "status": "ongoing", "location": "Kitt Peak, Arizona, USA", "url": "https://www.desi.lbl.gov/" },
+            { "name": "Vera C. Rubin Observatory (LSST)", "status": "ongoing", "location": "Cerro Pachón, Chile", "url": "https://rubinobservatory.org/" }
+          ]
+        },
+        {
+          "id": "cmb_inflation",
+          "name": "Cosmic Microwave Background & Early Universe",
+          "summary": "Precision temperature and B-mode polarization maps of the 380,000-year-old universe hunting primordial gravitational waves from cosmic inflation.",
+          "keyQuestions": [
+            "At what energy scale did cosmic inflation occur, and what is the tensor-to-scalar ratio r?",
+            "What do CMB lensing maps reveal about the sum of neutrino masses?"
+          ],
+          "materials": [
+            { "title": "ESA Planck Legacy Archive", "type": "dataset", "provider": "European Space Agency", "url": "https://pla.esac.esa.int/" },
+            { "title": "LAMBDA Cosmic Microwave Background Data Center", "type": "dataset", "provider": "NASA GSFC", "url": "https://lambda.gsfc.nasa.gov/" }
+          ],
+          "projects": [
+            { "name": "Simons Observatory", "status": "ongoing", "location": "Atacama Desert, Chile", "url": "https://simonsobservatory.org/" },
+            { "name": "LiteBIRD CMB Polarization Satellite", "status": "upcoming", "location": "JAXA / International (L2)", "url": "https://www.isas.jaxa.jp/en/missions/spacecraft/future/litebird.html" }
+          ]
+        },
+        {
+          "id": "exoplanets",
+          "name": "Exoplanets & Planetary Formation",
+          "summary": "Radial velocity, transit spectroscopy, microlensing, and direct coronagraphic imaging characterizing rocky worlds and protoplanetary disks.",
+          "keyQuestions": [
+            "How common are temperate rocky planets with stable atmospheres around Sun-like and M-dwarf stars?",
+            "What spectroscopic signatures unambiguously indicate biological activity?"
+          ],
+          "materials": [
+            { "title": "NASA Exoplanet Archive", "type": "dataset", "provider": "NASA / Caltech IPAC", "url": "https://exoplanetarchive.ipac.caltech.edu/" },
+            { "title": "MIT 12.425 Extrasolar Planets: Physics and Detection Techniques", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/12-425-extrasolar-planets-physics-and-detection-techniques-fall-2007/" }
+          ],
+          "projects": [
+            { "name": "ESO Extremely Large Telescope (ELT)", "status": "upcoming", "location": "Cerro Armazones, Chile", "url": "https://elt.eso.org/" },
+            { "name": "ESA PLATO Exoplanet Mission", "status": "upcoming", "location": "Sun–Earth L2", "url": "https://sci.esa.int/web/plato" }
+          ]
+        },
+        {
+          "id": "high_energy_multimessenger",
+          "name": "High-Energy & Multimessenger Astrophysics",
+          "summary": "Uniting gamma rays, X-rays, ultra-high-energy cosmic rays, neutrinos, and gravitational waves to decipher supernovae, kilonovae, and active galactic nuclei.",
+          "keyQuestions": [
+            "Which cosmic accelerators boost protons and nuclei past 10²⁰ eV?",
+            "How do relativistic blazar jets launch and accelerate particles?"
+          ],
+          "materials": [
+            { "title": "Pierre Auger Observatory Open Data Portal", "type": "dataset", "provider": "Pierre Auger Collaboration", "url": "https://opendata.auger.org/" },
+            { "title": "arXiv High Energy Astrophysical Phenomena (astro-ph.HE)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/astro-ph.HE/recent" }
+          ],
+          "projects": [
+            { "name": "Cherenkov Telescope Array Observatory (CTAO)", "status": "upcoming", "location": "La Palma, Spain & Paranal, Chile", "url": "https://www.ctao.org/" },
+            { "name": "IceCube-Gen2 Neutrino Observatory", "status": "upcoming", "location": "South Pole, Antarctica", "url": "https://www.icecube-gen2.de/" }
+          ]
+        },
+        {
+          "id": "black_holes_accretion",
+          "name": "Black Holes, Relativistic Jets & Horizon Imaging",
+          "summary": "Very-long-baseline millimeter interferometry, X-ray reverberation, and stellar-orbit tracking around supermassive and stellar black holes.",
+          "keyQuestions": [
+            "How did billion-solar-mass supermassive black holes grow within 500 million years of the Big Bang?",
+            "How does the Blandford-Znajek mechanism extract rotational energy from spinning horizons?"
+          ],
+          "materials": [
+            { "title": "Event Horizon Telescope Open Data Products", "type": "dataset", "provider": "EHT Collaboration", "url": "https://eventhorizontelescope.org/for-astronomers/data" },
+            { "title": "NASA HEASARC High Energy Astrophysics Archive", "type": "dataset", "provider": "NASA GSFC", "url": "https://heasarc.gsfc.nasa.gov/" }
+          ],
+          "projects": [
+            { "name": "Event Horizon Telescope & ngEHT", "status": "ongoing", "location": "Global VLBI Network", "url": "https://eventhorizontelescope.org/" },
+            { "name": "VLT GRAVITY+ Galactic Center Interferometry", "status": "ongoing", "location": "Paranal, Chile", "url": "https://www.eso.org/public/teles-instr/paranal-observatory/vlt/" }
+          ]
+        },
+        {
+          "id": "radio_21cm",
+          "name": "Radio Astronomy, Pulsars & 21-cm Cosmology",
+          "summary": "Using giant radio arrays to time millisecond pulsars, unravel Fast Radio Bursts (FRBs), and map neutral hydrogen during the Cosmic Dawn.",
+          "keyQuestions": [
+            "What physical engines power repeating and non-repeating Fast Radio Bursts?",
+            "When did the first stars and galaxies reionize the intergalactic hydrogen fog?"
+          ],
+          "materials": [
+            { "title": "NRAO Essential Radio Astronomy Open Textbook", "type": "book", "provider": "National Radio Astronomy Observatory", "url": "https://www.cv.nrao.edu/~sransom/web/xxx.html" },
+            { "title": "ALMA Science Archive", "type": "dataset", "provider": "ALMA Observatory", "url": "https://almascience.eso.org/aq/" }
+          ],
+          "projects": [
+            { "name": "Square Kilometre Array Observatory (SKAO)", "status": "upcoming", "location": "South Africa & Australia", "url": "https://www.skao.int/" },
+            { "name": "FAST 500-Meter Radio Telescope", "status": "ongoing", "location": "Guizhou, China", "url": "https://fast.bao.ac.cn/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gravity",
+      "name": "Gravitational Waves, Relativity & Fundamental Theory",
+      "desc": "Spacetime geometry, laser interferometers, numerical relativity, quantum gravity, holography, and mathematical physics.",
+      "subdomains": [
+        {
+          "id": "gw_interferometry",
+          "name": "Gravitational-Wave Interferometry & Pulsar Timing",
+          "summary": "Laser interferometers on Earth and in space plus pulsar timing arrays measuring sub-proton spacetime strains across 12 decades of frequency.",
+          "keyQuestions": [
+            "Is the nanohertz gravitational-wave background sourced by supermassive black hole binaries or early-universe physics?",
+            "Do black hole ringdown quasi-normal modes obey the Kerr no-hair theorem exactly?"
+          ],
+          "materials": [
+            { "title": "Gravitational Wave Open Science Center (GWOSC)", "type": "dataset", "provider": "LIGO / Virgo / KAGRA Collaborations", "url": "https://gwosc.org/" },
+            { "title": "NANOGrav 15-Year Pulsar Timing Dataset", "type": "dataset", "provider": "NANOGrav Collaboration", "url": "https://nanograv.org/science/data" }
+          ],
+          "projects": [
+            { "name": "LISA Space Gravitational-Wave Observatory", "status": "upcoming", "location": "Heliocentric Orbit (ESA/NASA)", "url": "https://www.lisamission.org/" },
+            { "name": "Einstein Telescope", "status": "upcoming", "location": "Europe", "url": "https://www.et-gw.eu/" }
+          ]
+        },
+        {
+          "id": "numerical_relativity",
+          "name": "General Relativity & Numerical Relativity",
+          "summary": "Solving Einstein's nonlinear partial differential equations on supercomputers to model colliding black holes, neutron star mergers, and extreme curvature.",
+          "keyQuestions": [
+            "Does cosmic censorship hold universally for generic gravitational collapse?",
+            "How accurately can waveform models track eccentric and high-spin binary mergers?"
+          ],
+          "materials": [
+            { "title": "Sean Carroll's Lecture Notes on General Relativity (arXiv:gr-qc/9712019)", "type": "book", "provider": "arXiv / Caltech", "url": "https://arxiv.org/abs/gr-qc/9712019" },
+            { "title": "Einstein Toolkit Open-Source Numerical Relativity Software", "type": "reference", "provider": "Einstein Toolkit Consortium", "url": "https://einsteintoolkit.org/" },
+            { "title": "MIT 8.962 General Relativity", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-962-general-relativity-spring-2020/" }
+          ],
+          "projects": [
+            { "name": "SXS Gravitational Waveform Catalog", "status": "ongoing", "location": "Caltech / Cornell / AEI", "url": "https://data.black-holes.org/" }
+          ]
+        },
+        {
+          "id": "string_holography",
+          "name": "String Theory, Holography & AdS/CFT",
+          "summary": "Unifying quantum gravity with gauge fields through string dynamics, gauge/gravity duality, black hole entropy microstates, and entanglement wedges.",
+          "keyQuestions": [
+            "How is quantum information preserved during black hole Hawking evaporation (the Page curve)?",
+            "How does holographic duality extend from Anti-de Sitter space to our expanding de Sitter cosmos?"
+          ],
+          "materials": [
+            { "title": "String Theory Lecture Notes", "type": "book", "provider": "David Tong (University of Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/string.html" },
+            { "title": "arXiv High Energy Physics — Theory (hep-th)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/archive/hep-th" }
+          ],
+          "projects": [
+            { "name": "Simons Collaboration on It from Qubit / Quantum Gravity", "status": "ongoing", "location": "Global Consortium", "url": "https://www.simonsfoundation.org/mathematics-physical-sciences/" }
+          ]
+        },
+        {
+          "id": "loop_quantum_gravity",
+          "name": "Loop Quantum Gravity & Discrete Quantum Spacetime",
+          "summary": "Background-independent quantization of geometry via spin networks, spin foams, causal dynamical triangulations, and quantum cosmology bounces.",
+          "keyQuestions": [
+            "Is spacetime quantized into discrete Planck-scale areas and volumes?",
+            "Does quantum geometry resolve the Big Bang and black hole interior singularities?"
+          ],
+          "materials": [
+            { "title": "arXiv General Relativity and Quantum Cosmology (gr-qc)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/archive/gr-qc" },
+            { "title": "Perimeter Institute Recorded Quantum Gravity Courses", "type": "course", "provider": "Perimeter Institute (PIRSA)", "url": "https://pirsa.org/" }
+          ],
+          "projects": [
+            { "name": "Perimeter Quantum Gravity Initiative", "status": "ongoing", "location": "Waterloo, Canada", "url": "https://perimeterinstitute.ca/" }
+          ]
+        },
+        {
+          "id": "mathematical_physics",
+          "name": "Mathematical Physics, Symmetries & Amplitudes",
+          "summary": "Noether symmetries, differential geometry, conformal bootstrap, scattering amplitudes, and non-perturbative quantum field theory.",
+          "keyQuestions": [
+            "Can scattering amplitudes be derived purely from geometric principles without local spacetime Lagrangians?",
+            "Can a rigorous mathematical proof of 4D Yang-Mills existence and mass gap be achieved?"
+          ],
+          "materials": [
+            { "title": "arXiv Mathematical Physics (math-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/archive/math-ph" },
+            { "title": "Gerard 't Hooft's How to Become a Good Theoretical Physicist", "type": "reference", "provider": "Utrecht University", "url": "https://goodtheorist.science/" }
+          ],
+          "projects": [
+            { "name": "Simons Collaboration on the Nonperturbative Bootstrap", "status": "ongoing", "location": "Global Consortium", "url": "https://bootstrapcollaboration.com/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fusion",
+      "name": "Fusion Energy & Plasma Physics",
+      "desc": "Magnetic and inertial confinement fusion, superconducting magnets, burning-plasma stability, and astrophysical plasmas.",
+      "subdomains": [
+        {
+          "id": "tokamak_mcf",
+          "name": "Magnetic Confinement Tokamaks",
+          "summary": "Toroidal magnetic bottles confining 150-million-kelvin deuterium-tritium plasma while managing divertor heat exhaust, disruptions, and tritium breeding.",
+          "keyQuestions": [
+            "How can edge-localized modes (ELMs) and disruptions be reliably prevented in burning plasmas?",
+            "Can breeding blankets maintain tritium self-sufficiency at commercial plant scale?"
+          ],
+          "materials": [
+            { "title": "ITER Science & Fusion Energy Educational Portal", "type": "reference", "provider": "ITER Organization", "url": "https://www.iter.org/sci/whatisfusion" },
+            { "title": "MIT 22.611J Introduction to Plasma Physics I", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/22-611j-introduction-to-plasma-physics-i-fall-2003/" }
+          ],
+          "projects": [
+            { "name": "ITER Burning Plasma Tokamak", "status": "upcoming", "location": "Cadarache, France", "url": "https://www.iter.org/" },
+            { "name": "SPARC High-Field Tokamak", "status": "upcoming", "location": "Devens, MA, USA", "url": "https://cfs.energy/technology/" }
+          ]
+        },
+        {
+          "id": "stellarators",
+          "name": "Stellarators & 3D Magnetic Optimization",
+          "summary": "Disruption-free, intrinsically steady-state twisted 3D magnetic cages designed via quasi-symmetry and supercomputer coil optimization.",
+          "keyQuestions": [
+            "Can quasi-isodynamic and quasi-axisymmetric stellarators match or exceed tokamak confinement without plasma currents?",
+            "How can complex 3D HTS stellarator coils be manufactured economically?"
+          ],
+          "materials": [
+            { "title": "Max Planck IPP Wendelstein 7-X Science Portal", "type": "reference", "provider": "Max Planck Institute for Plasma Physics", "url": "https://www.ipp.mpg.de/w7x" },
+            { "title": "arXiv Plasma Physics (physics.plasm-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.plasm-ph/recent" }
+          ],
+          "projects": [
+            { "name": "Wendelstein 7-X Optimized Stellarator", "status": "ongoing", "location": "Greifswald, Germany", "url": "https://www.ipp.mpg.de/w7x" }
+          ]
+        },
+        {
+          "id": "inertial_fusion",
+          "name": "Inertial Confinement & High-Energy-Density Physics",
+          "summary": "Compressing millimeter fuel capsules with megajoule laser pulses or pulsed-power Z-pinches to ignite fusion before inertia lets the fuel expand.",
+          "keyQuestions": [
+            "How can laser wall-plug efficiency and target repetition rate reach 10 Hz for inertial fusion energy?",
+            "How do hydrodynamic Rayleigh-Taylor instabilities affect capsule implosion symmetry?"
+          ],
+          "materials": [
+            { "title": "NIF Fusion Ignition & HED Science Portal", "type": "reference", "provider": "Lawrence Livermore National Laboratory", "url": "https://lasers.llnl.gov/science/ignition" }
+          ],
+          "projects": [
+            { "name": "National Ignition Facility (NIF)", "status": "ongoing", "location": "Livermore, CA, USA", "url": "https://lasers.llnl.gov/" },
+            { "name": "Laser Mégajoule (LMJ)", "status": "ongoing", "location": "Le Barp, France", "url": "https://www-lmj.cea.fr/" }
+          ]
+        },
+        {
+          "id": "hts_fusion_magnets",
+          "name": "High-Temperature Superconducting Fusion Magnets",
+          "summary": "Engineering 20-tesla REBCO rare-earth barium copper oxide coils that shrink magnetic fusion volume by an order of magnitude (fusion power scales as B⁴).",
+          "keyQuestions": [
+            "How do REBCO tapes survive decades of intense 14.1 MeV fusion neutron irradiation?",
+            "Can demountable HTS joints simplify fusion reactor maintenance?"
+          ],
+          "materials": [
+            { "title": "MIT PSFC High-Field Magnet Publications & Overview", "type": "reference", "provider": "MIT Plasma Science and Fusion Center", "url": "https://www.psfc.mit.edu/" }
+          ],
+          "projects": [
+            { "name": "SPARC Toroidal Field Model Coil & Magnet Suite", "status": "ongoing", "location": "Devens, MA, USA", "url": "https://cfs.energy/" }
+          ]
+        },
+        {
+          "id": "space_solar_plasmas",
+          "name": "Solar, Heliospheric & Astrophysical Plasmas",
+          "summary": "Magnetic reconnection, solar coronal heating, Alfvén turbulence, planetary magnetospheres, and cosmic-ray shock acceleration.",
+          "keyQuestions": [
+            "What exact kinetic mechanisms heat the solar corona to millions of kelvin above a 5,800 K surface?",
+            "How does collisionless magnetic reconnection explosively convert magnetic energy into particle kinetic energy?"
+          ],
+          "materials": [
+            { "title": "NASA CDAWeb Heliophysics Data Portal", "type": "dataset", "provider": "NASA GSFC", "url": "https://cdaweb.gsfc.nasa.gov/" }
+          ],
+          "projects": [
+            { "name": "Parker Solar Probe", "status": "ongoing", "location": "Solar Corona (NASA)", "url": "https://science.nasa.gov/mission/parker-solar-probe/" },
+            { "name": "Solar Orbiter", "status": "ongoing", "location": "Inner Heliosphere (ESA/NASA)", "url": "https://sci.esa.int/web/solar-orbiter" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "condensed",
+      "name": "Condensed Matter, Materials & Statistical Physics",
+      "desc": "Emergent quantum phases of matter, superconductivity, topological materials, 2D systems, synchrotrons, neutrons, and statistical mechanics.",
+      "subdomains": [
+        {
+          "id": "unconventional_superconductivity",
+          "name": "Unconventional & High-Tc Superconductivity",
+          "summary": "Cuprates, iron pnictides, nickelates, heavy fermions, and high-pressure hydrides exhibiting zero resistance beyond conventional BCS electron-phonon pairing.",
+          "keyQuestions": [
+            "What pairing mechanism drives cuprate superconductivity above 130 K?",
+            "Can a stable ambient-pressure room-temperature superconductor exist?"
+          ],
+          "materials": [
+            { "title": "arXiv Superconductivity (cond-mat.supr-con)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/cond-mat.supr-con/recent" },
+            { "title": "MIT 8.511 Theory of Solids I", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-511-theory-of-solids-i-fall-2004/" }
+          ],
+          "projects": [
+            { "name": "National High Magnetic Field Laboratory (MagLab)", "status": "ongoing", "location": "Tallahassee, FL, USA", "url": "https://nationalmaglab.org/" }
+          ]
+        },
+        {
+          "id": "topological_phases",
+          "name": "Topological Insulators, Anyons & Quantum Hall Physics",
+          "summary": "Bulk-boundary correspondence, Chern insulators, Weyl semimetals, fractional quantum Hall quasiparticles, and non-Abelian Majorana zero modes.",
+          "keyQuestions": [
+            "Can non-Abelian anyons be braided reliably to build intrinsically protected topological qubits?",
+            "How do strong electron correlations and band topology intertwine in fractional Chern insulators?"
+          ],
+          "materials": [
+            { "title": "Quantum Hall Effect Lecture Notes", "type": "book", "provider": "David Tong (University of Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/qhe.html" },
+            { "title": "Topology in Condensed Matter (Open Course)", "type": "course", "provider": "TU Delft / QuTech", "url": "https://topocondmat.org/" }
+          ],
+          "projects": [
+            { "name": "ETH / Delft / Microsoft & Academic Topological Matter Consortia", "status": "ongoing", "location": "Global", "url": "https://qutech.nl/" }
+          ]
+        },
+        {
+          "id": "2d_twistronics",
+          "name": "2D Materials & Moiré Twistronics",
+          "summary": "Atomically thin graphene, transition metal dichalcogenides (TMDs), and magic-angle twisted bilayers hosting tunable flat bands and correlated phases.",
+          "keyQuestions": [
+            "How can moiré superlattices act as solid-state quantum simulators for the Hubbard model?",
+            "Can van der Waals heterostructures yield ultra-low-power room-temperature quantum electronics?"
+          ],
+          "materials": [
+            { "title": "arXiv Mesoscale and Nanoscale Physics (cond-mat.mes-hall)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/cond-mat.mes-hall/recent" },
+            { "title": "2010 Nobel Prize in Physics Scientific Background (Graphene)", "type": "reference", "provider": "Nobel Prize Committee", "url": "https://www.nobelprize.org/prizes/physics/2010/summary/" }
+          ],
+          "projects": [
+            { "name": "National Graphene Institute", "status": "ongoing", "location": "Manchester, United Kingdom", "url": "https://www.graphene.manchester.ac.uk/" }
+          ]
+        },
+        {
+          "id": "quantum_magnetism_spintronics",
+          "name": "Quantum Magnetism, Spin Liquids & Spintronics",
+          "summary": "Frustrated magnets, Kitaev quantum spin liquids, magnetic skyrmions, altermagnets, and spin-orbit torque memory devices.",
+          "keyQuestions": [
+            "Which real crystal compounds realize unambiguous quantum spin-liquid ground states?",
+            "How fast can terahertz antiferromagnetic and altermagnetic spintronics switch?"
+          ],
+          "materials": [
+            { "title": "arXiv Strongly Correlated Electrons (cond-mat.str-el)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/cond-mat.str-el/recent" },
+            { "title": "Materials Project Open Crystal & Magnetic Database", "type": "dataset", "provider": "Lawrence Berkeley National Laboratory", "url": "https://next-gen.materialsproject.org/" }
+          ],
+          "projects": [
+            { "name": "RIKEN Center for Emergent Matter Science (CEMS)", "status": "ongoing", "location": "Wako, Japan", "url": "https://www.cems.riken.jp/en/" }
+          ]
+        },
+        {
+          "id": "synchrotron_neutrons",
+          "name": "Synchrotron X-Ray, XFEL & Neutron Scattering",
+          "summary": "Fourth-generation storage rings, femtosecond X-ray free-electron lasers, and spallation neutron beams resolving atomic structures and excitations.",
+          "keyQuestions": [
+            "How do light-induced metastable quantum phases evolve on femtosecond timescales?",
+            "How can operando X-ray and neutron imaging guide solid-state batteries and catalysts?"
+          ],
+          "materials": [
+            { "title": "Lightsources.org Global Synchrotron & FEL Directory", "type": "reference", "provider": "Lightsources.org Collaboration", "url": "https://lightsources.org/" },
+            { "title": "ESRF Open Data Portal", "type": "dataset", "provider": "ESRF Grenoble", "url": "https://data.esrf.fr/" }
+          ],
+          "projects": [
+            { "name": "European Spallation Source (ESS)", "status": "ongoing", "location": "Lund, Sweden", "url": "https://europeanspallationsource.se/" },
+            { "name": "LCLS-II & European XFEL", "status": "ongoing", "location": "California, USA & Hamburg, Germany", "url": "https://www.xfel.eu/" }
+          ]
+        },
+        {
+          "id": "statistical_complex",
+          "name": "Statistical Mechanics, Phase Transitions & Complex Systems",
+          "summary": "Renormalization group, non-equilibrium thermodynamics, active matter, glasses, spin glasses, and network dynamics.",
+          "keyQuestions": [
+            "What general variational principles govern far-from-equilibrium active and living systems?",
+            "Is the glass transition a true thermodynamic phase transition or purely dynamical arrest?"
+          ],
+          "materials": [
+            { "title": "MIT 8.333 Statistical Mechanics I (Mehran Kardar)", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-333-statistical-mechanics-i-statistical-mechanics-of-particles-fall-2013/" },
+            { "title": "Statistical Physics Lecture Notes", "type": "book", "provider": "David Tong (University of Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/statphys.html" }
+          ],
+          "projects": [
+            { "name": "Santa Fe Institute Complexity Research", "status": "ongoing", "location": "Santa Fe, NM, USA", "url": "https://www.santafe.edu/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "applied",
+      "name": "Applied, Computational, Medical & Geophysical Physics",
+      "desc": "Bridging fundamental laws with living matter, planetary climate, healthcare, precision sensors, and scientific computing.",
+      "subdomains": [
+        {
+          "id": "biophysics_soft",
+          "name": "Biophysics & Soft Condensed Matter",
+          "summary": "Molecular motors, protein folding energetics, liquid-liquid phase separation in cells, polymers, membranes, and neural dynamics.",
+          "keyQuestions": [
+            "How do cellular assemblies harness non-equilibrium statistical physics to self-organize and copy information accurately?",
+            "How do physical forces govern embryonic morphogenesis?"
+          ],
+          "materials": [
+            { "title": "arXiv Biological Physics (physics.bio-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.bio-ph/recent" },
+            { "title": "MIT 8.591J Systems Biology", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-591j-systems-biology-fall-2014/" }
+          ],
+          "projects": [
+            { "name": "Max Planck Institute of Molecular Cell Biology and Genetics / Physics of Complex Systems", "status": "ongoing", "location": "Dresden, Germany", "url": "https://www.pks.mpg.de/" }
+          ]
+        },
+        {
+          "id": "climate_geophysics",
+          "name": "Atmospheric, Climate & Planetary Geophysics",
+          "summary": "Radiative transfer, geophysical fluid dynamics, ocean-atmosphere coupling, seismology, and planetary dynamo physics.",
+          "keyQuestions": [
+            "How do cloud microphysics and polar ice-sheet mechanics control equilibrium climate sensitivity?",
+            "How do deep-mantle convection and core-mantle dynamics drive geomagnetic reversals?"
+          ],
+          "materials": [
+            { "title": "2021 Nobel Prize in Physics Scientific Background (Climate Modeling)", "type": "reference", "provider": "Nobel Prize Committee", "url": "https://www.nobelprize.org/prizes/physics/2021/summary/" },
+            { "title": "NASA Earthdata Open Atmospheric & Geophysical Datasets", "type": "dataset", "provider": "NASA", "url": "https://www.earthdata.nasa.gov/" }
+          ],
+          "projects": [
+            { "name": "Copernicus Climate Change Service (ECMWF)", "status": "ongoing", "location": "Reading, UK & Bologna, Italy", "url": "https://climate.copernicus.eu/" }
+          ]
+        },
+        {
+          "id": "medical_physics",
+          "name": "Medical Physics, Imaging & Hadron Therapy",
+          "summary": "MRI nuclear spin physics, PET/CT instrumentation, proton and carbon-ion Bragg-peak radiotherapy, and FLASH ultra-high-dose-rate beams.",
+          "keyQuestions": [
+            "Why does ultra-fast FLASH radiotherapy spare healthy tissue while destroying tumors?",
+            "Can compact laser-plasma accelerators make hadron therapy globally accessible?"
+          ],
+          "materials": [
+            { "title": "IAEA Human Health Campus (Medical Physics Resources)", "type": "reference", "provider": "International Atomic Energy Agency", "url": "https://humanhealth.iaea.org/" },
+            { "title": "arXiv Medical Physics (physics.med-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.med-ph/recent" }
+          ],
+          "projects": [
+            { "name": "CERN MEDICIS Medical Radioisotope Facility", "status": "ongoing", "location": "CERN, Geneva", "url": "https://medicis.cern/" }
+          ]
+        },
+        {
+          "id": "instrumentation_cryo",
+          "name": "Cryogenics, Superconducting Sensors & Metrology",
+          "summary": "Dilution refrigerators reaching <10 mK, superconducting nanowire single-photon detectors (SNSPDs), SQUID magnetometers, and quantum-defined SI units.",
+          "keyQuestions": [
+            "How can compact cryocoolers scale cooling power for million-qubit quantum computers?",
+            "How sensitive can quantum magnetometers and gravimeters become in field environments?"
+          ],
+          "materials": [
+            { "title": "NIST Physical Measurement Laboratory & SI Redefinition", "type": "reference", "provider": "NIST", "url": "https://www.nist.gov/pml" }
+          ],
+          "projects": [
+            { "name": "BIPM International Metrology Program", "status": "ongoing", "location": "Sèvres, France", "url": "https://www.bipm.org/en/" }
+          ]
+        },
+        {
+          "id": "computational_ai_physics",
+          "name": "Computational Physics, Exascale HPC & Physics-Informed AI",
+          "summary": "Monte Carlo methods, tensor networks, differentiable physics solvers, neural quantum states, and equivariant machine learning for scientific discovery.",
+          "keyQuestions": [
+            "Can neural-network wavefunctions and equivariant interatomic potentials solve strongly correlated materials from first principles?",
+            "How can AI accelerate real-time trigger filtering at HL-LHC and tokamak plasma control?"
+          ],
+          "materials": [
+            { "title": "arXiv Computational Physics (physics.comp-ph)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.comp-ph/recent" },
+            { "title": "Flatiron Institute Center for Computational Quantum Physics (CCQ) Software", "type": "reference", "provider": "Simons Foundation", "url": "https://www.simonsfoundation.org/flatiron/center-for-computational-quantum-physics/" }
+          ],
+          "projects": [
+            { "name": "Flatiron Institute Computational Physics Centers (CCA, CCQ, CCM)", "status": "ongoing", "location": "New York, NY, USA", "url": "https://www.simonsfoundation.org/flatiron/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "history",
+      "name": "History, Philosophy & Foundations of Physics",
+      "desc": "Tracing 2,600 years of physical thought, quantum foundations, primary historical archives, and precision fundamental constants.",
+      "subdomains": [
+        {
+          "id": "ancient_medieval_science",
+          "name": "Ancient & Medieval Natural Philosophy",
+          "summary": "From Ionian cosmology, Archimedes' mechanics, and Indian mathematical astronomy to Ibn al-Haytham's optics, Song Chinese magnetism, and Samarkand observatories.",
+          "keyQuestions": [
+            "How did cross-cultural transmission across Greece, India, Baghdad, Cairo, China, and Europe forge the experimental method?",
+            "Which medieval optical and kinematic innovations directly shaped the Scientific Revolution?"
+          ],
+          "materials": [
+            { "title": "Stanford Encyclopedia of Philosophy — History of Science Entries", "type": "reference", "provider": "Stanford University", "url": "https://plato.stanford.edu/" },
+            { "title": "MacTutor History of Mathematics & Physics Archive", "type": "archive", "provider": "University of St Andrews", "url": "https://mathshistory.st-andrews.ac.uk/" }
+          ],
+          "projects": [
+            { "name": "Max Planck Institute for the History of Science (MPIWG)", "status": "ongoing", "location": "Berlin, Germany", "url": "https://www.mpiwg-berlin.mpg.de/" }
+          ]
+        },
+        {
+          "id": "scientific_revolution_classical",
+          "name": "Scientific Revolution & Classical Unification",
+          "summary": "The evolution from Copernicus, Kepler, Galileo, and Newton through Euler, Lagrange, Hamilton, Faraday, Maxwell, and Boltzmann.",
+          "keyQuestions": [
+            "How did variational least-action principles unify mechanics, optics, and field theory?",
+            "How did the 19th-century energy and entropy concepts prepare the way for quantum theory?"
+          ],
+          "materials": [
+            { "title": "The Newton Project (Complete Digitized Manuscripts)", "type": "archive", "provider": "University of Oxford", "url": "https://www.newtonproject.ox.ac.uk/" },
+            { "title": "The Feynman Lectures on Physics Vol. I & II", "type": "book", "provider": "Caltech", "url": "https://www.feynmanlectures.caltech.edu/" },
+            { "title": "OpenStax University Physics Volumes 1–3", "type": "book", "provider": "OpenStax (Rice University)", "url": "https://openstax.org/subjects/science" }
+          ],
+          "projects": [
+            { "name": "Museo Galileo Digital Archive", "status": "ongoing", "location": "Florence, Italy", "url": "https://www.museogalileo.it/en/" }
+          ]
+        },
+        {
+          "id": "quantum_foundations",
+          "name": "Foundations & Interpretations of Quantum Mechanics",
+          "summary": "The measurement problem, Bell nonlocality, decoherence, Many-Worlds, Bohmian mechanics, QBism, and gravitational collapse tests.",
+          "keyQuestions": [
+            "Is the quantum wavefunction an objective physical state or an epistemic catalog of information?",
+            "Can tabletop matter-wave interferometry test whether gravity itself generates entanglement?"
+          ],
+          "materials": [
+            { "title": "Stanford Encyclopedia — Quantum Mechanics & Bell's Theorem", "type": "reference", "provider": "Stanford University", "url": "https://plato.stanford.edu/entries/bell-theorem/" },
+            { "title": "Niels Bohr Archive", "type": "archive", "provider": "University of Copenhagen", "url": "https://nbarchive.ku.dk/" }
+          ],
+          "projects": [
+            { "name": "Institute for Quantum Optics and Quantum Information (IQOQI Vienna)", "status": "ongoing", "location": "Vienna, Austria", "url": "https://www.iqoqi-vienna.at/" }
+          ]
+        },
+        {
+          "id": "nobel_primary_archives",
+          "name": "Nobel Lectures & Primary Historical Archives",
+          "summary": "Original Nobel lectures, Einstein's collected papers, CERN document archives, and oral histories of 20th- and 21st-century physics.",
+          "keyQuestions": [
+            "How did collaborative mega-science evolve from small tabletop rooms to 10,000-physicist collaborations?",
+            "What patterns recur across transformative paradigm shifts in physics?"
+          ],
+          "materials": [
+            { "title": "The Nobel Prize in Physics Complete Archive (1901–Present)", "type": "archive", "provider": "Nobel Prize Outreach", "url": "https://www.nobelprize.org/prizes/lists/all-nobel-prizes-in-physics/" },
+            { "title": "Digital Einstein Papers", "type": "archive", "provider": "Princeton University Press / Caltech / Hebrew Univ.", "url": "https://einsteinpapers.press.princeton.edu/" },
+            { "title": "AIP Niels Bohr Library & Oral History Interviews", "type": "archive", "provider": "American Institute of Physics", "url": "https://www.aip.org/history-programs/niels-bohr-library/oral-histories" }
+          ],
+          "projects": [
+            { "name": "CERN Document Server & Historical Archive", "status": "ongoing", "location": "Geneva, Switzerland", "url": "https://cds.cern.ch/" }
+          ]
+        },
+        {
+          "id": "constants_open_science",
+          "name": "Fundamental Constants, Metrology & Open Science",
+          "summary": "CODATA recommended values of c, h, e, k_B, G, α, precision tests of fundamental symmetries, and global open-access physics publishing (SCOAP³ & arXiv).",
+          "keyQuestions": [
+            "Why does the fine-structure constant α ≈ 1/137.036 take its measured dimensionless value?",
+            "Why does Newton's gravitational constant G remain the least precisely known fundamental constant?"
+          ],
+          "materials": [
+            { "title": "CODATA Internationally Recommended Values of Fundamental Physical Constants", "type": "dataset", "provider": "NIST / CODATA", "url": "https://physics.nist.gov/cuu/Constants/" },
+            { "title": "SCOAP³ Open-Access High-Energy Physics Repository", "type": "archive", "provider": "CERN / SCOAP³ Consortium", "url": "https://scoap3.org/" }
+          ],
+          "projects": [
+            { "name": "arXiv Open Science Preprint Infrastructure", "status": "ongoing", "location": "Ithaca, NY, USA (Global)", "url": "https://arxiv.org/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
