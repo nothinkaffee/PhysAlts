@@ -15,9 +15,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.18.0/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <link href="./vendor/maplibre-gl.css" rel="stylesheet" />
+  <link href="./vendor/tailwind.css" rel="stylesheet" />
+  <script src="./vendor/lucide.min.js"></script>
+  <script src="./vendor/maplibre-gl.js"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -558,11 +559,8 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import {
-      getFirestore, collection, doc, getDocs, setDoc, onSnapshot
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    let initializeApp, getAuth, signInAnonymously, signInWithCustomToken;
+    let getFirestore, collection, doc, getDocs, setDoc, onSnapshot;
 
     const PHYSICS_BRANCHES = [
       { id: "all",       label: "All Branches of Physics",       desc: "Complete global map across every subfield" },
@@ -1557,6 +1555,14 @@
           return;
         }
         const firebaseConfig = JSON.parse(__firebase_config);
+        const [fbApp, fbAuth, fbStore] = await Promise.all([
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js"),
+          import("https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js")
+        ]);
+        ({ initializeApp } = fbApp);
+        ({ getAuth, signInAnonymously, signInWithCustomToken } = fbAuth);
+        ({ getFirestore, collection, doc, getDocs, setDoc, onSnapshot } = fbStore);
         const app = initializeApp(firebaseConfig);
         auth = getAuth(app);
         db = getFirestore(app);
@@ -1776,7 +1782,7 @@
 
     async function loadMapLibreSafely() {
       if (typeof window.maplibregl !== "undefined") return true;
-      const res = await fetch("https://cdn.jsdelivr.net/npm/maplibre-gl@5.18.0/dist/maplibre-gl.js");
+      const res = await fetch("./vendor/maplibre-gl.js");
       if (!res.ok) throw new Error("Failed to fetch MapLibre GL JS");
       let code = await res.text();
       code = code
