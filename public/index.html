@@ -2032,27 +2032,231 @@
       state.globeReady = true;
     }
 
+    let useMainThreadOverlay = false;
+    let overlayCanvas = null;
+    let overlayHits = [];
+    let drawOverlayFn = () => {};
+
+    function probeWorkerSupport(workerUrl) {
+      return new Promise((resolve) => {
+        let done = false;
+        const finish = (ok) => {
+          if (done) return;
+          done = true;
+          resolve(ok);
+        };
+        try {
+          const testBlob = URL.createObjectURL(new Blob(["self.postMessage('ok');"], { type: "application/javascript" }));
+          const w = new Worker(workerUrl && !workerUrl.startsWith("blob:") ? workerUrl : testBlob);
+          const timer = setTimeout(() => { try { w.terminate(); } catch (_) {} finish(false); }, 700);
+          w.onmessage = () => { clearTimeout(timer); try { w.terminate(); } catch (_) {} finish(true); };
+          w.onerror = () => { clearTimeout(timer); try { w.terminate(); } catch (_) {} finish(false); };
+          if (workerUrl && !workerUrl.startsWith("blob:")) {
+            // Real MapLibre worker doesn't send unsolicited message, so lack of immediate error after 250ms = allowed
+            setTimeout(() => { clearTimeout(timer); try { w.terminate(); } catch (_) {} finish(true); }, 250);
+          }
+        } catch (_) {
+          finish(false);
+        }
+      });
+    }
+
+    function initMainThreadOverlay() {
+      const container = document.getElementById("map");
+      if (!container || overlayCanvas) return;
+      overlayCanvas = document.createElement("canvas");
+      overlayCanvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;";
+      container.appendChild(overlayCanvas);
+
+      const fmtCount = (n) => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
+
+      drawOverlayFn = () => {
+        if (!overlayCanvas || !map || typeof map.project !== "function") return;
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const w = container.clientWidth || window.innerWidth;
+        const h = container.clientHeight || window.innerHeight;
+        if (overlayCanvas.width !== Math.round(w * dpr) || overlayCanvas.height !== Math.round(h * dpr)) {
+          overlayCanvas.width = Math.round(w * dpr);
+          overlayCanvas.height = Math.round(h * dpr);
+        }
+        const ctx = overlayCanvas.getContext("2d");
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, w, h);
+
+        const zoom = typeof map.getZoom === "function" ? map.getZoom() : 2;
+        const center = typeof map.getCenter === "function" ? map.getCenter() : { lng: 12, lat: 34 };
+        const rad = Math.PI / 180;
+        const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
+        const cy = Math.cos(center.lat * rad) * Math.sin(center.lng * rad);
+        const cz = Math.sin(center.lat * rad);
+        const isVisibleOnGlobe = (lng, lat) => {
+          if (zoom >= 5.5) return true;
+          const x = Math.cos(lat * rad) * Math.cos(lng * rad);
+          const y = Math.cos(lat * rad) * Math.sin(lng * rad);
+          const z = Math.sin(lat * rad);
+          return (x * cx + y * cy + z * cz) > 0.02;
+        };
+
+        // Draw collaboration arcs
+        if (state.arcs) {
+          const arcs = buildArcsGeoJSON().features || [];
+          ctx.save();
+          ctx.setLineDash([4, 4]);
+          arcs.forEach(f => {
+            const coords = f.geometry?.coordinates || [];
+            const focused = f.properties?.focused === 1;
+            ctx.beginPath();
+            let started = false;
+            for (const [lng, lat] of coords) {
+              if (!isVisibleOnGlobe(lng, lat)) { started = false; continue; }
+              const pt = map.project([lng, lat]);
+              if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+              else ctx.lineTo(pt.x, pt.y);
+            }
+            ctx.strokeStyle = focused ? "rgba(255,255,255,0.82)" : "rgba(218,224,234,0.38)";
+            ctx.lineWidth = focused ? 1.6 : 1;
+            ctx.stroke();
+          });
+          ctx.restore();
+        }
+
+        const nodes = getVisibleNodes();
+        const hits = [];
+        const doCluster = zoom < 9;
+        const cellSize = 56;
+        const buckets = new Map();
+
+        for (const n of nodes) {
+          if (typeof n.lat !== "number" || typeof n.lng !== "number" || Number.isNaN(n.lat) || Number.isNaN(n.lng)) continue;
+          if (!isVisibleOnGlobe(n.lng, n.lat)) continue;
+          const pt = map.project([n.lng, n.lat]);
+          if (pt.x < -40 || pt.x > w + 40 || pt.y < -40 || pt.y > h + 40) continue;
+
+          if (!doCluster || state.selectedId === n.id) {
+            buckets.set(`single:${n.id}`, { items: [n], sumX: pt.x, sumY: pt.y, sumLng: n.lng, sumLat: n.lat });
+          } else {
+            const key = `${Math.floor(pt.x / cellSize)},${Math.floor(pt.y / cellSize)}`;
+            let b = buckets.get(key);
+            if (!b) { b = { items: [], sumX: 0, sumY: 0, sumLng: 0, sumLat: 0 }; buckets.set(key, b); }
+            b.items.push(n);
+            b.sumX += pt.x;
+            b.sumY += pt.y;
+            b.sumLng += n.lng;
+            b.sumLat += n.lat;
+          }
+        }
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        for (const b of buckets.values()) {
+          const count = b.items.length;
+          const x = b.sumX / count;
+          const y = b.sumY / count;
+          if (count > 1) {
+            const radius = count >= 150 ? 27 : count >= 60 ? 22 : count >= 15 ? 18 : 14;
+            ctx.beginPath();
+            ctx.arc(x, y, radius + 5, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(218, 224, 234, 0.14)";
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(18, 22, 30, 0.84)";
+            ctx.fill();
+            ctx.lineWidth = 1.5;
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.82)";
+            ctx.stroke();
+
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "600 12px Inter, -apple-system, sans-serif";
+            ctx.fillText(fmtCount(count), x, y + 0.5);
+            hits.push({ type: "cluster", x, y, r: radius + 4, lng: b.sumLng / count, lat: b.sumLat / count });
+          } else {
+            const n = b.items[0];
+            const selected = state.selectedId === n.id;
+            const curated = !n.sourceApi;
+            const radius = selected ? 7.5 : curated ? 5.5 : 4.2;
+
+            ctx.beginPath();
+            ctx.arc(x, y, selected ? 14 : curated ? 10 : 7, 0, Math.PI * 2);
+            ctx.fillStyle = selected ? "rgba(255,255,255,0.34)" : "rgba(212,216,223,0.20)";
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = selected ? "#ffffff" : curated ? "#e2e6ed" : "#b8c0cc";
+            ctx.fill();
+            ctx.lineWidth = selected ? 2.4 : 1.5;
+            ctx.strokeStyle = "rgba(255,255,255,0.92)";
+            ctx.stroke();
+
+            if (selected || (zoom >= 5.2 && curated)) {
+              ctx.save();
+              ctx.textAlign = "left";
+              ctx.font = "600 11.5px Inter, -apple-system, sans-serif";
+              ctx.lineWidth = 3;
+              ctx.strokeStyle = "rgba(8,10,15,0.88)";
+              ctx.strokeText(n.name, x + radius + 6, y);
+              ctx.fillStyle = "rgba(248,250,252,0.96)";
+              ctx.fillText(n.name, x + radius + 6, y);
+              ctx.restore();
+            }
+            hits.push({ type: "node", x, y, r: Math.max(radius + 8, 13), id: n.id });
+          }
+        }
+        overlayHits = hits;
+      };
+
+      map.on("render", drawOverlayFn);
+      map.on("move", drawOverlayFn);
+      map.on("resize", drawOverlayFn);
+      map.on("click", (e) => {
+        if (!e?.point) return;
+        const { x, y } = e.point;
+        for (let i = overlayHits.length - 1; i >= 0; i--) {
+          const hit = overlayHits[i];
+          const dx = x - hit.x;
+          const dy = y - hit.y;
+          if (dx * dx + dy * dy <= hit.r * hit.r) {
+            if (hit.type === "cluster") {
+              map.easeTo({ center: [hit.lng, hit.lat], zoom: Math.min(map.getZoom() + 2.2, 14), duration: 650 });
+            } else {
+              selectNode(hit.id, true);
+            }
+            return;
+          }
+        }
+      });
+      drawOverlayFn();
+    }
+
     async function initGlobe() {
       try {
         const ok = await loadMapLibreSafely();
         if (!ok) return;
         const isBlobPage = location.protocol === "blob:";
+        let resolvedWorkerUrl = "";
         if (typeof window.maplibregl.setWorkerUrl === "function") {
           if (isBlobPage) {
             const wCode = await fetch("./vendor/maplibre-gl-csp-worker.js").then(r => r.text());
-            window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
+            resolvedWorkerUrl = URL.createObjectURL(new Blob([wCode], { type: "application/javascript" }));
+            window.maplibregl.setWorkerUrl(resolvedWorkerUrl);
           } else {
             const directWorker = new URL("./vendor/maplibre-gl-csp-worker.js", location.href).href;
             try {
               const probe = new Worker(directWorker);
               probe.terminate();
+              resolvedWorkerUrl = directWorker;
               window.maplibregl.setWorkerUrl(directWorker);
             } catch (_) {
               const wCode = await fetch("./vendor/maplibre-gl-csp-worker.js").then(r => r.text());
-              window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
+              resolvedWorkerUrl = URL.createObjectURL(new Blob([wCode], { type: "application/javascript" }));
+              window.maplibregl.setWorkerUrl(resolvedWorkerUrl);
             }
           }
         }
+        const workerOk = isBlobPage ? false : await probeWorkerSupport(resolvedWorkerUrl);
+        useMainThreadOverlay = isBlobPage || !workerOk;
         if (USE_DEV_PROXY && typeof window.maplibregl.addProtocol === "function") {
           window.maplibregl.addProtocol("physalts", async (params) => {
             const raw = params.url.slice("physalts://".length);
@@ -2130,7 +2334,12 @@
 
         map.on("style.load", () => {
           try { map.setProjection({ type: "globe" }); } catch (_) {}
-          setupClusteredLayers();
+          if (useMainThreadOverlay) {
+            state.globeReady = true;
+            initMainThreadOverlay();
+          } else {
+            setupClusteredLayers();
+          }
           syncMarkers();
         });
         map.on("click", closeDropdown);
@@ -2155,6 +2364,10 @@
         }
       }
       if (!state.globeReady) return;
+      if (useMainThreadOverlay) {
+        drawOverlayFn();
+        return;
+      }
       const src = map.getSource("physics-hubs");
       if (src && typeof src.setData === "function") src.setData(buildGeoJSON(getVisibleNodes()));
       const arcSrc = map.getSource("physics-arcs");
