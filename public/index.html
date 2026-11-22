@@ -2070,7 +2070,9 @@
 
       const fmtCount = (n) => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
 
-      drawOverlayFn = () => {
+      let rafPending = false;
+      const renderOverlayNow = () => {
+        rafPending = false;
         if (!overlayCanvas || !map || typeof map.project !== "function") return;
         const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const w = container.clientWidth || window.innerWidth;
@@ -2089,12 +2091,13 @@
         const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
         const cy = Math.cos(center.lat * rad) * Math.sin(center.lng * rad);
         const cz = Math.sin(center.lat * rad);
+        // Tighter angular culling as zoom increases so antipodal/far-side points never wrap into view
+        const minDot = zoom >= 7 ? 0.85 : zoom >= 4.5 ? 0.45 : 0.08;
         const isVisibleOnGlobe = (lng, lat) => {
-          if (zoom >= 5.5) return true;
           const x = Math.cos(lat * rad) * Math.cos(lng * rad);
           const y = Math.cos(lat * rad) * Math.sin(lng * rad);
           const z = Math.sin(lat * rad);
-          return (x * cx + y * cy + z * cz) > 0.02;
+          return (x * cx + y * cy + z * cz) > minDot;
         };
 
         // Draw collaboration arcs
@@ -2110,6 +2113,7 @@
             for (const [lng, lat] of coords) {
               if (!isVisibleOnGlobe(lng, lat)) { started = false; continue; }
               const pt = map.project([lng, lat]);
+              if (pt.x < -200 || pt.x > w + 200 || pt.y < -200 || pt.y > h + 200) { started = false; continue; }
               if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
               else ctx.lineTo(pt.x, pt.y);
             }
@@ -2123,14 +2127,14 @@
         const nodes = getVisibleNodes();
         const hits = [];
         const doCluster = zoom < 9;
-        const cellSize = 56;
+        const cellSize = 62;
         const buckets = new Map();
 
         for (const n of nodes) {
           if (typeof n.lat !== "number" || typeof n.lng !== "number" || Number.isNaN(n.lat) || Number.isNaN(n.lng)) continue;
           if (!isVisibleOnGlobe(n.lng, n.lat)) continue;
           const pt = map.project([n.lng, n.lat]);
-          if (pt.x < -40 || pt.x > w + 40 || pt.y < -40 || pt.y > h + 40) continue;
+          if (pt.x < -30 || pt.x > w + 30 || pt.y < -30 || pt.y > h + 30) continue;
 
           if (!doCluster || state.selectedId === n.id) {
             buckets.set(`single:${n.id}`, { items: [n], sumX: pt.x, sumY: pt.y, sumLng: n.lng, sumLat: n.lat });
@@ -2207,8 +2211,13 @@
         overlayHits = hits;
       };
 
+      drawOverlayFn = () => {
+        if (rafPending) return;
+        rafPending = true;
+        requestAnimationFrame(renderOverlayNow);
+      };
+
       map.on("render", drawOverlayFn);
-      map.on("move", drawOverlayFn);
       map.on("resize", drawOverlayFn);
       map.on("click", (e) => {
         if (!e?.point) return;
