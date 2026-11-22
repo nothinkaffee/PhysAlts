@@ -31,6 +31,31 @@ const MIME_TYPES = {
   ".woff2": "font/woff2"
 };
 
+const proxyCache = new Map();
+const MAX_CACHE = 600;
+
+async function fetchCached(urlStr) {
+  const cached = proxyCache.get(urlStr);
+  if (cached) return cached;
+  const upstream = await fetch(urlStr, {
+    headers: { "User-Agent": "PhysAltsDevProxy/1.0" }
+  });
+  const buf = Buffer.from(await upstream.arrayBuffer());
+  const entry = {
+    status: upstream.status,
+    contentType: upstream.headers.get("content-type") || "application/octet-stream",
+    buf
+  };
+  if (upstream.ok) {
+    if (proxyCache.size >= MAX_CACHE) {
+      const oldestKey = proxyCache.keys().next().value;
+      proxyCache.delete(oldestKey);
+    }
+    proxyCache.set(urlStr, entry);
+  }
+  return entry;
+}
+
 async function handleProxy(reqUrl, res) {
   const target = reqUrl.searchParams.get("url");
   if (!target) {
@@ -55,16 +80,12 @@ async function handleProxy(reqUrl, res) {
   }
 
   try {
-    const upstream = await fetch(parsed.toString(), {
-      headers: { "User-Agent": "PhysAltsDevProxy/1.0" }
-    });
-    const buf = Buffer.from(await upstream.arrayBuffer());
-    const contentType = upstream.headers.get("content-type") || "application/octet-stream";
-    res.writeHead(upstream.status, {
-      "Content-Type": contentType,
+    const entry = await fetchCached(parsed.toString());
+    res.writeHead(entry.status, {
+      "Content-Type": entry.contentType,
       "Cache-Control": "public, max-age=3600"
     });
-    res.end(buf);
+    res.end(entry.buf);
   } catch (err) {
     res.writeHead(502, { "Content-Type": "text/plain" });
     res.end(`Upstream error: ${err.message}`);
@@ -84,14 +105,34 @@ async function handleStatic(reqUrl, res) {
   try {
     const stat = await fs.stat(resolved);
     const filePath = stat.isDirectory() ? path.join(resolved, "index.html") : resolved;
-    const data = await fs.readFile(filePath);
+    let data = await fs.readFile(filePath);
     const ext = path.extname(filePath).toLowerCase();
+    if (ext === ".html" && path.basename(filePath) === "index.html") {
+      const html = data.toString("utf8").replace(
+        "<head>",
+        "<head>\n  <script>window.__PHYSALTS_DEV_PROXY__ = true;</script>"
+      );
+      data = Buffer.from(html, "utf8");
+    }
     res.writeHead(200, {
       "Content-Type": MIME_TYPES[ext] || "application/octet-stream",
       "Cache-Control": "no-cache"
     });
     res.end(data);
   } catch {
+    // Fallback for extra MapLibre font glyph ranges beyond 0-511
+    if (pathname.startsWith("/vendor/fonts/") && pathname.endsWith(".pbf")) {
+      const rel = pathname.slice("/vendor/fonts/".length);
+      try {
+        const entry = await fetchCached(`https://demotiles.maplibre.org/font/${rel.split("/").map(encodeURIComponent).join("/")}`);
+        res.writeHead(entry.status, {
+          "Content-Type": entry.contentType,
+          "Cache-Control": "public, max-age=3600"
+        });
+        res.end(entry.buf);
+        return;
+      } catch {}
+    }
     res.writeHead(404, { "Content-Type": "text/plain" });
     res.end("Not found");
   }
@@ -99,6 +140,16 @@ async function handleStatic(reqUrl, res) {
 
 const server = http.createServer((req, res) => {
   const reqUrl = new URL(req.url || "/", `http://localhost:${PORT}`);
+  if (reqUrl.pathname === "/_diag" && req.method === "POST") {
+    let body = "";
+    req.on("data", chunk => { body += chunk; });
+    req.on("end", () => {
+      console.log("[CLIENT_DIAG]", body.slice(0, 1000));
+      res.writeHead(204);
+      res.end();
+    });
+    return;
+  }
   if (reqUrl.pathname === "/_proxy") {
     handleProxy(reqUrl, res);
   } else {

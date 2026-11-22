@@ -559,9 +559,10 @@
   </div>
 
   <script type="module">
-    const USE_DEV_PROXY = location.protocol === "http:" && (location.hostname === "localhost" || location.hostname === "127.0.0.1");
+    const USE_DEV_PROXY = Boolean(window.__PHYSALTS_DEV_PROXY__) ||
+      (location.protocol === "http:" && (location.hostname === "localhost" || location.hostname === "127.0.0.1"));
     const proxyUrl = (url) => (USE_DEV_PROXY && /^https:\/\//.test(url))
-      ? `${location.origin}/_proxy?url=${encodeURIComponent(url)}`
+      ? new URL("./_proxy?url=" + encodeURIComponent(url), location.href).href
       : url;
 
     let initializeApp, getAuth, signInAnonymously, signInWithCustomToken;
@@ -2036,7 +2037,15 @@
         const ok = await loadMapLibreSafely();
         if (!ok) return;
         if (typeof window.maplibregl.setWorkerUrl === "function") {
-          window.maplibregl.setWorkerUrl("./vendor/maplibre-gl-csp-worker.js");
+          const directWorker = new URL("./vendor/maplibre-gl-csp-worker.js", location.href).href;
+          try {
+            const probe = new Worker(directWorker);
+            probe.terminate();
+            window.maplibregl.setWorkerUrl(directWorker);
+          } catch (_) {
+            const wCode = await fetch(directWorker).then(r => r.text());
+            window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
+          }
         }
         map = new window.maplibregl.Map({
           container: "map",
@@ -2051,7 +2060,7 @@
           attributionControl: true,
           style: {
             version: 8,
-            glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+            glyphs: `${new URL("./vendor/fonts/", location.href).href}{fontstack}/{range}.pbf`,
             projection: { type: "globe" },
             sky: {
               "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0]
@@ -2105,6 +2114,12 @@
         map.on("click", closeDropdown);
       } catch (err) {
         console.error("Map init error:", err);
+        if (USE_DEV_PROXY) {
+          fetch(new URL("./_diag", location.href).href, {
+            method: "POST",
+            body: JSON.stringify({ href: location.href, err: String(err && err.stack || err) })
+          }).catch(() => {});
+        }
       }
     }
 
