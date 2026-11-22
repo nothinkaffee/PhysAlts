@@ -1,0 +1,23 @@
+{
+  "appId": "org.physalts.app",
+  "appName": "PhysAlts",
+  "webDir": "public",
+  "server": {
+    "androidScheme": "https"
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#030509"
+  },
+  "android": {
+    "backgroundColor": "#030509",
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1200,
+      "backgroundColor": "#030509",
+      "showSpinner": false
+    }
+  }
+}

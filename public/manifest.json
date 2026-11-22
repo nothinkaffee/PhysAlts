@@ -1,0 +1,18 @@
+{
+  "name": "PhysAlts — World of Physics",
+  "short_name": "PhysAlts",
+  "description": "Interactive 3D global atlas of physics departments, national labs, mega-experiments, and career pathways.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#030509",
+  "theme_color": "#030509",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

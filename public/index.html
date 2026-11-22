@@ -1,0 +1,3155 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#030509" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="PhysAlts" />
+  <meta name="description" content="Interactive 3D global atlas of physics departments, national labs, mega-experiments, Nobel origins, and academic career pathways." />
+  <title>PhysAlts — World of Physics</title>
+  <link rel="manifest" href="./manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <link rel="apple-touch-icon" href="./icon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.18.0/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #030509;
+      color: #f4f6f9;
+      font-size: 14px;
+    }
+
+    #map {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 48%, #0c1320 0%, #05080f 58%, #020306 100%);
+    }
+
+    .maplibregl-ctrl-attrib {
+      background: rgba(12, 14, 18, 0.38) !important;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      color: rgba(255, 255, 255, 0.45) !important;
+      border-radius: 999px !important;
+      padding: 2px 10px !important;
+      margin: 0 14px 12px 0 !important;
+      font-size: 11px !important;
+    }
+    .maplibregl-ctrl-attrib a { color: rgba(255, 255, 255, 0.55) !important; }
+
+    .liquid-glass {
+      background: linear-gradient(155deg, rgba(22, 26, 34, 0.58) 0%, rgba(12, 15, 22, 0.66) 100%);
+      backdrop-filter: blur(30px) saturate(175%) brightness(1.02);
+      -webkit-backdrop-filter: blur(30px) saturate(175%) brightness(1.02);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      box-shadow:
+        0 24px 60px rgba(0, 0, 0, 0.52),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    }
+
+    .liquid-pill {
+      background: linear-gradient(180deg, rgba(26, 30, 39, 0.56) 0%, rgba(14, 17, 24, 0.68) 100%);
+      backdrop-filter: blur(26px) saturate(175%) brightness(1.03);
+      -webkit-backdrop-filter: blur(26px) saturate(175%) brightness(1.03);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow:
+        0 14px 36px rgba(0, 0, 0, 0.44),
+        inset 0 1px 0 rgba(255, 255, 255, 0.24);
+    }
+
+    .glass-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.10);
+      color: rgba(246, 248, 251, 0.94);
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
+      transition: background 0.18s ease, border-color 0.18s ease, transform 0.14s ease, color 0.18s ease;
+      cursor: pointer;
+    }
+    .glass-btn:hover {
+      background: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .glass-btn:active {
+      transform: scale(0.96);
+    }
+
+    .glass-btn-active {
+      background: rgba(255, 255, 255, 0.92) !important;
+      color: #090b0f !important;
+      border: 1px solid rgba(255, 255, 255, 0.95) !important;
+      box-shadow: 0 6px 22px rgba(0, 0, 0, 0.28), inset 0 1px 0 #ffffff;
+      font-weight: 500;
+    }
+    .glass-btn-active:hover {
+      background: #ffffff !important;
+      color: #05070a !important;
+    }
+    .glass-btn-active svg {
+      color: #090b0f !important;
+      fill: #090b0f;
+    }
+
+    .glass-row {
+      background: rgba(255, 255, 255, 0.055);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      color: rgba(246, 248, 251, 0.95);
+      transition: background 0.16s ease, border-color 0.16s ease, transform 0.14s ease;
+      cursor: pointer;
+    }
+    .glass-row:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.10);
+    }
+    .glass-row-active {
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(255, 255, 255, 0.96);
+      color: #090b0f;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.24);
+    }
+
+    .stage-opt {
+      color: rgba(246, 248, 251, 0.88);
+      background: transparent;
+      transition: background 0.14s ease, color 0.14s ease;
+    }
+    .stage-opt:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+    .stage-opt-active {
+      background: rgba(255, 255, 255, 0.94) !important;
+      color: #090b0f !important;
+      font-weight: 500;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.26);
+    }
+
+    .no-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+
+    .scroll-clean {
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+    }
+    .scroll-clean::-webkit-scrollbar { width: 5px; }
+    .scroll-clean::-webkit-scrollbar-track { background: transparent; }
+    .scroll-clean::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.22); border-radius: 999px; }
+
+    #toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translate(-50%, -18px);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 60;
+      transition: opacity 0.22s ease, transform 0.22s ease;
+    }
+    #toast.visible {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    @media (max-width: 767px) {
+      #place-card {
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        top: auto !important;
+        bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+        max-height: 60vh !important;
+        border-radius: 24px !important;
+      }
+      #drawer-modal {
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        bottom: calc(68px + env(safe-area-inset-bottom, 0px)) !important;
+        max-height: 58vh !important;
+        border-radius: 24px !important;
+      }
+      #top-left-bar {
+        top: 12px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+      }
+      #bottom-dock {
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px)) !important;
+        max-width: calc(100vw - 20px);
+        overflow-x: auto;
+      }
+      .maplibregl-ctrl-attrib {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="map" aria-label="Interactive 3D Satellite Physics Globe"></div>
+
+  <div id="toast" class="liquid-pill rounded-full px-4 py-2 text-[13px] font-medium text-white">
+    <span id="toast-text">Ready</span>
+  </div>
+
+  <div id="top-left-bar" class="fixed top-5 left-5 z-30 flex flex-col gap-2 w-[420px] max-w-[calc(100vw-24px)]">
+    <div class="liquid-pill rounded-full px-3.5 py-2 flex items-center gap-2.5">
+      <i data-lucide="search" class="w-4 h-4 text-white/70 shrink-0"></i>
+      <input
+        id="search-input"
+        type="text"
+        placeholder="Search CERN, IceCube, MIT, quantum…"
+        class="bg-transparent border-none outline-none text-[14px] text-white placeholder-white/55 w-full"
+        autocomplete="off"
+      />
+      <button id="btn-clear-search" class="hidden text-white/60 hover:text-white p-1 cursor-pointer" aria-label="Clear search">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+      <button id="btn-surprise" class="glass-btn rounded-full px-3 py-1 text-[12.5px] font-medium shrink-0 flex items-center gap-1.5" title="Fly to a random physics hub">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Explore
+      </button>
+    </div>
+
+    <div class="flex items-center gap-2 flex-wrap">
+      <div class="relative">
+        <button id="stage-dropdown-btn" type="button" class="liquid-pill rounded-full px-3.5 py-1.5 min-h-[34px] flex items-center gap-2 text-[13px] text-white cursor-pointer hover:bg-white/10 transition" aria-haspopup="listbox" aria-expanded="false">
+          <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-white/70 shrink-0"></i>
+          <span class="text-white/55">Stage:</span>
+          <span id="stage-current-label" class="font-medium text-white">Undergraduate</span>
+          <i id="stage-chevron" data-lucide="chevron-down" class="w-3.5 h-3.5 text-white/65 transition-transform duration-200"></i>
+        </button>
+        <div id="stage-dropdown-menu" role="listbox" class="hidden absolute left-0 top-full mt-2 w-[220px] liquid-glass rounded-[20px] p-1.5 z-40 space-y-0.5"></div>
+      </div>
+
+      <button id="db-status-pill" type="button" class="liquid-pill rounded-full px-3 py-1.5 min-h-[34px] flex items-center gap-2 text-[12px] text-white/85 hover:bg-white/10 transition cursor-pointer" title="Open Phase 1 Global Data Engine">
+        <span id="db-dot" class="w-2 h-2 rounded-full bg-white/40"></span>
+        <span id="db-status-text">Connecting DB…</span>
+        <i data-lucide="database" class="w-3 h-3 text-white/55"></i>
+      </button>
+
+      <button id="btn-mobile-space" type="button" class="sm:hidden liquid-pill rounded-full px-3 py-1.5 min-h-[34px] text-[12px] text-white/85 flex items-center gap-1 cursor-pointer">
+        <i data-lucide="globe" class="w-3.5 h-3.5"></i> Space
+      </button>
+
+      <button id="active-branch-pill" type="button" class="hidden liquid-pill rounded-full px-3 py-1.5 min-h-[34px] text-[12px] text-white flex items-center gap-1.5 cursor-pointer hover:bg-white/15 transition" title="Clear branch filter">
+        <span id="active-branch-text">Branch</span>
+        <i data-lucide="x" class="w-3 h-3 text-white/70"></i>
+      </button>
+    </div>
+
+    <div id="search-dropdown" class="hidden liquid-glass rounded-[22px] p-2 max-h-[52vh] scroll-clean space-y-1"></div>
+  </div>
+
+  <div class="fixed top-5 right-5 z-20 hidden sm:flex items-center gap-2">
+    <div class="liquid-pill rounded-full p-1 flex items-center gap-1">
+      <button id="btn-toggle-arcs" class="glass-btn glass-btn-active rounded-full px-3 py-1.5 text-[13px]" title="Toggle 3D collaboration & historical lineage arcs">Arcs</button>
+      <button id="btn-toggle-labels" class="glass-btn rounded-full px-3 py-1.5 text-[13px]" title="Toggle country & city labels">Labels</button>
+      <button id="btn-toggle-tilt" class="glass-btn rounded-full px-3 py-1.5 text-[13px]" title="Toggle 3D angled view">3D Tilt</button>
+      <button id="btn-space-view" class="glass-btn rounded-full px-3 py-1.5 text-[13px]" title="Zoom back out to space">Space</button>
+    </div>
+  </div>
+
+  <aside id="place-card" class="hidden fixed top-20 right-5 z-20 w-[380px] max-h-[calc(100vh-156px)] liquid-glass rounded-[26px] flex-col overflow-hidden">
+    <div class="relative h-[190px] w-full shrink-0 overflow-hidden bg-[#10141c]">
+      <img id="card-photo" src="" alt="" class="w-full h-full object-cover opacity-0 transition-opacity duration-500" />
+      <div id="card-photo-fallback" class="absolute inset-0 flex flex-col items-center justify-center text-white/40 bg-gradient-to-br from-[#191f2a] to-[#0b0e14]">
+        <i data-lucide="globe" class="w-8 h-8 mb-1.5 opacity-60"></i>
+        <span class="text-[12.5px]">Satellite View</span>
+      </div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none"></div>
+
+      <div class="absolute top-3 right-3 flex items-center gap-1.5">
+        <button id="btn-card-share" class="liquid-pill rounded-full w-9 h-9 flex items-center justify-center text-white/90 hover:text-white cursor-pointer transition" title="Copy hub summary" aria-label="Share">
+          <i data-lucide="share-2" class="w-4 h-4"></i>
+        </button>
+        <button id="btn-card-star" class="liquid-pill rounded-full w-9 h-9 flex items-center justify-center text-white/90 hover:text-white cursor-pointer transition" title="Save to shortlist" aria-label="Save">
+          <i data-lucide="star" class="w-4 h-4"></i>
+        </button>
+        <button id="btn-card-close" class="liquid-pill rounded-full w-9 h-9 flex items-center justify-center text-white/90 hover:text-white cursor-pointer transition" title="Close (Esc)" aria-label="Close">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="absolute bottom-3 left-4 right-4">
+        <div id="card-location" class="text-[12.5px] font-medium text-white/80"></div>
+        <h2 id="card-title" class="text-[20px] font-semibold leading-tight text-white mt-0.5"></h2>
+      </div>
+    </div>
+
+    <div class="p-4 space-y-3.5 scroll-clean">
+      <p id="card-summary" class="text-[14px] leading-relaxed text-white/90"></p>
+
+      <div id="card-stage-box" class="rounded-2xl bg-white/[0.07] border border-white/15 p-3 space-y-1">
+        <div class="flex items-center justify-between gap-2">
+          <span id="card-stage-label" class="text-[12.5px] font-medium text-white/75">Undergraduate Pathway</span>
+          <span id="card-branch-badge" class="text-[12px] text-white/60"></span>
+        </div>
+        <p id="card-stage-text" class="text-[13.5px] leading-relaxed text-white/95"></p>
+      </div>
+
+      <div id="card-pills" class="flex flex-wrap gap-1.5"></div>
+
+      <div class="grid grid-cols-2 gap-2">
+        <button id="btn-zoom-buildings" class="glass-btn glass-btn-active rounded-full py-2 px-3 text-[13px] flex items-center justify-center gap-1.5">
+          <i data-lucide="building-2" class="w-4 h-4"></i> See Buildings
+        </button>
+        <button id="btn-next-hop" class="glass-btn rounded-full py-2 px-3 text-[13px] flex items-center justify-center gap-1.5">
+          Rabbit Hole <i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <button id="btn-persist-live" class="hidden w-full glass-btn rounded-full py-2 px-3 text-[13px] flex items-center justify-center gap-1.5">
+        <i data-lucide="database" class="w-4 h-4"></i> Save to Backend Atlas DB
+      </button>
+
+      <div id="card-links" class="flex flex-wrap gap-2 pt-0.5"></div>
+
+      <div class="pt-1 border-t border-white/15">
+        <button id="btn-toggle-deeper" class="w-full flex items-center justify-between py-1.5 text-[13px] font-medium text-white/80 hover:text-white cursor-pointer">
+          <span>Go Deeper · Nobel, PIs, Stages &amp; Papers</span>
+          <i id="deeper-chevron" data-lucide="chevron-down" class="w-4 h-4 transition-transform"></i>
+        </button>
+        <div id="deeper-content" class="hidden pt-2 space-y-3 text-[13px] text-white/80">
+          <div id="deeper-nobel-wrap" class="space-y-1">
+            <div class="text-[12px] font-medium text-white/55">Nobel &amp; Breakthroughs</div>
+            <p id="deeper-nobel" class="leading-relaxed"></p>
+          </div>
+          <div class="space-y-1.5">
+            <div class="text-[12px] font-medium text-white/55">Top Cited Physicists / PIs (OpenAlex)</div>
+            <div id="deeper-authors" class="space-y-1.5"></div>
+          </div>
+          <div class="space-y-1.5">
+            <div class="text-[12px] font-medium text-white/55">All Career Stages at This Hub</div>
+            <div id="deeper-all-stages" class="space-y-1.5"></div>
+          </div>
+          <div class="space-y-1.5">
+            <div class="text-[12px] font-medium text-white/55">Recent Physics Papers (OpenAlex)</div>
+            <div id="deeper-papers" class="space-y-1.5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <section id="drawer-modal" class="hidden fixed left-5 bottom-20 z-20 w-[400px] max-w-[calc(100vw-20px)] max-h-[64vh] liquid-glass rounded-[26px] flex-col overflow-hidden">
+    <div class="sm:hidden flex justify-center pt-2 pb-0.5 shrink-0">
+      <div class="w-9 h-1 rounded-full bg-white/25"></div>
+    </div>
+    <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between shrink-0">
+      <h3 id="modal-title" class="text-[16px] font-semibold text-white">Physics Map</h3>
+      <button id="btn-close-modal" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center" aria-label="Close">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <div id="modal-fields" class="hidden flex-1 flex-col min-h-0 p-4 space-y-3 scroll-clean">
+      <p class="text-[13px] text-white/75 leading-relaxed">
+        Every branch of physics mapped in the backend database. Select a field to filter the 3D globe.
+      </p>
+      <div id="fields-grid" class="grid grid-cols-1 gap-2"></div>
+    </div>
+
+    <div id="modal-live" class="hidden flex-1 flex-col min-h-0 p-4 space-y-3">
+      <p class="text-[13px] text-white/75 leading-relaxed">
+        Query every physics department and lab worldwide via OpenAlex, ROR, and INSPIRE-HEP, and save any hub permanently into the backend database.
+      </p>
+      <div class="flex gap-2">
+        <input id="live-api-input" type="text" placeholder="e.g. neutrino, Leiden, tokamak…" class="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-2 text-[13.5px] text-white placeholder-white/50 outline-none focus:border-white/45" />
+        <button id="btn-live-go" class="glass-btn glass-btn-active rounded-full px-4 py-2 text-[13px] shrink-0">Go</button>
+      </div>
+      <div class="flex flex-wrap gap-1.5">
+        <button data-q="neutrino" class="live-chip glass-btn rounded-full px-3 py-1 text-[12.5px]">Neutrino</button>
+        <button data-q="fusion" class="live-chip glass-btn rounded-full px-3 py-1 text-[12.5px]">Fusion</button>
+        <button data-q="quantum optics" class="live-chip glass-btn rounded-full px-3 py-1 text-[12.5px]">Quantum Optics</button>
+        <button data-q="condensed matter" class="live-chip glass-btn rounded-full px-3 py-1 text-[12.5px]">Condensed Matter</button>
+      </div>
+      <div id="live-status" class="text-[12.5px] text-white/60"></div>
+      <div id="live-results" class="flex-1 scroll-clean space-y-1.5"></div>
+    </div>
+
+    <div id="modal-pathways" class="hidden flex-1 flex-col min-h-0 p-4 space-y-3.5 scroll-clean">
+      <div class="flex items-center justify-between gap-2">
+        <p id="pathways-subtitle" class="text-[13px] text-white/75 leading-relaxed">
+          Saved shortlist &amp; stage-tailored physics portals.
+        </p>
+        <button id="btn-toggle-add-form" class="glass-btn rounded-full px-3 py-1 text-[12.5px] shrink-0 flex items-center gap-1">
+          <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Hub
+        </button>
+      </div>
+
+      <form id="add-node-form" class="hidden rounded-2xl bg-white/8 border border-white/15 p-3 space-y-2.5">
+        <div class="text-[13px] font-medium text-white">Add Physics Hub to Backend Database</div>
+        <div class="grid grid-cols-2 gap-2">
+          <input id="add-name" required type="text" placeholder="Institution / Lab Name" class="col-span-2 bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white placeholder-white/45 outline-none" />
+          <input id="add-city" required type="text" placeholder="City, Country" class="bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white placeholder-white/45 outline-none" />
+          <select id="add-branch" class="bg-[#161a24] border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white outline-none">
+            <option value="particle">Particle &amp; High-Energy</option>
+            <option value="quantum">Quantum &amp; Photonics</option>
+            <option value="astro">Astrophysics &amp; Cosmology</option>
+            <option value="fusion">Fusion &amp; Plasma</option>
+            <option value="condensed">Condensed Matter &amp; Materials</option>
+            <option value="gravity">Gravity &amp; Relativity</option>
+            <option value="history">History &amp; Foundations</option>
+          </select>
+          <input id="add-lat" required type="number" step="any" placeholder="Latitude (e.g. 47.37)" class="bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white placeholder-white/45 outline-none" />
+          <input id="add-lng" required type="number" step="any" placeholder="Longitude (e.g. 8.54)" class="bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white placeholder-white/45 outline-none" />
+          <input id="add-url" type="url" placeholder="Official Website URL (optional)" class="col-span-2 bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white placeholder-white/45 outline-none" />
+          <textarea id="add-summary" rows="2" required placeholder="Brief summary of physics research…" class="col-span-2 bg-white/10 border border-white/20 rounded-xl px-3 py-1.5 text-[13px] text-white placeholder-white/45 outline-none resize-none"></textarea>
+        </div>
+        <div class="flex justify-end gap-2">
+          <button type="button" id="btn-cancel-add" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px]">Cancel</button>
+          <button type="submit" class="glass-btn glass-btn-active rounded-full px-4 py-1.5 text-[12.5px]">Save to DB</button>
+        </div>
+      </form>
+
+      <div id="stage-portals" class="flex flex-wrap gap-1.5 text-[12.5px]"></div>
+
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span id="live-jobs-title" class="text-[12px] font-medium text-white/60">Live Open Positions (INSPIRE-HEP)</span>
+          <a href="https://inspirehep.net/jobs" target="_blank" rel="noopener noreferrer" class="text-[11.5px] text-white/55 hover:text-white underline">View all ↗</a>
+        </div>
+        <div id="live-jobs-list" class="space-y-1.5"></div>
+      </div>
+
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-[12px] font-medium text-white/60">Your Saved Shortlist</span>
+          <button id="btn-toggle-compare" type="button" class="text-[11.5px] text-white/70 hover:text-white underline cursor-pointer">Compare Table</button>
+        </div>
+        <div id="masters-list" class="space-y-2"></div>
+        <div id="compare-table-wrap" class="hidden overflow-x-auto rounded-[16px] border border-white/10 bg-white/[0.04]">
+          <table class="w-full text-left text-[11.5px] text-white/85 border-collapse">
+            <thead>
+              <tr class="border-b border-white/10 text-white/55">
+                <th class="py-2 px-2.5 font-medium">Hub</th>
+                <th class="py-2 px-2 font-medium">Rank / Type</th>
+                <th class="py-2 px-2 font-medium">Funding</th>
+                <th class="py-2 px-2 font-medium">Visa</th>
+              </tr>
+            </thead>
+            <tbody id="compare-table-body"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="pt-2 border-t border-white/15 flex flex-wrap items-center gap-2">
+        <button id="btn-export-kml" class="glass-btn rounded-full px-3.5 py-2 text-[12.5px] flex-1 flex items-center justify-center gap-1.5">
+          <i data-lucide="download" class="w-3.5 h-3.5"></i> .KML
+        </button>
+        <button id="btn-export-json" class="glass-btn rounded-full px-3.5 py-2 text-[12.5px] flex-1 flex items-center justify-center gap-1.5" title="Export full scraped dataset as JSON for GitHub / Mobile App">
+          <i data-lucide="file-json" class="w-3.5 h-3.5"></i> Dataset .JSON
+        </button>
+        <a href="https://www.shanghairanking.com/rankings/gras/2026/AS0102" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3.5 py-2 text-[12.5px] flex items-center justify-center gap-1">
+          Rankings <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+        </a>
+      </div>
+    </div>
+
+    <div id="modal-engine" class="hidden flex-1 flex-col min-h-0 p-4 space-y-3.5 scroll-clean">
+      <p class="text-[13px] text-white/75 leading-relaxed">
+        GPU-clustered global physics index powered by open CC0 registries. Harvest departments &amp; labs worldwide and sync chunks to the cloud backend.
+      </p>
+
+      <div class="grid grid-cols-3 gap-2">
+        <div class="glass-row rounded-[16px] p-2.5 text-center cursor-default">
+          <div id="eng-total" class="text-[18px] font-semibold text-white">0</div>
+          <div class="text-[11px] text-white/55 mt-0.5">Total Hubs</div>
+        </div>
+        <div class="glass-row rounded-[16px] p-2.5 text-center cursor-default">
+          <div id="eng-countries" class="text-[18px] font-semibold text-white">0</div>
+          <div class="text-[11px] text-white/55 mt-0.5">Countries</div>
+        </div>
+        <div class="glass-row rounded-[16px] p-2.5 text-center cursor-default">
+          <div id="eng-sources" class="text-[18px] font-semibold text-white">3</div>
+          <div class="text-[11px] text-white/55 mt-0.5">Open APIs</div>
+        </div>
+      </div>
+
+      <div id="eng-progress-wrap" class="hidden space-y-1.5">
+        <div class="flex items-center justify-between text-[12px] text-white/75">
+          <span id="eng-progress-label">Harvesting OpenAlex &amp; ROR v2…</span>
+          <span id="eng-progress-pct">0%</span>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden">
+          <div id="eng-progress-bar" class="h-full bg-white rounded-full transition-all duration-300" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="text-[12px] font-medium text-white/55">Automated Global ETL Pipeline</div>
+        <div class="grid grid-cols-2 gap-2">
+          <button id="btn-harvest-quick" type="button" class="glass-btn glass-btn-active rounded-full py-2 px-3 text-[12.5px] flex items-center justify-center gap-1.5">
+            <i data-lucide="download-cloud" class="w-3.5 h-3.5"></i> Harvest +300
+          </button>
+          <button id="btn-harvest-deep" type="button" class="glass-btn rounded-full py-2 px-3 text-[12.5px] flex items-center justify-center gap-1.5">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i> Deep Harvest (1k+)
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-1.5 pt-0.5">
+          <button data-etl="particle physics accelerator" class="etl-topic-btn glass-btn rounded-full px-3 py-1 text-[12px]">+ Particle</button>
+          <button data-etl="quantum optics photonics" class="etl-topic-btn glass-btn rounded-full px-3 py-1 text-[12px]">+ Quantum</button>
+          <button data-etl="astrophysics observatory" class="etl-topic-btn glass-btn rounded-full px-3 py-1 text-[12px]">+ Astro</button>
+          <button data-etl="plasma fusion tokamak" class="etl-topic-btn glass-btn rounded-full px-3 py-1 text-[12px]">+ Fusion</button>
+          <button data-etl="condensed matter synchrotron" class="etl-topic-btn glass-btn rounded-full px-3 py-1 text-[12px]">+ Condensed</button>
+        </div>
+      </div>
+
+      <div id="eng-breakdown" class="space-y-1.5 text-[12.5px]"></div>
+
+      <div class="glass-row rounded-[16px] p-3 space-y-1.5 cursor-default text-[11.5px] text-white/65 leading-relaxed">
+        <div class="text-[12px] font-medium text-white/90">Phase 3 · Open Data &amp; Rights Compliance</div>
+        <p>
+          Institutional names &amp; coordinates are listed under nominative fair use with zero scraped trademarked logos. Facility photos are loaded live from Wikimedia Commons (CC-BY-SA).
+        </p>
+        <p class="text-white/50">
+          Registries: <a href="https://openalex.org/" target="_blank" rel="noopener noreferrer" class="underline hover:text-white">OpenAlex</a> (CC0) · <a href="https://ror.org/" target="_blank" rel="noopener noreferrer" class="underline hover:text-white">ROR v2</a> (CC0) · <a href="https://inspirehep.net/" target="_blank" rel="noopener noreferrer" class="underline hover:text-white">INSPIRE-HEP</a> (CC0) · Imagery © Esri.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <nav id="bottom-dock" aria-label="Physics Filters" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-20 liquid-pill rounded-full p-1.5 flex items-center gap-1 whitespace-nowrap no-scrollbar">
+    <button data-filter="all" class="dock-filter glass-btn glass-btn-active rounded-full px-3.5 py-2 sm:py-1.5 text-[13px]">All</button>
+    <button data-filter="lab" class="dock-filter glass-btn rounded-full px-3.5 py-2 sm:py-1.5 text-[13px]">Labs</button>
+    <button data-filter="uni" class="dock-filter glass-btn rounded-full px-3.5 py-2 sm:py-1.5 text-[13px]">Universities</button>
+    <button data-filter="hist" class="dock-filter glass-btn rounded-full px-3.5 py-2 sm:py-1.5 text-[13px]">History</button>
+    <span class="h-4 w-px bg-white/15 mx-1 shrink-0"></span>
+    <button id="btn-open-fields" class="glass-btn rounded-full px-3.5 py-2 sm:py-1.5 text-[13px] flex items-center gap-1.5">
+      <i data-lucide="atom" class="w-3.5 h-3.5"></i> Physics Map
+    </button>
+    <button id="btn-open-live" class="glass-btn rounded-full px-3.5 py-2 sm:py-1.5 text-[13px] flex items-center gap-1.5">
+      <i data-lucide="radar" class="w-3.5 h-3.5"></i> Live Search
+    </button>
+    <button id="btn-open-pathways" class="glass-btn rounded-full px-3.5 py-2 sm:py-1.5 text-[13px] flex items-center gap-1.5">
+      <i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Pathways
+    </button>
+  </nav>
+
+  <div class="fixed bottom-5 right-5 z-20 hidden sm:flex items-center gap-1 liquid-pill rounded-full p-1">
+    <button id="btn-zoom-in" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center" title="Zoom In" aria-label="Zoom In">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+    <button id="btn-zoom-out" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center" title="Zoom Out" aria-label="Zoom Out">
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"/></svg>
+    </button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore, collection, doc, getDocs, setDoc, onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    const PHYSICS_BRANCHES = [
+      { id: "all",       label: "All Branches of Physics",       desc: "Complete global map across every subfield" },
+      { id: "particle",  label: "Particle & High-Energy",        desc: "Colliders, neutrinos, dark matter, QCD" },
+      { id: "quantum",   label: "Quantum & Photonics",           desc: "Qubits, attosecond lasers, quantum optics, EUV" },
+      { id: "astro",     label: "Astrophysics & Cosmology",      desc: "Optical/radio telescopes, black holes, CMB" },
+      { id: "gravity",   label: "Gravitational Waves & Theory",  desc: "LIGO, general relativity, quantum gravity" },
+      { id: "fusion",    label: "Fusion & Plasma Physics",       desc: "Tokamaks, HTS magnets, burning plasma" },
+      { id: "condensed", label: "Condensed Matter & Materials",  desc: "Synchrotrons, neutrons, 2D materials, superconductors" },
+      { id: "history",   label: "History & Nobel Origins",       desc: "From Anaximander & Einstein to Quantum Mechanics" }
+    ];
+
+    const STAGE_META = {
+      all:        { label: "All Stages",           short: "All" },
+      highschool: { label: "High School",          short: "High School" },
+      undergrad:  { label: "Undergraduate",        short: "Undergrad" },
+      masters:    { label: "Graduate / Master's",  short: "Master's" },
+      phd:        { label: "Postgrad / PhD",       short: "PhD" },
+      postdoc:    { label: "Postdoc",              short: "Postdoc" },
+      assoc_prof: { label: "Associate Professor",  short: "Assoc. Prof" },
+      prof:       { label: "Professor / PI",       short: "Professor" }
+    };
+
+    const STAGE_PORTALS = {
+      all: [
+        { name: "DAAD (Germany)", url: "https://www2.daad.de/deutschland/studienangebote/international-programmes/en/" },
+        { name: "EURAXESS Jobs", url: "https://euraxess.ec.europa.eu/jobs" },
+        { name: "INSPIRE-HEP Jobs", url: "https://inspirehep.net/jobs" }
+      ],
+      highschool: [
+        { name: "CERN Beamline for Schools", url: "https://beamlineforschools.cern/" },
+        { name: "Perimeter ISSYP", url: "https://perimeterinstitute.ca/issyp" },
+        { name: "IPhO Physics Olympiad", url: "https://www.ipho-new.org/" }
+      ],
+      undergrad: [
+        { name: "CERN Summer Student", url: "https://careers.cern/summer" },
+        { name: "NSF Physics REU", url: "https://www.nsf.gov/crssprgm/reu/" },
+        { name: "DESY Summer Program", url: "https://summerstudents.desy.de/" },
+        { name: "DAAD RISE Germany", url: "https://www.daad.de/rise/en/" }
+      ],
+      masters: [
+        { name: "DAAD Intl. Master's", url: "https://www2.daad.de/deutschland/studienangebote/international-programmes/en/" },
+        { name: "Erasmus Mundus", url: "https://erasmus-plus.ec.europa.eu/opportunities/individuals/students/erasmus-mundus-joint-masters" },
+        { name: "MEXT Japan", url: "https://www.studyinjapan.go.jp/en/planning/scholarships/mext-scholarships/" },
+        { name: "Perimeter PSI MSc", url: "https://perimeterinstitute.ca/psi-masters-program" }
+      ],
+      phd: [
+        { name: "Max Planck IMPRS", url: "https://www.mpg.de/en/imprs" },
+        { name: "Marie Curie Doctoral", url: "https://marie-sklodowska-curie-actions.ec.europa.eu/" },
+        { name: "INSPIRE-HEP PhDs", url: "https://inspirehep.net/jobs?rank=PHD" },
+        { name: "ETH Zurich PhD", url: "https://www.phys.ethz.ch/studies/doctorate.html" }
+      ],
+      postdoc: [
+        { name: "MSCA Postdoc Fellowships", url: "https://marie-sklodowska-curie-actions.ec.europa.eu/actions/postdoctoral-fellowships" },
+        { name: "CERN Research Fellows", url: "https://careers.cern/" },
+        { name: "NASA Hubble (NHFP)", url: "https://www.stsci.edu/stsci-research/fellowships/nasa-hubble-fellowship-program" },
+        { name: "INSPIRE Postdocs", url: "https://inspirehep.net/jobs?rank=POSTDOC" }
+      ],
+      assoc_prof: [
+        { name: "ERC Consolidator Grant", url: "https://erc.europa.eu/apply-grant/consolidator-grant" },
+        { name: "AcademicJobsOnline", url: "https://academicjobsonline.org/" },
+        { name: "EURAXESS Faculty", url: "https://euraxess.ec.europa.eu/jobs" }
+      ],
+      prof: [
+        { name: "ERC Advanced Grant", url: "https://erc.europa.eu/apply-grant/advanced-grant" },
+        { name: "ESO / CERN Beamtime", url: "https://www.eso.org/sci/observing/phase1.html" },
+        { name: "APS Physics Jobs", url: "https://careers.aps.org/" }
+      ]
+    };
+
+    function buildStages(overrides = {}) {
+      return {
+        highschool: overrides.highschool || "Public science outreach, open data portals, and regional physics olympiad / summer school prep.",
+        undergrad:  overrides.undergrad  || "Summer research internships, undergraduate thesis visits, and open datasets.",
+        masters:    overrides.masters    || "English-taught MSc coursework and supervised research thesis tracks.",
+        phd:        overrides.phd        || "Funded 3–5 year doctoral fellowships with international research groups.",
+        postdoc:    overrides.postdoc    || "2–3 year independent postdoctoral fellowships and international grant mobility.",
+        assoc_prof: overrides.assoc_prof || "Tenure-track / Associate Professor appointments, group-leader grants (ERC/NSF), and collaboration PI roles.",
+        prof:       overrides.prof       || "Full Professor chairs, mega-experiment leadership, visiting sabbaticals, and consortia direction."
+      };
+    }
+
+    const SEED_NODES = [
+      {
+        id: "cern", name: "CERN", city: "Geneva, Switzerland", group: "lab", branch: "particle", pinned: true,
+        lat: 46.2330, lng: 6.0557, zoom: 16.4,
+        url: "https://home.cern/", wiki: "https://en.wikipedia.org/wiki/CERN", wikiSlug: "CERN",
+        summary: "Home of the 27 km Large Hadron Collider, smashing protons at 99.999999% the speed of light to probe the building blocks of matter.",
+        nobel: "Confirmed the Higgs boson (2012) and W/Z bosons (Rubbia & van der Meer, 1984).",
+        stages: buildStages({
+          highschool: "Beamline for Schools competition (run your own real particle beam experiment at CERN) & Science Gateway.",
+          undergrad:  "Paid CERN Summer Student Programme (8–13 weeks) & Technical Studentships (4–14 months).",
+          masters:    "CERN Doctoral/Master's thesis placements via member-state universities & Technical Studentships.",
+          phd:        "CERN Doctoral Student Programme (up to 36 months) or join ATLAS/CMS/LHCb via your home PhD.",
+          postdoc:    "CERN Research Fellowships (2–3 years) in experimental or theoretical particle physics.",
+          assoc_prof: "Scientific Associate sabbaticals (1–12 months) & physics working-group convenerships.",
+          prof:       "Experiment Spokesperson, Collaboration Board leadership, and Visiting Scientist chairs."
+        }),
+        next: ["eth", "fermilab", "desy", "icecube"]
+      },
+      {
+        id: "icecube", name: "IceCube Neutrino Observatory", city: "South Pole, Antarctica", group: "lab", branch: "particle", pinned: true,
+        lat: -89.99, lng: -63.45, zoom: 13.5,
+        url: "https://icecube.wisc.edu/", wiki: "https://en.wikipedia.org/wiki/IceCube_Neutrino_Observatory", wikiSlug: "IceCube_Neutrino_Observatory",
+        summary: "A cubic-kilometer neutrino telescope buried 2 km beneath Antarctic ice, catching ghostly particles from distant black holes.",
+        nobel: "Pioneered high-energy neutrino astronomy across 58 partner universities worldwide.",
+        stages: buildStages({
+          highschool: "IceCube Masterclasses (analyze real South Pole neutrino events with physicists).",
+          undergrad:  "NSF REU at UW–Madison WIPAC or summer projects at DESY, RWTH Aachen, or Geneva.",
+          masters:    "MSc thesis inside any of the 58 IceCube member universities (e.g. TU Munich, RWTH Aachen, Uppsala).",
+          phd:        "PhD in astroparticle physics; opportunity to deploy hardware at the South Pole during Austral summer.",
+          postdoc:    "WIPAC / DESY / IceCube-Gen2 postdoctoral fellowships leading real-time multimessenger alerts.",
+          assoc_prof: "Institution PI leading an IceCube-Gen2 instrumentation or analysis working group.",
+          prof:       "Collaboration Spokesperson & multi-national NSF/BMBF infrastructure leadership."
+        }),
+        next: ["superk", "desy", "gransasso", "cern"]
+      },
+      {
+        id: "mit", name: "MIT Physics", city: "Cambridge, MA, USA", group: "uni", branch: "quantum", pinned: true,
+        lat: 42.3601, lng: -71.0942, zoom: 16.4, shanghai: "Shanghai #1", tuition: "Funded PhD", visa: "F-1 + 3yr OPT",
+        url: "https://physics.mit.edu/", wiki: "https://en.wikipedia.org/wiki/MIT_Department_of_Physics", wikiSlug: "MIT_Department_of_Physics",
+        summary: "Ranked #1 in the world for physics; co-built LIGO, leads compact fusion research, and pioneers ultracold quantum matter.",
+        nobel: "30+ physics laureates including Rainer Weiss (LIGO 2017) and Wolfgang Ketterle (2001).",
+        stages: buildStages({
+          highschool: "MIT RSI (Research Science Institute) summer program & MIT OpenCourseWare 8.01–8.04.",
+          undergrad:  "MIT Summer Research Program (MSRP) paid summer research for visiting undergrads.",
+          masters:    "MIT admits directly to the fully funded PhD from undergrad (SM awarded along the way).",
+          phd:        "5–6 year fully funded PhD in Quantum, Astro, Nuclear, Condensed Matter, or Theory.",
+          postdoc:    "Pappalardo Fellowships in Physics (3-year independent flagship postdoc).",
+          assoc_prof: "Tenure-track / Associate Professor faculty searches across MIT's four physics divisions.",
+          prof:       "Endowed chairs, Kavli Institute / RLE / LNS directorships, and visiting professorships."
+        }),
+        next: ["ligo", "cfs", "princeton", "cern"]
+      },
+      {
+        id: "eth", name: "ETH Zurich Physics", city: "Zurich, Switzerland", group: "uni", branch: "quantum", pinned: true,
+        lat: 47.4086, lng: 8.5074, zoom: 16.4, shanghai: "Top 15", tuition: "~CHF 1,460/yr", visa: "CH Student Permit",
+        url: "https://www.phys.ethz.ch/studies/master.html", wiki: "https://en.wikipedia.org/wiki/ETH_Zurich", wikiSlug: "ETH_Zurich",
+        summary: "Albert Einstein's alma mater on Hönggerberg campus—one of Europe's cleanest, most affordable English-taught physics Master's.",
+        nobel: "20+ Nobel laureates including Einstein, Wolfgang Pauli, Felix Bloch, and Didier Queloz.",
+        stages: buildStages({
+          highschool: "Swiss Physics Olympiad & ETH Youth Academy public lectures.",
+          undergrad:  "ETH Student Summer Research Fellowship & direct application to the English MSc.",
+          masters:    "90 ECTS English MSc (~CHF 730/semester); Excellence Scholarship (ESOP) covers full living costs.",
+          phd:        "Salaried Swiss PhD positions (~CHF 50k+/yr) in Quantum Center, Particle, or Astro groups.",
+          postdoc:    "ETH Zurich Postdoctoral Fellowships & Swiss National Science Foundation (SNSF) Ambizione.",
+          assoc_prof: "SNSF Eccellenza / ERC Consolidator & ETH Tenure-Track Assistant/Associate Professorships.",
+          prof:       "Full Professor chairs at D-PHYS & Pauli Center for Theoretical Studies."
+        }),
+        next: ["cern", "bern", "psi", "mpq"]
+      },
+      {
+        id: "ligo", name: "LIGO Hanford", city: "Richland, WA, USA", group: "lab", branch: "gravity", pinned: true,
+        lat: 46.4551, lng: -119.4076, zoom: 15.8,
+        url: "https://www.ligo.caltech.edu/WA", wiki: "https://en.wikipedia.org/wiki/LIGO", wikiSlug: "LIGO",
+        summary: "Two 4 km laser arms in the Washington desert that heard spacetime ripple from colliding black holes a billion light-years away.",
+        nobel: "Rainer Weiss, Barry Barish & Kip Thorne (2017 Nobel Prize in Physics).",
+        stages: buildStages({
+          highschool: "GWOSC Open Data workshops & LIGO Exploration Center (LExC) hands-on interferometry.",
+          undergrad:  "Caltech LIGO SURF 10-week paid summer research fellowships at Hanford, Livingston, or Caltech.",
+          masters:    "MSc projects in gravitational-wave data analysis or quantum squeezing via LVK partner universities.",
+          phd:        "PhD at Caltech, MIT, or 100+ LIGO Scientific Collaboration universities worldwide.",
+          postdoc:    "LIGO Laboratory Postdocs & NASA Einstein Fellowships in gravitational-wave astrophysics.",
+          assoc_prof: "LVK Observational Science / Instrumentation working-group leadership.",
+          prof:       "Cosmic Explorer & LISA next-generation observatory executive leadership."
+        }),
+        next: ["mit", "superk", "slac", "paranal"]
+      },
+      {
+        id: "parissaclay", name: "Paris-Saclay Physics", city: "Orsay, France", group: "uni", branch: "quantum",
+        lat: 48.7098, lng: 2.1670, zoom: 15.8, shanghai: "Shanghai #8", tuition: "€250–€3.8k/yr", visa: "FR Student Visa",
+        url: "https://www.universite-paris-saclay.fr/en/node/79657", wiki: "https://en.wikipedia.org/wiki/Paris-Saclay_University", wikiSlug: "Paris-Saclay_University",
+        summary: "Ranked #8 globally in physics, uniting CNRS, CEA Saclay, SOLEIL synchrotron, and Alain Aspect's quantum optics legacy.",
+        nobel: "Alain Aspect (2022 quantum entanglement), Albert Fert (2007), Pierre-Gilles de Gennes (1991).",
+        stages: buildStages({
+          highschool: "Fête de la Science open-lab days at Institut d'Optique and SOLEIL.",
+          undergrad:  "Paid French lab stages (internships) at CNRS / CEA Saclay labs.",
+          masters:    "English MSc in Quantum, Astro, or Fundamental Physics with €10,000/yr IDEX scholarships.",
+          phd:        "Funded French Contrat Doctoral across EDPIF / PHENIICS doctoral schools.",
+          postdoc:    "CNRS / CEA Saclay & MSCA postdoctoral fellowships.",
+          assoc_prof: "Maître de Conférences (MCF) or CNRS Chargé de Recherche permanent research posts.",
+          prof:       "CNRS Directeur de Recherche & Professeur des Universités chairs."
+        }),
+        next: ["cern", "oxford", "iter", "esrf"]
+      },
+      {
+        id: "oxford", name: "Oxford Physics", city: "Oxford, UK", group: "uni", branch: "gravity",
+        lat: 51.7592, lng: -1.2546, zoom: 16.6, shanghai: "Shanghai #9", tuition: "Clarendon Aid", visa: "UK + 2yr Grad",
+        url: "https://www.physics.ox.ac.uk/", wiki: "https://en.wikipedia.org/wiki/Department_of_Physics,_University_of_Oxford", wikiSlug: "Department_of_Physics,_University_of_Oxford",
+        summary: "Ranked #9 worldwide; a powerhouse in quantum computing, cosmology, atmospheric physics, and mathematical theory.",
+        nobel: "Roger Penrose (2020 black hole theorems) and Anthony Leggett (2003).",
+        stages: buildStages({
+          highschool: "British Physics Olympiad (hosted at Oxford) & UNIQ summer school.",
+          undergrad:  "Oxford Physics Summer Internships & visiting student terms.",
+          masters:    "1-year MSc in Mathematical & Theoretical Physics with Clarendon & Rhodes scholarships.",
+          phd:        "3.5–4 year DPhil across 6 sub-departments (Astro, Atomic, Condensed, Particle, Theory, AOPP).",
+          postdoc:    "Royal Society University Research Fellowships & Oxford College Junior Research Fellowships (JRFs).",
+          assoc_prof: "Associate Professor of Physics coupled with a Tutorial Fellowship at an Oxford College.",
+          prof:       "Statutory Chairs (e.g., Wykeham / Rouse Ball / Savilian Professorships)."
+        }),
+        next: ["cambridge", "parissaclay", "qutech", "meerkat"]
+      },
+      {
+        id: "cambridge", name: "Cavendish Laboratory", city: "Cambridge, UK", group: "uni", branch: "condensed",
+        lat: 52.2092, lng: 0.0925, zoom: 16.6, shanghai: "Top 15", tuition: "Gates Aid", visa: "UK + 2yr Grad",
+        url: "https://www.phy.cam.ac.uk/", wiki: "https://en.wikipedia.org/wiki/Cavendish_Laboratory", wikiSlug: "Cavendish_Laboratory",
+        summary: "Where the electron, neutron, and DNA structure were discovered—now housing the brand-new Ray Dolby Centre.",
+        nobel: "30 Nobel laureates including J.J. Thomson, Rutherford, Paul Dirac, and Didier Queloz.",
+        stages: buildStages({
+          highschool: "Isaac Physics problem-solving platform (built at Cavendish) & Senior Physics Challenge.",
+          undergrad:  "Cavendish Undergraduate Research Opportunities Programme (UROP).",
+          masters:    "1-year MASt in Physics (Part III) or MPhil with Gates Cambridge full funding.",
+          phd:        "Funded PhD at Cavendish / DAMTP / Institute of Astronomy.",
+          postdoc:    "Herchel Smith & College Junior Research Fellowships.",
+          assoc_prof: "University Associate Professor in Experimental or Theoretical Physics.",
+          prof:       "Cavendish Professor of Physics & Maxwell Centre research leadership."
+        }),
+        next: ["oxford", "gottingen", "cern"]
+      },
+      {
+        id: "utokyo", name: "University of Tokyo Physics", city: "Tokyo, Japan", group: "uni", branch: "particle", pinned: true,
+        lat: 35.7134, lng: 139.7623, zoom: 16.4, shanghai: "Shanghai #6", tuition: "~¥535k + MEXT", visa: "JP Student Visa",
+        url: "https://www.u-tokyo.ac.jp/en/prospective-students/mext_scholarship.html", wiki: "https://en.wikipedia.org/wiki/University_of_Tokyo", wikiSlug: "University_of_Tokyo",
+        summary: "Ranked #6 globally in physics; operates Super-Kamiokande, KAGRA gravitational waves, and Kavli IPMU.",
+        nobel: "Takaaki Kajita (2015), Masatoshi Koshiba (2002), Yoichiro Nambu (2008), Syukuro Manabe (2021).",
+        stages: buildStages({
+          highschool: "UTokyo Global Science Course outreach & Kavli IPMU public lectures.",
+          undergrad:  "UTokyo Amgen / UTRIP 6-week paid summer research internship for international undergrads.",
+          masters:    "English GSGC Master's/PhD track with full MEXT government scholarship & stipend.",
+          phd:        "Funded 3-year PhD at Hongo campus, ICRR, ISSP, or Kavli IPMU.",
+          postdoc:    "JSPS Postdoctoral Fellowship for Research in Japan & Kavli IPMU Fellowships.",
+          assoc_prof: "Associate Professor appointments in School of Science or Kavli IPMU.",
+          prof:       "Full Professor & Principal Investigator roles leading Hyper-K / KAGRA."
+        }),
+        next: ["superk", "kek", "riken", "kaist"]
+      },
+      {
+        id: "superk", name: "Super-Kamiokande", city: "Hida, Japan", group: "lab", branch: "particle",
+        lat: 36.4267, lng: 137.3104, zoom: 15.2,
+        url: "https://www-sk.icrr.u-tokyo.ac.jp/en/sk/", wiki: "https://en.wikipedia.org/wiki/Super-Kamiokande", wikiSlug: "Super-Kamiokande",
+        summary: "A gleaming cathedral of 11,000 golden photomultipliers holding 50,000 tons of ultrapure water 1 km inside a Japanese mountain.",
+        nobel: "Two Nobel Prizes (2002 & 2015) for supernova neutrinos and proving neutrinos have mass.",
+        stages: buildStages({
+          highschool: "Kamioka Lab VR virtual tour & public neutrino observatory center.",
+          undergrad:  "Summer neutrino data-analysis projects via UTRIP or T2K/Hyper-K partner labs.",
+          masters:    "University of Tokyo ICRR English MSc (GSGC/MEXT) working directly on Super-K / Hyper-K.",
+          phd:        "PhD with ICRR Tokyo, Kyoto, or international Hyper-Kamiokande collaboration groups.",
+          postdoc:    "ICRR & JSPS postdocs commissioning the 260,000-ton Hyper-Kamiokande detector.",
+          assoc_prof: "Collaboration run-coordinator & detector subsystem PI.",
+          prof:       "Hyper-Kamiokande international spokesperson & national funding leadership."
+        }),
+        next: ["utokyo", "icecube", "ligo", "kek"]
+      },
+      {
+        id: "perimeter", name: "Perimeter Institute", city: "Waterloo, Canada", group: "uni", branch: "gravity",
+        lat: 43.4651, lng: -80.5276, zoom: 16.6, shanghai: "Elite Theory", tuition: "100% Funded", visa: "CA + PGWP",
+        url: "https://perimeterinstitute.ca/", wiki: "https://en.wikipedia.org/wiki/Perimeter_Institute_for_Theoretical_Physics", wikiSlug: "Perimeter_Institute_for_Theoretical_Physics",
+        summary: "An architectural glass sanctuary dedicated purely to foundational theory—quantum gravity, cosmology, and quantum foundations.",
+        nobel: "Visiting chairs include Roger Penrose and Juan Maldacena; Event Horizon Telescope hub.",
+        stages: buildStages({
+          highschool: "ISSYP (International Summer School for Young Physicists) — 2-week intensive theoretical physics camp.",
+          undergrad:  "Undergraduate Theoretical Physics Summer Program (paid 4-month research stay).",
+          masters:    "Perimeter Scholars International (PSI): 1-year 100% funded Master's covering tuition, meals & housing.",
+          phd:        "Funded PhD jointly with University of Waterloo, supervised by Perimeter faculty.",
+          postdoc:    "3-year Perimeter Postdoctoral Fellowships (quantum gravity, cosmology, quantum matter).",
+          assoc_prof: "Junior Faculty / Associate Faculty chairs with zero mandatory undergraduate teaching load.",
+          prof:       "Senior Faculty & Distinguished Visiting Research Chairs."
+        }),
+        next: ["princeton", "triumf", "ictp", "oxford"]
+      },
+      {
+        id: "qutech", name: "QuTech & TU Delft", city: "Delft, Netherlands", group: "uni", branch: "quantum",
+        lat: 51.9990, lng: 4.3736, zoom: 16.4, shanghai: "Top 35", tuition: "EU €2.5k / Intl", visa: "NL + Search Yr",
+        url: "https://qutech.nl/", wiki: "https://en.wikipedia.org/wiki/Delft_University_of_Technology", wikiSlug: "Delft_University_of_Technology",
+        summary: "Building fault-tolerant silicon & superconducting quantum processors alongside Europe's first multi-node quantum internet.",
+        nobel: "Delivered the first loophole-free Bell test of quantum entanglement (2015).",
+        stages: buildStages({
+          highschool: "Quantum Inspire (run real quantum circuits online on QuTech's Starmon processors).",
+          undergrad:  "QuTech Academy free edX courses & summer lab visits.",
+          masters:    "2-year English MSc in Applied Physics or Quantum Information Science & Technology (QIST).",
+          phd:        "Salaried 4-year Dutch PhD employee contracts with full benefits.",
+          postdoc:    "QuTech / NWO Veni postdoc grants building multi-node quantum repeaters.",
+          assoc_prof: "TU Delft Tenure-Track / Associate Professor + NWO Vidi / ERC Consolidator.",
+          prof:       "QuTech Division Director & Full Professor of Quantum Engineering."
+        }),
+        next: ["asml", "mpq", "iqm", "unsw"]
+      },
+      {
+        id: "asml", name: "ASML (EUV Physics)", city: "Veldhoven, Netherlands", group: "lab", branch: "quantum",
+        lat: 51.4063, lng: 5.4152, zoom: 15.8,
+        url: "https://www.asml.com/en/company/about-asml/locations/veldhoven", wiki: "https://en.wikipedia.org/wiki/ASML_Holding", wikiSlug: "ASML_Holding",
+        summary: "The only company on Earth building 13.5 nm Extreme Ultraviolet lithography machines—shooting lasers at molten tin droplets 50,000 times/sec.",
+        nobel: "Industrial pinnacle of plasma physics, Bragg multilayer mirrors, and picometer optics.",
+        stages: buildStages({
+          highschool: "ASML Junior Academy & STEM robotics / optics challenges.",
+          undergrad:  "ASML Technology Scholarships & 6-month paid engineering/physics internships.",
+          masters:    "Paid MSc graduation thesis projects in EUV optics, plasma, or metrology.",
+          phd:        "Direct R&D physicist recruitment or joint industrial PhDs with ARCNL Amsterdam.",
+          postdoc:    "Senior Design Engineer / Research Scientist roles (High-NA EUV).",
+          assoc_prof: "Joint academic-industry research collaborations via ARCNL & TU Eindhoven.",
+          prof:       "ASML Fellow / Principal Architect or academic advisory board."
+        }),
+        next: ["qutech", "icfo", "iqm"]
+      },
+      {
+        id: "iter", name: "ITER Fusion Tokamak", city: "Cadarache, France", group: "lab", branch: "fusion",
+        lat: 43.7069, lng: 5.7775, zoom: 15.8,
+        url: "https://www.iter.org/", wiki: "https://en.wikipedia.org/wiki/ITER", wikiSlug: "ITER",
+        summary: "A 35-nation mega-engineering effort in southern France assembling the largest superconducting tokamak ever built to tame star-core fusion.",
+        nobel: "Unites EU, USA, Japan, South Korea, India, China, and Russia on burning-plasma physics.",
+        stages: buildStages({
+          highschool: "ITER virtual tours & European Fusion Education Network (FuseNet) high-school modules.",
+          undergrad:  "Paid ITER undergraduate internships (up to 6 months) in cryogenics, magnets, or plasma.",
+          masters:    "Erasmus Mundus FUSION-EP Joint Master's with direct thesis links to ITER & CEA WEST.",
+          phd:        "EUROfusion / FuseNet funded PhDs in tokamak burning-plasma physics.",
+          postdoc:    "ITER Monaco Postdoctoral Fellowships (2-year international fusion fellowships).",
+          assoc_prof: "ITPA (International Tokamak Physics Activity) topical-group leadership.",
+          prof:       "ITER Science Division leadership & national fusion program directors."
+        }),
+        next: ["cfs", "esrf", "parissaclay", "cern"]
+      },
+      {
+        id: "cfs", name: "Commonwealth Fusion (SPARC)", city: "Devens, MA, USA", group: "lab", branch: "fusion",
+        lat: 42.5372, lng: -71.6156, zoom: 16.0,
+        url: "https://cfs.energy/", wiki: "https://en.wikipedia.org/wiki/Commonwealth_Fusion_Systems", wikiSlug: "Commonwealth_Fusion_Systems",
+        summary: "MIT spinout constructing SPARC, a compact high-field tokamak powered by 20-tesla high-temperature superconducting magnets.",
+        nobel: "Turns Bednorz & Müller's 1987 Nobel superconductivity discovery into compact fusion magnets.",
+        stages: buildStages({
+          highschool: "MIT PSFC fusion outreach & virtual SPARC magnet demonstrations.",
+          undergrad:  "Paid undergrad co-ops in plasma physics, cryogenics, and HTS magnet testing.",
+          masters:    "MSc engineering & applied-physics roles on SPARC diagnostics and ARC power plant.",
+          phd:        "Joint research PhDs with MIT Plasma Science & Fusion Center (PSFC).",
+          postdoc:    "Staff Plasma Physicist & Magnet Scientist roles at Devens HQ.",
+          assoc_prof: "Collaborative burning-plasma modeling grants with CFS & DOE.",
+          prof:       "Scientific Advisory Board & multi-institution fusion consortia."
+        }),
+        next: ["mit", "iter"]
+      },
+      {
+        id: "fermilab", name: "Fermilab", city: "Batavia, IL, USA", group: "lab", branch: "particle",
+        lat: 41.8321, lng: -88.2571, zoom: 15.2,
+        url: "https://www.fnal.gov/", wiki: "https://en.wikipedia.org/wiki/Fermilab", wikiSlug: "Fermilab",
+        summary: "America's premier particle physics campus—iconic Wilson Hall, restored prairie with bison, and the upcoming DUNE neutrino beam.",
+        nobel: "Discovered the bottom quark (1977), top quark (1995), and tau neutrino (2000).",
+        stages: buildStages({
+          highschool: "TARGET & QuarkNet high-school summer physics internships.",
+          undergrad:  "Paid international undergrad internships (SIST, IPM, DOE SULI).",
+          masters:    "MSc thesis placements via DUNE & CMS partner universities.",
+          phd:        "URA Visiting Scholars & Fermilab Joint PhD Fellowships.",
+          postdoc:    "Lederman Fellowship & Wilson Fellowship (flagship 3–5 year postdocs).",
+          assoc_prof: "Fermilab Associate Scientist & DUNE consortium leadership.",
+          prof:       "Fermilab Distinguished Scientist & DOE HEPAP advisory panels."
+        }),
+        next: ["cern", "slac", "icecube"]
+      },
+      {
+        id: "slac", name: "SLAC & Stanford", city: "Menlo Park, CA, USA", group: "lab", branch: "condensed",
+        lat: 37.4175, lng: -122.2025, zoom: 15.4,
+        url: "https://www6.slac.stanford.edu/", wiki: "https://en.wikipedia.org/wiki/SLAC_National_Accelerator_Laboratory", wikiSlug: "SLAC_National_Accelerator_Laboratory",
+        summary: "A 3.2 km linear accelerator slicing straight across California hills, now driving LCLS-II to film atoms in femtosecond motion.",
+        nobel: "4 Nobel Prizes in Physics & Chemistry (quarks, charm quark, tau lepton, structural biology).",
+        stages: buildStages({
+          highschool: "SLAC SAGE-S summer camp & public virtual accelerator tours.",
+          undergrad:  "DOE SULI paid 10-week internships in X-ray laser science, cosmology (Rubin), or accelerators.",
+          masters:    "Stanford Applied Physics MS or visiting international MSc thesis projects.",
+          phd:        "Funded Stanford Physics / Applied Physics PhD working at LCLS-II or KIPAC.",
+          postdoc:    "Panofsky Fellowship & KIPAC Postdoctoral Fellowships.",
+          assoc_prof: "SLAC / Stanford Photon Science & Particle Astrophysics Associate Professor.",
+          prof:       "Full Professor & LCLS / Rubin Observatory executive leadership."
+        }),
+        next: ["fermilab", "ligo", "paranal"]
+      },
+      {
+        id: "desy", name: "DESY", city: "Hamburg, Germany", group: "lab", branch: "particle",
+        lat: 53.5758, lng: 9.8794, zoom: 15.8,
+        url: "https://www.desy.de/index_eng.html", wiki: "https://en.wikipedia.org/wiki/DESY", wikiSlug: "DESY",
+        summary: "Germany's flagship accelerator center operating PETRA III and the 3.4 km European XFEL; discovered the gluon in 1979.",
+        nobel: "Proved the existence of gluons, confirming quantum chromodynamics.",
+        stages: buildStages({
+          highschool: "DESY Schülerlabor (hands-on particle & vacuum physics labs for school students).",
+          undergrad:  "Paid international DESY Summer Student Programme (open to all nationalities).",
+          masters:    "Tuition-free English MSc at University of Hamburg with paid DESY thesis work.",
+          phd:        "Salaried TVöD PhD contracts via PIER Helmholtz Graduate School.",
+          postdoc:    "DESY Fellowships (2–3 years) in Particle, Astroparticle, or Photon Science.",
+          assoc_prof: "Helmholtz Young Investigator Group Leader (independent 5-year funding).",
+          prof:       "Lead Scientist (W3) joint professorships with University of Hamburg."
+        }),
+        next: ["cern", "ess", "gottingen", "icecube"]
+      },
+      {
+        id: "mpq", name: "Max Planck Quantum Optics", city: "Garching, Germany", group: "lab", branch: "quantum",
+        lat: 48.2602, lng: 11.6669, zoom: 16.4,
+        url: "https://www.mpq.mpg.de/en", wiki: "https://en.wikipedia.org/wiki/Max_Planck_Institute_of_Quantum_Optics", wikiSlug: "Max_Planck_Institute_of_Quantum_Optics",
+        summary: "World epicenter of attosecond laser flashes, optical frequency combs, and ultracold quantum simulators.",
+        nobel: "Theodor Hänsch (2005 Nobel) and Ferenc Krausz (2023 Nobel for attosecond pulses).",
+        stages: buildStages({
+          highschool: "PhotonLab Munich (student laser & quantum-optics laboratory at MPQ).",
+          undergrad:  "Paid summer research internships & HiWi student assistant roles.",
+          masters:    "Tuition-free English MSc at TUM or LMU Munich with paid MPQ thesis supervision.",
+          phd:        "IMPRS for Quantum Science and Technology (IMPRS-QST) salaried PhDs.",
+          postdoc:    "MPQ / Munich Center for Quantum Science & Technology (MCQST) Fellowships.",
+          assoc_prof: "Max Planck Research Group Leader (W2 independent group).",
+          prof:       "Max Planck Director (Scientific Member of the Max Planck Society)."
+        }),
+        next: ["eth", "gottingen", "icfo", "qutech"]
+      },
+      {
+        id: "psi", name: "Paul Scherrer Institute", city: "Villigen, Switzerland", group: "lab", branch: "condensed",
+        lat: 47.5364, lng: 8.2232, zoom: 15.8,
+        url: "https://www.psi.ch/en/research/large-research-facilities", wiki: "https://en.wikipedia.org/wiki/Paul_Scherrer_Institute", wikiSlug: "Paul_Scherrer_Institute",
+        summary: "Switzerland's mega-facility hub running the Swiss Light Source, SwissFEL X-ray laser, and world-leading muon beams.",
+        nobel: "Key European center for ultracold neutrons and precision muon experiments.",
+        stages: buildStages({
+          highschool: "PSI iLab (student hands-on radioactivity, spectroscopy & vacuum lab).",
+          undergrad:  "Summer student internships & ETH/EPFL semester projects.",
+          masters:    "Joint MSc theses directly via ETH Zurich and EPFL.",
+          phd:        "Salaried Swiss PhDs in muon physics, X-ray lasers, and condensed matter.",
+          postdoc:    "PSI-FELLOW-III-3i (Marie Curie co-funded international postdoc program).",
+          assoc_prof: "Beamline Group Leader & joint ETH/EPFL professorships.",
+          prof:       "PSI Division Head & Swiss large-facility strategy leadership."
+        }),
+        next: ["eth", "cern", "esrf"]
+      },
+      {
+        id: "esrf", name: "ESRF Synchrotron", city: "Grenoble, France", group: "lab", branch: "condensed",
+        lat: 45.2078, lng: 5.6897, zoom: 16.0,
+        url: "https://www.esrf.fr/home.html", wiki: "https://en.wikipedia.org/wiki/European_Synchrotron_Radiation_Facility", wikiSlug: "European_Synchrotron_Radiation_Facility",
+        summary: "The iconic 844 m silver synchrotron ring nestled in the French Alps, producing X-rays 100 billion times brighter than hospital scanners.",
+        nobel: "Powered Nobel Prize discoveries in ribosome and GPCR molecular physics.",
+        stages: buildStages({
+          highschool: "Synchrotron@School hands-on beamline day for high-school classes.",
+          undergrad:  "Paid ESRF Summer Student Programme (4 weeks in Grenoble).",
+          masters:    "Université Grenoble Alpes English MSc in Condensed Matter with ESRF thesis.",
+          phd:        "Funded 3-year ESRF PhD contracts in X-ray imaging, magnetism, and high-pressure physics.",
+          postdoc:    "ESRF Postdoc & Junior Beamline Scientist positions.",
+          assoc_prof: "Beamline Responsible Scientist & ERC user-group PI.",
+          prof:       "Director of Research & European synchrotron consortia leadership."
+        }),
+        next: ["psi", "ess", "iter"]
+      },
+      {
+        id: "ess", name: "European Spallation Source", city: "Lund, Sweden", group: "lab", branch: "condensed",
+        lat: 55.7336, lng: 13.2483, zoom: 15.6,
+        url: "https://europeanspallationsource.se/", wiki: "https://en.wikipedia.org/wiki/European_Spallation_Source", wikiSlug: "European_Spallation_Source",
+        summary: "Europe's brand-new pulsed neutron super-microscope in southern Sweden, sitting right beside the MAX IV synchrotron.",
+        nobel: "Probes quantum magnets and high-Tc superconductors at atomic resolution.",
+        stages: buildStages({
+          highschool: "Lund Science Village outreach & virtual neutron-scattering demos.",
+          undergrad:  "Paid ESS & MAX IV summer internships in Sweden.",
+          masters:    "Lund University English MSc in Physics with ESS instrument thesis.",
+          phd:        "Salaried 4-year Swedish PhDs in neutron scattering and accelerator physics.",
+          postdoc:    "ESS Instrument Scientist & Postdoc positions.",
+          assoc_prof: "Lead Instrument Scientist & Nordic neutron-science PI.",
+          prof:       "Science Directorate & ERIC international consortium chairs."
+        }),
+        next: ["bohr", "desy", "esrf"]
+      },
+      {
+        id: "gransasso", name: "INFN Gran Sasso", city: "Assergi, Italy", group: "lab", branch: "particle",
+        lat: 42.4526, lng: 13.5750, zoom: 15.2,
+        url: "https://www.lngs.infn.it/en", wiki: "https://en.wikipedia.org/wiki/Laboratori_Nazionali_del_Gran_Sasso", wikiSlug: "Laboratori_Nazionali_del_Gran_Sasso",
+        summary: "Three colossal underground caverns beneath 1,400 m of Apennine rock hunting for dark matter (XENONnT) and solar neutrinos.",
+        nobel: "Detected CNO-cycle solar neutrinos and leads global dark-matter sensitivity.",
+        stages: buildStages({
+          highschool: "INFN Open Days & International Dark Matter Day school workshops.",
+          undergrad:  "LNGS Summer Internship Program for physics undergraduates.",
+          masters:    "MSc theses via Italian & international XENONnT / Borexino / LEGEND groups.",
+          phd:        "Gran Sasso Science Institute (GSSI) fully funded international PhD fellowships.",
+          postdoc:    "INFN Postdoctoral Fellowships for non-Italian & Italian citizens.",
+          assoc_prof: "INFN Primo Ricercatore & underground experiment technical coordinator.",
+          prof:       "LNGS Director & global dark-matter collaboration spokespersons."
+        }),
+        next: ["icecube", "superk", "ictp"]
+      },
+      {
+        id: "ictp", name: "Abdus Salam ICTP", city: "Trieste, Italy", group: "lab", branch: "gravity",
+        lat: 45.7037, lng: 13.7192, zoom: 16.4,
+        url: "https://www.ictp.it/", wiki: "https://en.wikipedia.org/wiki/International_Centre_for_Theoretical_Physics", wikiSlug: "International_Centre_for_Theoretical_Physics",
+        summary: "Overlooking the Adriatic Sea, founded by Nobel laureate Abdus Salam to launch physicists from every country on Earth.",
+        nobel: "Founded by Abdus Salam (1979 Nobel Prize for electroweak unification).",
+        stages: buildStages({
+          highschool: "ICTP Physics Without Frontiers & open recorded lecture archive.",
+          undergrad:  "ICTP Summer Schools & Physics Without Frontiers regional workshops.",
+          masters:    "Fully funded 1-year ICTP Postgraduate Diploma bridging undergrads to top global PhDs.",
+          phd:        "Joint ICTP–SISSA funded PhDs in High-Energy, Condensed Matter, and Cosmology.",
+          postdoc:    "ICTP Postdoctoral Fellowships (2–3 years) in Trieste.",
+          assoc_prof: "ICTP Regular Associateships (funded recurring research visits for faculty from developing nations).",
+          prof:       "ICTP Senior Associates & Research Section Heads."
+        }),
+        next: ["ictpsaifr", "perimeter", "iisc"]
+      },
+      {
+        id: "icfo", name: "ICFO Photonics", city: "Barcelona, Spain", group: "lab", branch: "quantum",
+        lat: 41.2755, lng: 1.9866, zoom: 16.6,
+        url: "https://www.icfo.eu/", wiki: "https://en.wikipedia.org/wiki/Institute_of_Photonic_Sciences", wikiSlug: "Institute_of_Photonic_Sciences",
+        summary: "Mediterranean research hub pushing quantum optics, graphene photonics, and quantum communication networks.",
+        nobel: "Top European ERC hub for attosecond and quantum-light experiments.",
+        stages: buildStages({
+          highschool: "ICFO Young Photonics Congress & high-school research mentorship.",
+          undergrad:  "Paid ICFO International Summer Fellows (open worldwide).",
+          masters:    "Barcelona Master in Photonics (Europhotonics Erasmus Mundus) with ICFO fellowships.",
+          phd:        "ICFOstepstone & La Caixa INPhINIT funded doctoral fellowships.",
+          postdoc:    "ICFO+ & MSCA Postdoctoral Fellowships.",
+          assoc_prof: "ICFO Group Leader (tenure-track) & ERC Starting/Consolidator grants.",
+          prof:       "ICREA Research Professor at ICFO."
+        }),
+        next: ["mpq", "asml", "qutech"]
+      },
+      {
+        id: "iqm", name: "IQM Quantum Computers", city: "Espoo, Finland", group: "lab", branch: "quantum",
+        lat: 60.1793, lng: 24.8364, zoom: 16.2,
+        url: "https://www.meetiqm.com/", wiki: "https://en.wikipedia.org/wiki/IQM_Quantum_Computers", wikiSlug: "IQM_Quantum_Computers",
+        summary: "Europe's superconducting quantum hardware builder, spun out of Aalto University's world-renowned low-temperature labs.",
+        nobel: "Built on Nordic milli-kelvin cryogenics and superconducting qubit physics.",
+        stages: buildStages({
+          highschool: "IQM Academy free introductory quantum computing platform.",
+          undergrad:  "Aalto University Science Institute (AScI) paid summer internships.",
+          masters:    "Aalto English MSc in Engineering Physics + paid thesis roles at IQM.",
+          phd:        "Industrial quantum-hardware PhDs with Aalto & VTT Finland.",
+          postdoc:    "Quantum Engineer / Cryogenic Physicist R&D positions in Espoo or Munich.",
+          assoc_prof: "Joint European Quantum Flagship academic-industry grants.",
+          prof:       "Chief Quantum Scientist / Academic Advisory Board."
+        }),
+        next: ["qutech", "asml", "ess"]
+      },
+      {
+        id: "triumf", name: "TRIUMF Cyclotron", city: "Vancouver, Canada", group: "lab", branch: "particle",
+        lat: 49.2478, lng: -123.2306, zoom: 16.2,
+        url: "https://www.triumf.ca/", wiki: "https://en.wikipedia.org/wiki/TRIUMF", wikiSlug: "TRIUMF",
+        summary: "Home to the world's largest cyclotron on the forested UBC campus, producing rare isotopes and medical radioisotopes.",
+        nobel: "Key contributor to Arthur McDonald's 2015 Nobel solar-neutrino discovery.",
+        stages: buildStages({
+          highschool: "TRIUMF Saturday Morning Lectures & High School Fellowship.",
+          undergrad:  "Paid 4–8 month undergraduate co-op placements in nuclear & particle physics.",
+          masters:    "Funded MSc via UBC, SFU, or UVic conducting thesis experiments at TRIUMF.",
+          phd:        "Funded Canadian PhDs using ISAC / ARIEL rare-isotope beams.",
+          postdoc:    "TRIUMF Postdoctoral Fellowships in Nuclear, Accelerator, or Particle Physics.",
+          assoc_prof: "TRIUMF Research Scientist & joint Canadian university faculty.",
+          prof:       "Division Head & Canada Research Chair (Tier 1)."
+        }),
+        next: ["perimeter", "cern", "superk"]
+      },
+      {
+        id: "kek", name: "KEK Accelerator Lab", city: "Tsukuba, Japan", group: "lab", branch: "particle",
+        lat: 36.1489, lng: 140.0750, zoom: 15.2,
+        url: "https://www.kek.jp/en/", wiki: "https://en.wikipedia.org/wiki/KEK", wikiSlug: "KEK",
+        summary: "Operates SuperKEKB / Belle II at world-record collision luminosity to test why matter survived over antimatter.",
+        nobel: "Experimentally confirmed Kobayashi-Maskawa CP violation (2008 Nobel Prize).",
+        stages: buildStages({
+          highschool: "KEK Open Campus & Belle II virtual detector explorer.",
+          undergrad:  "KEK Summer Student Program (international undergrads).",
+          masters:    "SOKENDAI English 5-year MSc/PhD program directly inside KEK.",
+          phd:        "Funded SOKENDAI / Belle II / J-PARC doctoral tracks.",
+          postdoc:    "KEK & JSPS Postdoctoral Fellowships.",
+          assoc_prof: "KEK Associate Professor (IPNS / Accelerator Lab).",
+          prof:       "KEK Full Professor & Belle II / ILC international leadership."
+        }),
+        next: ["utokyo", "superk", "riken"]
+      },
+      {
+        id: "riken", name: "RIKEN Wako", city: "Saitama, Japan", group: "lab", branch: "condensed",
+        lat: 35.7785, lng: 139.6134, zoom: 16.0,
+        url: "https://www.riken.jp/en/", wiki: "https://en.wikipedia.org/wiki/RIKEN", wikiSlug: "RIKEN",
+        summary: "Japan's flagship science institute where element 113 (Nihonium) was synthesized and superconducting quantum chips are built.",
+        nobel: "Hideki Yukawa (1949) & Shin'ichirō Tomonaga (1965) did foundational work here.",
+        stages: buildStages({
+          highschool: "RIKEN Open Day & Quantum Science outreach.",
+          undergrad:  "RIKEN Student Trainee summer research stays.",
+          masters:    "RIKEN International Program Associate (IPA) for MSc/PhD students.",
+          phd:        "Paid RIKEN Junior Research Associate (JRA) & IPA fellowships.",
+          postdoc:    "RIKEN Special Postdoctoral Researchers (SPDR — 3-year flagship grant).",
+          assoc_prof: "RIKEN Hakubi Team Leader (independent 5–7 year lab startup).",
+          prof:       "RIKEN Chief Scientist & Center Director (CEMS / RQC / Nishina)."
+        }),
+        next: ["utokyo", "kek", "kaist"]
+      },
+      {
+        id: "kaist", name: "KAIST Physics", city: "Daejeon, South Korea", group: "uni", branch: "quantum",
+        lat: 36.3720, lng: 127.3604, zoom: 16.0, shanghai: "Top 75", tuition: "Full Aid", visa: "KR D-2 Visa",
+        url: "https://physics.kaist.ac.kr/", wiki: "https://en.wikipedia.org/wiki/KAIST", wikiSlug: "KAIST",
+        summary: "South Korea's top science university, leading axion dark-matter searches, metamaterials, and quantum optics.",
+        nobel: "Hosts flagship Institute for Basic Science (IBS) fundamental physics centers.",
+        stages: buildStages({
+          highschool: "KAIST International Undergraduate Admission (full tuition + stipend).",
+          undergrad:  "KAIST Summer Research Internships in Physics & IBS Centers.",
+          masters:    "100% English MS/PhD with KAIST International Scholarship (tuition + monthly stipend).",
+          phd:        "Funded PhD with KAIST & IBS Center for Axion and Precision Physics.",
+          postdoc:    "IBS Research Fellow & KAIST Postdoc fellowships.",
+          assoc_prof: "Tenure-track / Associate Professor (international English-taught faculty).",
+          prof:       "Full Professor & IBS Center Director."
+        }),
+        next: ["utokyo", "cqt", "riken"]
+      },
+      {
+        id: "cqt", name: "Centre for Quantum Tech", city: "Singapore", group: "lab", branch: "quantum",
+        lat: 1.2966, lng: 103.7805, zoom: 16.4,
+        url: "https://www.quantumlah.org/", wiki: "https://en.wikipedia.org/wiki/Centre_for_Quantum_Technologies", wikiSlug: "Centre_for_Quantum_Technologies",
+        summary: "Asia's premier quantum physics center building orbital quantum-encryption satellites and trapped-ion atomic clocks.",
+        nobel: "Founded by Artur Ekert, inventor of entanglement-based quantum cryptography.",
+        stages: buildStages({
+          highschool: "CQT Quantum Shorts & Singapore Physics Olympiad mentorship.",
+          undergrad:  "Paid international undergrad internships in quantum optics & information.",
+          masters:    "NUS MSc in Physics with CQT research projects.",
+          phd:        "Fully funded CQT PhD Scholarships (open to all nationalities).",
+          postdoc:    "CQT Research Fellow & Lee Kuan Yew Postdoctoral Fellowships.",
+          assoc_prof: "NRF Fellowship (up to S$3M independent 5-year research grant).",
+          prof:       "CQT Principal Investigator & NRF Investigatorship."
+        }),
+        next: ["unsw", "kaist", "qutech"]
+      },
+      {
+        id: "iisc", name: "IISc Bengaluru", city: "Bengaluru, India", group: "uni", branch: "condensed",
+        lat: 13.0219, lng: 77.5671, zoom: 16.0, shanghai: "Top 100", tuition: "Low + Aid", visa: "IN Student",
+        url: "https://physics.iisc.ac.in/", wiki: "https://en.wikipedia.org/wiki/Indian_Institute_of_Science", wikiSlug: "Indian_Institute_of_Science",
+        summary: "India's top fundamental research campus—a green sanctuary of condensed matter, 2D materials, and astrophysics.",
+        nobel: "C.V. Raman (1930 Nobel Prize in Physics) served as its first Indian Director.",
+        stages: buildStages({
+          highschool: "IISc 4-year BS (Research) in Physics admission.",
+          undergrad:  "Indian Academy of Sciences Summer Research Fellowship at IISc.",
+          masters:    "Integrated PhD / MSc in Physical Sciences (English) with stipend.",
+          phd:        "Funded PhD in Condensed Matter, Astro, High-Energy, or Quantum Tech.",
+          postdoc:    "C.V. Raman Postdoctoral Fellowship & Ramanujan Fellowship.",
+          assoc_prof: "Associate Professor in Department of Physics or CHEP.",
+          prof:       "Full Professor & National Science Chair."
+        }),
+        next: ["ictp", "cqt", "cern"]
+      },
+      {
+        id: "paranal", name: "ESO Paranal Observatory", city: "Atacama Desert, Chile", group: "lab", branch: "astro", pinned: true,
+        lat: -24.6275, lng: -70.4045, zoom: 16.2,
+        url: "https://www.eso.org/public/teles-instr/paranal-observatory/", wiki: "https://en.wikipedia.org/wiki/Paranal_Observatory", wikiSlug: "Paranal_Observatory",
+        summary: "Four giant 8.2 m mirror domes perched atop a Martian-red Andean peak—the sharpest optical eyes on Earth.",
+        nobel: "Reinhard Genzel (2020 Nobel) tracked stars whipping around the Milky Way's central black hole here.",
+        stages: buildStages({
+          highschool: "ESO Astronomy Camp in the Italian Alps & open VLT archive imagery.",
+          undergrad:  "ESO Summer Research Programme (6-week paid astrophysics stay in Garching).",
+          masters:    "ESO Studentships (1–2 years in Chile or Germany during MSc/PhD).",
+          phd:        "IMPRS Astrophysics / ESO Studentships observing directly on the VLT.",
+          postdoc:    "ESO Fellowship (3–4 years in Chile or Garching with 25% observatory duties).",
+          assoc_prof: "ESO Staff Astronomer & VLT/ELT instrument PI.",
+          prof:       "ESO Director for Science & Extremely Large Telescope (ELT) leadership."
+        }),
+        next: ["meerkat", "ligo", "slac", "ictpsaifr"]
+      },
+      {
+        id: "ictpsaifr", name: "ICTP-SAIFR", city: "São Paulo, Brazil", group: "lab", branch: "gravity",
+        lat: -23.5270, lng: -46.6656, zoom: 16.2,
+        url: "https://www.ictp-saifr.org/", wiki: "https://en.wikipedia.org/wiki/ICTP_South_American_Institute_for_Fundamental_Research", wikiSlug: "ICTP_South_American_Institute_for_Fundamental_Research",
+        summary: "Latin America's vibrant partner to ICTP Trieste, hosting free international schools in cosmology and theoretical physics.",
+        nobel: "Connected directly with ICTP Trieste, Perimeter Institute, and Fermilab.",
+        stages: buildStages({
+          highschool: "ICTP-SAIFR High School Physics Minicourses & outreach.",
+          undergrad:  "Free intensive Journeys into Theoretical Physics for Latin American undergrads.",
+          masters:    "FAPESP-funded Master's fellowships in Theoretical Physics at IFT-UNESP.",
+          phd:        "FAPESP funded PhD with international travel grants to ICTP & Perimeter.",
+          postdoc:    "ICTP-SAIFR / FAPESP 2–3 year theoretical physics postdocs.",
+          assoc_prof: "IFT-UNESP & ICTP-SAIFR Associate Faculty.",
+          prof:       "Distinguished Visiting Professors & Scientific Council."
+        }),
+        next: ["ictp", "paranal", "perimeter"]
+      },
+      {
+        id: "meerkat", name: "MeerKAT / SKA-Mid", city: "Karoo, South Africa", group: "lab", branch: "astro", pinned: true,
+        lat: -30.7130, lng: 21.4430, zoom: 15.4,
+        url: "https://www.sarao.ac.za/science/meerkat/about-meerkat/", wiki: "https://en.wikipedia.org/wiki/MeerKAT", wikiSlug: "MeerKAT",
+        summary: "64 gleaming white radio dishes spread across the silent Karoo desert, forming the heart of the Square Kilometre Array.",
+        nobel: "Tests Einstein's general relativity using millisecond binary pulsars.",
+        stages: buildStages({
+          highschool: "SARAO Schools Programme & Karoo astronomy outreach.",
+          undergrad:  "SARAO Undergraduate Bursaries & NASSP honours prep.",
+          masters:    "NASSP / SARAO MSc bursaries + open MeerKAT data via UCT, Oxford & Manchester.",
+          phd:        "Funded SKA / MeerKAT PhDs in radio astronomy and pulsar timing.",
+          postdoc:    "SARAO / SKAO Postdoctoral Fellowships in Cape Town or Manchester.",
+          assoc_prof: "MeerKAT Large Survey Project (LSP) co-PI.",
+          prof:       "SARAO / SKAO Science Leadership & Research Chairs."
+        }),
+        next: ["paranal", "unsw", "oxford"]
+      },
+      {
+        id: "unsw", name: "UNSW Sydney Quantum", city: "Sydney, Australia", group: "uni", branch: "quantum", pinned: true,
+        lat: -33.9173, lng: 151.2313, zoom: 16.2, shanghai: "Top 100", tuition: "RTP Full Aid", visa: "AU 500 + 485",
+        url: "https://www.unsw.edu.au/science/our-schools/physics", wiki: "https://en.wikipedia.org/wiki/University_of_New_South_Wales", wikiSlug: "University_of_New_South_Wales",
+        summary: "World leader in single-atom silicon spin qubits, building quantum processors out of the same silicon that runs modern chips.",
+        nobel: "Leads Australia's CQC2T with world-record silicon spin-qubit coherence.",
+        stages: buildStages({
+          highschool: "Australian Science Olympiads & UNSW Quantum Engineering outreach.",
+          undergrad:  "UNSW Taste of Research summer scholarships in silicon quantum computing.",
+          masters:    "English MPhil / Master of Physics with Australian Government RTP full scholarships.",
+          phd:        "Funded 3.5-year PhD inside CQC2T & Silicon Quantum Computing.",
+          postdoc:    "ARC DECRA Fellowships & CQC2T Postdocs.",
+          assoc_prof: "ARC Future Fellowship & UNSW Associate Professor.",
+          prof:       "ARC Laureate Fellowship & Scientia Professor."
+        }),
+        next: ["cqt", "qutech", "meerkat"]
+      },
+      {
+        id: "miletus", name: "Miletus (Anaximander)", city: "Aydın, Ancient Ionia", group: "hist", branch: "history",
+        lat: 37.5302, lng: 27.2784, zoom: 15.8,
+        url: "https://en.wikipedia.org/wiki/Miletus", wiki: "https://en.wikipedia.org/wiki/Anaximander", wikiSlug: "Anaximander",
+        summary: "Where physics began (c. 610 BCE): Anaximander proposed that Earth floats freely in space with no pillars holding it up.",
+        nobel: "Birthplace of naturalistic cosmology—explaining the universe through law instead of myth.",
+        stages: buildStages({
+          highschool: "Great starting point: read Carlo Rovelli's 'Anaximander' to see how scientific thinking began.",
+          undergrad:  "Follow the Rabbit Hole button to trace 2,600 years from Miletus → Bern → Göttingen → CERN.",
+          masters:    "History & Philosophy of Physics tracks (e.g., Oxford, Cambridge, Perimeter, MPIWG Berlin).",
+          phd:        "Max Planck Institute for the History of Science (MPIWG) doctoral fellowships.",
+          postdoc:    "Foundations of Physics & History of Science postdoctoral fellowships.",
+          assoc_prof: "Interdisciplinary Physics & Philosophy faculty appointments.",
+          prof:       "Distinguished lectures on the conceptual evolution of spacetime."
+        }),
+        next: ["bern", "gottingen", "bohr"]
+      },
+      {
+        id: "bern", name: "Bern Patent Office (Einstein)", city: "Bern, Switzerland", group: "hist", branch: "history",
+        lat: 46.9480, lng: 7.4500, zoom: 17.0,
+        url: "https://www.aec.unibe.ch/", wiki: "https://en.wikipedia.org/wiki/Annus_mirabilis_papers", wikiSlug: "Annus_mirabilis_papers",
+        summary: "On Kramgasse in 1905, 26-year-old patent clerk Albert Einstein rewrote space, time, light, and energy (E = mc²) in four papers.",
+        nobel: "Albert Einstein (1921 Nobel Prize for the photoelectric effect).",
+        stages: buildStages({
+          highschool: "Einsteinhaus Bern museum & visual special-relativity explorations.",
+          undergrad:  "University of Bern undergraduate physics & Albert Einstein Center outreach.",
+          masters:    "University of Bern English MSc at the Albert Einstein Center for Fundamental Physics (AEC).",
+          phd:        "Salaried Swiss PhD in neutrino physics, lattice QCD, or space instruments (JUICE/CHEOPS).",
+          postdoc:    "SNSF & AEC Postdoctoral Fellowships in Bern.",
+          assoc_prof: "AEC Associate Professor in Fundamental or Space Physics.",
+          prof:       "Albert Einstein Center Directorship & ESA mission PIs."
+        }),
+        next: ["eth", "gottingen", "princeton", "cern"]
+      },
+      {
+        id: "gottingen", name: "Göttingen (Quantum Birth)", city: "Göttingen, Germany", group: "hist", branch: "history",
+        lat: 51.5344, lng: 9.9323, zoom: 16.4,
+        url: "https://www.uni-goettingen.de/en/18500.html", wiki: "https://en.wikipedia.org/wiki/University_of_G%C3%B6ttingen", wikiSlug: "University_of_Göttingen",
+        summary: "In the 1920s, Max Born, Werner Heisenberg, and Emmy Noether forged matrix quantum mechanics and symmetry theorems here.",
+        nobel: "40+ Nobel laureates affiliated (Born, Heisenberg, Otto Stern, Maria Goeppert Mayer).",
+        stages: buildStages({
+          highschool: "XLAB Göttingen Experimental Laboratory for Young People.",
+          undergrad:  "DAAD RISE summer projects at Göttingen & local Max Planck Institutes.",
+          masters:    "Tuition-free English MSc in Physics right beside Max Planck Institutes.",
+          phd:        "IMPRS Physics of Biological and Complex Systems / Solar System Science.",
+          postdoc:    "Humboldt Research Fellowships & Max Planck postdocs.",
+          assoc_prof: "W2 Professorships & Heisenberg Programme fellowships.",
+          prof:       "W3 Full Professorships & Max Planck Directors."
+        }),
+        next: ["bohr", "mpq", "princeton", "cambridge"]
+      },
+      {
+        id: "bohr", name: "Niels Bohr Institute", city: "Copenhagen, Denmark", group: "hist", branch: "history",
+        lat: 55.6966, lng: 12.5714, zoom: 16.8,
+        url: "https://nbi.ku.dk/english/", wiki: "https://en.wikipedia.org/wiki/Niels_Bohr_Institute", wikiSlug: "Niels_Bohr_Institute",
+        summary: "Founded by Niels Bohr in 1921—where Heisenberg, Pauli, and Dirac debated the meaning of quantum reality into the night.",
+        nobel: "Niels Bohr (1922), Aage Bohr & Ben Mottelson (1975).",
+        stages: buildStages({
+          highschool: "Niels Bohr Archive & Danish Physics Olympiad outreach.",
+          undergrad:  "Summer research exchanges in quantum, astro, and biophysics.",
+          masters:    "2-year English MSc in Physics at University of Copenhagen (NBI).",
+          phd:        "Salaried 3-year Danish PhD fellowships across NBI & Center for Quantum Devices.",
+          postdoc:    "Niels Bohr International Academy (NBIA) & Villum / Carlsberg Postdocs.",
+          assoc_prof: "NBI Associate Professor & Villum Young Investigator grants.",
+          prof:       "Full Professor & Center of Excellence Directors."
+        }),
+        next: ["gottingen", "ess", "cern"]
+      },
+      {
+        id: "princeton", name: "Princeton & IAS", city: "Princeton, NJ, USA", group: "hist", branch: "gravity",
+        lat: 40.3316, lng: -74.6677, zoom: 16.2,
+        url: "https://www.ias.edu/sns", wiki: "https://en.wikipedia.org/wiki/Institute_for_Advanced_Study", wikiSlug: "Institute_for_Advanced_Study",
+        summary: "Einstein's final home, Oppenheimer's Institute for Advanced Study, and where Feynman earned his PhD.",
+        nobel: "Einstein, Feynman, Wigner, Yang, Lee, Anderson, David Gross, and Edward Witten.",
+        stages: buildStages({
+          highschool: "Princeton Plasma Physics Lab (PPPL) high-school internships & public lectures.",
+          undergrad:  "Princeton REU in Physics, Astro, & Plasma Physics (PPPL).",
+          masters:    "Princeton admits directly to its fully funded PhD program (MA awarded en route).",
+          phd:        "5-year fully funded PhD at Jadwin Hall, PPPL, or Astrophysics.",
+          postdoc:    "IAS School of Natural Sciences 5-year Memberships & Dicke Fellowships.",
+          assoc_prof: "Princeton Associate Professor & IAS Visiting Faculty.",
+          prof:       "IAS Permanent Faculty & Princeton Endowed Chairs."
+        }),
+        next: ["mit", "perimeter", "bern", "cern"]
+      },
+      {
+        id: "caltech", name: "Caltech Physics (PMA)", city: "Pasadena, CA, USA", group: "uni", branch: "gravity",
+        lat: 34.1377, lng: -118.1253, zoom: 16.4, shanghai: "Shanghai #3", tuition: "Funded PhD", visa: "F-1 + 3yr OPT",
+        url: "https://pma.caltech.edu/", wiki: "https://en.wikipedia.org/wiki/California_Institute_of_Technology", wikiSlug: "California_Institute_of_Technology",
+        summary: "Home of Richard Feynman's lectures, Kip Thorne's black-hole theory, LIGO HQ, and NASA's Jet Propulsion Laboratory.",
+        nobel: "Feynman, Gell-Mann, Millikan, Anderson, Fowler, Politzer, and Kip Thorne (2017).",
+        stages: buildStages({
+          highschool: "Caltech Feynman Lectures online & JPL public space-physics tours.",
+          undergrad:  "Caltech WAVE Fellows & SURF paid 10-week summer research fellowships.",
+          masters:    "Direct-entry funded PhD program from undergrad across PMA & Astronomy.",
+          phd:        "5–6 year funded PhD in Quantum Information (IQIM), LIGO, Astro, or Particle Physics.",
+          postdoc:    "Burke, DuBridge, and Sherman Fairchild Postdoctoral Fellowships.",
+          assoc_prof: "Caltech Tenure-Track / Associate Professor appointments.",
+          prof:       "Endowed Professorships & JPL / LIGO Executive Directorships."
+        }),
+        next: ["ligo", "mit", "slac", "berkeley"]
+      },
+      {
+        id: "berkeley", name: "UC Berkeley & LBNL", city: "Berkeley, CA, USA", group: "uni", branch: "particle",
+        lat: 37.8724, lng: -122.2578, zoom: 16.2, shanghai: "Shanghai #4", tuition: "Funded PhD", visa: "F-1 + 3yr OPT",
+        url: "https://physics.berkeley.edu/", wiki: "https://en.wikipedia.org/wiki/Lawrence_Berkeley_National_Laboratory", wikiSlug: "Lawrence_Berkeley_National_Laboratory",
+        summary: "Birthplace of Ernest Lawrence's cyclotron, 16 chemical elements, dark energy acceleration, and the Advanced Light Source.",
+        nobel: "30+ physics laureates including Lawrence, Oppenheimer's school, Smoot, Perlmutter, and Clauser.",
+        stages: buildStages({
+          highschool: "Berkeley Lab K-12 STEM & Cosmic Ray outreach programs.",
+          undergrad:  "DOE SULI internships at Berkeley Lab & UC Berkeley Physics REU.",
+          masters:    "Direct-entry funded PhD from undergrad with LBNL national-lab co-advising.",
+          phd:        "Funded PhD in Cosmology (DESI), Quantum, Condensed Matter, and Particle Physics.",
+          postdoc:    "Miller Research Fellowship & Chamberlain Fellowship at LBNL.",
+          assoc_prof: "Joint UC Berkeley Faculty + LBNL Senior Scientist appointments.",
+          prof:       "Full Professor & LBNL Division Directorships."
+        }),
+        next: ["slac", "caltech", "fermilab", "mit"]
+      },
+      {
+        id: "epfl", name: "EPFL Physics & SPC", city: "Lausanne, Switzerland", group: "uni", branch: "fusion",
+        lat: 46.5191, lng: 6.5668, zoom: 16.2, shanghai: "Top 30", tuition: "~CHF 1,460/yr", visa: "CH Student Permit",
+        url: "https://www.epfl.ch/schools/sb/research/iphys/", wiki: "https://en.wikipedia.org/wiki/EPFL", wikiSlug: "EPFL",
+        summary: "Lakeside Swiss powerhouse operating the TCV fusion tokamak, quantum photonics labs, and a direct bridge to CERN.",
+        nobel: "Swiss Plasma Center leads European tokamak control and fusion plasma physics.",
+        stages: buildStages({
+          highschool: "EPFL Science Outreach & Swiss Physics Olympiad camps.",
+          undergrad:  "EPFL Excellence in Research paid summer internships.",
+          masters:    "2-year English MSc in Physics or Nuclear/Fusion Engineering (~CHF 730/sem).",
+          phd:        "Salaried 4-year Swiss PhD in EPFL Doctoral Program in Physics (EDPY).",
+          postdoc:    "EPFL Fellows & SNSF Postdoctoral Mobility grants.",
+          assoc_prof: "EPFL Tenure-Track Assistant / Associate Professor.",
+          prof:       "Full Professor & Swiss Plasma Center Leadership."
+        }),
+        next: ["cern", "eth", "iter", "psi"]
+      },
+      {
+        id: "tum", name: "TU Munich & LMU (MCQST)", city: "Munich, Germany", group: "uni", branch: "quantum",
+        lat: 48.2624, lng: 11.6680, zoom: 15.8, shanghai: "Top 30", tuition: "Tuition-Free*", visa: "DE + 18mo Job",
+        url: "https://www.ph.tum.de/", wiki: "https://en.wikipedia.org/wiki/Technical_University_of_Munich", wikiSlug: "Technical_University_of_Munich",
+        summary: "Garching research campus uniting TUM, LMU, FRM II neutron reactor, ESO HQ, and Max Planck institutes for quantum & astro.",
+        nobel: "Rudolf Mössbauer (1961), Klaus von Klitzing (1985), Reinhard Genzel (2020), Ferenc Krausz (2023).",
+        stages: buildStages({
+          highschool: "TUM Schülerforschungszentrum & Munich Quantum Valley public demos.",
+          undergrad:  "DAAD RISE summer projects & HiWi research assistantships.",
+          masters:    "English MSc in Physics, Quantum Science & Tech (QST), or TMP with low/zero EU tuition.",
+          phd:        "Salaried TV-L E13 PhD positions via MCQST & ORIGINS Excellence Clusters.",
+          postdoc:    "MCQST Distinguished Postdoc & Humboldt Fellowships.",
+          assoc_prof: "TUM Faculty Tenure Track (W2/W3) & ERC Consolidator grants.",
+          prof:       "W3 Full Professorships & Max Planck Fellow chairs."
+        }),
+        next: ["mpq", "eth", "desy", "paranal"]
+      },
+      {
+        id: "alma", name: "ALMA Radio Observatory", city: "Chajnantor Plateau, Chile", group: "lab", branch: "astro",
+        lat: -23.0234, lng: -67.7538, zoom: 15.4,
+        url: "https://www.almaobservatory.org/en/home/", wiki: "https://en.wikipedia.org/wiki/Atacama_Large_Millimeter_Array", wikiSlug: "Atacama_Large_Millimeter_Array",
+        summary: "66 high-precision radio antennas at 5,000 m altitude in the Atacama Desert—key anchor of the Event Horizon Telescope black-hole image.",
+        nobel: "Co-imaged the M87* and Sagittarius A* supermassive black hole shadows.",
+        stages: buildStages({
+          highschool: "ALMA Kids & open millimeter-wave astronomy data explorers.",
+          undergrad:  "NRAO / ESO summer student programs working on ALMA interferometry.",
+          masters:    "MSc projects via ESO, NAOJ, NRAO, or Chilean university partners.",
+          phd:        "Joint international PhDs analyzing ALMA protoplanetary disks and black holes.",
+          postdoc:    "ALMA / ESO / NAOJ / NRAO Fellowships in Santiago, Garching, or Charlottesville.",
+          assoc_prof: "ALMA Regional Center (ARC) scientist & Large Program PI.",
+          prof:       "ALMA Board & international millimeter-astronomy leadership."
+        }),
+        next: ["paranal", "meerkat", "slac", "ictpsaifr"]
+      },
+      {
+        id: "snolab", name: "SNOLAB Underground", city: "Sudbury, Canada", group: "lab", branch: "particle",
+        lat: 46.4719, lng: -81.1867, zoom: 15.6,
+        url: "https://www.snolab.ca/", wiki: "https://en.wikipedia.org/wiki/SNOLAB", wikiSlug: "SNOLAB",
+        summary: "A class-2000 cleanroom physics lab 2 km underground inside an active nickel mine—hunting dark matter (DEAP, SuperCDMS) and solar neutrinos.",
+        nobel: "Arthur B. McDonald (2015 Nobel Prize for solving the solar neutrino problem).",
+        stages: buildStages({
+          highschool: "SNOLAB Virtual Underground Tour & Canadian astroparticle outreach.",
+          undergrad:  "Paid Canadian & international co-op terms via McDonald Institute.",
+          masters:    "Funded MSc at Queen's, Carleton, Laurentian, or UofT working underground.",
+          phd:        "McDonald Institute / SNOLAB funded PhDs in dark matter & neutrinoless double-beta decay.",
+          postdoc:    "SNOLAB Research Scientist & McDonald Institute Postdoctoral Fellowships.",
+          assoc_prof: "Experiment Technical Coordinator & Canadian university faculty.",
+          prof:       "SNOLAB Executive Director & international dark-matter spokespersons."
+        }),
+        next: ["gransasso", "icecube", "triumf", "perimeter"]
+      },
+      {
+        id: "yukawa", name: "Kyoto & Yukawa Institute", city: "Kyoto, Japan", group: "uni", branch: "gravity",
+        lat: 35.0285, lng: 135.7815, zoom: 16.4, shanghai: "Top 35", tuition: "~¥535k + MEXT", visa: "JP Student Visa",
+        url: "https://www.yukawa.kyoto-u.ac.jp/en-GB/", wiki: "https://en.wikipedia.org/wiki/Yukawa_Institute_for_Theoretical_Physics", wikiSlug: "Yukawa_Institute_for_Theoretical_Physics",
+        summary: "Founded to honor Japan's first Nobel laureate Hideki Yukawa—an international hub for string theory, holography, and quantum gravity.",
+        nobel: "Hideki Yukawa (1949), Shin'ichirō Tomonaga (1965), Makoto Kobayashi & Toshihide Maskawa (2008).",
+        stages: buildStages({
+          highschool: "Kyoto University Science Open Lectures & Yukawa Hall archive.",
+          undergrad:  "Kyoto University Amgen / Summer research visits.",
+          masters:    "English MSc/PhD tracks at Kyoto Physics with full MEXT scholarships.",
+          phd:        "Funded PhD at YITP in quantum gravity, cosmology, and condensed matter theory.",
+          postdoc:    "YITP Special Postdoctoral Fellowships & JSPS Fellowships.",
+          assoc_prof: "YITP Associate Professor & international workshop organizer.",
+          prof:       "YITP Director & Distinguished Theoretical Physics Chairs."
+        }),
+        next: ["utokyo", "superk", "perimeter", "princeton"]
+      },
+      {
+        id: "aei", name: "Max Planck Gravitational Physics", city: "Potsdam, Germany", group: "lab", branch: "gravity",
+        lat: 52.4167, lng: 12.9710, zoom: 16.4,
+        url: "https://www.aei.mpg.de/", wiki: "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Gravitational_Physics", wikiSlug: "Max_Planck_Institute_for_Gravitational_Physics",
+        summary: "The Albert Einstein Institute—leading numerical relativity, LIGO/LISA waveform modeling, and quantum gravity from Potsdam & Hannover.",
+        nobel: "Built the core laser technology for LIGO and leads the upcoming ESA LISA space interferometer.",
+        stages: buildStages({
+          highschool: "Einstein Online (world-class interactive relativity portal run by AEI).",
+          undergrad:  "Paid summer research visits in numerical relativity & laser interferometry.",
+          masters:    "Tuition-free English MSc at Univ. of Potsdam or Leibniz Hannover with AEI thesis.",
+          phd:        "IMPRS for Mathematical and Physical Aspects of Gravitation (salaried PhDs).",
+          postdoc:    "AEI Postdoctoral Fellowships in Astrophysical Relativity & Quantum Gravity.",
+          assoc_prof: "Max Planck Independent Research Group Leader.",
+          prof:       "AEI Director & LISA Consortium Leadership."
+        }),
+        next: ["ligo", "gottingen", "bern", "perimeter"]
+      },
+      {
+        id: "jila", name: "JILA & CU Boulder", city: "Boulder, CO, USA", group: "lab", branch: "quantum",
+        lat: 40.0074, lng: -105.2689, zoom: 16.6, shanghai: "Top 25", tuition: "Funded PhD", visa: "F-1 + 3yr OPT",
+        url: "https://jila.colorado.edu/", wiki: "https://en.wikipedia.org/wiki/JILA", wikiSlug: "JILA",
+        summary: "Joint NIST & CU Boulder institute at the foot of the Rockies—home of the first Bose-Einstein condensate and world's most precise atomic clocks.",
+        nobel: "Eric Cornell & Carl Wieman (2001 BEC), John Hall (2005 frequency combs), David Wineland (2012 NIST).",
+        stages: buildStages({
+          highschool: "CU Wizards & JILA public atomic-physics demonstrations.",
+          undergrad:  "NSF Physics & JILA REU paid 10-week summer research program.",
+          masters:    "Funded CU Boulder Physics PhD (MS awarded along the way).",
+          phd:        "5–6 year funded PhD in AMO physics, optical lattice clocks, and ultracold molecules.",
+          postdoc:    "NRC Research Associateship & JILA Postdoctoral Fellowships.",
+          assoc_prof: "JILA Fellow / NIST Physicist & CU Boulder Associate Professor.",
+          prof:       "JILA Chair & National Quantum Initiative leadership."
+        }),
+        next: ["mpq", "mit", "qutech", "cqt"]
+      }
+    ];
+
+    const state = {
+      nodes: [...SEED_NODES],
+      ingestedNodes: [],
+      liveNodes: [],
+      filter: "all",
+      branch: "all",
+      stage: "undergrad",
+      selectedId: null,
+      shortlist: new Set(["eth", "parissaclay", "oxford", "utokyo", "perimeter"]),
+      labelsOn: false,
+      arcsOn: true,
+      tilted: false,
+      activeModal: null,
+      dbReady: false,
+      userId: null,
+      ingesting: false,
+      globeReady: false
+    };
+
+    let db = null;
+    let auth = null;
+    const appId = typeof __app_id !== "undefined" ? __app_id : "physalts-default";
+
+    function classifyPhysicsBranch(text) {
+      const t = (text || "").toLowerCase();
+      if (/cern|fermi|collider|hadron|neutrino|particle|nuclear|cyclotron|accelerator|desy|kek|triumf|high energy/.test(t)) return "particle";
+      if (/quantum|photon|laser|optic|euv|attosecond|qubit|nanophoton/.test(t)) return "quantum";
+      if (/astro|observator|telescope|cosmo|space|radio|astron|planetar/.test(t)) return "astro";
+      if (/fusion|plasma|tokamak|stellarator|iter|magnet/.test(t)) return "fusion";
+      if (/gravit|relativ|ligo|virgo|kagra|theoretical|perimeter|ias|string/.test(t)) return "gravity";
+      if (/synchrotron|neutron|spallation|condensed|material|superconduct|solid state|graphene|magnetism/.test(t)) return "condensed";
+      return "condensed";
+    }
+
+    function updateDbStatus(ready, text) {
+      state.dbReady = ready;
+      const dot = document.getElementById("db-dot");
+      const lbl = document.getElementById("db-status-text");
+      if (dot) dot.className = ready ? "w-2 h-2 rounded-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.85)]" : "w-2 h-2 rounded-full bg-white/40";
+      if (lbl) lbl.textContent = text;
+    }
+
+    function totalIndexedCount() {
+      return state.nodes.length + state.ingestedNodes.length;
+    }
+
+    function refreshDbBadge() {
+      const prefix = state.dbReady ? "Cloud DB" : "Local DB";
+      updateDbStatus(state.dbReady, `${prefix} · ${totalIndexedCount().toLocaleString()} hubs`);
+    }
+
+    async function initBackendDatabase() {
+      try {
+        if (typeof __firebase_config === "undefined" || !__firebase_config) {
+          refreshDbBadge();
+          autoHydrateInitialBatch();
+          return;
+        }
+        const firebaseConfig = JSON.parse(__firebase_config);
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        if (typeof __initial_auth_token !== "undefined" && __initial_auth_token) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else {
+          await signInAnonymously(auth);
+        }
+
+        const user = auth.currentUser;
+        if (!user) {
+          refreshDbBadge();
+          autoHydrateInitialBatch();
+          return;
+        }
+        state.userId = user.uid;
+        state.dbReady = true;
+
+        const nodesCol = collection(db, "artifacts", appId, "public", "data", "physics_nodes");
+        const existingSnap = await getDocs(nodesCol);
+        if (existingSnap.empty) {
+          updateDbStatus(true, "Seeding Atlas DB…");
+          await Promise.all(SEED_NODES.map(n => setDoc(doc(nodesCol, n.id), n)));
+        }
+
+        onSnapshot(
+          nodesCol,
+          snap => {
+            const dbNodes = [];
+            snap.forEach(d => dbNodes.push(d.data()));
+            if (dbNodes.length > 0) {
+              state.nodes = dbNodes;
+              syncMarkers();
+              renderFieldsModal();
+              renderPathwaysModal();
+              renderEngineModal();
+              if (state.selectedId) {
+                const active = getAllNodes().find(x => x.id === state.selectedId);
+                if (active) updateCardStageBox(active);
+              }
+            }
+            refreshDbBadge();
+          },
+          err => {
+            console.error("Firestore nodes listener error:", err);
+            state.dbReady = false;
+            refreshDbBadge();
+          }
+        );
+
+        const chunksCol = collection(db, "artifacts", appId, "public", "data", "physics_chunks");
+        let checkedInitialChunks = false;
+        onSnapshot(
+          chunksCol,
+          snap => {
+            const merged = [];
+            const seen = new Set(state.nodes.map(n => n.name.toLowerCase()));
+            snap.forEach(d => {
+              const data = d.data();
+              if (Array.isArray(data.items)) {
+                data.items.forEach(item => {
+                  const key = (item.name || "").toLowerCase();
+                  if (!key || seen.has(key)) return;
+                  seen.add(key);
+                  merged.push(item);
+                });
+              }
+            });
+            if (merged.length > 0) {
+              state.ingestedNodes = merged;
+              syncMarkers();
+              renderFieldsModal();
+              renderEngineModal();
+              refreshDbBadge();
+            } else if (!checkedInitialChunks) {
+              checkedInitialChunks = true;
+              autoHydrateInitialBatch();
+            }
+          },
+          err => {
+            console.error("Firestore chunks listener error:", err);
+            if (!checkedInitialChunks) {
+              checkedInitialChunks = true;
+              autoHydrateInitialBatch();
+            }
+          }
+        );
+
+        const profileDoc = doc(db, "artifacts", appId, "users", state.userId, "profile", "prefs");
+        onSnapshot(
+          profileDoc,
+          snap => {
+            if (snap.exists()) {
+              const data = snap.data();
+              if (Array.isArray(data.shortlist)) state.shortlist = new Set(data.shortlist);
+              if (data.stage && STAGE_META[data.stage]) {
+                state.stage = data.stage;
+                renderStageMenu();
+              }
+              renderPathwaysModal();
+              if (state.selectedId) {
+                const active = getAllNodes().find(x => x.id === state.selectedId);
+                if (active) {
+                  document.getElementById("btn-card-star").classList.toggle("glass-btn-active", state.shortlist.has(state.selectedId));
+                  updateCardStageBox(active);
+                }
+              }
+            }
+          },
+          err => console.error("Firestore profile listener error:", err)
+        );
+      } catch (err) {
+        console.error("Backend init error:", err);
+        state.dbReady = false;
+        refreshDbBadge();
+        autoHydrateInitialBatch();
+      }
+    }
+
+    async function persistIngestedChunks() {
+      if (!db || !state.userId || state.ingestedNodes.length === 0) return;
+      try {
+        const chunksCol = collection(db, "artifacts", appId, "public", "data", "physics_chunks");
+        const CHUNK_SIZE = 140;
+        const writes = [];
+        for (let i = 0; i < state.ingestedNodes.length; i += CHUNK_SIZE) {
+          const slice = state.ingestedNodes.slice(i, i + CHUNK_SIZE);
+          const chunkId = `chunk_${Math.floor(i / CHUNK_SIZE)}`;
+          writes.push(setDoc(doc(chunksCol, chunkId), {
+            index: Math.floor(i / CHUNK_SIZE),
+            count: slice.length,
+            updatedAt: Date.now(),
+            items: slice
+          }));
+        }
+        await Promise.all(writes);
+      } catch (err) {
+        console.error("Failed to persist ingested chunks:", err);
+      }
+    }
+
+    async function persistUserPrefs() {
+      if (!db || !state.userId) return;
+      try {
+        const profileDoc = doc(db, "artifacts", appId, "users", state.userId, "profile", "prefs");
+        await setDoc(profileDoc, {
+          stage: state.stage,
+          shortlist: [...state.shortlist],
+          updatedAt: Date.now()
+        }, { merge: true });
+      } catch (err) {
+        console.error("Failed to save user prefs:", err);
+      }
+    }
+
+    async function saveNodeToBackendDB(nodeObj) {
+      const cleanNode = {
+        ...nodeObj,
+        isLive: false,
+        stages: nodeObj.stages || buildStages()
+      };
+      const idx = state.nodes.findIndex(n => n.id === cleanNode.id);
+      if (idx >= 0) state.nodes[idx] = cleanNode;
+      else state.nodes.push(cleanNode);
+      state.liveNodes = state.liveNodes.filter(n => n.id !== cleanNode.id);
+      syncMarkers();
+      renderFieldsModal();
+
+      if (db && state.userId) {
+        try {
+          const nodeRef = doc(db, "artifacts", appId, "public", "data", "physics_nodes", cleanNode.id);
+          await setDoc(nodeRef, cleanNode);
+          showToast(`Saved "${cleanNode.name}" to Backend Atlas DB`);
+          return true;
+        } catch (err) {
+          console.error("Error saving node to backend DB:", err);
+          showToast("Saved locally (Cloud DB sync error)");
+          return false;
+        }
+      } else {
+        updateDbStatus(false, `Local DB · ${state.nodes.length} hubs`);
+        showToast(`Added "${cleanNode.name}" to Atlas`);
+        return true;
+      }
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      document.getElementById("toast-text").textContent = msg;
+      t.classList.add("visible");
+      clearTimeout(showToast._id);
+      showToast._id = setTimeout(() => t.classList.remove("visible"), 2600);
+    }
+
+    function getAllNodes() {
+      return [...state.nodes, ...state.ingestedNodes, ...state.liveNodes];
+    }
+
+    function getVisibleNodes() {
+      return getAllNodes().filter(n => {
+        if (n.isLive) return true;
+        if (state.filter !== "all" && n.group !== state.filter) return false;
+        if (state.branch !== "all" && n.branch !== state.branch) return false;
+        return true;
+      });
+    }
+
+    if (typeof lucide !== "undefined") lucide.createIcons();
+
+    let map = {
+      on: () => {}, flyTo: () => {}, easeTo: () => {}, zoomIn: () => {}, zoomOut: () => {},
+      getBearing: () => 0, getLayer: () => null, getSource: () => null,
+      setLayoutProperty: () => {}, setProjection: () => {}, queryRenderedFeatures: () => [],
+      getCanvas: () => ({ style: {} })
+    };
+
+    async function loadMapLibreSafely() {
+      if (typeof window.maplibregl !== "undefined") return true;
+      const res = await fetch("https://cdn.jsdelivr.net/npm/maplibre-gl@5.18.0/dist/maplibre-gl.js");
+      if (!res.ok) throw new Error("Failed to fetch MapLibre GL JS");
+      let code = await res.text();
+      code = code
+        .replace(/(?:\b(?:window|self|globalThis)\.)?\b(?:parent|top)\.location\b/g, "self.location")
+        .replace(/['"]blob:['"]===?(?:[\w$]+\.)?location\.protocol\?(?:[\w$]+\.)?parent:(?:[\w$]+)/g, "self")
+        .replace(/(?:[\w$]+\.)?location\.protocol===?['"]blob:['"]\?(?:[\w$]+\.)?parent:(?:[\w$]+)/g, "self");
+      const script = document.createElement("script");
+      script.textContent = code;
+      document.head.appendChild(script);
+      return typeof window.maplibregl !== "undefined";
+    }
+
+    function buildGeoJSON(nodes) {
+      return {
+        type: "FeatureCollection",
+        features: nodes
+          .filter(n => typeof n.lat === "number" && typeof n.lng === "number" && !Number.isNaN(n.lat) && !Number.isNaN(n.lng))
+          .map(n => ({
+            type: "Feature",
+            geometry: { type: "Point", coordinates: [n.lng, n.lat] },
+            properties: {
+              id: n.id,
+              name: n.name,
+              pinned: n.pinned ? 1 : 0,
+              selected: state.selectedId === n.id ? 1 : 0,
+              curated: n.sourceApi ? 0 : 1
+            }
+          }))
+      };
+    }
+
+    function greatCircleCoords(lng1, lat1, lng2, lat2, steps = 40) {
+      const toRad = d => (d * Math.PI) / 180;
+      const toDeg = r => (r * 180) / Math.PI;
+      const p1 = toRad(lat1), l1 = toRad(lng1);
+      const p2 = toRad(lat2), l2 = toRad(lng2);
+      const d = 2 * Math.asin(Math.sqrt(
+        Math.sin((p2 - p1) / 2) ** 2 + Math.cos(p1) * Math.cos(p2) * Math.sin((l2 - l1) / 2) ** 2
+      ));
+      if (d < 1e-5) return [[lng1, lat1], [lng2, lat2]];
+      const coords = [];
+      for (let i = 0; i <= steps; i++) {
+        const f = i / steps;
+        const A = Math.sin((1 - f) * d) / Math.sin(d);
+        const B = Math.sin(f * d) / Math.sin(d);
+        const x = A * Math.cos(p1) * Math.cos(l1) + B * Math.cos(p2) * Math.cos(l2);
+        const y = A * Math.cos(p1) * Math.sin(l1) + B * Math.cos(p2) * Math.sin(l2);
+        const z = A * Math.sin(p1) + B * Math.sin(p2);
+        coords.push([toDeg(Math.atan2(y, x)), toDeg(Math.atan2(z, Math.sqrt(x * x + y * y)))]);
+      }
+      return coords;
+    }
+
+    function buildArcsGeoJSON() {
+      if (!state.arcsOn) return { type: "FeatureCollection", features: [] };
+      const all = getAllNodes();
+      const byId = new Map(all.map(n => [n.id, n]));
+      const pairs = [];
+
+      if (state.selectedId && byId.has(state.selectedId)) {
+        const sel = byId.get(state.selectedId);
+        (sel.next || []).forEach(tid => {
+          if (byId.has(tid)) pairs.push([sel, byId.get(tid), 1]);
+        });
+      }
+
+      if (pairs.length === 0) {
+        const lineage = state.filter === "hist" || state.branch === "history"
+          ? [["miletus", "bern"], ["bern", "gottingen"], ["gottingen", "bohr"], ["bohr", "princeton"], ["princeton", "cern"]]
+          : [["cern", "fermilab"], ["cern", "icecube"], ["cern", "eth"], ["mit", "ligo"], ["utokyo", "superk"], ["paranal", "meerkat"], ["qutech", "unsw"]];
+        lineage.forEach(([a, b]) => {
+          if (byId.has(a) && byId.has(b)) pairs.push([byId.get(a), byId.get(b), 0]);
+        });
+      }
+
+      return {
+        type: "FeatureCollection",
+        features: pairs.map(([a, b, focused]) => ({
+          type: "Feature",
+          geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
+          properties: { focused }
+        }))
+      };
+    }
+
+    function setupClusteredLayers() {
+      if (map.getSource("physics-hubs")) return;
+
+      map.addSource("physics-arcs", { type: "geojson", data: buildArcsGeoJSON() });
+      map.addLayer({
+        id: "physics-arcs-glow",
+        type: "line",
+        source: "physics-arcs",
+        paint: {
+          "line-color": "rgba(255, 255, 255, 0.22)",
+          "line-width": ["case", ["==", ["get", "focused"], 1], 4.5, 2.5],
+          "line-blur": 3
+        }
+      });
+      map.addLayer({
+        id: "physics-arcs-line",
+        type: "line",
+        source: "physics-arcs",
+        paint: {
+          "line-color": ["case", ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.82)", "rgba(218, 224, 234, 0.42)"],
+          "line-width": ["case", ["==", ["get", "focused"], 1], 1.6, 1.0],
+          "line-dasharray": [2, 2]
+        }
+      });
+
+      map.addSource("physics-hubs", {
+        type: "geojson",
+        data: buildGeoJSON(getVisibleNodes()),
+        cluster: true,
+        clusterMaxZoom: 9,
+        clusterRadius: 44
+      });
+
+      map.addLayer({
+        id: "clusters-glow",
+        type: "circle",
+        source: "physics-hubs",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": "rgba(218, 224, 234, 0.18)",
+          "circle-radius": ["step", ["get", "point_count"], 22, 15, 28, 60, 35, 150, 42],
+          "circle-blur": 0.45
+        }
+      });
+
+      map.addLayer({
+        id: "clusters",
+        type: "circle",
+        source: "physics-hubs",
+        filter: ["has", "point_count"],
+        paint: {
+          "circle-color": "rgba(18, 22, 30, 0.78)",
+          "circle-radius": ["step", ["get", "point_count"], 15, 15, 19, 60, 24, 150, 29],
+          "circle-stroke-width": 1.5,
+          "circle-stroke-color": "rgba(255, 255, 255, 0.78)"
+        }
+      });
+
+      map.addLayer({
+        id: "cluster-count",
+        type: "symbol",
+        source: "physics-hubs",
+        filter: ["has", "point_count"],
+        layout: {
+          "text-field": "{point_count_abbreviated}",
+          "text-font": ["Open Sans Semibold"],
+          "text-size": 12,
+          "text-allow-overlap": true
+        },
+        paint: { "text-color": "#ffffff" }
+      });
+
+      map.addLayer({
+        id: "unclustered-halo",
+        type: "circle",
+        source: "physics-hubs",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": ["case", ["==", ["get", "selected"], 1], "rgba(255, 255, 255, 0.36)", "rgba(212, 216, 223, 0.20)"],
+          "circle-radius": ["case", ["==", ["get", "selected"], 1], 14, ["==", ["get", "curated"], 1], 10, 7]
+        }
+      });
+
+      map.addLayer({
+        id: "unclustered-point",
+        type: "circle",
+        source: "physics-hubs",
+        filter: ["!", ["has", "point_count"]],
+        paint: {
+          "circle-color": ["case", ["==", ["get", "selected"], 1], "#ffffff", ["==", ["get", "curated"], 1], "#e2e6ed", "#b8c0cc"],
+          "circle-radius": ["case", ["==", ["get", "selected"], 1], 7.5, ["==", ["get", "curated"], 1], 5.5, 4.2],
+          "circle-stroke-width": ["case", ["==", ["get", "selected"], 1], 2.5, 1.6],
+          "circle-stroke-color": "rgba(255, 255, 255, 0.92)"
+        }
+      });
+
+      map.addLayer({
+        id: "unclustered-label",
+        type: "symbol",
+        source: "physics-hubs",
+        filter: ["!", ["has", "point_count"]],
+        layout: {
+          "text-field": ["get", "name"],
+          "text-font": ["Open Sans Semibold"],
+          "text-size": ["interpolate", ["linear"], ["zoom"], 2, 11, 8, 12.5],
+          "text-offset": [0.95, 0],
+          "text-anchor": "left",
+          "text-optional": true,
+          "text-max-width": 14
+        },
+        paint: {
+          "text-color": "rgba(248, 250, 252, 0.96)",
+          "text-halo-color": "rgba(8, 10, 15, 0.85)",
+          "text-halo-width": 1.6,
+          "text-opacity": [
+            "step",
+            ["zoom"],
+            ["case", ["==", ["get", "selected"], 1], 1, ["==", ["get", "pinned"], 1], 0.95, 0],
+            5.2,
+            ["case", ["==", ["get", "selected"], 1], 1, ["==", ["get", "pinned"], 1], 0.95, 0.88]
+          ]
+        }
+      });
+
+      map.on("click", "clusters", async e => {
+        const features = map.queryRenderedFeatures(e.point, { layers: ["clusters"] });
+        if (!features.length) return;
+        const clusterId = features[0].properties.cluster_id;
+        const source = map.getSource("physics-hubs");
+        try {
+          const zoom = await source.getClusterExpansionZoom(clusterId);
+          map.easeTo({
+            center: features[0].geometry.coordinates,
+            zoom: Math.min(zoom + 0.6, 15),
+            duration: 650
+          });
+        } catch (_) {}
+      });
+
+      map.on("click", "unclustered-point", e => {
+        const f = e.features && e.features[0];
+        if (!f || !f.properties?.id) return;
+        selectNode(f.properties.id, true);
+      });
+      map.on("click", "unclustered-label", e => {
+        const f = e.features && e.features[0];
+        if (!f || !f.properties?.id) return;
+        selectNode(f.properties.id, true);
+      });
+
+      ["clusters", "unclustered-point", "unclustered-label"].forEach(layer => {
+        map.on("mouseenter", layer, () => { map.getCanvas().style.cursor = "pointer"; });
+        map.on("mouseleave", layer, () => { map.getCanvas().style.cursor = ""; });
+      });
+
+      state.globeReady = true;
+    }
+
+    async function initGlobe() {
+      try {
+        const ok = await loadMapLibreSafely();
+        if (!ok) return;
+        map = new window.maplibregl.Map({
+          container: "map",
+          center: [12, 34],
+          zoom: 1.9,
+          minZoom: 1.2,
+          maxZoom: 18.2,
+          pitch: 0,
+          bearing: 0,
+          antialias: true,
+          attributionControl: true,
+          style: {
+            version: 8,
+            glyphs: "https://demotiles.maplibre.org/font/{fontstack}/{range}.pbf",
+            projection: { type: "globe" },
+            sky: {
+              "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0]
+            },
+            sources: {
+              "esri-satellite": {
+                type: "raster",
+                tiles: [
+                  "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                ],
+                tileSize: 256,
+                maxzoom: 19,
+                attribution: "Imagery © Esri"
+              },
+              "esri-labels": {
+                type: "raster",
+                tiles: [
+                  "https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+                ],
+                tileSize: 256,
+                maxzoom: 19
+              }
+            },
+            layers: [
+              {
+                id: "satellite-layer",
+                type: "raster",
+                source: "esri-satellite",
+                paint: {
+                  "raster-fade-duration": 220,
+                  "raster-saturation": -0.08,
+                  "raster-contrast": 0.08
+                }
+              },
+              {
+                id: "labels-layer",
+                type: "raster",
+                source: "esri-labels",
+                layout: { visibility: "none" },
+                paint: { "raster-opacity": 0.85 }
+              }
+            ]
+          }
+        });
+
+        map.on("style.load", () => {
+          try { map.setProjection({ type: "globe" }); } catch (_) {}
+          setupClusteredLayers();
+          syncMarkers();
+        });
+        map.on("click", closeDropdown);
+      } catch (err) {
+        console.error("Map init error:", err);
+      }
+    }
+
+    function syncMarkers() {
+      const bPill = document.getElementById("active-branch-pill");
+      const bTxt = document.getElementById("active-branch-text");
+      if (bPill && bTxt) {
+        if (state.branch !== "all") {
+          const bObj = PHYSICS_BRANCHES.find(x => x.id === state.branch);
+          bTxt.textContent = bObj ? bObj.label : state.branch;
+          bPill.classList.remove("hidden");
+        } else {
+          bPill.classList.add("hidden");
+        }
+      }
+      if (!state.globeReady) return;
+      const src = map.getSource("physics-hubs");
+      if (src && typeof src.setData === "function") src.setData(buildGeoJSON(getVisibleNodes()));
+      const arcSrc = map.getSource("physics-arcs");
+      if (arcSrc && typeof arcSrc.setData === "function") arcSrc.setData(buildArcsGeoJSON());
+    }
+
+    function isNoiseOrg(name, types = []) {
+      const n = (name || "").toLowerCase();
+      const t = types.map(x => String(x || "").toLowerCase());
+      if (t.includes("healthcare") || t.includes("archive")) return true;
+      if (/hospital|clinic|medical center|medical physics|radiology|west physics|consulting|health system|cancer center|therapy|dental/.test(n)) return true;
+      if (t.includes("company") && !/quantum|fusion|photonic|asml|laser|cryo|superconduct|cern|plasma|semiconductor|optic/.test(n)) return true;
+      return false;
+    }
+
+    function setEngineProgress(visible, label = "", pct = 0) {
+      const wrap = document.getElementById("eng-progress-wrap");
+      if (!wrap) return;
+      wrap.classList.toggle("hidden", !visible);
+      if (visible) {
+        document.getElementById("eng-progress-label").textContent = label;
+        document.getElementById("eng-progress-pct").textContent = `${Math.round(pct)}%`;
+        document.getElementById("eng-progress-bar").style.width = `${Math.min(100, Math.max(0, pct))}%`;
+      }
+    }
+
+    function normalizeOpenAlexInstitution(inst, queryHint = "") {
+      const g = inst.geo;
+      if (!g || typeof g.latitude !== "number" || typeof g.longitude !== "number") return null;
+      const name = (inst.display_name || "").trim();
+      if (!name) return null;
+      const type = (inst.type || "").toLowerCase();
+      if (isNoiseOrg(name, [type])) return null;
+      const group = (type === "facility" || type === "government" || /lab|institute|observatory|cern|center|centre|synchrotron/.test(name.toLowerCase())) ? "lab" : "uni";
+      const topicNames = (inst.topics || []).slice(0, 4).map(t => t.display_name).join(", ");
+      const branch = classifyPhysicsBranch(`${name} ${topicNames} ${queryHint}`);
+      const works = inst.works_count || 0;
+      const cites = inst.cited_by_count || 0;
+      const country = g.country || inst.country_code || "";
+      return {
+        id: `oa-${(inst.id || name).split("/").pop()}`,
+        name,
+        city: `${g.city || "Research Hub"}${country ? ", " + country : ""}`,
+        country,
+        lat: Number(g.latitude.toFixed(5)),
+        lng: Number(g.longitude.toFixed(5)),
+        zoom: 15.6,
+        group,
+        branch,
+        pinned: false,
+        sourceApi: "OpenAlex",
+        url: inst.homepage_url || inst.id || "",
+        summary: `Verified global physics ${group === "lab" ? "research facility" : "university department"} with ${works.toLocaleString()} indexed works and ${cites.toLocaleString()} citations.${topicNames ? " Active in " + topicNames + "." : ""}`
+      };
+    }
+
+    function normalizeRorOrg(org, queryHint = "") {
+      const loc = org.locations?.[0]?.geonames_details;
+      if (!loc || typeof loc.lat !== "number" || typeof loc.lng !== "number") return null;
+      const name = org.names?.find(x => x.types?.includes("ror_display"))?.value || org.names?.[0]?.value;
+      if (!name) return null;
+      const types = (org.types || []).map(t => t.toLowerCase());
+      if (isNoiseOrg(name, types)) return null;
+      const group = types.includes("education") ? "uni" : "lab";
+      const branch = classifyPhysicsBranch(`${name} ${queryHint}`);
+      const country = loc.country_name || "";
+      return {
+        id: `ror-${(org.id || name).split("/").pop()}`,
+        name,
+        city: `${loc.name || "Lab"}${country ? ", " + country : ""}`,
+        country,
+        lat: Number(loc.lat.toFixed(5)),
+        lng: Number(loc.lng.toFixed(5)),
+        zoom: 15.6,
+        group,
+        branch,
+        pinned: false,
+        sourceApi: "ROR",
+        url: org.links?.[0]?.value || org.id || "",
+        summary: `Verified ROR global physics research organization (${(org.types || []).join(", ") || "research"}).`
+      };
+    }
+
+    function mergeIngestedBatch(newItems) {
+      const existingKeys = new Set([
+        ...state.nodes.map(n => n.name.toLowerCase()),
+        ...state.ingestedNodes.map(n => n.name.toLowerCase())
+      ]);
+      let added = 0;
+      newItems.forEach(item => {
+        if (!item || !item.name) return;
+        const key = item.name.toLowerCase();
+        if (existingKeys.has(key)) return;
+        existingKeys.add(key);
+        state.ingestedNodes.push(item);
+        added++;
+      });
+      if (added > 0) {
+        syncMarkers();
+        renderFieldsModal();
+        renderEngineModal();
+        refreshDbBadge();
+      }
+      return added;
+    }
+
+    async function runGlobalIngestion(tasks, silent = false) {
+      if (state.ingesting) return;
+      state.ingesting = true;
+      let totalAdded = 0;
+      if (!silent) setEngineProgress(true, "Starting global physics ETL…", 4);
+
+      try {
+        for (let i = 0; i < tasks.length; i++) {
+          const task = tasks[i];
+          const pct = ((i + 0.5) / tasks.length) * 92;
+          if (!silent) setEngineProgress(true, `Fetching ${task.label}…`, pct);
+          try {
+            const res = await fetch(task.url);
+            if (!res.ok) continue;
+            const data = await res.json();
+            const normalized = task.source === "OpenAlex"
+              ? (data.results || []).map(x => normalizeOpenAlexInstitution(x, task.hint)).filter(Boolean)
+              : (data.items || []).map(x => normalizeRorOrg(x, task.hint)).filter(Boolean);
+            totalAdded += mergeIngestedBatch(normalized);
+          } catch (_) {}
+        }
+
+        if (!silent) setEngineProgress(true, "Syncing chunks to Cloud DB…", 96);
+        await persistIngestedChunks();
+        if (!silent) {
+          setEngineProgress(false);
+          showToast(totalAdded > 0 ? `Indexed +${totalAdded} new physics hubs (${totalIndexedCount().toLocaleString()} total)` : `Index up to date (${totalIndexedCount().toLocaleString()} hubs)`);
+        }
+      } finally {
+        state.ingesting = false;
+        if (!silent) setEngineProgress(false);
+        renderEngineModal();
+        refreshDbBadge();
+      }
+    }
+
+    function autoHydrateInitialBatch() {
+      if (state.ingestedNodes.length > 0 || state.ingesting) return;
+      runGlobalIngestion([
+        { source: "OpenAlex", label: "Top Global Physics Universities (Field 31)", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=1" },
+        { source: "OpenAlex", label: "Global Physics Labs & Facilities (Field 31)", hint: "observatory particle quantum", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:facility|government&sort=cited_by_count:desc&per-page=100&page=1" }
+      ], true);
+    }
+
+    function renderEngineModal() {
+      const all = [...state.nodes, ...state.ingestedNodes];
+      const totalEl = document.getElementById("eng-total");
+      const countriesEl = document.getElementById("eng-countries");
+      const breakdownEl = document.getElementById("eng-breakdown");
+      if (!totalEl || !countriesEl || !breakdownEl) return;
+
+      const countrySet = new Set();
+      all.forEach(n => {
+        const c = n.country || (n.city && n.city.includes(",") ? n.city.split(",").pop().trim() : "");
+        if (c) countrySet.add(c);
+      });
+
+      totalEl.textContent = all.length.toLocaleString();
+      countriesEl.textContent = countrySet.size.toLocaleString();
+
+      const curatedCount = state.nodes.length;
+      const oaCount = state.ingestedNodes.filter(n => n.sourceApi === "OpenAlex").length;
+      const rorCount = state.ingestedNodes.filter(n => n.sourceApi === "ROR").length;
+
+      breakdownEl.innerHTML = `
+        <div class="glass-row rounded-[16px] px-3.5 py-2 flex items-center justify-between cursor-default">
+          <span class="text-white/85">Curated Flagship Hubs (All 7 Stages)</span>
+          <span class="text-white font-medium">${curatedCount}</span>
+        </div>
+        <div class="glass-row rounded-[16px] px-3.5 py-2 flex items-center justify-between cursor-default">
+          <span class="text-white/85">OpenAlex Physics Institutions</span>
+          <span class="text-white font-medium">${oaCount.toLocaleString()}</span>
+        </div>
+        <div class="glass-row rounded-[16px] px-3.5 py-2 flex items-center justify-between cursor-default">
+          <span class="text-white/85">ROR v2 Global Research Labs</span>
+          <span class="text-white font-medium">${rorCount.toLocaleString()}</span>
+        </div>
+      `;
+    }
+
+    let activeWikiReq = 0;
+
+    function updateCardStageBox(node) {
+      const st = state.stage === "all" ? "undergrad" : state.stage;
+      const stageMeta = STAGE_META[st] || STAGE_META.undergrad;
+      const stages = node.stages || buildStages();
+      const branchObj = PHYSICS_BRANCHES.find(b => b.id === node.branch);
+
+      document.getElementById("card-stage-label").textContent = `${stageMeta.label} Pathway`;
+      document.getElementById("card-branch-badge").textContent = branchObj ? branchObj.label : "Physics";
+      document.getElementById("card-stage-text").textContent = stages[st] || stages.undergrad;
+
+      const allStagesEl = document.getElementById("deeper-all-stages");
+      const order = ["highschool", "undergrad", "masters", "phd", "postdoc", "assoc_prof", "prof"];
+      allStagesEl.innerHTML = order.map(k => `
+        <div class="rounded-xl px-2.5 py-2 ${k === st ? "bg-white/15 border border-white/25" : "bg-white/5 border border-white/10"}">
+          <div class="text-[11.5px] font-semibold text-white/75">${STAGE_META[k].label}</div>
+          <div class="text-[12.5px] text-white/85 mt-0.5 leading-snug">${stages[k] || "—"}</div>
+        </div>
+      `).join("");
+    }
+
+    function selectNode(id, fly = true) {
+      const node = getAllNodes().find(n => n.id === id);
+      if (!node) return;
+      state.selectedId = id;
+      closeDropdown();
+      syncMarkers();
+
+      if (fly) {
+        const targetZoom = node.zoom || 15.8;
+        state.tilted = true;
+        document.getElementById("btn-toggle-tilt").classList.add("glass-btn-active");
+        map.flyTo({
+          center: [node.lng, node.lat],
+          zoom: targetZoom,
+          pitch: 48,
+          bearing: -14,
+          speed: 0.95,
+          curve: 1.55,
+          essential: true
+        });
+      }
+
+      const card = document.getElementById("place-card");
+      card.classList.remove("hidden");
+      card.classList.add("flex");
+
+      document.getElementById("card-title").textContent = node.name;
+      document.getElementById("card-location").textContent = node.city;
+      document.getElementById("card-summary").textContent = node.summary || "Physics research institution.";
+
+      updateCardStageBox(node);
+
+      const persistBtn = document.getElementById("btn-persist-live");
+      persistBtn.classList.toggle("hidden", !node.isLive);
+
+      document.getElementById("btn-card-star").classList.toggle("glass-btn-active", state.shortlist.has(id));
+
+      const pills = [];
+      if (node.shanghai) pills.push(node.shanghai);
+      if (node.tuition) pills.push(node.tuition);
+      if (node.visa) pills.push(node.visa);
+      if (node.sourceApi) pills.push(`Live · ${node.sourceApi}`);
+      document.getElementById("card-pills").innerHTML = pills.map(p =>
+        `<span class="px-2.5 py-1 rounded-full text-[12px] bg-white/10 border border-white/15 text-white/90">${p}</span>`
+      ).join("");
+
+      const gEarth = `https://earth.google.com/web/@${node.lat},${node.lng},1200a,35y,0h,45t,0r`;
+      const links = [];
+      if (node.url) links.push(`<a href="${node.url}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1 text-[12.5px]">Official ↗</a>`);
+      if (node.wiki) links.push(`<a href="${node.wiki}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1 text-[12.5px]">Wikipedia ↗</a>`);
+      links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1 text-[12.5px]">Google Earth ↗</a>`);
+      document.getElementById("card-links").innerHTML = links.join("");
+
+      document.getElementById("deeper-content").classList.add("hidden");
+      document.getElementById("deeper-chevron").style.transform = "rotate(0deg)";
+
+      const nobelWrap = document.getElementById("deeper-nobel-wrap");
+      if (node.nobel) {
+        nobelWrap.classList.remove("hidden");
+        document.getElementById("deeper-nobel").textContent = node.nobel;
+      } else {
+        nobelWrap.classList.add("hidden");
+      }
+
+      const imgEl = document.getElementById("card-photo");
+      const fallbackEl = document.getElementById("card-photo-fallback");
+      imgEl.classList.add("opacity-0");
+      fallbackEl.classList.remove("hidden");
+      const reqId = ++activeWikiReq;
+      const slug = node.wikiSlug || node.name.replace(/\s+/g, "_");
+      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (reqId !== activeWikiReq || !data) return;
+          const pic = data.originalimage?.source || data.thumbnail?.source;
+          if (pic) {
+            imgEl.onload = () => {
+              if (reqId !== activeWikiReq) return;
+              imgEl.classList.remove("opacity-0");
+              fallbackEl.classList.add("hidden");
+            };
+            imgEl.src = pic;
+            imgEl.alt = node.name;
+          }
+        })
+        .catch(() => {});
+
+      const papersEl = document.getElementById("deeper-papers");
+      papersEl.innerHTML = `<div class="text-white/50 text-[12.5px]">Loading latest physics papers…</div>`;
+      const q = encodeURIComponent(`${node.name} physics`);
+      fetch(`https://api.openalex.org/works?search=${q}&sort=publication_date:desc&per-page=3`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (reqId !== activeWikiReq) return;
+          if (!data?.results?.length) {
+            papersEl.innerHTML = `<div class="text-white/50 text-[12.5px]">No recent papers found.</div>`;
+            return;
+          }
+          papersEl.innerHTML = data.results.map(w => `
+            <a href="${w.doi || w.id || "https://openalex.org/"}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.08] hover:bg-white/15 border border-white/10 p-2.5 transition">
+              <div class="text-[13px] text-white/95 leading-snug line-clamp-2">${w.title || "Physics Publication"}</div>
+              <div class="text-[12px] text-white/55 mt-1">${w.publication_year || ""} · ${w.cited_by_count ?? 0} citations</div>
+            </a>
+          `).join("");
+        })
+        .catch(() => {
+          if (reqId !== activeWikiReq) return;
+          papersEl.innerHTML = `<div class="text-white/50 text-[12.5px]">Connect online to view live OpenAlex papers.</div>`;
+        });
+
+      const authorsEl = document.getElementById("deeper-authors");
+      authorsEl.innerHTML = `<div class="text-white/50 text-[12.5px]">Loading top cited physicists…</div>`;
+      fetch(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " physics")}&sort=cited_by_count:desc&per-page=3`)
+        .then(r => r.ok ? r.json() : null)
+        .then(data => {
+          if (reqId !== activeWikiReq) return;
+          const list = data?.results || [];
+          if (!list.length) {
+            authorsEl.innerHTML = `<div class="text-white/50 text-[12.5px]">No indexed PIs returned for this hub.</div>`;
+            return;
+          }
+          authorsEl.innerHTML = list.map(a => {
+            const inst = a.last_known_institutions?.[0]?.display_name || node.name;
+            const link = a.orcid || a.id || "https://openalex.org/";
+            return `
+              <a href="${link}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-2 rounded-2xl bg-white/[0.08] hover:bg-white/15 border border-white/10 px-3 py-2 transition">
+                <div class="min-w-0">
+                  <div class="text-[13px] font-medium text-white/95 truncate">${a.display_name || "Researcher"}</div>
+                  <div class="text-[11.5px] text-white/55 truncate">${inst}</div>
+                </div>
+                <span class="text-[11.5px] text-white/75 shrink-0">${(a.cited_by_count || 0).toLocaleString()} cites</span>
+              </a>
+            `;
+          }).join("");
+        })
+        .catch(() => {
+          if (reqId !== activeWikiReq) return;
+          authorsEl.innerHTML = `<div class="text-white/50 text-[12.5px]">Connect online to view live OpenAlex PIs.</div>`;
+        });
+    }
+
+    function closeCard() {
+      state.selectedId = null;
+      const card = document.getElementById("place-card");
+      card.classList.add("hidden");
+      card.classList.remove("flex");
+      syncMarkers();
+    }
+
+    document.getElementById("btn-card-close").addEventListener("click", closeCard);
+    window.addEventListener("keydown", e => {
+      if (e.key === "Escape") {
+        closeCard();
+        closeModal();
+        closeDropdown();
+        closeStageMenu();
+      }
+    });
+
+    document.getElementById("btn-zoom-buildings").addEventListener("click", () => {
+      const node = getAllNodes().find(n => n.id === state.selectedId);
+      if (!node) return;
+      map.flyTo({
+        center: [node.lng, node.lat],
+        zoom: 17.6,
+        pitch: 58,
+        bearing: (map.getBearing() + 28) % 360,
+        speed: 0.85,
+        essential: true
+      });
+    });
+
+    document.getElementById("btn-next-hop").addEventListener("click", () => {
+      const node = getAllNodes().find(n => n.id === state.selectedId);
+      if (node && node.next && node.next.length > 0) {
+        const pick = node.next[Math.floor(Math.random() * node.next.length)];
+        selectNode(pick, true);
+      } else {
+        const pick = state.nodes[Math.floor(Math.random() * state.nodes.length)];
+        selectNode(pick.id, true);
+      }
+    });
+
+    document.getElementById("btn-persist-live").addEventListener("click", async () => {
+      const node = getAllNodes().find(n => n.id === state.selectedId);
+      if (!node) return;
+      await saveNodeToBackendDB(node);
+      document.getElementById("btn-persist-live").classList.add("hidden");
+    });
+
+    document.getElementById("btn-card-star").addEventListener("click", () => {
+      if (!state.selectedId) return;
+      if (state.shortlist.has(state.selectedId)) {
+        state.shortlist.delete(state.selectedId);
+        showToast("Removed from shortlist");
+      } else {
+        state.shortlist.add(state.selectedId);
+        showToast("Saved to cloud shortlist");
+      }
+      persistUserPrefs();
+      document.getElementById("btn-card-star").classList.toggle("glass-btn-active", state.shortlist.has(state.selectedId));
+      renderPathwaysModal();
+    });
+
+    document.getElementById("btn-card-share").addEventListener("click", () => {
+      const node = getAllNodes().find(n => n.id === state.selectedId);
+      if (!node) return;
+      const st = state.stage === "all" ? "undergrad" : state.stage;
+      const pathText = (node.stages && node.stages[st]) ? node.stages[st] : "";
+      const shareStr = `${node.name} (${node.city}) — ${node.summary}${pathText ? ` | ${STAGE_META[st].label}: ${pathText}` : ""} | ${node.url || node.wiki || ""}`;
+      const ta = document.createElement("textarea");
+      ta.value = shareStr;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast(`Copied "${node.name}" summary`);
+      } catch (_) {
+        showToast("Ready to share");
+      }
+      ta.remove();
+    });
+
+    document.getElementById("active-branch-pill").addEventListener("click", () => {
+      state.branch = "all";
+      syncMarkers();
+      renderFieldsModal();
+      showToast("Showing all branches of physics");
+    });
+
+    document.getElementById("btn-toggle-deeper").addEventListener("click", () => {
+      const body = document.getElementById("deeper-content");
+      const chev = document.getElementById("deeper-chevron");
+      const isHidden = body.classList.toggle("hidden");
+      chev.style.transform = isHidden ? "rotate(0deg)" : "rotate(180deg)";
+    });
+
+    const stageBtn = document.getElementById("stage-dropdown-btn");
+    const stageMenu = document.getElementById("stage-dropdown-menu");
+    const stageLabelEl = document.getElementById("stage-current-label");
+    const stageChevron = document.getElementById("stage-chevron");
+
+    function closeStageMenu() {
+      stageMenu.classList.add("hidden");
+      stageBtn.setAttribute("aria-expanded", "false");
+      stageChevron.style.transform = "rotate(0deg)";
+    }
+
+    function renderStageMenu() {
+      const meta = STAGE_META[state.stage] || STAGE_META.undergrad;
+      stageLabelEl.textContent = meta.label;
+      stageMenu.innerHTML = Object.entries(STAGE_META).map(([key, item]) => {
+        const isActive = state.stage === key;
+        return `
+          <button type="button" role="option" aria-selected="${isActive}" data-stage-opt="${key}" class="w-full text-left px-3 py-2 rounded-[14px] text-[13px] flex items-center justify-between cursor-pointer ${isActive ? "stage-opt-active" : "stage-opt"}">
+            <span>${item.label}</span>
+            ${isActive ? `<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>` : ""}
+          </button>
+        `;
+      }).join("");
+
+      stageMenu.querySelectorAll("[data-stage-opt]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.stage = btn.dataset.stageOpt;
+          closeStageMenu();
+          renderStageMenu();
+          persistUserPrefs();
+          showToast(`Tailored pathways for ${STAGE_META[state.stage].label}`);
+          if (state.selectedId) {
+            const active = getAllNodes().find(n => n.id === state.selectedId);
+            if (active) updateCardStageBox(active);
+          }
+          renderPathwaysModal();
+        });
+      });
+    }
+
+    stageBtn.addEventListener("click", e => {
+      e.stopPropagation();
+      const willOpen = stageMenu.classList.contains("hidden");
+      closeDropdown();
+      if (willOpen) {
+        stageMenu.classList.remove("hidden");
+        stageBtn.setAttribute("aria-expanded", "true");
+        stageChevron.style.transform = "rotate(180deg)";
+      } else {
+        closeStageMenu();
+      }
+    });
+
+    document.addEventListener("click", e => {
+      if (!stageMenu.contains(e.target) && !stageBtn.contains(e.target)) closeStageMenu();
+    });
+
+    const searchInput = document.getElementById("search-input");
+    const searchDrop = document.getElementById("search-dropdown");
+    const clearSearchBtn = document.getElementById("btn-clear-search");
+
+    function renderDropdown(query) {
+      const q = (query || "").trim().toLowerCase();
+      const matches = getAllNodes().filter(n => {
+        if (!q) return n.pinned;
+        const stText = n.stages ? Object.values(n.stages).join(" ") : "";
+        return `${n.name} ${n.city} ${n.branch || ""} ${n.summary || ""} ${n.nobel || ""} ${stText}`.toLowerCase().includes(q);
+      }).slice(0, 10);
+
+      if (matches.length === 0) {
+        searchDrop.innerHTML = `<div class="px-3 py-3 text-[13px] text-white/60 text-center">No match in Atlas DB — try <button id="btn-jump-live" class="underline text-white cursor-pointer">Live Search</button></div>`;
+        searchDrop.classList.remove("hidden");
+        const j = document.getElementById("btn-jump-live");
+        if (j) j.addEventListener("click", () => {
+          closeDropdown();
+          openModal("live");
+          document.getElementById("live-api-input").value = query;
+          runLiveSearch(query);
+        });
+        return;
+      }
+
+      searchDrop.innerHTML = matches.map(n => `
+        <button data-pick="${n.id}" class="pick-row w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/12 transition flex items-center justify-between gap-2 cursor-pointer">
+          <div class="min-w-0">
+            <div class="text-[14px] font-medium text-white truncate">${n.name}</div>
+            <div class="text-[12.5px] text-white/60 truncate">${n.city}</div>
+          </div>
+          <i data-lucide="arrow-up-right" class="w-4 h-4 text-white/45 shrink-0"></i>
+        </button>
+      `).join("");
+      searchDrop.classList.remove("hidden");
+      lucide.createIcons();
+      searchDrop.querySelectorAll(".pick-row").forEach(btn => {
+        btn.addEventListener("click", () => selectNode(btn.dataset.pick, true));
+      });
+    }
+
+    function closeDropdown() {
+      searchDrop.classList.add("hidden");
+    }
+
+    searchInput.addEventListener("focus", () => renderDropdown(searchInput.value));
+    searchInput.addEventListener("input", () => {
+      clearSearchBtn.classList.toggle("hidden", !searchInput.value);
+      renderDropdown(searchInput.value);
+    });
+    clearSearchBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      clearSearchBtn.classList.add("hidden");
+      renderDropdown("");
+      searchInput.focus();
+    });
+
+    document.getElementById("btn-surprise").addEventListener("click", () => {
+      const pool = state.nodes.filter(n => n.id !== state.selectedId);
+      const pick = pool[Math.floor(Math.random() * pool.length)];
+      if (pick) selectNode(pick.id, true);
+    });
+
+    document.getElementById("btn-toggle-arcs").addEventListener("click", e => {
+      state.arcsOn = !state.arcsOn;
+      e.currentTarget.classList.toggle("glass-btn-active", state.arcsOn);
+      syncMarkers();
+      showToast(state.arcsOn ? "3D collaboration & lineage arcs on" : "3D arcs hidden");
+    });
+
+    document.getElementById("btn-toggle-labels").addEventListener("click", e => {
+      state.labelsOn = !state.labelsOn;
+      e.currentTarget.classList.toggle("glass-btn-active", state.labelsOn);
+      if (map.getLayer("labels-layer")) {
+        map.setLayoutProperty("labels-layer", "visibility", state.labelsOn ? "visible" : "none");
+      }
+    });
+
+    document.getElementById("btn-toggle-tilt").addEventListener("click", e => {
+      state.tilted = !state.tilted;
+      e.currentTarget.classList.toggle("glass-btn-active", state.tilted);
+      map.easeTo({ pitch: state.tilted ? 52 : 0, duration: 700 });
+    });
+
+    function flyToSpaceView() {
+      state.tilted = false;
+      document.getElementById("btn-toggle-tilt").classList.remove("glass-btn-active");
+      map.flyTo({ center: [12, 30], zoom: 1.9, pitch: 0, bearing: 0, speed: 1.0 });
+    }
+
+    document.getElementById("btn-space-view").addEventListener("click", flyToSpaceView);
+    const mobileSpaceBtn = document.getElementById("btn-mobile-space");
+    if (mobileSpaceBtn) mobileSpaceBtn.addEventListener("click", flyToSpaceView);
+
+    document.getElementById("btn-zoom-in").addEventListener("click", () => map.zoomIn({ duration: 450 }));
+    document.getElementById("btn-zoom-out").addEventListener("click", () => map.zoomOut({ duration: 450 }));
+
+    document.querySelectorAll(".dock-filter").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.filter = btn.dataset.filter;
+        document.querySelectorAll(".dock-filter").forEach(b => b.classList.toggle("glass-btn-active", b === btn));
+        syncMarkers();
+      });
+    });
+
+    function openModal(mode) {
+      if (state.activeModal === mode) { closeModal(); return; }
+      state.activeModal = mode;
+      const modal = document.getElementById("drawer-modal");
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      ["fields", "live", "pathways", "engine"].forEach(m => {
+        const el = document.getElementById(`modal-${m}`);
+        if (el) {
+          el.classList.toggle("hidden", mode !== m);
+          el.classList.toggle("flex", mode === m);
+        }
+        const dockBtn = document.getElementById(`btn-open-${m}`);
+        if (dockBtn) dockBtn.classList.toggle("glass-btn-active", mode === m);
+      });
+      document.getElementById("db-status-pill").classList.toggle("glass-btn-active", mode === "engine");
+
+      const titles = {
+        fields: "Map of Physics (Backend DB)",
+        live: "Live Global Physics Search",
+        pathways: `${STAGE_META[state.stage].label} Pathways`,
+        engine: "Phase 1 · Global Data Engine"
+      };
+      document.getElementById("modal-title").textContent = titles[mode];
+      if (mode === "fields") renderFieldsModal();
+      if (mode === "pathways") renderPathwaysModal();
+      if (mode === "engine") renderEngineModal();
+    }
+
+    function closeModal() {
+      state.activeModal = null;
+      const modal = document.getElementById("drawer-modal");
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      ["fields", "live", "pathways"].forEach(m => {
+        const dockBtn = document.getElementById(`btn-open-${m}`);
+        if (dockBtn) dockBtn.classList.remove("glass-btn-active");
+      });
+      document.getElementById("db-status-pill").classList.remove("glass-btn-active");
+    }
+
+    document.getElementById("btn-open-fields").addEventListener("click", () => openModal("fields"));
+    document.getElementById("btn-open-live").addEventListener("click", () => openModal("live"));
+    document.getElementById("btn-open-pathways").addEventListener("click", () => openModal("pathways"));
+    document.getElementById("db-status-pill").addEventListener("click", () => openModal("engine"));
+    document.getElementById("btn-close-modal").addEventListener("click", closeModal);
+
+    document.getElementById("btn-harvest-quick").addEventListener("click", () => {
+      runGlobalIngestion([
+        { source: "OpenAlex", label: "Physics Universities · Page 2", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=2" },
+        { source: "OpenAlex", label: "Physics Universities · Page 3", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=3" },
+        { source: "OpenAlex", label: "Physics Labs & Facilities · Page 2", hint: "particle quantum astro", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:facility|government&sort=cited_by_count:desc&per-page=100&page=2" },
+        { source: "ROR", label: "ROR v2 Physics & Observatories", hint: "astronomy observatory physics", url: "https://api.ror.org/v2/organizations?query=observatory&page=1" }
+      ], false);
+    });
+
+    document.getElementById("btn-harvest-deep").addEventListener("click", () => {
+      runGlobalIngestion([
+        { source: "OpenAlex", label: "Physics Universities · Page 2", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=2" },
+        { source: "OpenAlex", label: "Physics Universities · Page 3", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=3" },
+        { source: "OpenAlex", label: "Physics Universities · Page 4", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=4" },
+        { source: "OpenAlex", label: "Physics Universities · Page 5", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=5" },
+        { source: "OpenAlex", label: "Physics Universities · Page 6", hint: "physics", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:education&sort=cited_by_count:desc&per-page=100&page=6" },
+        { source: "OpenAlex", label: "Physics Labs & Facilities · Page 2", hint: "particle quantum", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:facility|government&sort=cited_by_count:desc&per-page=100&page=2" },
+        { source: "OpenAlex", label: "Physics Labs & Facilities · Page 3", hint: "condensed synchrotron", url: "https://api.openalex.org/institutions?filter=topics.field.id:fields/31,type:facility|government&sort=cited_by_count:desc&per-page=100&page=3" },
+        { source: "OpenAlex", label: "Quantum & Photonics Hubs", hint: "quantum photonics", url: "https://api.openalex.org/institutions?search=quantum+physics&filter=topics.field.id:fields/31&sort=cited_by_count:desc&per-page=100&page=1" },
+        { source: "OpenAlex", label: "Astrophysics & Cosmology", hint: "astrophysics observatory", url: "https://api.openalex.org/institutions?search=astrophysics&filter=topics.field.id:fields/31&sort=cited_by_count:desc&per-page=100&page=1" },
+        { source: "OpenAlex", label: "Nuclear & Particle Physics", hint: "particle nuclear", url: "https://api.openalex.org/institutions?search=nuclear+physics&filter=topics.field.id:fields/31&sort=cited_by_count:desc&per-page=100&page=1" },
+        { source: "OpenAlex", label: "Plasma & Fusion Centers", hint: "fusion plasma", url: "https://api.openalex.org/institutions?search=plasma+fusion&filter=topics.field.id:fields/31&sort=cited_by_count:desc&per-page=100&page=1" },
+        { source: "ROR", label: "ROR v2 Physics Research Labs", hint: "physics", url: "https://api.ror.org/v2/organizations?query=physics&page=1" },
+        { source: "ROR", label: "ROR v2 Observatories", hint: "observatory", url: "https://api.ror.org/v2/organizations?query=observatory&page=1" }
+      ], false);
+    });
+
+    document.querySelectorAll(".etl-topic-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const q = btn.dataset.etl;
+        runGlobalIngestion([
+          { source: "OpenAlex", label: `OpenAlex (${q})`, hint: q, url: `https://api.openalex.org/institutions?search=${encodeURIComponent(q)}&sort=cited_by_count:desc&per-page=100&page=1` },
+          { source: "ROR", label: `ROR v2 (${q})`, hint: q, url: `https://api.ror.org/v2/organizations?query=${encodeURIComponent(q)}&page=1` }
+        ], false);
+      });
+    });
+
+    function renderFieldsModal() {
+      const grid = document.getElementById("fields-grid");
+      const allIndexed = [...state.nodes, ...state.ingestedNodes];
+      grid.innerHTML = PHYSICS_BRANCHES.map(b => {
+        const count = b.id === "all"
+          ? allIndexed.length
+          : allIndexed.filter(n => n.branch === b.id).length;
+        const active = state.branch === b.id;
+        return `
+          <button data-branch="${b.id}" class="branch-btn w-full text-left rounded-[18px] px-3.5 py-2.5 ${active ? "glass-row-active" : "glass-row"}">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[14px] font-medium">${b.label}</span>
+              <span class="text-[12px] ${active ? "text-black/65" : "text-white/55"}">${count.toLocaleString()} hubs</span>
+            </div>
+            <div class="text-[12px] mt-0.5 ${active ? "text-black/65" : "text-white/55"}">${b.desc}</div>
+          </button>
+        `;
+      }).join("");
+
+      grid.querySelectorAll(".branch-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.branch = btn.dataset.branch;
+          syncMarkers();
+          renderFieldsModal();
+          const b = PHYSICS_BRANCHES.find(x => x.id === state.branch);
+          showToast(`Showing: ${b.label}`);
+        });
+      });
+    }
+
+    async function runLiveSearch(raw) {
+      const q = (raw || "").trim();
+      if (!q) return;
+      const statusEl = document.getElementById("live-status");
+      const listEl = document.getElementById("live-results");
+      statusEl.textContent = "Searching OpenAlex, ROR & INSPIRE-HEP…";
+      listEl.innerHTML = "";
+
+      const physQ = q.toLowerCase().includes("phys") ? q : `${q} physics`;
+      const found = [];
+      const seen = new Set();
+
+      try {
+        const [oa, ror] = await Promise.allSettled([
+          fetch(`https://api.openalex.org/institutions?search=${encodeURIComponent(physQ)}&per-page=10`).then(r => r.ok ? r.json() : null),
+          fetch(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(physQ)}`).then(r => r.ok ? r.json() : null)
+        ]);
+
+        if (oa.status === "fulfilled" && oa.value?.results) {
+          oa.value.results.forEach(inst => {
+            const g = inst.geo;
+            if (!g || typeof g.latitude !== "number" || typeof g.longitude !== "number") return;
+            if (isNoiseOrg(inst.display_name, [inst.type])) return;
+            const k = (inst.display_name || "").toLowerCase();
+            if (seen.has(k)) return;
+            seen.add(k);
+            found.push({
+              id: `live-oa-${inst.id.split("/").pop()}`,
+              name: inst.display_name,
+              city: `${g.city || "Research Hub"}${g.country ? ", " + g.country : ""}`,
+              lat: g.latitude, lng: g.longitude, zoom: 15.6,
+              group: "uni", branch: classifyPhysicsBranch(`${inst.display_name} ${q}`), isLive: true, sourceApi: "OpenAlex",
+              url: inst.homepage_url || inst.id,
+              summary: `Live OpenAlex physics hub with ${(inst.works_count || 0).toLocaleString()} indexed works.`,
+              stages: buildStages()
+            });
+          });
+        }
+
+        if (ror.status === "fulfilled" && ror.value?.items) {
+          ror.value.items.slice(0, 8).forEach(org => {
+            const loc = org.locations?.[0]?.geonames_details;
+            if (!loc || typeof loc.lat !== "number" || typeof loc.lng !== "number") return;
+            const name = org.names?.find(x => x.types?.includes("ror_display"))?.value || org.names?.[0]?.value;
+            if (!name || seen.has(name.toLowerCase()) || isNoiseOrg(name, org.types || [])) return;
+            seen.add(name.toLowerCase());
+            found.push({
+              id: `live-ror-${org.id.split("/").pop()}`,
+              name,
+              city: `${loc.name || "Lab"}${loc.country_name ? ", " + loc.country_name : ""}`,
+              lat: loc.lat, lng: loc.lng, zoom: 15.6,
+              group: "lab", branch: classifyPhysicsBranch(`${name} ${q}`), isLive: true, sourceApi: "ROR",
+              url: org.links?.[0]?.value || org.id,
+              summary: `Verified ROR global research organization (${(org.types || []).join(", ") || "physics"}).`,
+              stages: buildStages()
+            });
+          });
+        }
+
+        state.liveNodes = found;
+        syncMarkers();
+
+        if (found.length === 0) {
+          statusEl.textContent = "No geocoded matches returned (try another term).";
+          return;
+        }
+        statusEl.textContent = `Plotted ${found.length} live physics hubs — click any to view or save to Backend DB`;
+        listEl.innerHTML = found.map(item => `
+          <button data-lid="${item.id}" class="live-row glass-row w-full text-left rounded-[18px] px-3.5 py-2.5">
+            <div class="text-[13.5px] font-medium text-white truncate">${item.name}</div>
+            <div class="text-[12px] text-white/55 mt-0.5">${item.city} · ${item.sourceApi}</div>
+          </button>
+        `).join("");
+        listEl.querySelectorAll(".live-row").forEach(b => {
+          b.addEventListener("click", () => selectNode(b.dataset.lid, true));
+        });
+        selectNode(found[0].id, true);
+      } catch (_) {
+        statusEl.textContent = "Offline — live physics search requires internet access.";
+      }
+    }
+
+    document.getElementById("btn-live-go").addEventListener("click", () => {
+      runLiveSearch(document.getElementById("live-api-input").value);
+    });
+    document.getElementById("live-api-input").addEventListener("keydown", e => {
+      if (e.key === "Enter") runLiveSearch(e.target.value);
+    });
+    document.querySelectorAll(".live-chip").forEach(b => {
+      b.addEventListener("click", () => {
+        document.getElementById("live-api-input").value = b.dataset.q;
+        runLiveSearch(b.dataset.q);
+      });
+    });
+
+    let activeJobsReq = 0;
+    async function loadLiveJobsForStage() {
+      const listEl = document.getElementById("live-jobs-list");
+      const titleEl = document.getElementById("live-jobs-title");
+      if (!listEl || !titleEl) return;
+
+      const rankMap = { phd: "PHD", postdoc: "POSTDOC", assoc_prof: "JUNIOR", prof: "SENIOR" };
+      const rank = rankMap[state.stage];
+      const reqId = ++activeJobsReq;
+
+      if (!rank && state.stage !== "all") {
+        titleEl.textContent = `Flagship ${STAGE_META[state.stage].label} Programs`;
+        const portals = STAGE_PORTALS[state.stage] || STAGE_PORTALS.undergrad;
+        listEl.innerHTML = portals.map(p => `
+          <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="glass-row rounded-[16px] px-3.5 py-2 flex items-center justify-between gap-2 block">
+            <span class="text-[13px] font-medium text-white truncate">${p.name}</span>
+            <span class="text-[11.5px] text-white/55 shrink-0">Apply ↗</span>
+          </a>
+        `).join("");
+        return;
+      }
+
+      titleEl.textContent = rank ? `Live ${STAGE_META[state.stage].label} Openings (INSPIRE-HEP)` : "Live Global Physics Openings (INSPIRE-HEP)";
+      listEl.innerHTML = `<div class="text-[12px] text-white/50 px-1">Fetching live physics openings…</div>`;
+
+      try {
+        const q = rank ? `status:open and rank:${rank}` : "status:open";
+        const res = await fetch(`https://inspirehep.net/api/jobs?q=${encodeURIComponent(q)}&size=5&sort=mostrecent`);
+        if (!res.ok) throw new Error("INSPIRE-HEP unavailable");
+        const data = await res.json();
+        if (reqId !== activeJobsReq) return;
+        const hits = data?.hits?.hits || [];
+        if (!hits.length) {
+          listEl.innerHTML = `<div class="text-[12px] text-white/50 px-1">No live openings returned right now.</div>`;
+          return;
+        }
+        listEl.innerHTML = hits.map(h => {
+          const m = h.metadata || {};
+          const pos = m.position || "Physics Position";
+          const inst = m.institutions?.[0]?.value || "Global Research Hub";
+          const deadline = m.deadline_date ? `Due ${m.deadline_date}` : "Open";
+          const url = `https://inspirehep.net/jobs/${h.id}`;
+          return `
+            <a href="${url}" target="_blank" rel="noopener noreferrer" class="glass-row rounded-[16px] px-3.5 py-2 block">
+              <div class="text-[13px] font-medium text-white line-clamp-1">${pos}</div>
+              <div class="flex items-center justify-between gap-2 text-[11.5px] text-white/55 mt-0.5">
+                <span class="truncate">${inst}</span>
+                <span class="shrink-0">${deadline} ↗</span>
+              </div>
+            </a>
+          `;
+        }).join("");
+      } catch (_) {
+        if (reqId !== activeJobsReq) return;
+        listEl.innerHTML = `<div class="text-[12px] text-white/50 px-1">Live INSPIRE-HEP feed unavailable offline.</div>`;
+      }
+    }
+
+    function renderPathwaysModal() {
+      const portalsEl = document.getElementById("stage-portals");
+      const portals = STAGE_PORTALS[state.stage] || STAGE_PORTALS.undergrad;
+      document.getElementById("pathways-subtitle").textContent =
+        `Showing ${STAGE_META[state.stage].label} funding portals & your cloud shortlist.`;
+      if (state.activeModal === "pathways") {
+        document.getElementById("modal-title").textContent = `${STAGE_META[state.stage].label} Pathways`;
+        loadLiveJobsForStage();
+      }
+
+      portalsEl.innerHTML = portals.map(p =>
+        `<a href="${p.url}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1">${p.name} ↗</a>`
+      ).join("");
+
+      const wrap = document.getElementById("masters-list");
+      const saved = state.nodes.filter(n => state.shortlist.has(n.id));
+      const rows = saved.length > 0 ? saved : state.nodes.filter(n => n.shanghai);
+      const stKey = state.stage === "all" ? "undergrad" : state.stage;
+
+      wrap.innerHTML = rows.map(n => {
+        const preview = (n.stages && n.stages[stKey]) ? n.stages[stKey] : (n.tuition || n.city);
+        return `
+          <button data-mid="${n.id}" class="m-row glass-row w-full text-left rounded-[18px] px-3.5 py-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[14px] font-medium text-white">${n.name}</span>
+              <span class="text-[12px] text-white/60 shrink-0">${n.shanghai || n.city}</span>
+            </div>
+            <div class="text-[12.5px] text-white/60 mt-0.5 line-clamp-2">${preview}</div>
+          </button>
+        `;
+      }).join("");
+      wrap.querySelectorAll(".m-row").forEach(b => {
+        b.addEventListener("click", () => selectNode(b.dataset.mid, true));
+      });
+
+      const cmpBody = document.getElementById("compare-table-body");
+      if (cmpBody) {
+        cmpBody.innerHTML = rows.map(n => `
+          <tr data-cmp="${n.id}" class="cmp-row border-b border-white/[0.06] hover:bg-white/[0.07] cursor-pointer transition">
+            <td class="py-2 px-2.5 font-medium text-white">${n.name}</td>
+            <td class="py-2 px-2 text-white/75">${n.shanghai || (n.group === "lab" ? "National Lab" : "University")}</td>
+            <td class="py-2 px-2 text-white/75">${n.tuition || "Fellowships"}</td>
+            <td class="py-2 px-2 text-white/75">${n.visa || n.city.split(",").pop()?.trim() || "—"}</td>
+          </tr>
+        `).join("");
+        cmpBody.querySelectorAll(".cmp-row").forEach(tr => {
+          tr.addEventListener("click", () => selectNode(tr.dataset.cmp, true));
+        });
+      }
+    }
+
+    document.getElementById("btn-toggle-compare").addEventListener("click", e => {
+      const tbl = document.getElementById("compare-table-wrap");
+      const list = document.getElementById("masters-list");
+      const showingTable = !tbl.classList.toggle("hidden");
+      list.classList.toggle("hidden", showingTable);
+      e.currentTarget.textContent = showingTable ? "Card View" : "Compare Table";
+    });
+
+    const addForm = document.getElementById("add-node-form");
+    document.getElementById("btn-toggle-add-form").addEventListener("click", () => addForm.classList.toggle("hidden"));
+    document.getElementById("btn-cancel-add").addEventListener("click", () => addForm.classList.add("hidden"));
+    addForm.addEventListener("submit", async e => {
+      e.preventDefault();
+      const name = document.getElementById("add-name").value.trim();
+      const city = document.getElementById("add-city").value.trim();
+      const branch = document.getElementById("add-branch").value;
+      const lat = parseFloat(document.getElementById("add-lat").value);
+      const lng = parseFloat(document.getElementById("add-lng").value);
+      const url = document.getElementById("add-url").value.trim();
+      const summary = document.getElementById("add-summary").value.trim();
+
+      if (!name || !city || Number.isNaN(lat) || Number.isNaN(lng)) return;
+
+      const newNode = {
+        id: `custom-${Date.now()}`,
+        name, city, branch,
+        group: branch === "history" ? "hist" : "lab",
+        pinned: true, lat, lng, zoom: 15.8, url, summary,
+        stages: buildStages()
+      };
+
+      await saveNodeToBackendDB(newNode);
+      addForm.reset();
+      addForm.classList.add("hidden");
+      selectNode(newNode.id, true);
+    });
+
+    document.getElementById("btn-export-kml").addEventListener("click", () => {
+      const nodes = getVisibleNodes();
+      const esc = s => String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+      const marks = nodes.map(n => `
+    <Placemark>
+      <name>${esc(n.name)}</name>
+      <description>${esc(n.summary)}</description>
+      <Point><coordinates>${n.lng},${n.lat},0</coordinates></Point>
+    </Placemark>`).join("");
+      const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2">\n  <Document>\n    <name>PhysAlts</name>${marks}\n  </Document>\n</kml>`;
+      const blob = new Blob([kml], { type: "application/vnd.google-earth.kml+xml" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "physalts_physics.kml";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast(`Exported ${nodes.length} places to Google Earth .KML`);
+    });
+
+    document.getElementById("btn-export-json").addEventListener("click", () => {
+      const payload = {
+        meta: {
+          name: "PhysAlts Global Physics Dataset",
+          exportedAt: new Date().toISOString(),
+          totalHubs: totalIndexedCount(),
+          sources: ["Curated Flagship (All 7 Stages)", "OpenAlex (CC0, Field 31)", "ROR v2 (CC0)", "INSPIRE-HEP (CC0)"]
+        },
+        branches: PHYSICS_BRANCHES,
+        hubs: [...state.nodes, ...state.ingestedNodes]
+      };
+      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "physalts_dataset.json";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast(`Exported ${payload.hubs.length.toLocaleString()} hubs to Dataset .JSON`);
+    });
+
+    renderStageMenu();
+    initGlobe();
+    // Paste your real Firebase Console web config here when going live:
+    const PROD_FIREBASE_CONFIG = null;
+    /*
+    const PROD_FIREBASE_CONFIG = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT.firebaseapp.com",
+      projectId: "YOUR_PROJECT",
+      storageBucket: "YOUR_PROJECT.firebasestorage.app",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    */
+    if (PROD_FIREBASE_CONFIG && typeof window.__firebase_config === "undefined") {
+      window.__firebase_config = JSON.stringify(PROD_FIREBASE_CONFIG);
+    }
+
+    // Instant static dataset preloader (loads 3,000+ weekly-scraped hubs in <200ms)
+    async function preloadStaticPhysicsIndex() {
+      try {
+        const res = await fetch("./data/physics_hubs.json");
+        if (!res.ok) return;
+        const data = await res.json();
+        if (Array.isArray(data.hubs) && data.hubs.length > 0) {
+          mergeIngestedBatch(data.hubs);
+          refreshDbBadge();
+        }
+      } catch (_) {}
+    }
+    preloadStaticPhysicsIndex().finally(() => initBackendDatabase());
+    renderFieldsModal();
+    renderPathwaysModal();
+    renderEngineModal();
+    lucide.createIcons();
+  </script>
+</body>
+</html>

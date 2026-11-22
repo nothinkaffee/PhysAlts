@@ -1,0 +1,25 @@
+{
+  "name": "physalts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PhysAlts — Global 3D interactive atlas of physics departments, national labs, mega-experiments, and academic career pathways.",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve public -l 5173",
+    "scrape": "node scripts/scrape_physics.mjs",
+    "cap:add:android": "npx cap add android",
+    "cap:add:ios": "npx cap add ios",
+    "cap:sync": "npx cap sync",
+    "cap:android": "npx cap sync android && npx cap open android",
+    "cap:ios": "npx cap sync ios && npx cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/core": "^6.1.2"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^6.1.2",
+    "@capacitor/cli": "^6.1.2",
+    "@capacitor/ios": "^6.1.2",
+    "serve": "^14.2.4"
+  }
+}
