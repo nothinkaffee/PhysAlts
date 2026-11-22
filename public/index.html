@@ -18,7 +18,7 @@
   <link href="./vendor/maplibre-gl.css" rel="stylesheet" />
   <link href="./vendor/tailwind.css" rel="stylesheet" />
   <script src="./vendor/lucide.min.js"></script>
-  <script src="./vendor/maplibre-gl.js"></script>
+  <script src="./vendor/maplibre-gl-csp.js"></script>
   <style>
     * {
       box-sizing: border-box;
@@ -559,6 +559,11 @@
   </div>
 
   <script type="module">
+    const USE_DEV_PROXY = location.protocol === "http:" && (location.hostname === "localhost" || location.hostname === "127.0.0.1");
+    const proxyUrl = (url) => (USE_DEV_PROXY && /^https:\/\//.test(url))
+      ? `${location.origin}/_proxy?url=${encodeURIComponent(url)}`
+      : url;
+
     let initializeApp, getAuth, signInAnonymously, signInWithCustomToken;
     let getFirestore, collection, doc, getDocs, setDoc, onSnapshot;
 
@@ -1782,7 +1787,7 @@
 
     async function loadMapLibreSafely() {
       if (typeof window.maplibregl !== "undefined") return true;
-      const res = await fetch("./vendor/maplibre-gl.js");
+      const res = await fetch("./vendor/maplibre-gl-csp.js");
       if (!res.ok) throw new Error("Failed to fetch MapLibre GL JS");
       let code = await res.text();
       code = code
@@ -2030,8 +2035,12 @@
       try {
         const ok = await loadMapLibreSafely();
         if (!ok) return;
+        if (typeof window.maplibregl.setWorkerUrl === "function") {
+          window.maplibregl.setWorkerUrl("./vendor/maplibre-gl-csp-worker.js");
+        }
         map = new window.maplibregl.Map({
           container: "map",
+          transformRequest: (url) => ({ url: proxyUrl(url) }),
           center: [12, 34],
           zoom: 1.9,
           minZoom: 1.2,
@@ -2230,7 +2239,7 @@
           const pct = ((i + 0.5) / tasks.length) * 92;
           if (!silent) setEngineProgress(true, `Fetching ${task.label}…`, pct);
           try {
-            const res = await fetch(task.url);
+            const res = await fetch(proxyUrl(task.url));
             if (!res.ok) continue;
             const data = await res.json();
             const normalized = task.source === "OpenAlex"
@@ -2390,7 +2399,7 @@
       fallbackEl.classList.remove("hidden");
       const reqId = ++activeWikiReq;
       const slug = node.wikiSlug || node.name.replace(/\s+/g, "_");
-      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`)
+      fetch(proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`))
         .then(r => r.ok ? r.json() : null)
         .then(data => {
           if (reqId !== activeWikiReq || !data) return;
@@ -2401,7 +2410,7 @@
               imgEl.classList.remove("opacity-0");
               fallbackEl.classList.add("hidden");
             };
-            imgEl.src = pic;
+            imgEl.src = proxyUrl(pic);
             imgEl.alt = node.name;
           }
         })
@@ -2410,7 +2419,7 @@
       const papersEl = document.getElementById("deeper-papers");
       papersEl.innerHTML = `<div class="text-white/50 text-[12.5px]">Loading latest physics papers…</div>`;
       const q = encodeURIComponent(`${node.name} physics`);
-      fetch(`https://api.openalex.org/works?search=${q}&sort=publication_date:desc&per-page=3`)
+      fetch(proxyUrl(`https://api.openalex.org/works?search=${q}&sort=publication_date:desc&per-page=3`))
         .then(r => r.ok ? r.json() : null)
         .then(data => {
           if (reqId !== activeWikiReq) return;
@@ -2432,7 +2441,7 @@
 
       const authorsEl = document.getElementById("deeper-authors");
       authorsEl.innerHTML = `<div class="text-white/50 text-[12.5px]">Loading top cited physicists…</div>`;
-      fetch(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " physics")}&sort=cited_by_count:desc&per-page=3`)
+      fetch(proxyUrl(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " physics")}&sort=cited_by_count:desc&per-page=3`))
         .then(r => r.ok ? r.json() : null)
         .then(data => {
           if (reqId !== activeWikiReq) return;
@@ -2849,8 +2858,8 @@
 
       try {
         const [oa, ror] = await Promise.allSettled([
-          fetch(`https://api.openalex.org/institutions?search=${encodeURIComponent(physQ)}&per-page=10`).then(r => r.ok ? r.json() : null),
-          fetch(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(physQ)}`).then(r => r.ok ? r.json() : null)
+          fetch(proxyUrl(`https://api.openalex.org/institutions?search=${encodeURIComponent(physQ)}&per-page=10`)).then(r => r.ok ? r.json() : null),
+          fetch(proxyUrl(`https://api.ror.org/v2/organizations?query=${encodeURIComponent(physQ)}`)).then(r => r.ok ? r.json() : null)
         ]);
 
         if (oa.status === "fulfilled" && oa.value?.results) {
@@ -2957,7 +2966,7 @@
 
       try {
         const q = rank ? `status:open and rank:${rank}` : "status:open";
-        const res = await fetch(`https://inspirehep.net/api/jobs?q=${encodeURIComponent(q)}&size=5&sort=mostrecent`);
+        const res = await fetch(proxyUrl(`https://inspirehep.net/api/jobs?q=${encodeURIComponent(q)}&size=5&sort=mostrecent`));
         if (!res.ok) throw new Error("INSPIRE-HEP unavailable");
         const data = await res.json();
         if (reqId !== activeJobsReq) return;
