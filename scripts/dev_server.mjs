@@ -31,6 +31,34 @@ const MIME_TYPES = {
   ".woff2": "font/woff2"
 };
 
+const DEV_HEAD_SNIPPET = `<head>
+  <script>
+    window.__PHYSALTS_DEV_PROXY__ = true;
+    (function() {
+      const send = (tag, detail) => {
+        try {
+          fetch("./_diag?tag=" + encodeURIComponent(tag) + "&d=" + encodeURIComponent(String(detail).slice(0, 600))).catch(() => {});
+        } catch (_) {}
+      };
+      window.addEventListener("error", (e) => send("onerror", (e.message || e.type) + " @" + (e.filename || "") + ":" + (e.lineno || "")));
+      window.addEventListener("unhandledrejection", (e) => send("rejection", e.reason && (e.reason.stack || e.reason.message) || String(e.reason)));
+      window.addEventListener("load", () => {
+        setTimeout(() => {
+          const c = document.querySelector("#map canvas");
+          const gl = document.createElement("canvas").getContext("webgl2") || document.createElement("canvas").getContext("webgl");
+          send("loaded", JSON.stringify({
+            href: location.href,
+            base: document.baseURI,
+            hasMaplibre: typeof window.maplibregl !== "undefined",
+            hasWorkerUrl: typeof window.maplibregl?.getWorkerUrl === "function" ? window.maplibregl.getWorkerUrl() : null,
+            canvas: c ? [c.width, c.height] : null,
+            webgl: Boolean(gl)
+          }));
+        }, 1500);
+      });
+    })();
+  </script>`;
+
 const proxyCache = new Map();
 const MAX_CACHE = 600;
 
@@ -59,7 +87,7 @@ async function fetchCached(urlStr) {
 async function handleProxy(reqUrl, res) {
   const target = reqUrl.searchParams.get("url");
   if (!target) {
-    res.writeHead(400, { "Content-Type": "text/plain" });
+    res.writeHead(400, { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" });
     res.end("Missing url parameter");
     return;
   }
@@ -68,13 +96,13 @@ async function handleProxy(reqUrl, res) {
   try {
     parsed = new URL(target);
   } catch {
-    res.writeHead(400, { "Content-Type": "text/plain" });
+    res.writeHead(400, { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" });
     res.end("Invalid url parameter");
     return;
   }
 
   if (parsed.protocol !== "https:" || !ALLOWED_PROXY_HOSTS.has(parsed.hostname)) {
-    res.writeHead(403, { "Content-Type": "text/plain" });
+    res.writeHead(403, { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" });
     res.end("Host not allowed");
     return;
   }
@@ -83,11 +111,13 @@ async function handleProxy(reqUrl, res) {
     const entry = await fetchCached(parsed.toString());
     res.writeHead(entry.status, {
       "Content-Type": entry.contentType,
-      "Cache-Control": "public, max-age=3600"
+      "Content-Length": entry.buf.length,
+      "Cache-Control": "public, max-age=3600",
+      "Access-Control-Allow-Origin": "*"
     });
     res.end(entry.buf);
   } catch (err) {
-    res.writeHead(502, { "Content-Type": "text/plain" });
+    res.writeHead(502, { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" });
     res.end(`Upstream error: ${err.message}`);
   }
 }
@@ -108,47 +138,56 @@ async function handleStatic(reqUrl, res) {
     let data = await fs.readFile(filePath);
     const ext = path.extname(filePath).toLowerCase();
     if (ext === ".html" && path.basename(filePath) === "index.html") {
-      const html = data.toString("utf8").replace(
-        "<head>",
-        "<head>\n  <script>window.__PHYSALTS_DEV_PROXY__ = true;</script>"
-      );
+      const html = data.toString("utf8").replace("<head>", DEV_HEAD_SNIPPET);
       data = Buffer.from(html, "utf8");
     }
     res.writeHead(200, {
       "Content-Type": MIME_TYPES[ext] || "application/octet-stream",
-      "Cache-Control": "no-cache"
+      "Content-Length": data.length,
+      "Cache-Control": "no-cache",
+      "Access-Control-Allow-Origin": "*"
     });
     res.end(data);
   } catch {
-    // Fallback for extra MapLibre font glyph ranges beyond 0-511
     if (pathname.startsWith("/vendor/fonts/") && pathname.endsWith(".pbf")) {
       const rel = pathname.slice("/vendor/fonts/".length);
       try {
         const entry = await fetchCached(`https://demotiles.maplibre.org/font/${rel.split("/").map(encodeURIComponent).join("/")}`);
         res.writeHead(entry.status, {
           "Content-Type": entry.contentType,
-          "Cache-Control": "public, max-age=3600"
+          "Content-Length": entry.buf.length,
+          "Cache-Control": "public, max-age=3600",
+          "Access-Control-Allow-Origin": "*"
         });
         res.end(entry.buf);
         return;
       } catch {}
     }
-    res.writeHead(404, { "Content-Type": "text/plain" });
+    res.writeHead(404, { "Content-Type": "text/plain", "Access-Control-Allow-Origin": "*" });
     res.end("Not found");
   }
 }
 
 const server = http.createServer((req, res) => {
   const reqUrl = new URL(req.url || "/", `http://localhost:${PORT}`);
-  if (reqUrl.pathname === "/_diag" && req.method === "POST") {
-    let body = "";
-    req.on("data", chunk => { body += chunk; });
-    req.on("end", () => {
-      console.log("[CLIENT_DIAG]", body.slice(0, 1000));
-      res.writeHead(204);
+  if (reqUrl.pathname === "/_diag") {
+    if (req.method === "POST") {
+      let body = "";
+      req.on("data", chunk => { body += chunk; });
+      req.on("end", () => {
+        console.log("[DIAG:POST]", body.slice(0, 1000));
+        res.writeHead(204, { "Access-Control-Allow-Origin": "*" });
+        res.end();
+      });
+    } else {
+      console.log("[DIAG]", reqUrl.searchParams.get("tag"), reqUrl.searchParams.get("d"));
+      res.writeHead(204, { "Access-Control-Allow-Origin": "*" });
       res.end();
-    });
+    }
     return;
+  }
+  if (reqUrl.pathname !== "/_proxy") {
+    console.log(`[REQ] ${req.method} ${reqUrl.pathname}`);
   }
   if (reqUrl.pathname === "/_proxy") {
     handleProxy(reqUrl, res);

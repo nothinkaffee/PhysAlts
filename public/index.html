@@ -562,7 +562,7 @@
     const USE_DEV_PROXY = Boolean(window.__PHYSALTS_DEV_PROXY__) ||
       (location.protocol === "http:" && (location.hostname === "localhost" || location.hostname === "127.0.0.1"));
     const proxyUrl = (url) => (USE_DEV_PROXY && /^https:\/\//.test(url))
-      ? new URL("./_proxy?url=" + encodeURIComponent(url), location.href).href
+      ? `./_proxy?url=${encodeURIComponent(url)}`
       : url;
 
     let initializeApp, getAuth, signInAnonymously, signInWithCustomToken;
@@ -2036,20 +2036,46 @@
       try {
         const ok = await loadMapLibreSafely();
         if (!ok) return;
+        const isBlobPage = location.protocol === "blob:";
         if (typeof window.maplibregl.setWorkerUrl === "function") {
-          const directWorker = new URL("./vendor/maplibre-gl-csp-worker.js", location.href).href;
-          try {
-            const probe = new Worker(directWorker);
-            probe.terminate();
-            window.maplibregl.setWorkerUrl(directWorker);
-          } catch (_) {
-            const wCode = await fetch(directWorker).then(r => r.text());
+          if (isBlobPage) {
+            const wCode = await fetch("./vendor/maplibre-gl-csp-worker.js").then(r => r.text());
             window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
+          } else {
+            const directWorker = new URL("./vendor/maplibre-gl-csp-worker.js", location.href).href;
+            try {
+              const probe = new Worker(directWorker);
+              probe.terminate();
+              window.maplibregl.setWorkerUrl(directWorker);
+            } catch (_) {
+              const wCode = await fetch("./vendor/maplibre-gl-csp-worker.js").then(r => r.text());
+              window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
+            }
           }
         }
+        if (USE_DEV_PROXY && typeof window.maplibregl.addProtocol === "function") {
+          window.maplibregl.addProtocol("physalts", async (params) => {
+            const raw = params.url.slice("physalts://".length);
+            const target = raw.startsWith("https://")
+              ? `./_proxy?url=${encodeURIComponent(raw)}`
+              : raw;
+            const res = await fetch(target);
+            if (!res.ok) throw new Error(`HTTP ${res.status} for ${raw}`);
+            return { data: await res.arrayBuffer() };
+          });
+        }
+        const glyphsUrl = USE_DEV_PROXY
+          ? "physalts://./vendor/fonts/{fontstack}/{range}.pbf"
+          : `${new URL("./vendor/fonts/", location.href).href}{fontstack}/{range}.pbf`;
+        const satTileUrl = USE_DEV_PROXY
+          ? "physalts://https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+          : "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+        const lblTileUrl = USE_DEV_PROXY
+          ? "physalts://https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
+          : "https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
+
         map = new window.maplibregl.Map({
           container: "map",
-          transformRequest: (url) => ({ url: proxyUrl(url) }),
           center: [12, 34],
           zoom: 1.9,
           minZoom: 1.2,
@@ -2060,7 +2086,7 @@
           attributionControl: true,
           style: {
             version: 8,
-            glyphs: `${new URL("./vendor/fonts/", location.href).href}{fontstack}/{range}.pbf`,
+            glyphs: glyphsUrl,
             projection: { type: "globe" },
             sky: {
               "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0]
@@ -2068,18 +2094,14 @@
             sources: {
               "esri-satellite": {
                 type: "raster",
-                tiles: [
-                  "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-                ],
+                tiles: [satTileUrl],
                 tileSize: 256,
                 maxzoom: 19,
                 attribution: "Imagery © Esri"
               },
               "esri-labels": {
                 type: "raster",
-                tiles: [
-                  "https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
-                ],
+                tiles: [lblTileUrl],
                 tileSize: 256,
                 maxzoom: 19
               }
@@ -2115,10 +2137,7 @@
       } catch (err) {
         console.error("Map init error:", err);
         if (USE_DEV_PROXY) {
-          fetch(new URL("./_diag", location.href).href, {
-            method: "POST",
-            body: JSON.stringify({ href: location.href, err: String(err && err.stack || err) })
-          }).catch(() => {});
+          fetch("./_diag?tag=map_init_err&d=" + encodeURIComponent(String(err && err.stack || err))).catch(() => {});
         }
       }
     }
