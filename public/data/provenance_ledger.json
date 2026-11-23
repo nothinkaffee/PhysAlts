@@ -4,15 +4,15 @@
   "schemaVersion": "2.0.0",
   "jsonSchemaDraft": "https://json-schema.org/draft/2020-12/schema",
   "schemaRef": "physalts_schema.json",
-  "generatedAt": "2026-11-23T21:56:35.181Z",
-  "merkleRootSha256": "6c1e23bb69b94f844c71c19b990b1d2573c0b47fab544f2caa3a5398227f590a",
+  "generatedAt": "2026-11-23T22:51:53.581Z",
+  "merkleRootSha256": "f3e8ce66766fa8509c0e4a5514eeec5e03d5433dd27d799c79690cfb5b4cac0d",
   "summary": {
     "totalSourceFiles": 7,
-    "totalSourceBytes": 4017560,
-    "totalUnifiedRecords": 5344,
-    "totalDistinctCountries": 165,
+    "totalSourceBytes": 3650311,
+    "totalUnifiedRecords": 5534,
+    "totalDistinctCountries": 166,
     "byRecordType": {
-      "Hub": 5191,
+      "Hub": 5381,
       "TimelineEvent": 65,
       "SpaceMission": 36,
       "DomainCatalog": 52
@@ -36,7 +36,7 @@
       "license": "Curated Nominative Fair Use + CC-BY-SA Reference Metadata",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T20:53:18.144Z"
+      "modifiedAt": "2026-11-23T22:50:48.672Z"
     },
     {
       "file": "domains_catalog.json",
@@ -55,7 +55,7 @@
       "license": "Curated Taxonomy + CC0/CC-BY-SA References",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T21:51:51.385Z"
+      "modifiedAt": "2026-11-23T22:50:48.672Z"
     },
     {
       "file": "history_timeline.json",
@@ -73,16 +73,16 @@
       "license": "Curated Factual Chronology + CC-BY-SA Reference Links",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T20:53:18.144Z"
+      "modifiedAt": "2026-11-23T22:50:48.672Z"
     },
     {
       "file": "physics_hubs.json",
-      "sha256": "efe84fcb6dd0ca1775cc2a32659c4590ceb5c9ee8f9684192c4c37b1bc805a13",
-      "byteSize": 3606352,
+      "sha256": "f30f62357e872f222a17ac2a44016f31230804d8a3b4de2679cbd3100a2ac749",
+      "byteSize": 3239860,
       "recordType": "Hub",
       "tier": "global_index",
-      "recordCount": 5061,
-      "distinctCountries": 155,
+      "recordCount": 5251,
+      "distinctCountries": 157,
       "upstreamSources": [
         "OpenAlex Institutions API (Field 31)",
         "ROR v2 Organizations API"
@@ -90,7 +90,7 @@
       "license": "CC0 (OpenAlex, ROR v2)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-23T21:55:54.363Z"
+      "modifiedAt": "2026-11-23T22:51:53.393Z"
     },
     {
       "file": "private_startups.json",
@@ -109,7 +109,7 @@
       "license": "Curated Nominative Fair Use",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T21:54:25.568Z"
+      "modifiedAt": "2026-11-23T22:50:48.709Z"
     },
     {
       "file": "space_frontier.json",
@@ -130,12 +130,12 @@
       "license": "Public Domain Agency Facts + CC-BY-SA Reference Links",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T20:53:18.188Z"
+      "modifiedAt": "2026-11-23T22:50:48.709Z"
     },
     {
       "file": "verification_report.json",
-      "sha256": "978d24320a2624c8d88bf84fa7e43a2a9fcd151b452b460b94d3671c6178d6c5",
-      "byteSize": 24031,
+      "sha256": "7240c8e9726c98ff3a96326aa95058fd1b335166230f03041e69269f3bf14745",
+      "byteSize": 23274,
       "recordType": "AuditReport",
       "tier": "verification",
       "recordCount": 715,
@@ -146,7 +146,7 @@
       "license": "CC0 (Generated Audit Telemetry)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-23T20:53:18.188Z"
+      "modifiedAt": "2026-11-23T22:50:48.711Z"
     }
   ],
   "generatedArtifacts": {
@@ -157,9 +157,9 @@
     },
     "unifiedNdjson": {
       "file": "physalts_unified.ndjson",
-      "sha256": "5df413c010580bc6f5b6dfa9d6586613dea8b63cf043f1af6412761b0cb85489",
-      "byteSize": 4318688,
-      "rowCount": 5344
+      "sha256": "3ff2b2ad6aa3962e477ef344522804020fa255058834222f57ff0595965c9c4c",
+      "byteSize": 4732607,
+      "rowCount": 5534
     }
   }
 }
