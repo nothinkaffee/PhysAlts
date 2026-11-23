@@ -4,11 +4,11 @@
   "schemaVersion": "2.0.0",
   "jsonSchemaDraft": "https://json-schema.org/draft/2020-12/schema",
   "schemaRef": "physalts_schema.json",
-  "generatedAt": "2026-11-23T00:06:20.068Z",
-  "merkleRootSha256": "0fda9ca854af7dfb9f29318da337dabafa3f08ea6b7a41875ef5cb714ede3918",
+  "generatedAt": "2026-11-23T00:19:59.402Z",
+  "merkleRootSha256": "a6a1146ef79c9a26d715e7be6a40969a2ae12e0448762b9ebb14fd05893a9e2d",
   "summary": {
     "totalSourceFiles": 7,
-    "totalSourceBytes": 2926851,
+    "totalSourceBytes": 2927896,
     "totalUnifiedRecords": 4297,
     "totalDistinctCountries": 165,
     "byRecordType": {
@@ -21,7 +21,7 @@
   "datasets": [
     {
       "file": "curated_flagships.json",
-      "sha256": "9ca761c9f7f093a618c865eb1628ebb30d7ca3e453fd1d4b92b82be6f626c152",
+      "sha256": "f51e0dd179de966868c35ff5f181450a226a18a847efb8d4c34412740b753632",
       "byteSize": 130337,
       "recordType": "Hub",
       "tier": "curated_flagship",
@@ -36,7 +36,7 @@
       "license": "Curated Nominative Fair Use + CC-BY-SA Reference Metadata",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-22T22:44:18.241Z"
+      "modifiedAt": "2026-11-23T00:19:59.000Z"
     },
     {
       "file": "domains_catalog.json",
@@ -77,8 +77,8 @@
     },
     {
       "file": "physics_hubs.json",
-      "sha256": "dae38513477530d1b1b391b6469d86789ea7f9442a84d185c9426e5d70ed5703",
-      "byteSize": 2564356,
+      "sha256": "5bfff108be3ddbac9af2be4fda1f93f63c47d04b069408cc7656f6422f194d41",
+      "byteSize": 2565401,
       "recordType": "Hub",
       "tier": "global_index",
       "recordCount": 4008,
@@ -90,7 +90,7 @@
       "license": "CC0 (OpenAlex, ROR v2)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-23T00:06:19.592Z"
+      "modifiedAt": "2026-11-23T00:19:59.068Z"
     },
     {
       "file": "private_startups.json",
@@ -157,8 +157,8 @@
     },
     "unifiedNdjson": {
       "file": "physalts_unified.ndjson",
-      "sha256": "06f0f267b1ea69dbd7f569a4c33b0c1e72b63b7fd51300027c2913f8d7fdf68d",
-      "byteSize": 3159569,
+      "sha256": "1bee15df8a954cf19cce62a71e05de911cd22babce268d926a31fda522bc93db",
+      "byteSize": 3160615,
       "rowCount": 4297
     }
   }

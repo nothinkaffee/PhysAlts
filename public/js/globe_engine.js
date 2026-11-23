@@ -1,24 +1,181 @@
 /**
- * PhysAlts — Smooth 3D Globe Engine (MapLibre GL JS v5)
- * - Native GPU WebGL clustered GeoJSON layers on standard HTTP/HTTPS & mobile apps.
- * - Geographically anchored (fixed lat/lng centroid) cluster engine for worker-restricted
- *   blob: preview documents so clusters stay rock-solid anchored while dragging the globe
- *   and cleanly split when clicked or zoomed.
- * - Restrained monochrome + cool ice-silver palette (zero yellow).
+ * World of Physics — 3D Globe Engine (MapLibre GL JS v5)
+ * - Instant preloaded & multi-tier cached satellite imagery (in-memory ArrayBuffer + Cache API + SW)
+ * - Razor-sharp Retina 'Inter' / 'Helvetica Neue' 2D Canvas labels with strict collision avoidance
+ *   (zero blurry Open Sans SDF glyphs, zero pixelated Esri raster label overlays)
+ * - Effortless padded click & hover targeting (clickTolerance: 10, ±22px dot hitboxes, clickable label pills)
+ * - Living deep-space starfield behind a transparent 3D Earth sphere
  */
 
 import { USE_DEV_PROXY, COLLABORATION_ARCS } from "./config.js";
 import { store, getVisibleGlobeNodes, getNodeById } from "./data_store.js";
 
+const FONT_STACK = "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif";
+const TILE_CACHE_NAME = "world-physics-tiles-v1";
+const ESRI_SAT_TEMPLATE = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+
+// Clean Inter country/region labels toggled by the "Labels" pill (replaces pixelated Esri raster text)
+const WORLD_REGION_LABELS = [
+  { name: "United States", lng: -98.5, lat: 39.8, minZ: 1.2 },
+  { name: "Canada", lng: -106.3, lat: 56.1, minZ: 1.4 },
+  { name: "Mexico", lng: -102.5, lat: 23.6, minZ: 2.4 },
+  { name: "Brazil", lng: -51.9, lat: -14.2, minZ: 1.4 },
+  { name: "Argentina", lng: -64.0, lat: -36.5, minZ: 2.2 },
+  { name: "Chile", lng: -71.0, lat: -31.5, minZ: 2.8 },
+  { name: "United Kingdom", lng: -2.5, lat: 54.0, minZ: 2.6 },
+  { name: "France", lng: 2.2, lat: 46.6, minZ: 2.8 },
+  { name: "Germany", lng: 10.4, lat: 51.2, minZ: 2.8 },
+  { name: "Switzerland", lng: 8.2, lat: 46.8, minZ: 3.8 },
+  { name: "Italy", lng: 12.6, lat: 42.6, minZ: 3.0 },
+  { name: "Spain", lng: -3.7, lat: 40.4, minZ: 2.8 },
+  { name: "Sweden", lng: 16.5, lat: 62.5, minZ: 2.8 },
+  { name: "Netherlands", lng: 5.3, lat: 52.2, minZ: 4.0 },
+  { name: "Poland", lng: 19.4, lat: 52.1, minZ: 3.2 },
+  { name: "Greece", lng: 22.9, lat: 39.1, minZ: 3.4 },
+  { name: "Turkey", lng: 35.2, lat: 39.0, minZ: 2.6 },
+  { name: "Egypt", lng: 30.8, lat: 26.8, minZ: 2.4 },
+  { name: "Jordan", lng: 36.6, lat: 31.2, minZ: 4.0 },
+  { name: "Israel", lng: 34.9, lat: 31.5, minZ: 4.4 },
+  { name: "South Africa", lng: 24.5, lat: -29.0, minZ: 1.8 },
+  { name: "Kenya", lng: 37.9, lat: 0.4, minZ: 2.8 },
+  { name: "Nigeria", lng: 8.7, lat: 9.1, minZ: 2.6 },
+  { name: "Morocco", lng: -7.1, lat: 31.8, minZ: 2.8 },
+  { name: "Russia", lng: 96.0, lat: 61.5, minZ: 1.4 },
+  { name: "India", lng: 79.0, lat: 22.0, minZ: 1.4 },
+  { name: "China", lng: 104.2, lat: 35.8, minZ: 1.4 },
+  { name: "Japan", lng: 138.3, lat: 36.2, minZ: 2.0 },
+  { name: "South Korea", lng: 127.8, lat: 36.4, minZ: 3.4 },
+  { name: "Taiwan", lng: 121.0, lat: 23.7, minZ: 3.8 },
+  { name: "Singapore", lng: 103.8, lat: 1.35, minZ: 4.2 },
+  { name: "Australia", lng: 133.8, lat: -25.3, minZ: 1.4 },
+  { name: "New Zealand", lng: 172.5, lat: -41.5, minZ: 2.4 },
+  { name: "Antarctica", lng: 0, lat: -82.0, minZ: 1.6 }
+];
+
 let map = null;
 let useMainThreadOverlay = false;
-let overlayCanvas = null;
-let overlayHits = [];
-let drawOverlayFn = () => {};
+let hudCanvas = null;
+let interactiveHits = [];
+const QA_HOOKS = typeof location !== "undefined" && /[?&]qa=1\b/.test(location.search);
+const CANVAS_MARKERS = true;
+const REDUCED_MOTION = typeof window !== "undefined" && Boolean(window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches);
+let hoveredKey = null;
+let drawHudFn = () => {};
 let onSelectNodeCb = () => {};
 let onBackgroundClickCb = () => {};
 
-// Geographic cluster cache keyed by integer zoom + dataset version (zero mid-drag swimming!)
+// Multi-tier tile cache (RAM ArrayBuffer + Cache Storage API) for instant globe loads
+const tileMemCache = new Map();
+const TILE_MEM_MAX = 420;
+const inflightTiles = new Map();
+
+// Tiles load DIRECT from Esri's global CDN (CORS-enabled, HTTP/2) — far faster than tunnelling
+// through the dev server. The local proxy is only a fallback if the direct request fails.
+let tilesViaProxy = false;
+function proxiedTileUrl(rawHttpsUrl) {
+  return `./_proxy?url=${encodeURIComponent(rawHttpsUrl)}`;
+}
+
+function setTileMemCache(key, buf) {
+  if (tileMemCache.has(key)) {
+    tileMemCache.delete(key);
+  } else if (tileMemCache.size >= TILE_MEM_MAX) {
+    const oldest = tileMemCache.keys().next().value;
+    tileMemCache.delete(oldest);
+  }
+  tileMemCache.set(key, buf);
+}
+
+async function fetchTileCached(rawHttpsUrl) {
+  // 1. Instant RAM hit (0ms) — always slice() so Worker transfer never detaches our cached buffer
+  const mem = tileMemCache.get(rawHttpsUrl);
+  if (mem) return mem.slice(0);
+
+  if (inflightTiles.has(rawHttpsUrl)) {
+    const buf = await inflightTiles.get(rawHttpsUrl);
+    return buf.slice(0);
+  }
+
+  const work = (async () => {
+    // 2. Persistent browser Cache Storage hit (~1ms)
+    if (typeof caches !== "undefined" && location.protocol !== "blob:") {
+      try {
+        const cache = await caches.open(TILE_CACHE_NAME);
+        const matched = (await cache.match(rawHttpsUrl)) || (await cache.match(proxiedTileUrl(rawHttpsUrl)));
+        if (matched && matched.ok) {
+          const buf = await matched.arrayBuffer();
+          setTileMemCache(rawHttpsUrl, buf);
+          return buf;
+        }
+      } catch {}
+    }
+
+    // 3. Network fetch (backed by local server RAM+disk cache in dev, or Esri CDN in prod)
+    let res = null;
+    if (!tilesViaProxy) {
+      try {
+        res = await fetch(rawHttpsUrl, { cache: "force-cache", mode: "cors", credentials: "omit" });
+        if (!res.ok && res.status !== 404) res = null;
+      } catch {
+        res = null;
+      }
+      if (!res && USE_DEV_PROXY) tilesViaProxy = true;
+    }
+    if (!res && USE_DEV_PROXY) {
+      res = await fetch(proxiedTileUrl(rawHttpsUrl), { cache: "force-cache" });
+    }
+    if (!res || !res.ok) throw new Error(`Tile HTTP ${res ? res.status : "network"}`);
+    if (typeof caches !== "undefined" && location.protocol !== "blob:") {
+      try {
+        const cache = await caches.open(TILE_CACHE_NAME);
+        cache.put(rawHttpsUrl, res.clone()).catch(() => {});
+      } catch {}
+    }
+    const buf = await res.arrayBuffer();
+    setTileMemCache(rawHttpsUrl, buf);
+    return buf;
+  })();
+
+  inflightTiles.set(rawHttpsUrl, work);
+  try {
+    const buf = await work;
+    return buf.slice(0);
+  } finally {
+    inflightTiles.delete(rawHttpsUrl);
+  }
+}
+
+/**
+ * Warm core Earth satellite tiles (z=0..2 = 21 tiles covering 100% of Earth)
+ * into browser Cache Storage after initial paint so spinning anywhere on Earth is instant.
+ */
+function preloadCoreGlobeTiles() {
+  if (typeof caches === "undefined" || location.protocol === "blob:") return;
+  const urls = [];
+  for (let z = 0; z <= 2; z++) {
+    const dim = 1 << z;
+    for (let y = 0; y < dim; y++) {
+      for (let x = 0; x < dim; x++) {
+        urls.push(ESRI_SAT_TEMPLATE.replace("{z}", z).replace("{y}", y).replace("{x}", x));
+      }
+    }
+  }
+  let idx = 0;
+  const worker = async () => {
+    const cache = await caches.open(TILE_CACHE_NAME).catch(() => null);
+    while (idx < urls.length) {
+      const u = urls[idx++];
+      try {
+        if (cache && (await cache.match(u))) continue;
+        const res = await fetch(u, { mode: "cors", credentials: "omit", cache: "force-cache" });
+        if (res.ok && cache) cache.put(u, res.clone()).catch(() => {});
+      } catch {}
+    }
+  };
+  Promise.all(Array.from({ length: 4 }, worker)).catch(() => {});
+}
+
+// Geographic cluster cache keyed by integer zoom + dataset version (for main-thread fallback)
 let geoClusterVersion = 0;
 const geoClusterCache = new Map();
 
@@ -28,75 +185,105 @@ function invalidateGeoClusterCache() {
 }
 
 /**
- * Deterministic fixed geographic clustering per integer zoom level.
- * Clusters are computed strictly in (lat, lng) coordinates, NOT screen pixels,
- * so every cluster stays rock-solid anchored to its exact spot on Earth as you rotate/pan,
- * and splits cleanly when you click it or zoom in.
+ * Seeded angular clustering (supercluster-style, but on the sphere):
+ * - Seeds are taken in priority order (selected > curated flagships > everything else),
+ *   so famous places anchor their own bubble ("CERN" bubble is centred on CERN).
+ * - Every seed is > CLUSTER_PX apart on screen at the bucket zoom, so bubbles never overlap.
+ * - Spatial hash keeps it O(n); results cached per 0.5-zoom bucket + dataset version.
  */
-function getAnchoredClusters(zoomInt) {
-  const z = Math.max(1, Math.min(9, zoomInt));
-  const key = `${geoClusterVersion}:${z}`;
+const CLUSTER_PX = 54;
+function nodePriority(n) {
+  if (store.state.selectedId === n.id) return 3;
+  if (n.pinned) return 2;
+  if (n.tier === "flagship" || n.tier === "timeline") return 1;
+  return 0;
+}
+
+function getAnchoredClusters(zoom) {
+  const zb = Math.max(1, Math.min(9.5, Math.floor(zoom * 2) / 2));
+  const key = `${geoClusterVersion}:${zb}:${store.state.selectedId || ""}`;
   if (geoClusterCache.has(key)) return geoClusterCache.get(key);
 
-  const nodes = getVisibleGlobeNodes();
-  // At high zoom (>= 9) or during Time Counter mode, show individual anchored pins
-  if (z >= 9 || store.state.timeMode) {
-    const singles = nodes.map(n => ({
-      isCluster: false,
-      lat: n.lat,
-      lng: n.lng,
-      count: 1,
-      node: n
-    }));
+  const nodes = getVisibleGlobeNodes().filter(n => Number.isFinite(n.lat) && Number.isFinite(n.lng));
+  if (zb >= 9.5 || (store.state.timeMode && nodes.length < 160)) {
+    const singles = nodes.map(n => ({ isCluster: false, lat: n.lat, lng: n.lng, count: 1, node: n }));
     geoClusterCache.set(key, singles);
     return singles;
   }
 
-  // Fixed geographic cell size in degrees per zoom tier
-  const cellDeg = 42 / Math.pow(1.92, z - 1);
-  const buckets = new Map();
+  const RAD = Math.PI / 180;
+  const pxPerRad = (512 * Math.pow(2, zb)) / (2 * Math.PI);
+  const theta = CLUSTER_PX / pxPerRad;            // angular radius (radians)
+  const cosTheta = Math.cos(theta);
+  const cellDeg = Math.max(theta / RAD, 0.0005);
 
-  for (const n of nodes) {
-    if (store.state.selectedId === n.id) {
-      buckets.set(`sel:${n.id}`, { items: [n], sumLat: n.lat, sumLng: n.lng, minLat: n.lat, maxLat: n.lat, minLng: n.lng, maxLng: n.lng });
-      continue;
-    }
-    const latBucket = Math.floor((n.lat + 90) / cellDeg);
-    // Adjust longitude cell width by cos(lat) so polar regions don't over-fragment
-    const cosLat = Math.max(0.25, Math.cos((n.lat * Math.PI) / 180));
-    const lngCell = cellDeg / cosLat;
-    const lngBucket = Math.floor((n.lng + 180) / lngCell);
-    const bKey = `${latBucket}:${lngBucket}`;
-    let b = buckets.get(bKey);
-    if (!b) {
-      b = { items: [], sumLat: 0, sumLng: 0, minLat: n.lat, maxLat: n.lat, minLng: n.lng, maxLng: n.lng };
-      buckets.set(bKey, b);
-    }
-    b.items.push(n);
-    b.sumLat += n.lat;
-    b.sumLng += n.lng;
-    if (n.lat < b.minLat) b.minLat = n.lat;
-    if (n.lat > b.maxLat) b.maxLat = n.lat;
-    if (n.lng < b.minLng) b.minLng = n.lng;
-    if (n.lng > b.maxLng) b.maxLng = n.lng;
+  const pts = nodes.map((n, i) => {
+    const la = n.lat * RAD, lo = n.lng * RAD;
+    return { n, i, x: Math.cos(la) * Math.cos(lo), y: Math.cos(la) * Math.sin(lo), z: Math.sin(la), pr: nodePriority(n), used: false };
+  });
+
+  // Spatial hash on lat rows; lng neighbourhood widened by 1/cos(lat)
+  const grid = new Map();
+  const rowOf = (lat) => Math.floor((lat + 90) / cellDeg);
+  const colOf = (lat, lng) => {
+    const w = cellDeg / Math.max(0.08, Math.cos(lat * RAD));
+    return Math.floor((lng + 180) / w);
+  };
+  for (const p of pts) {
+    const k = `${rowOf(p.n.lat)}:${colOf(p.n.lat, p.n.lng)}`;
+    let arr = grid.get(k);
+    if (!arr) grid.set(k, (arr = []));
+    arr.push(p);
   }
 
+  const order = pts.slice().sort((a, b) => b.pr - a.pr || a.i - b.i);
   const result = [];
-  for (const b of buckets.values()) {
-    const count = b.items.length;
-    if (count === 1) {
-      const n = b.items[0];
-      result.push({ isCluster: false, lat: n.lat, lng: n.lng, count: 1, node: n });
-    } else {
-      result.push({
-        isCluster: true,
-        lat: b.sumLat / count,
-        lng: b.sumLng / count,
-        count,
-        spanLat: b.maxLat - b.minLat,
-        spanLng: b.maxLng - b.minLng
-      });
+  for (const seed of order) {
+    if (seed.used) continue;
+    seed.used = true;
+    const members = [seed];
+    if (seed.pr < 3) {
+      const r0 = rowOf(seed.n.lat);
+      for (let dr = -1; dr <= 1; dr++) {
+        const rowLat = Math.max(-89.9, Math.min(89.9, seed.n.lat + dr * cellDeg));
+        const w = cellDeg / Math.max(0.08, Math.cos(rowLat * RAD));
+        const span = Math.ceil(cellDeg / Math.max(0.08, Math.cos(Math.min(89.9, Math.abs(seed.n.lat) + cellDeg) * RAD)) / w) + 1;
+        const c0 = Math.floor((seed.n.lng + 180) / w);
+        for (let dc = -span; dc <= span; dc++) {
+          const arr = grid.get(`${r0 + dr}:${c0 + dc}`);
+          if (!arr) continue;
+          for (const p of arr) {
+            if (p.used || p.pr >= 3) continue;
+            if (p.x * seed.x + p.y * seed.y + p.z * seed.z >= cosTheta) {
+              p.used = true;
+              members.push(p);
+            }
+          }
+        }
+      }
     }
+
+    if (members.length === 1) {
+      result.push({ isCluster: false, lat: seed.n.lat, lng: seed.n.lng, count: 1, node: seed.n });
+      continue;
+    }
+    let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+    for (const m of members) {
+      if (m.n.lat < minLat) minLat = m.n.lat;
+      if (m.n.lat > maxLat) maxLat = m.n.lat;
+      if (m.n.lng < minLng) minLng = m.n.lng;
+      if (m.n.lng > maxLng) maxLng = m.n.lng;
+    }
+    const top = members.reduce((a, b) => (b.pr > a.pr ? b : a), seed).n;
+    result.push({
+      isCluster: true,
+      lat: seed.n.lat,
+      lng: seed.n.lng,
+      count: members.length,
+      top,
+      spanLat: maxLat - minLat,
+      spanLng: Math.min(maxLng - minLng, 360 - (maxLng - minLng))
+    });
   }
 
   geoClusterCache.set(key, result);
@@ -189,8 +376,41 @@ function probeWorkerSupport(workerUrl) {
   });
 }
 
-function setupClusteredLayers() {
-  if (!map || map.getSource("physics-hubs")) return;
+function shortGlobeName(name) {
+  if (!name) return "";
+  const clean = String(name).replace(/\s*\([^)]*\)\s*$/, "").trim();
+  return clean.length > 24 ? clean.slice(0, 22).trimEnd() + "…" : clean;
+}
+
+function fmtCount(n) {
+  return n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
+}
+
+function drawRoundedRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function rectsOverlap(a, b, pad = 4) {
+  return !(
+    a[0] + a[2] + pad < b[0] ||
+    b[0] + b[2] + pad < a[0] ||
+    a[1] + a[3] + pad < b[1] ||
+    b[1] + b[3] + pad < a[1]
+  );
+}
+
+function setupWebGLVectorLayers() {
+  if (!map || map.getSource("physics-arcs")) return;
 
   map.addSource("physics-arcs", { type: "geojson", data: buildArcsGeoJSON() });
   map.addLayer({
@@ -198,8 +418,8 @@ function setupClusteredLayers() {
     type: "line",
     source: "physics-arcs",
     paint: {
-      "line-color": "rgba(226, 232, 240, 0.16)",
-      "line-width": ["case", ["==", ["get", "focused"], 1], 4.2, 2.2],
+      "line-color": "rgba(228, 228, 231, 0.14)",
+      "line-width": ["case", ["==", ["get", "focused"], 1], 4.0, 2.0],
       "line-blur": 3
     }
   });
@@ -208,18 +428,23 @@ function setupClusteredLayers() {
     type: "line",
     source: "physics-arcs",
     paint: {
-      "line-color": ["case", ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.88)", "rgba(203, 213, 225, 0.40)"],
+      "line-color": ["case", ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.88)", "rgba(212, 212, 216, 0.36)"],
       "line-width": ["case", ["==", ["get", "focused"], 1], 1.5, 1.0],
       "line-dasharray": [2, 2]
     }
   });
+
+  if (CANVAS_MARKERS) {
+    store.state.globeReady = true;
+    return;
+  }
 
   map.addSource("physics-hubs", {
     type: "geojson",
     data: buildGeoJSON(getVisibleGlobeNodes()),
     cluster: true,
     clusterMaxZoom: 9,
-    clusterRadius: 46
+    clusterRadius: 48
   });
 
   map.addLayer({
@@ -228,8 +453,8 @@ function setupClusteredLayers() {
     source: "physics-hubs",
     filter: ["has", "point_count"],
     paint: {
-      "circle-color": "rgba(203, 213, 225, 0.15)",
-      "circle-radius": ["step", ["get", "point_count"], 21, 15, 27, 60, 34, 150, 40],
+      "circle-color": "rgba(228, 228, 231, 0.14)",
+      "circle-radius": ["step", ["get", "point_count"], 22, 15, 27, 60, 33, 150, 39],
       "circle-blur": 0.45
     }
   });
@@ -240,25 +465,11 @@ function setupClusteredLayers() {
     source: "physics-hubs",
     filter: ["has", "point_count"],
     paint: {
-      "circle-color": "rgba(14, 18, 27, 0.86)",
-      "circle-radius": ["step", ["get", "point_count"], 15, 15, 19, 60, 24, 150, 28],
-      "circle-stroke-width": 1.4,
-      "circle-stroke-color": "rgba(241, 245, 249, 0.82)"
+      "circle-color": "rgba(16, 16, 18, 0.84)",
+      "circle-radius": ["step", ["get", "point_count"], 16, 15, 20, 60, 24, 150, 28],
+      "circle-stroke-width": 1.35,
+      "circle-stroke-color": "rgba(255, 255, 255, 0.72)"
     }
-  });
-
-  map.addLayer({
-    id: "cluster-count",
-    type: "symbol",
-    source: "physics-hubs",
-    filter: ["has", "point_count"],
-    layout: {
-      "text-field": "{point_count_abbreviated}",
-      "text-font": ["Open Sans Semibold"],
-      "text-size": 12,
-      "text-allow-overlap": true
-    },
-    paint: { "text-color": "#f8fafc" }
   });
 
   map.addLayer({
@@ -269,12 +480,12 @@ function setupClusteredLayers() {
     paint: {
       "circle-color": [
         "case",
-        ["==", ["get", "selected"], 1], "rgba(160, 70, 70, 0.42)",
-        ["==", ["get", "kind"], "company"], "rgba(228, 228, 231, 0.28)",
-        ["==", ["get", "kind"], "history"], "rgba(212, 212, 216, 0.30)",
+        ["==", ["get", "selected"], 1], "rgba(160, 70, 70, 0.48)",
+        ["==", ["get", "kind"], "company"], "rgba(228, 228, 231, 0.26)",
+        ["==", ["get", "kind"], "history"], "rgba(212, 212, 216, 0.28)",
         "rgba(212, 212, 216, 0.20)"
       ],
-      "circle-radius": ["case", ["==", ["get", "selected"], 1], 14, ["==", ["get", "curated"], 1], 10, 7]
+      "circle-radius": ["case", ["==", ["get", "selected"], 1], 15, ["==", ["get", "curated"], 1], 11, 8]
     }
   });
 
@@ -292,94 +503,85 @@ function setupClusteredLayers() {
         ["==", ["get", "curated"], 1], "#f4f4f5",
         "#a1a1aa"
       ],
-      "circle-radius": ["case", ["==", ["get", "selected"], 1], 7.5, ["==", ["get", "curated"], 1], 5.5, 4.2],
-      "circle-stroke-width": ["case", ["==", ["get", "selected"], 1], 2.4, 1.5],
+      "circle-radius": ["case", ["==", ["get", "selected"], 1], 7.5, ["==", ["get", "curated"], 1], 5.8, 4.5],
+      "circle-stroke-width": ["case", ["==", ["get", "selected"], 1], 2.5, 1.5],
       "circle-stroke-color": ["case", ["==", ["get", "selected"], 1], "rgb(160, 70, 70)", "rgba(255, 255, 255, 0.90)"]
     }
   });
 
-  map.addLayer({
-    id: "unclustered-label",
-    type: "symbol",
-    source: "physics-hubs",
-    filter: ["!", ["has", "point_count"]],
-    layout: {
-      "text-field": ["get", "name"],
-      "text-font": ["Open Sans Semibold"],
-      "text-size": ["interpolate", ["linear"], ["zoom"], 2, 11, 8, 12.5],
-      "text-offset": [0.95, 0],
-      "text-anchor": "left",
-      "text-optional": true,
-      "text-max-width": 16
-    },
-    paint: {
-      "text-color": "rgba(248, 250, 252, 0.96)",
-      "text-halo-color": "rgba(6, 9, 15, 0.90)",
-      "text-halo-width": 1.7,
-      "text-opacity": [
-        "step",
-        ["zoom"],
-        ["case", ["==", ["get", "selected"], 1], 1, ["==", ["get", "pinned"], 1], 0.95, 0],
-        5.2,
-        ["case", ["==", ["get", "selected"], 1], 1, ["==", ["get", "pinned"], 1], 0.95, 0.90]
-      ]
-    }
-  });
-
-  map.on("click", "clusters", async (e) => {
-    const features = map.queryRenderedFeatures(e.point, { layers: ["clusters"] });
-    if (!features.length) return;
-    const clusterId = features[0].properties.cluster_id;
-    const source = map.getSource("physics-hubs");
-    try {
-      const zoom = await source.getClusterExpansionZoom(clusterId);
-      map.easeTo({
-        center: features[0].geometry.coordinates,
-        zoom: Math.min(zoom + 0.8, 15),
-        duration: 750,
-        easing: t => 1 - Math.pow(1 - t, 3)
-      });
-    } catch {}
-  });
-
-  map.on("click", "unclustered-point", (e) => {
-    const f = e.features?.[0];
-    if (f?.properties?.id) onSelectNodeCb(f.properties.id, true);
-  });
-  map.on("click", "unclustered-label", (e) => {
-    const f = e.features?.[0];
-    if (f?.properties?.id) onSelectNodeCb(f.properties.id, true);
-  });
-
-  for (const lyr of ["clusters", "unclustered-point", "unclustered-label"]) {
-    map.on("mouseenter", lyr, () => { map.getCanvas().style.cursor = "pointer"; });
-    map.on("mouseleave", lyr, () => { map.getCanvas().style.cursor = ""; });
-  }
-
   store.state.globeReady = true;
 }
 
-function initMainThreadOverlay() {
-  const container = document.getElementById("map");
-  if (!container || overlayCanvas) return;
-  overlayCanvas = document.createElement("canvas");
-  overlayCanvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;";
-  container.appendChild(overlayCanvas);
+function findHitAt(px, py) {
+  // 1. Direct click on any crisp Inter label pill (highest accuracy & easiest UX)
+  for (let i = interactiveHits.length - 1; i >= 0; i--) {
+    const h = interactiveHits[i];
+    if (h.rect) {
+      const [rx, ry, rw, rh] = h.rect;
+      if (px >= rx - 4 && px <= rx + rw + 4 && py >= ry - 4 && py <= ry + rh + 4) {
+        return h;
+      }
+    }
+  }
 
-  const fmtCount = (n) => n >= 1000 ? (n / 1000).toFixed(1).replace(/\.0$/, "") + "k" : String(n);
+  // 2. Nearest unclustered node within generous padded radius (min 22px radius = 44px diameter)
+  let bestNode = null;
+  let bestNodeDist = Infinity;
+  let bestCluster = null;
+  let bestClusterDist = Infinity;
+
+  for (const h of interactiveHits) {
+    if (h.type === "pill") continue;
+    const dx = px - h.x;
+    const dy = py - h.y;
+    const d2 = dx * dx + dy * dy;
+    if (d2 <= h.r * h.r) {
+      if (h.type === "node" && d2 < bestNodeDist) {
+        bestNodeDist = d2;
+        bestNode = h;
+      } else if (h.type === "cluster" && d2 < bestClusterDist) {
+        bestClusterDist = d2;
+        bestCluster = h;
+      }
+    }
+  }
+
+  if (bestNode) return bestNode;
+  if (bestCluster) return bestCluster;
+  return null;
+}
+
+/**
+ * Unified Retina 2D Canvas HUD & Interaction Engine:
+ * - Renders ALL globe typography in razor-sharp 'Inter' / 'Helvetica Neue' at 2x DPR
+ * - Handles collision-free frosted glass label pills + hover highlight rings + optional Inter country labels
+ * - Provides effortless padded clicking for every dot, cluster, and label pill on the 3D globe
+ */
+function initGlobeHudOverlay() {
+  const container = document.getElementById("map");
+  if (!container || hudCanvas) return;
+
+  hudCanvas = document.createElement("canvas");
+  hudCanvas.id = "globe-hud-canvas";
+  hudCanvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;";
+  container.appendChild(hudCanvas);
+
   let rafPending = false;
 
-  const renderOverlayNow = () => {
+  const renderHudNow = () => {
     rafPending = false;
-    if (!overlayCanvas || !map || typeof map.project !== "function") return;
+    if (!hudCanvas || !map || typeof map.project !== "function") return;
+    if (store.state.viewMode !== "earth") return;
+
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const w = container.clientWidth || window.innerWidth;
     const h = container.clientHeight || window.innerHeight;
-    if (overlayCanvas.width !== Math.round(w * dpr) || overlayCanvas.height !== Math.round(h * dpr)) {
-      overlayCanvas.width = Math.round(w * dpr);
-      overlayCanvas.height = Math.round(h * dpr);
+    if (hudCanvas.width !== Math.round(w * dpr) || hudCanvas.height !== Math.round(h * dpr)) {
+      hudCanvas.width = Math.round(w * dpr);
+      hudCanvas.height = Math.round(h * dpr);
     }
-    const ctx = overlayCanvas.getContext("2d");
+
+    const ctx = hudCanvas.getContext("2d");
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, w, h);
 
@@ -389,7 +591,7 @@ function initMainThreadOverlay() {
     const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
     const cy = Math.cos(center.lat * rad) * Math.sin(center.lng * rad);
     const cz = Math.sin(center.lat * rad);
-    const minDot = zoom >= 7 ? 0.86 : zoom >= 4.5 ? 0.48 : 0.12;
+    const minDot = zoom >= 7 ? 0.86 : zoom >= 4.5 ? 0.45 : 0.14;
     const isVisibleOnGlobe = (lng, lat) => {
       const x = Math.cos(lat * rad) * Math.cos(lng * rad);
       const y = Math.cos(lat * rad) * Math.sin(lng * rad);
@@ -397,141 +599,497 @@ function initMainThreadOverlay() {
       return (x * cx + y * cy + z * cz) > minDot;
     };
 
-    // Collaboration arcs
-    if (store.state.arcs && !store.state.timeMode) {
-      const arcs = buildArcsGeoJSON().features || [];
+    const hits = [];
+    const placedRects = [];
+    const labelCandidates = [];
+    let clusterHint = null;
+    let labelBlocked = () => false;
+
+    // Safe UI exclusion margins so labels don't sit behind top Dynamic Island or bottom dock
+    const safeTop = 86;
+    const safeBottom = h - 88;
+    const safeLeft = 18;
+    const safeRight = w - 18;
+
+    // 1. Optional clean Inter country/region labels (when user toggles "Labels" on)
+    if (store.state.labels) {
       ctx.save();
-      ctx.setLineDash([4, 4]);
-      for (const f of arcs) {
-        const coords = f.geometry?.coordinates || [];
-        const focused = f.properties?.focused === 1;
-        ctx.beginPath();
-        let started = false;
-        for (const [lng, lat] of coords) {
-          if (!isVisibleOnGlobe(lng, lat)) { started = false; continue; }
-          const pt = map.project([lng, lat]);
-          if (pt.x < -160 || pt.x > w + 160 || pt.y < -160 || pt.y > h + 160) { started = false; continue; }
-          if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
-          else ctx.lineTo(pt.x, pt.y);
-        }
-        ctx.strokeStyle = focused ? "rgba(255,255,255,0.86)" : "rgba(203,213,225,0.34)";
-        ctx.lineWidth = focused ? 1.5 : 1;
-        ctx.stroke();
+      ctx.font = `500 12px ${FONT_STACK}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      for (const reg of WORLD_REGION_LABELS) {
+        if (zoom < reg.minZ) continue;
+        if (!isVisibleOnGlobe(reg.lng, reg.lat)) continue;
+        const pt = map.project([reg.lng, reg.lat]);
+        if (pt.x < safeLeft + 40 || pt.x > safeRight - 40 || pt.y < safeTop + 12 || pt.y > safeBottom - 12) continue;
+        const tw = ctx.measureText(reg.name).width;
+        const rect = [pt.x - tw / 2 - 4, pt.y - 8, tw + 8, 16];
+        if (placedRects.some(r => rectsOverlap(r, rect, 10))) continue;
+        placedRects.push(rect);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgba(8, 8, 10, 0.78)";
+        ctx.strokeText(reg.name, pt.x, pt.y);
+        ctx.fillStyle = "rgba(244, 244, 245, 0.62)";
+        ctx.fillText(reg.name, pt.x, pt.y);
       }
       ctx.restore();
     }
 
-    // Geographically anchored clusters — rock-solid pinned to Earth!
-    const anchored = getAnchoredClusters(Math.floor(zoom));
-    const hits = [];
+    // 2. Gather visible clusters & unclustered nodes.
+    // Markers are always drawn on this canvas (one source of truth for bubbles, counts, labels & hitboxes).
+    if (CANVAS_MARKERS || useMainThreadOverlay) {
+      // Arcs are drawn by WebGL when available; canvas only draws them in the main-thread fallback
+      if (useMainThreadOverlay && store.state.arcs && !store.state.timeMode) {
+        const arcs = buildArcsGeoJSON().features || [];
+        ctx.save();
+        ctx.setLineDash([4, 4]);
+        for (const f of arcs) {
+          const coords = f.geometry?.coordinates || [];
+          const focused = f.properties?.focused === 1;
+          ctx.beginPath();
+          let started = false;
+          for (const [lng, lat] of coords) {
+            if (!isVisibleOnGlobe(lng, lat)) { started = false; continue; }
+            const pt = map.project([lng, lat]);
+            if (pt.x < -160 || pt.x > w + 160 || pt.y < -160 || pt.y > h + 160) { started = false; continue; }
+            if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
+            else ctx.lineTo(pt.x, pt.y);
+          }
+          ctx.strokeStyle = focused ? "rgba(255,255,255,0.86)" : "rgba(212,212,216,0.34)";
+          ctx.lineWidth = focused ? 1.5 : 1;
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
 
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
+      // Pass 1: project, then merge any bubbles that collide on screen (limb foreshortening),
+      // so nothing ever overlaps and counts stay honest.
+      const anchored = getAnchoredClusters(zoom);
+      const bubbleR = (count) => (count >= 150 ? 25 : count >= 60 ? 22 : count >= 15 ? 19 : 16);
+      const projected = [];
+      for (const item of anchored) {
+        if (!isVisibleOnGlobe(item.lng, item.lat)) continue;
+        const pt = map.project([item.lng, item.lat]);
+        if (pt.x < -36 || pt.x > w + 36 || pt.y < -36 || pt.y > h + 36) continue;
+        const selected = !item.isCluster && store.state.selectedId === item.node.id;
+        projected.push({
+          isCluster: item.isCluster,
+          node: item.node || null,
+          top: item.top || item.node || null,
+          lat: item.lat, lng: item.lng,
+          x: pt.x, y: pt.y,
+          count: item.count,
+          span: Math.max(item.spanLat || 0, item.spanLng || 0),
+          selected
+        });
+      }
+      projected.sort((a, b) => (b.selected - a.selected) || (b.count - a.count));
+      const kept = [];
+      for (const p of projected) {
+        const pr = p.isCluster ? bubbleR(p.count) : 9;
+        let host = null;
+        if (!p.selected) {
+          for (const k of kept) {
+            if (k.selected) continue;
+            const kr = k.isCluster ? bubbleR(k.count) : 9;
+            const dx = k.x - p.x, dy = k.y - p.y;
+            if (dx * dx + dy * dy < (kr + pr + 4) * (kr + pr + 4)) { host = k; break; }
+          }
+        }
+        if (host) {
+          host.isCluster = true;
+          host.count += p.count;
+          host.span = Math.max(host.span, p.span, Math.abs(host.lat - p.lat), Math.abs(host.lng - p.lng));
+          const hp = host.top ? nodePriority(host.top) : -1;
+          if (p.top && nodePriority(p.top) > hp) host.top = p.top;
+        } else {
+          kept.push(p);
+        }
+      }
 
-    for (const item of anchored) {
-      if (!isVisibleOnGlobe(item.lng, item.lat)) continue;
-      const pt = map.project([item.lng, item.lat]);
-      if (pt.x < -36 || pt.x > w + 36 || pt.y < -36 || pt.y > h + 36) continue;
+      // Keep the globe clean under floating UI: no markers behind island, dock, card or controls
+      const uiZones = [];
+      for (const sel of ["#dynamic-island", "#bottom-dock", "#earth-only-controls", "#zoom-controls", "#place-card", "#time-bar"]) {
+        const el = document.getElementById(sel.slice(1));
+        if (!el || el.classList.contains("hidden")) continue;
+        const r = el.getBoundingClientRect();
+        if (r.width > 0 && r.height > 0) uiZones.push(r);
+      }
+      const underUi = (x, y, r) => uiZones.some(z => x + r > z.left - 6 && x - r < z.right + 6 && y + r > z.top - 6 && y - r < z.bottom + 6);
+      labelBlocked = (rx, ry, rw, rh) => uiZones.some(z => rx + rw > z.left - 6 && rx < z.right + 6 && ry + rh > z.top - 6 && ry < z.bottom + 6);
 
-      const x = pt.x;
-      const y = pt.y;
+      // Pass 2: draw
+      for (const item of kept) {
+        const x = item.x, y = item.y;
 
-      if (item.isCluster) {
-        const count = item.count;
-        const radius = count >= 200 ? 25 : count >= 60 ? 21 : count >= 15 ? 17 : 14;
+        if (item.isCluster) {
+          const count = item.count;
+          const radius = bubbleR(count);
+          if (underUi(x, y, radius)) continue;
+          const cKey = `c:${item.top?.id || ""}:${Math.round(item.lat * 100)}:${Math.round(item.lng * 100)}`;
+          const isHov = hoveredKey === cKey;
 
-        ctx.beginPath();
-        ctx.arc(x, y, radius + 4.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(203, 213, 225, 0.13)";
-        ctx.fill();
+          ctx.beginPath();
+          ctx.arc(x, y, radius + (isHov ? 7 : 5), 0, Math.PI * 2);
+          ctx.fillStyle = isHov ? "rgba(255, 255, 255, 0.22)" : "rgba(228, 228, 231, 0.13)";
+          ctx.fill();
 
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(14, 18, 27, 0.88)";
-        ctx.fill();
-        ctx.lineWidth = 1.4;
-        ctx.strokeStyle = "rgba(241, 245, 249, 0.82)";
-        ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(16, 16, 18, 0.86)";
+          ctx.fill();
+          ctx.lineWidth = isHov ? 2 : 1.35;
+          ctx.strokeStyle = isHov ? "#ffffff" : "rgba(255, 255, 255, 0.72)";
+          ctx.stroke();
+
+          ctx.fillStyle = "#f4f4f5";
+          ctx.font = `600 13px ${FONT_STACK}`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(fmtCount(count), x, y + 0.5);
+
+          placedRects.push([x - radius - 2, y - radius - 2, (radius + 2) * 2, (radius + 2) * 2]);
+          hits.push({ type: "cluster", key: cKey, x, y, r: radius + 10, lng: item.lng, lat: item.lat, span: item.span });
+          if (isHov && item.top) {
+            clusterHint = { name: `${shortGlobeName(item.top.name)} + ${fmtCount(count - 1)} more`, x, y, r: radius };
+          } else if (item.top && nodePriority(item.top) >= 1 && zoom >= 2.4) {
+            // Famous anchor names beside their bubble (click the name to open that place)
+            labelCandidates.push({
+              id: item.top.id,
+              name: shortGlobeName(item.top.name),
+              x, y,
+              dotR: radius,
+              selected: false,
+              hovered: false,
+              priority: 30 + Math.min(count, 500) / 50
+            });
+          }
+        } else {
+          const n = item.node;
+          const selected = store.state.selectedId === n.id;
+          const isHov = hoveredKey === `n:${n.id}`;
+          const curated = n.tier === "flagship" || n.tier === "timeline";
+          const radius = selected ? 7.5 : curated ? 5.8 : 4.5;
+          if (!selected && underUi(x, y, radius + 4)) continue;
+
+          ctx.beginPath();
+          ctx.arc(x, y, selected ? 15 : isHov ? 14 : curated ? 11 : 8, 0, Math.PI * 2);
+          ctx.fillStyle = selected ? "rgba(160, 70, 70, 0.48)" : isHov ? "rgba(255, 255, 255, 0.30)" : "rgba(212, 212, 216, 0.22)";
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fillStyle = selected || isHov ? "#ffffff" : curated ? "#f4f4f5" : "#a1a1aa";
+          ctx.fill();
+          ctx.lineWidth = selected ? 2.5 : isHov ? 2 : 1.5;
+          ctx.strokeStyle = selected ? "rgb(160, 70, 70)" : "rgba(255, 255, 255, 0.90)";
+          ctx.stroke();
+
+          placedRects.push([x - radius - 1, y - radius - 1, (radius + 1) * 2, (radius + 1) * 2]);
+          hits.push({ type: "node", key: `n:${n.id}`, id: n.id, name: n.name, x, y, r: Math.max(radius + 16, 22) });
+          if (selected || isHov || store.state.timeMode || n.pinned || (curated && zoom >= 2.2) || zoom >= 3.4) {
+            labelCandidates.push({
+              id: n.id,
+              name: shortGlobeName(n.name),
+              x, y,
+              dotR: radius,
+              selected,
+              hovered: isHov,
+              priority: selected ? 100 : isHov ? 90 : store.state.timeMode ? 70 : curated ? 50 : 20
+            });
+          }
+        }
+      }
+    } else if (map.getLayer("clusters") && map.getLayer("unclustered-point")) {
+      // WebGL mode: MapLibre renders the dots/clusters at 60fps; we draw razor-sharp Inter text + hover rings + build generous hitboxes
+      const renderedClusters = map.queryRenderedFeatures({ layers: ["clusters"] }) || [];
+      const seenClusterIds = new Set();
+      ctx.font = `600 13px ${FONT_STACK}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+
+      for (const f of renderedClusters) {
+        const cid = f.properties?.cluster_id;
+        if (cid == null || seenClusterIds.has(cid)) continue;
+        seenClusterIds.add(cid);
+        const coords = f.geometry?.coordinates;
+        if (!coords) continue;
+        const pt = map.project(coords);
+        if (pt.x < -36 || pt.x > w + 36 || pt.y < -36 || pt.y > h + 36) continue;
+        const count = Number(f.properties?.point_count) || 2;
+        const radius = count >= 150 ? 28 : count >= 60 ? 24 : count >= 15 ? 20 : 16;
+        const cKey = `c:${cid}`;
+        const isHov = hoveredKey === cKey;
+
+        if (isHov) {
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, radius + 3.5, 0, Math.PI * 2);
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.92)";
+          ctx.lineWidth = 2;
+          ctx.stroke();
+        }
 
         ctx.fillStyle = "#f4f4f5";
-        ctx.font = "600 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
-        ctx.fillText(fmtCount(count), x, y + 0.5);
-        hits.push({ type: "cluster", x, y, r: radius + 4, lng: item.lng, lat: item.lat, span: Math.max(item.spanLat || 0, item.spanLng || 0) });
-      } else {
-        const n = item.node;
-        const selected = store.state.selectedId === n.id;
-        const isCompany = n.group === "company" || n.entityType === "startup";
-        const isHistory = n.group === "history" || n.tier === "timeline";
-        const curated = n.tier === "flagship" || n.tier === "timeline";
-        const radius = selected ? 7.5 : curated ? 5.5 : 4.2;
+        ctx.fillText(fmtCount(count), pt.x, pt.y + 0.5);
 
-        ctx.beginPath();
-        ctx.arc(x, y, selected ? 14 : curated ? 10 : 7, 0, Math.PI * 2);
-        ctx.fillStyle = selected ? "rgba(160, 70, 70, 0.42)" : isCompany ? "rgba(228, 228, 231, 0.28)" : "rgba(212, 212, 216, 0.22)";
-        ctx.fill();
+        placedRects.push([pt.x - radius - 2, pt.y - radius - 2, (radius + 2) * 2, (radius + 2) * 2]);
+        hits.push({
+          type: "cluster",
+          key: cKey,
+          clusterId: cid,
+          lng: coords[0],
+          lat: coords[1],
+          x: pt.x,
+          y: pt.y,
+          r: radius + 10
+        });
+      }
 
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = selected ? "#ffffff" : isCompany ? "#e4e4e7" : isHistory ? "#d4d4d8" : curated ? "#f4f4f5" : "#a1a1aa";
-        ctx.fill();
-        ctx.lineWidth = selected ? 2.4 : 1.5;
-        ctx.strokeStyle = selected ? "rgb(160, 70, 70)" : "rgba(255, 255, 255, 0.90)";
-        ctx.stroke();
+      const renderedNodes = map.queryRenderedFeatures({ layers: ["unclustered-point"] }) || [];
+      const seenNodeIds = new Set();
+      for (const f of renderedNodes) {
+        const id = f.properties?.id;
+        if (!id || seenNodeIds.has(id)) continue;
+        seenNodeIds.add(id);
+        const coords = f.geometry?.coordinates;
+        if (!coords) continue;
+        const pt = map.project(coords);
+        if (pt.x < -28 || pt.x > w + 28 || pt.y < -28 || pt.y > h + 28) continue;
 
-        if (selected || store.state.timeMode || (zoom >= 5.2 && curated)) {
-          ctx.save();
-          ctx.textAlign = "left";
-          ctx.font = "600 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
-          ctx.lineWidth = 3;
-          ctx.strokeStyle = "rgba(9, 9, 10, 0.92)";
-          ctx.strokeText(n.name, x + radius + 7, y);
-          ctx.fillStyle = "rgba(244, 244, 245, 0.96)";
-          ctx.fillText(n.name, x + radius + 7, y);
-          ctx.restore();
+        const selected = store.state.selectedId === id;
+        const isHov = hoveredKey === `n:${id}`;
+        const curated = Number(f.properties?.curated) === 1;
+        const pinned = Number(f.properties?.pinned) === 1;
+        const dotR = selected ? 7.5 : curated ? 5.8 : 4.5;
+
+        if (isHov && !selected) {
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, dotR + 6, 0, Math.PI * 2);
+          ctx.fillStyle = "rgba(255, 255, 255, 0.22)";
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(pt.x, pt.y, dotR + 1.5, 0, Math.PI * 2);
+          ctx.strokeStyle = "#ffffff";
+          ctx.lineWidth = 2;
+          ctx.stroke();
         }
-        hits.push({ type: "node", x, y, r: Math.max(radius + 8, 13), id: n.id });
+
+        hits.push({
+          type: "node",
+          key: `n:${id}`,
+          id,
+          name: f.properties?.name || "",
+          x: pt.x,
+          y: pt.y,
+          r: Math.max(dotR + 16, 22)
+        });
+
+        const showLabel = selected || isHov || store.state.timeMode || pinned || (curated && zoom >= 2.2) || zoom >= 5.2;
+        if (showLabel) {
+          labelCandidates.push({
+            id,
+            name: shortGlobeName(f.properties?.name || ""),
+            x: pt.x,
+            y: pt.y,
+            dotR,
+            selected,
+            hovered: isHov,
+            priority: selected ? 100 : isHov ? 90 : store.state.timeMode ? 75 : pinned ? 65 : curated ? 50 : 20
+          });
+        }
       }
     }
-    overlayHits = hits;
+
+    // 3. Draw collision-free crisp Inter glass label pills (highest priority first)
+    labelCandidates.sort((a, b) => b.priority - a.priority);
+    ctx.textAlign = "left";
+    ctx.textBaseline = "middle";
+
+    for (const c of labelCandidates) {
+      if (!c.name) continue;
+      const forceShow = c.selected || c.hovered;
+      ctx.font = `${forceShow ? 600 : 500} 13px ${FONT_STACK}`;
+      const textW = ctx.measureText(c.name).width;
+      const padX = 8;
+      const pillW = Math.ceil(textW + padX * 2);
+      const pillH = 26;
+
+      // Try placing pill to the right of dot, else left of dot, else above dot
+      const placements = [
+        [Math.round(c.x + c.dotR + 7), Math.round(c.y - pillH / 2)],
+        [Math.round(c.x - c.dotR - 7 - pillW), Math.round(c.y - pillH / 2)],
+        [Math.round(c.x - pillW / 2), Math.round(c.y - c.dotR - pillH - 6)]
+      ];
+
+      let chosen = null;
+      for (const [lx, ly] of placements) {
+        if (!forceShow && (lx < safeLeft || lx + pillW > safeRight || ly < safeTop || ly + pillH > safeBottom)) {
+          continue;
+        }
+        const rect = [lx, ly, pillW, pillH];
+        if (!c.selected && labelBlocked(lx, ly, pillW, pillH)) continue;
+        if (forceShow || !placedRects.some(r => rectsOverlap(r, rect, 5))) {
+          chosen = rect;
+          break;
+        }
+      }
+      if (!chosen) continue;
+
+      const [lx, ly, lw, lh] = chosen;
+      placedRects.push(chosen);
+
+      drawRoundedRect(ctx, lx, ly, lw, lh, 13);
+      ctx.fillStyle = c.selected
+        ? "rgba(22, 16, 17, 0.88)"
+        : c.hovered
+          ? "rgba(24, 24, 27, 0.90)"
+          : "rgba(14, 14, 16, 0.74)";
+      ctx.fill();
+
+      ctx.lineWidth = c.selected || c.hovered ? 1.25 : 1;
+      ctx.strokeStyle = c.selected
+        ? "rgba(160, 70, 70, 0.92)"
+        : c.hovered
+          ? "rgba(255, 255, 255, 0.52)"
+          : "rgba(255, 255, 255, 0.14)";
+      ctx.stroke();
+
+      ctx.fillStyle = c.selected || c.hovered ? "#ffffff" : "rgba(244, 244, 245, 0.94)";
+      ctx.fillText(c.name, lx + padX, ly + lh / 2 + 0.5);
+
+      // Register the entire pill rectangle as an effortless click target!
+      hits.push({
+        type: "node",
+        key: `n:${c.id}`,
+        id: c.id,
+        name: c.name,
+        x: c.x,
+        y: c.y,
+        r: 0,
+        rect: chosen
+      });
+    }
+
+    // Hovering a bubble previews its best-known member (non-blocking, never covers other UI)
+    if (clusterHint) {
+      ctx.font = `500 13px ${FONT_STACK}`;
+      const tw = ctx.measureText(clusterHint.name).width;
+      const pw = Math.ceil(tw + 20), ph = 28;
+      let lx = Math.round(clusterHint.x - pw / 2);
+      let ly = Math.round(clusterHint.y - clusterHint.r - ph - 8);
+      if (ly < safeTop) ly = Math.round(clusterHint.y + clusterHint.r + 8);
+      lx = Math.max(safeLeft, Math.min(safeRight - pw, lx));
+      drawRoundedRect(ctx, lx, ly, pw, ph, 14);
+      ctx.fillStyle = "rgba(20, 20, 22, 0.92)";
+      ctx.fill();
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+      ctx.stroke();
+      ctx.fillStyle = "#ffffff";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText(clusterHint.name, lx + 10, ly + ph / 2 + 0.5);
+    }
+
+    interactiveHits = hits;
+    if (QA_HOOKS) window.__qaGlobe = { hits, zoom: map.getZoom() };
   };
 
-  drawOverlayFn = () => {
+  drawHudFn = () => {
     if (rafPending) return;
     rafPending = true;
-    requestAnimationFrame(renderOverlayNow);
+    requestAnimationFrame(renderHudNow);
   };
 
-  map.on("render", drawOverlayFn);
-  map.on("resize", drawOverlayFn);
+  map.on("render", drawHudFn);
+  map.on("resize", drawHudFn);
+  map.on("move", drawHudFn);
+
   map.on("mousemove", (e) => {
     if (!e?.point) return;
-    const { x, y } = e.point;
-    const hovered = overlayHits.some(hit => ((x - hit.x) ** 2 + (y - hit.y) ** 2) <= hit.r * hit.r);
-    map.getCanvas().style.cursor = hovered ? "pointer" : "";
+    const hit = findHitAt(e.point.x, e.point.y);
+    const nextKey = hit ? hit.key : null;
+    map.getCanvas().style.cursor = hit ? "pointer" : "";
+    if (nextKey !== hoveredKey) {
+      hoveredKey = nextKey;
+      drawHudFn();
+    }
   });
-  map.on("click", (e) => {
+
+  map.on("mouseout", () => {
+    if (hoveredKey !== null) {
+      hoveredKey = null;
+      map.getCanvas().style.cursor = "";
+      drawHudFn();
+    }
+  });
+
+  map.on("click", async (e) => {
     if (!e?.point) return;
     const { x, y } = e.point;
-    for (let i = overlayHits.length - 1; i >= 0; i--) {
-      const hit = overlayHits[i];
-      if ((x - hit.x) ** 2 + (y - hit.y) ** 2 <= hit.r * hit.r) {
-        if (hit.type === "cluster") {
-          const nextZoom = Math.min(Math.floor(map.getZoom()) + 2.2, 13);
-          map.easeTo({
-            center: [hit.lng, hit.lat],
-            zoom: nextZoom,
-            duration: 750,
-            easing: t => 1 - Math.pow(1 - t, 3)
-          });
-        } else {
-          onSelectNodeCb(hit.id, true);
+    let hit = findHitAt(x, y);
+
+    // Secondary padded MapLibre query fallback in case render frame just updated
+    if (!hit && !useMainThreadOverlay && map.getLayer("unclustered-point") && map.getLayer("clusters")) {
+      const pad = 20;
+      const feats = map.queryRenderedFeatures(
+        [[x - pad, y - pad], [x + pad, y + pad]],
+        { layers: ["unclustered-point", "clusters"] }
+      );
+      if (feats.length) {
+        const nodeF = feats.find(f => f.layer?.id === "unclustered-point");
+        const f = nodeF || feats[0];
+        if (f.layer?.id === "unclustered-point" && f.properties?.id) {
+          hit = { type: "node", id: f.properties.id };
+        } else if (f.properties?.cluster_id != null) {
+          hit = {
+            type: "cluster",
+            clusterId: f.properties.cluster_id,
+            lng: f.geometry.coordinates[0],
+            lat: f.geometry.coordinates[1]
+          };
         }
-        return;
       }
     }
-    onBackgroundClickCb();
+
+    if (!hit) {
+      onBackgroundClickCb();
+      return;
+    }
+
+    if (hit.type === "node" && hit.id) {
+      onSelectNodeCb(hit.id, true);
+      return;
+    }
+
+    if (hit.type === "cluster") {
+      if (!useMainThreadOverlay && hit.clusterId != null) {
+        const source = map.getSource("physics-hubs");
+        try {
+          const nextZoom = await source.getClusterExpansionZoom(hit.clusterId);
+          map.easeTo({
+            center: [hit.lng, hit.lat],
+            zoom: Math.min(nextZoom + 0.85, 14),
+            duration: 680,
+            easing: t => 1 - Math.pow(1 - t, 3)
+          });
+          return;
+        } catch {}
+      }
+      // Zoom just enough for the bubble's members to spread out (~280px across)
+      const cur = map.getZoom();
+      const spanDeg = Math.max(hit.span || 0, 0.02);
+      const fitZoom = Math.log2((280 * 360) / (512 * spanDeg));
+      map.easeTo({
+        center: [hit.lng, hit.lat],
+        zoom: Math.max(cur + 1.2, Math.min(fitZoom, cur + 4, 13)),
+        duration: 680,
+        easing: t => 1 - Math.pow(1 - t, 3)
+      });
+    }
   });
-  drawOverlayFn();
+
+  drawHudFn();
 }
 
 export async function initGlobe({ onSelectNode, onBackgroundClick }) {
@@ -543,72 +1101,60 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
   }
 
   const isBlobPage = location.protocol === "blob:";
-  let resolvedWorkerUrl = "";
+  let workerOk = false;
   if (typeof window.maplibregl.setWorkerUrl === "function") {
     if (isBlobPage) {
       const wCode = await fetch("./vendor/maplibre-gl-csp-worker.js").then(r => r.text());
-      resolvedWorkerUrl = URL.createObjectURL(new Blob([wCode], { type: "application/javascript" }));
-      window.maplibregl.setWorkerUrl(resolvedWorkerUrl);
+      window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
     } else {
       const directWorker = new URL("./vendor/maplibre-gl-csp-worker.js", location.href).href;
       try {
         const probe = new Worker(directWorker);
         probe.terminate();
-        resolvedWorkerUrl = directWorker;
         window.maplibregl.setWorkerUrl(directWorker);
+        workerOk = true;
       } catch {
         const wCode = await fetch("./vendor/maplibre-gl-csp-worker.js").then(r => r.text());
-        resolvedWorkerUrl = URL.createObjectURL(new Blob([wCode], { type: "application/javascript" }));
-        window.maplibregl.setWorkerUrl(resolvedWorkerUrl);
+        window.maplibregl.setWorkerUrl(URL.createObjectURL(new Blob([wCode], { type: "application/javascript" })));
       }
     }
   }
 
-  const workerOk = isBlobPage ? false : await probeWorkerSupport(resolvedWorkerUrl);
   useMainThreadOverlay = isBlobPage || !workerOk;
 
-  if (USE_DEV_PROXY && typeof window.maplibregl.addProtocol === "function") {
-    window.maplibregl.addProtocol("physalts", async (params) => {
-      const raw = params.url.slice("physalts://".length);
-      const target = raw.startsWith("https://")
-        ? `./_proxy?url=${encodeURIComponent(raw)}`
-        : raw;
-      const res = await fetch(target);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return { data: await res.arrayBuffer() };
-    });
-  }
+  // Use direct HTTPS Esri CDN tiles in MapLibre's Web Worker:
+  // HTTP/2 multiplexed, off-thread createImageBitmap, native abort on fast zoom,
+  // + Service Worker Cache-First (world-physics-tiles-v1).
+  const satTileUrl = ESRI_SAT_TEMPLATE;
 
-  const glyphsUrl = USE_DEV_PROXY
-    ? "physalts://./vendor/fonts/{fontstack}/{range}.pbf"
-    : `${new URL("./vendor/fonts/", location.href).href}{fontstack}/{range}.pbf`;
-  const satTileUrl = USE_DEV_PROXY
-    ? "physalts://https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-    : "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
-  const lblTileUrl = USE_DEV_PROXY
-    ? "physalts://https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}"
-    : "https://services.arcgisonline.com/arcgis/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}";
+  try {
+    if (typeof window.maplibregl.setMaxParallelImageRequests === "function") {
+      window.maplibregl.setMaxParallelImageRequests(32);
+    }
+  } catch {}
 
   map = new window.maplibregl.Map({
     container: "map",
-    center: [12, 34],
-    zoom: 1.9,
+    center: [12, 30],
+    zoom: 1.95,
     minZoom: 1.2,
     maxZoom: 18.2,
     pitch: 0,
     bearing: 0,
     antialias: true,
+    clickTolerance: 10,
     attributionControl: true,
-    fadeDuration: 220,
+    canvasContextAttributes: { alpha: true, antialias: true },
+    maxTileCacheSize: 1024,
+    fadeDuration: 0,
     style: {
       version: 8,
-      glyphs: glyphsUrl,
       projection: { type: "globe" },
       sky: {
-        "sky-color": "#0b0b0c",
-        "horizon-color": "#1c1c1f",
-        "fog-color": "#0c0c0e",
-        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.85, 5, 0.7, 7, 0]
+        "sky-color": "rgba(0, 0, 0, 0)",
+        "horizon-color": "rgba(255, 255, 255, 0.08)",
+        "fog-color": "rgba(0, 0, 0, 0)",
+        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.25, 5, 0.15, 7, 0]
       },
       sources: {
         "esri-satellite": {
@@ -617,40 +1163,86 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
           tileSize: 256,
           maxzoom: 19,
           attribution: "Imagery © Esri"
-        },
-        "esri-labels": {
-          type: "raster",
-          tiles: [lblTileUrl],
-          tileSize: 256,
-          maxzoom: 19
         }
       },
       layers: [
-        {
-          id: "ocean-base",
-          type: "background",
-          paint: { "background-color": "#0a0a0b" }
-        },
         {
           id: "satellite-layer",
           type: "raster",
           source: "esri-satellite",
           paint: {
-            "raster-fade-duration": 150,
+            "raster-fade-duration": 0,
             "raster-saturation": -0.08,
             "raster-contrast": 0.06
           }
-        },
-        {
-          id: "labels-layer",
-          type: "raster",
-          source: "esri-labels",
-          layout: { visibility: "none" },
-          paint: { "raster-opacity": 0.85 }
         }
       ]
     }
   });
+
+  // Living deep-space starfield behind the 3D Earth globe with gentle rotation parallax
+  (function initDeepSpaceBackdrop() {
+    const bg = document.getElementById("space-bg-canvas");
+    if (!bg) return;
+    const bctx = bg.getContext("2d");
+    if (!bctx) return;
+
+    const stars = Array.from({ length: 300 }, (_, i) => ({
+      x: ((i * 7919) % 10000) / 10000,
+      y: ((i * 6271) % 10000) / 10000,
+      r: i % 19 === 0 ? 1.65 : i % 5 === 0 ? 1.05 : 0.65,
+      baseA: i % 19 === 0 ? 0.85 : i % 5 === 0 ? 0.52 : 0.26,
+      phase: (i * 1.37) % (Math.PI * 2),
+      speed: 0.35 + (i % 7) * 0.14
+    }));
+
+    let w = 0, h = 0;
+    const resize = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = bg.clientWidth || window.innerWidth;
+      h = bg.clientHeight || window.innerHeight;
+      bg.width = Math.round(w * dpr);
+      bg.height = Math.round(h * dpr);
+      bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    window.addEventListener("resize", resize);
+
+    const draw = (now) => {
+      if (store.state.viewMode === "earth") {
+        bctx.clearRect(0, 0, w, h);
+        const c = map?.getCenter?.() || { lng: 12, lat: 30 };
+        const z = map?.getZoom?.() ?? 1.95;
+        const px = (-c.lng / 360) * 0.22;
+        const py = (c.lat / 180) * 0.12;
+        const t = now * 0.001;
+
+        // Subtle monochrome orbital rim halo behind the 3D Earth sphere (fades out cleanly as you zoom in)
+        if (z < 4.4) {
+          const haloStrength = Math.max(0, 1 - (z - 1.2) / 3.2);
+          const globeR = Math.min(w, h) * 0.34 * Math.pow(2, (z - 1.95) * 0.62);
+          const grad = bctx.createRadialGradient(w * 0.5, h * 0.5, globeR * 0.82, w * 0.5, h * 0.5, globeR * 1.42);
+          grad.addColorStop(0, `rgba(244, 244, 245, ${(0.10 * haloStrength).toFixed(3)})`);
+          grad.addColorStop(0.55, `rgba(212, 212, 216, ${(0.04 * haloStrength).toFixed(3)})`);
+          grad.addColorStop(1, "rgba(0, 0, 0, 0)");
+          bctx.fillStyle = grad;
+          bctx.fillRect(0, 0, w, h);
+        }
+
+        for (const s of stars) {
+          const sx = ((((s.x + px) % 1) + 1) % 1) * w;
+          const sy = ((((s.y + py) % 1) + 1) % 1) * h;
+          const alpha = REDUCED_MOTION ? s.baseA : s.baseA * (0.76 + 0.24 * Math.sin(t * s.speed + s.phase));
+          bctx.fillStyle = `rgba(244, 244, 245, ${alpha.toFixed(3)})`;
+          bctx.beginPath();
+          bctx.arc(sx, sy, s.r, 0, Math.PI * 2);
+          bctx.fill();
+        }
+      }
+      requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  })();
 
   if (typeof ResizeObserver !== "undefined") {
     const mapEl = document.getElementById("map");
@@ -664,44 +1256,107 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
 
   map.on("style.load", () => {
     try { map.setProjection({ type: "globe" }); } catch {}
-    if (useMainThreadOverlay) {
-      store.state.globeReady = true;
-      initMainThreadOverlay();
+    try {
+      map.setSky({
+        "sky-color": "rgba(0, 0, 0, 0)",
+        "horizon-color": "rgba(255, 255, 255, 0.09)",
+        "fog-color": "rgba(0, 0, 0, 0)",
+        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.24, 5, 0.14, 7, 0]
+      });
+    } catch {}
+    if (!useMainThreadOverlay) {
+      setupWebGLVectorLayers();
     } else {
-      setupClusteredLayers();
+      store.state.globeReady = true;
     }
+    initGlobeHudOverlay();
     syncGlobeMarkers();
+    // Redraw all canvas labels immediately once the bundled Inter variable font finishes loading
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => drawHudFn()).catch(() => {});
+    }
+    initIdleDrift();
   });
 
-  if (!useMainThreadOverlay) {
-    map.on("click", (e) => {
-      const hits = map.queryRenderedFeatures(e.point, { layers: ["clusters", "unclustered-point", "unclustered-label"] });
-      if (!hits.length) onBackgroundClickCb();
-    });
-  }
+  // Warm the remaining z=0..2 globe tiles once initial viewport is painted
+  map.once("load", () => {
+    setTimeout(preloadCoreGlobeTiles, 250);
+  });
+
+  // Automatic fallback to local dev proxy only if direct Esri CDN is unreachable
+  let switchedToProxy = false;
+  map.on("error", (ev) => {
+    if (switchedToProxy || !USE_DEV_PROXY) return;
+    if (ev?.sourceId === "esri-satellite") {
+      switchedToProxy = true;
+      const src = map.getSource("esri-satellite");
+      if (src?.setTiles) {
+        src.setTiles([`./_proxy?url=${encodeURIComponent(ESRI_SAT_TEMPLATE).replace(/%7B([zxy])%7D/gi, "{$1}")}`]);
+      }
+    }
+  });
+}
+
+/**
+ * Attract-mode idle drift: after a quiet period at overview zoom, Earth slowly turns
+ * (≈4°/s). Any pointer, wheel, key or touch input stops it instantly. Disabled for
+ * prefers-reduced-motion, while a card/timeline is open, or in automated QA runs.
+ */
+let idleDriftInit = false;
+function initIdleDrift() {
+  if (idleDriftInit || !map || QA_HOOKS) return;
+  idleDriftInit = true;
+  const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+  const IDLE_MS = 14000;
+  const DEG_PER_SEC = 4;
+  let lastInput = performance.now();
+  let lastFrame = 0;
+
+  const bump = () => { lastInput = performance.now(); };
+  ["pointerdown", "wheel", "keydown", "touchstart"].forEach(ev =>
+    window.addEventListener(ev, bump, { passive: true, capture: true })
+  );
+
+  const tick = (now) => {
+    const dt = lastFrame ? Math.min(now - lastFrame, 64) : 16;
+    lastFrame = now;
+    const eligible =
+      !reduce?.matches &&
+      !document.hidden &&
+      store.state.viewMode === "earth" &&
+      !store.state.timeMode &&
+      !store.state.selectedId &&
+      map.getZoom() < 3.2 &&
+      !document.querySelector("#spotlight-backdrop:not(.hidden), #drawer-backdrop:not(.hidden), #auth-modal-backdrop:not(.hidden)");
+    if (eligible && now - lastInput > IDLE_MS && !map.isEasing?.()) {
+      const c = map.getCenter();
+      map.jumpTo({ center: [c.lng + (DEG_PER_SEC * dt) / 1000, c.lat] });
+    }
+    requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
 }
 
 export function syncGlobeMarkers() {
   invalidateGeoClusterCache();
   if (!store.state.globeReady || !map) return;
-  if (useMainThreadOverlay) {
-    drawOverlayFn();
-    return;
+  if (!useMainThreadOverlay) {
+    const src = map.getSource("physics-hubs");
+    if (src?.setData) src.setData(buildGeoJSON(getVisibleGlobeNodes()));
+    const arcSrc = map.getSource("physics-arcs");
+    if (arcSrc?.setData) arcSrc.setData(buildArcsGeoJSON());
   }
-  const src = map.getSource("physics-hubs");
-  if (src?.setData) src.setData(buildGeoJSON(getVisibleGlobeNodes()));
-  const arcSrc = map.getSource("physics-arcs");
-  if (arcSrc?.setData) arcSrc.setData(buildArcsGeoJSON());
+  drawHudFn();
 }
 
 export function flyToHub(node, zoomOverride = null) {
   if (!map || !node) return;
-  const targetZoom = zoomOverride != null ? zoomOverride : Math.min(node.zoom || 6.4, 7.2);
+  const targetZoom = zoomOverride != null ? zoomOverride : Math.min(node.zoom || 5.8, 6.2);
   map.easeTo({
     center: [node.lng, node.lat],
     zoom: targetZoom,
     pitch: store.state.tilted ? 48 : 0,
-    duration: 850,
+    duration: 680,
     easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true
   });
@@ -714,15 +1369,15 @@ export function resetGlobeToSpace(center = [15, 26], zoom = 1.95) {
     zoom,
     pitch: 0,
     bearing: 0,
-    duration: 800,
+    duration: 750,
     easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true
   });
 }
 
 export function setGlobeLabels(visible) {
-  if (!map || !map.getLayer("labels-layer")) return;
-  map.setLayoutProperty("labels-layer", "visibility", visible ? "visible" : "none");
+  store.state.labels = Boolean(visible);
+  drawHudFn();
 }
 
 export function setGlobeTilt(tilted) {
@@ -731,9 +1386,9 @@ export function setGlobeTilt(tilted) {
 }
 
 export function zoomInGlobe() {
-  if (map) map.zoomIn({ duration: 360 });
+  if (map) map.zoomIn({ duration: 340 });
 }
 
 export function zoomOutGlobe() {
-  if (map) map.zoomOut({ duration: 360 });
+  if (map) map.zoomOut({ duration: 340 });
 }

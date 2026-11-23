@@ -82,7 +82,7 @@ const DEV_HEAD_SNIPPET = `<head>
   </script>`;
 
 const proxyCache = new Map();
-const MAX_CACHE = 600;
+const MAX_CACHE = 2000;
 let cacheHits = 0;
 let diskCacheHits = 0;
 let diskCacheReady = false;
@@ -90,10 +90,36 @@ let diskCacheReady = false;
 fs.mkdir(DISK_CACHE_DIR, { recursive: true })
   .then(() => {
     diskCacheReady = true;
+    prewarmCoreGlobeTiles();
   })
   .catch(() => {
     diskCacheReady = false;
   });
+
+function prewarmCoreGlobeTiles() {
+  const urls = [];
+  for (let z = 0; z <= 3; z++) {
+    const dim = 1 << z;
+    for (let y = 0; y < dim; y++) {
+      for (let x = 0; x < dim; x++) {
+        urls.push(`https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/${z}/${y}/${x}`);
+      }
+    }
+  }
+  let idx = 0;
+  const concurrency = 8;
+  const worker = async () => {
+    while (idx < urls.length) {
+      const u = urls[idx++];
+      try {
+        await fetchCached(u);
+      } catch {}
+    }
+  };
+  Promise.all(Array.from({ length: concurrency }, worker)).then(() => {
+    console.log(`[CACHE] Prewarmed ${urls.length} core globe tiles (z=0..3) in RAM & disk`);
+  }).catch(() => {});
+}
 
 function hashKey(urlStr) {
   return crypto.createHash("sha256").update(urlStr).digest("hex");
@@ -269,11 +295,12 @@ async function handleProxy(reqUrl, res) {
 
   try {
     const entry = await fetchCached(parsed.toString());
+    const isGlobeTile = parsed.hostname === "services.arcgisonline.com" && parsed.pathname.includes("/tile/");
     res.writeHead(entry.status, {
       ...SECURITY_HEADERS,
       "Content-Type": entry.contentType,
       "Content-Length": entry.buf.length,
-      "Cache-Control": "public, max-age=3600"
+      "Cache-Control": isGlobeTile ? "public, max-age=2592000, immutable" : "public, max-age=3600"
     });
     res.end(entry.buf);
   } catch (err) {

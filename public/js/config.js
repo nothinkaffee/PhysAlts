@@ -15,7 +15,7 @@ export function proxyUrl(url) {
 
 export const SUBJECT_CONFIG = {
   id: "physalts",
-  appName: "PhysAlts",
+  appName: "World of Physics",
   tagline: "World of Physics",
   storagePrefix: "physalts_v2_",
   dataFiles: {

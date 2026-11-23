@@ -194,21 +194,21 @@ function drawFrame(now) {
       tooltipMission = { m, x, y, dir };
     }
 
-    hits.push({ id: m.id, x, y, r: 16 });
+    hits.push({ id: m.id, x, y, r: 22 });
   });
 
   // Crisp floating pill for active/hovered mission, safely clamped away from Space Frontier Directory rail
   if (tooltipMission) {
     const { m, x, y, dir } = tooltipMission;
     const text = `${m.name} · ${m.lightTimeLabel.split(" (")[0]}`;
-    ctx.font = "500 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
+    ctx.font = "500 13.5px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
     const tw = ctx.measureText(text).width + 24;
-    const th = 30;
+    const th = 32;
     const maxRight = isWide ? (w - 356) : (w - 16);
     const bx = Math.max(16, Math.min(maxRight - tw, x - tw / 2));
-    const by = dir < 0 ? y - 42 : y + 16;
+    const by = dir < 0 ? y - 44 : y + 16;
 
-    ctx.fillStyle = "rgba(17, 17, 19, 0.96)";
+    ctx.fillStyle = "rgba(17, 17, 19, 0.94)";
     ctx.strokeStyle = "rgba(255, 255, 255, 0.24)";
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -226,6 +226,19 @@ function drawFrame(now) {
   rafId = requestAnimationFrame(drawFrame);
 }
 
+function findNearestMissionHit(x, y) {
+  let best = null;
+  let bestD2 = Infinity;
+  for (const h of missionHitboxes) {
+    const d2 = (x - h.x) ** 2 + (y - h.y) ** 2;
+    if (d2 <= h.r * h.r && d2 < bestD2) {
+      bestD2 = d2;
+      best = h;
+    }
+  }
+  return best;
+}
+
 export function initSpaceFrontierView({ onSelectMission }) {
   onSelectMissionCb = onSelectMission || (() => {});
   canvas = document.getElementById("space-canvas");
@@ -235,18 +248,14 @@ export function initSpaceFrontierView({ onSelectMission }) {
 
   canvas.addEventListener("mousemove", (e) => {
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const hit = missionHitboxes.find(h => ((x - h.x) ** 2 + (y - h.y) ** 2) <= h.r * h.r);
+    const hit = findNearestMissionHit(e.clientX - rect.left, e.clientY - rect.top);
     hoveredMissionId = hit ? hit.id : null;
     canvas.style.cursor = hit ? "pointer" : "default";
   });
 
   canvas.addEventListener("click", (e) => {
     const rect = canvas.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    const hit = missionHitboxes.find(h => ((x - h.x) ** 2 + (y - h.y) ** 2) <= h.r * h.r);
+    const hit = findNearestMissionHit(e.clientX - rect.left, e.clientY - rect.top);
     if (hit) {
       selectedMissionId = hit.id;
       onSelectMissionCb(hit.id);

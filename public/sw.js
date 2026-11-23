@@ -1,17 +1,22 @@
 /**
- * PhysAlts — Production PWA Service Worker (Stale-While-Revalidate)
- * Caches app shell, vendor bundles, and open physics JSON datasets for instant repeat loads.
- * Always bypasses /api/* auth/account endpoints and /_proxy requests.
+ * World of Physics — Production PWA Service Worker
+ * - Cache-First persistent caching for 3D Earth globe imagery tiles (both proxied & direct Esri)
+ * - Pre-caches core globe tiles (z=0..2) + app shell + physics JSON datasets for instant reloads
+ * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const CACHE_NAME = "physalts-web-v2";
-const PRECACHE = [
+const APP_CACHE = "world-physics-app-v4";
+const TILE_CACHE = "world-physics-tiles-v1";
+
+const PRECACHE_APP = [
   "./",
   "./index.html",
   "./styles/app.css",
+  "./vendor/inter-var.woff2",
   "./vendor/tailwind.css",
   "./vendor/maplibre-gl.css",
   "./vendor/maplibre-gl-csp.js",
+  "./vendor/maplibre-gl-csp-worker.js",
   "./vendor/lucide.min.js",
   "./data/curated_flagships.json",
   "./data/private_startups.json",
@@ -20,18 +25,30 @@ const PRECACHE = [
   "./data/domains_catalog.json"
 ];
 
+function isGlobeTileRequest(url) {
+  if (url.hostname === "services.arcgisonline.com" && url.pathname.includes("/World_Imagery/MapServer/tile/")) {
+    return true;
+  }
+  if (url.origin === self.location.origin && url.pathname === "/_proxy") {
+    const target = url.searchParams.get("url") || "";
+    return target.includes("World_Imagery/MapServer/tile/");
+  }
+  return false;
+}
+
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then((cache) => cache.addAll(PRECACHE).catch(() => {}))
+    caches.open(APP_CACHE)
+      .then((cache) => cache.addAll(PRECACHE_APP).catch(() => {}))
       .then(() => self.skipWaiting())
   );
 });
 
 self.addEventListener("activate", (event) => {
+  const keep = new Set([APP_CACHE, TILE_CACHE]);
   event.waitUntil(
     caches.keys()
-      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))))
+      .then((keys) => Promise.all(keys.filter((k) => !keep.has(k)).map((k) => caches.delete(k))))
       .then(() => self.clients.claim())
   );
 });
@@ -40,11 +57,47 @@ self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
+
+  // Cache-First for all 3D Earth satellite tiles (matches preloaded tiles by URL string!)
+  if (isGlobeTileRequest(url)) {
+    event.respondWith(
+      caches.open(TILE_CACHE).then(async (cache) => {
+        const cached = (await cache.match(req.url)) || (await cache.match(req));
+        if (cached) return cached;
+        const res = await fetch(req);
+        if (res && (res.ok || res.type === "opaque")) {
+          cache.put(req.url, res.clone()).catch(() => {});
+        }
+        return res;
+      })
+    );
+    return;
+  }
+
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/_proxy") || url.pathname.startsWith("/_diag")) return;
 
+  const isLocal = url.hostname === "localhost" || url.hostname === "127.0.0.1";
+  const isCode = /\.(html|js|css)$/.test(url.pathname) || url.pathname === "/";
+
+  // Network-First for code on localhost so edits show up on reload; SWR in production & for datasets/vendor
+  if (isLocal && isCode) {
+    event.respondWith(
+      caches.open(APP_CACHE).then(async (cache) => {
+        try {
+          const res = await fetch(req);
+          if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
+          return res;
+        } catch {
+          return cache.match(req);
+        }
+      })
+    );
+    return;
+  }
+
   event.respondWith(
-    caches.open(CACHE_NAME).then(async (cache) => {
+    caches.open(APP_CACHE).then(async (cache) => {
       const cached = await cache.match(req);
       const networkPromise = fetch(req).then((res) => {
         if (res && res.ok) cache.put(req, res.clone()).catch(() => {});

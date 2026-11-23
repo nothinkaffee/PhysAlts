@@ -84,20 +84,26 @@ export function refreshDbBadge() {
   }
 }
 
-function updateIslandExpanded() {
-  const island = document.getElementById("dynamic-island");
-  if (!island) return;
-  const searchOpen = !document.getElementById("search-dropdown")?.classList.contains("hidden");
-  const menuOpen = !document.getElementById("site-menu-dropdown")?.classList.contains("hidden");
-  island.classList.toggle("island-expanded", searchOpen || menuOpen);
+function closeSpotlight() {
+  document.getElementById("spotlight-backdrop")?.classList.add("hidden");
+}
+
+export function openSpotlight() {
+  closeAllSurfaces("spotlight");
+  const bd = document.getElementById("spotlight-backdrop");
+  const inp = document.getElementById("search-input");
+  if (!bd) return;
+  if (inp) inp.value = "";
+  bd.classList.remove("hidden");
+  renderSearchDropdown("");
+  setTimeout(() => {
+    inp?.focus();
+  }, 20);
 }
 
 export function closeDropdown() {
-  document.getElementById("search-dropdown")?.classList.add("hidden");
+  closeSpotlight();
   document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
-  document.getElementById("site-menu-dropdown")?.classList.add("hidden");
-  document.getElementById("btn-site-menu")?.setAttribute("aria-expanded", "false");
-  updateIslandExpanded();
 }
 
 function closePlaceCard() {
@@ -118,7 +124,7 @@ function closeModal() {
  * Guarantees only ONE overlay surface is open at any time — zero stacked overlaps ever.
  */
 function closeAllSurfaces(except = null) {
-  if (except !== "dropdown") closeDropdown();
+  if (except !== "spotlight") closeSpotlight();
   if (except !== "modal") closeModal();
   if (except !== "auth") closeAuthModal();
   if (except !== "card") closePlaceCard();
@@ -128,8 +134,13 @@ function updateBookmarkButtonUI(id) {
   const saveBtn = document.getElementById("btn-save-shortlist");
   if (!saveBtn) return;
   const saved = isBookmarked(id);
-  saveBtn.textContent = saved ? "✓ Bookmarked" : "+ Bookmark";
-  saveBtn.className = `rounded-full px-4 py-2 text-[13.5px] transition ${saved ? "glass-btn-active" : "glass-btn"}`;
+  saveBtn.className = `card-action transition ${saved ? "glass-btn-active" : "glass-btn"}`;
+  const span = saveBtn.querySelector("span");
+  if (span) {
+    span.textContent = saved ? "Saved" : "Save";
+  } else {
+    saveBtn.textContent = saved ? "Saved" : "Save";
+  }
 }
 
 // =========================================================================
@@ -193,7 +204,7 @@ function renderSpaceZoneBar() {
   const current = getSpaceZone();
   const zones = [{ id: "all", label: "All" }, ...store.spaceZones];
   bar.innerHTML = zones.map(z => `
-    <button type="button" data-szone="${esc(z.id)}" class="szone-btn px-3.5 py-2 rounded-full text-[13px] whitespace-nowrap transition ${z.id === current ? "glass-btn-active" : "glass-btn"}">
+    <button type="button" data-szone="${esc(z.id)}" class="szone-btn px-3.5 py-2 rounded-full text-[14px] whitespace-nowrap transition ${z.id === current ? "glass-btn-active" : "glass-btn"}">
       ${esc(COMPACT_ZONE_LABELS[z.id] || z.label)}
     </button>
   `).join("");
@@ -217,9 +228,9 @@ function renderSpaceMissionRail() {
       <button type="button" data-rail-mission="${esc(m.id)}" class="rail-mission w-full text-left rounded-2xl px-4 py-3 transition ${active ? "glass-row-active" : "glass-row"}">
         <div class="flex items-center justify-between gap-2.5">
           <span class="text-[14px] font-medium truncate">${esc(m.name)}</span>
-          <span class="text-[12.5px] shrink-0 ${active ? "text-black/65" : "accent-text"}">${esc(m.lightTimeLabel.split(" (")[0])}</span>
+          <span class="text-[14px] shrink-0 ${active ? "text-black/65" : "accent-text"}">${esc(m.lightTimeLabel.split(" (")[0])}</span>
         </div>
-        <div class="text-[13px] mt-1 truncate ${active ? "text-black/65" : "text-neutral-400"}">${esc(m.body)} · ${esc(m.agency)} · ${m.launchYear}</div>
+        <div class="text-[14px] mt-1 truncate ${active ? "text-black/65" : "text-neutral-400"}">${esc(m.body)} · ${esc(m.agency)} · ${m.launchYear}</div>
       </button>
     `;
   }).join("");
@@ -253,13 +264,13 @@ export function selectSpaceMission(missionId) {
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     extra.innerHTML = (m.instruments || []).slice(0, 6).map(inst =>
-      `<span class="px-3 py-1 rounded-full text-[13px] bg-white/[0.07] border border-white/12 text-neutral-200">${esc(inst)}</span>`
+      `<span class="px-3 py-1 rounded-full text-[14px] bg-white/[0.07] border border-white/12 text-neutral-200">${esc(inst)}</span>`
     ).join("");
   }
 
   const linksEl = document.getElementById("card-links");
   const links = [];
-  if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-4 py-2 text-[13.5px] inline-flex items-center gap-1.5">Official Mission Site ↗</a>`);
+  if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-4 py-2 text-[14px] inline-flex items-center gap-1.5">Official Mission Site ↗</a>`);
   if (m.wikiUrl) links.push(`<a href="${esc(m.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link px-3 py-2 text-[14px]">Wikipedia ↗</a>`);
   if (linksEl) linksEl.innerHTML = links.join("");
 
@@ -282,7 +293,7 @@ export function selectSpaceMission(missionId) {
     if (nearby.length) {
       rWrap.classList.remove("hidden");
       rLinks.innerHTML = nearby.slice(0, 3).map(nb => `
-        <button type="button" data-jump-space="${esc(nb.id)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-[175px]">
+        <button type="button" data-jump-space="${esc(nb.id)}" class="glass-btn rounded-full px-3 py-1 text-[14px] truncate max-w-[175px]">
           ${esc(nb.name.split(" (")[0])} →
         </button>
       `).join("");
@@ -365,7 +376,7 @@ function renderTimelineUI(flyToActive = false) {
       const act = era && era.id === e.id;
       const shortLabel = e.label.split(" (")[0];
       return `
-        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3.5 py-1.5 rounded-full text-[13px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
+        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3.5 py-1.5 rounded-full text-[14px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
           ${esc(shortLabel)}
         </button>
       `;
@@ -392,27 +403,23 @@ function renderTimelineUI(flyToActive = false) {
     dotsEl.innerHTML = store.timelineEvents.map((ev, idx) => {
       const ep = yearToPercent(ev.year);
       const isAct = idx === activeTimelineIdx;
-      return `<span class="timeline-dot ${isAct ? "active" : ""}" style="left:${ep.toFixed(2)}%" title="${esc(formatYear(ev.year) + " — " + ev.title)}"></span>`;
+      return `<span class="timeline-dot ${isAct ? "active" : ""}" style="left:${ep.toFixed(2)}%" title="${esc(formatYear(ev.year))}"></span>`;
     }).join("");
   }
 
+  // Pure Date-Only Timeline Ticks (zero duplicated card text!)
   const stripEl = document.getElementById("timeline-event-strip");
   if (stripEl && store.timelineEvents.length) {
     const eraEvents = era
       ? store.timelineEvents.filter(ev => ev.eraId === era.id)
-      : store.timelineEvents.slice(Math.max(0, activeTimelineIdx - 2), activeTimelineIdx + 4);
+      : store.timelineEvents.slice(Math.max(0, activeTimelineIdx - 3), activeTimelineIdx + 5);
     const activeEv = store.timelineEvents[activeTimelineIdx];
 
     stripEl.innerHTML = eraEvents.map(ev => {
       const isSel = activeEv && ev.id === activeEv.id;
       return `
-        <button type="button" data-tl-card="${esc(ev.id)}" class="tl-card shrink-0 w-[256px] text-left rounded-2xl px-4 py-3 transition ${isSel ? "glass-row-active" : "glass-row"}">
-          <div class="flex items-center justify-between gap-2 text-[12.5px] ${isSel ? "text-black/65" : "accent-text"}">
-            <span class="font-semibold">${formatYear(ev.year)}</span>
-            <span class="truncate ${isSel ? "text-black/60" : "text-neutral-400"}">${esc(ev.location)}</span>
-          </div>
-          <div class="text-[14px] font-medium mt-1 line-clamp-1 ${isSel ? "text-black" : "text-white"}">${esc(ev.title)}</div>
-          <div class="text-[13px] mt-0.5 line-clamp-1 ${isSel ? "text-black/70" : "text-neutral-400"}">${esc(ev.figure)}</div>
+        <button type="button" data-tl-card="${esc(ev.id)}" class="tl-card shrink-0 rounded-full px-4 py-2 text-[14px] font-medium tabular-nums whitespace-nowrap transition ${isSel ? "glass-btn-active" : "glass-btn"}">
+          ${formatYear(ev.year)}
         </button>
       `;
     }).join("");
@@ -425,8 +432,8 @@ function renderTimelineUI(flyToActive = false) {
       });
     });
 
-    const activeCard = stripEl.querySelector(".glass-row-active");
-    activeCard?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+    const activePill = stripEl.querySelector(".glass-btn-active");
+    activePill?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   }
 
   const visible = getVisibleGlobeNodes();
@@ -489,7 +496,11 @@ export function setTimeMode(enabled, jumpYear = null) {
   const btn = document.getElementById("btn-toggle-time");
 
   if (enabled) {
-    closeAllSurfaces("card");
+    if (!store.state.selectedId || !String(store.state.selectedId).startsWith("tl-")) {
+      closeAllSurfaces();
+    } else {
+      closeAllSurfaces("card");
+    }
     if (store.state.viewMode === "space") setViewMode("earth");
     bar?.classList.remove("hidden");
     document.body.classList.add("time-open");
@@ -517,14 +528,21 @@ export function selectHubNode(id, fly = true) {
 
   closeAllSurfaces("card");
   store.state.selectedId = node.id;
-  if (fly) flyToHub(node, node.tier === "timeline" ? 4.8 : null);
-  syncGlobeMarkers();
 
   const card = document.getElementById("place-card");
   if (!card) return;
   card.classList.remove("hidden");
   document.body.classList.add("card-open");
-  document.getElementById("btn-deeper-toggle")?.classList.remove("hidden");
+  if (fly) flyToHub(node, node.tier === "timeline" ? 4.8 : null);
+  syncGlobeMarkers();
+  const deeperWrap = document.getElementById("card-deeper-wrap");
+  deeperWrap?.classList.add("hidden");
+  const deeperBtn = document.getElementById("btn-deeper-toggle");
+  if (deeperBtn) {
+    deeperBtn.classList.remove("hidden");
+    const sp = deeperBtn.querySelector("span");
+    if (sp) sp.textContent = "More";
+  }
   document.getElementById("btn-save-shortlist")?.classList.remove("hidden");
   document.getElementById("card-photo-wrap")?.classList.add("hidden");
 
@@ -590,7 +608,7 @@ export function selectHubNode(id, fly = true) {
     if (picks.length) {
       rWrap.classList.remove("hidden");
       rLinks.innerHTML = picks.slice(0, 3).map(p => `
-        <button type="button" data-jump-hub="${esc(p.id)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-[175px]">
+        <button type="button" data-jump-hub="${esc(p.id)}" class="glass-btn rounded-full px-3 py-1 text-[14px] truncate max-w-full">
           ${esc(p.name.split(" (")[0])} →
         </button>
       `).join("");
@@ -602,36 +620,41 @@ export function selectHubNode(id, fly = true) {
     }
   }
 
-  // Concise project links (max 2 so action bar stays above the fold — full details inside More ↓)
+  // Concise project links (max 2 so action bar stays above the fold — full details inside More)
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     const chips = [];
     for (const p of (node.projects || []).slice(0, 2)) {
-      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[13px] transition">${esc(p.name)} ↗</a>`);
+      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[14px] transition truncate max-w-full inline-block">${esc(p.name)} ↗</a>`);
     }
     extra.innerHTML = chips.join("");
   }
 
-  // Official verified links
+  // Official verified links + guaranteed registry fallback for scraped hubs
   const linksEl = document.getElementById("card-links");
   const links = [];
-  if (node.url) links.push(`<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-4 py-2 text-[13.5px] inline-flex items-center gap-1.5">Official Site ↗</a>`);
-  if (node.wiki) links.push(`<a href="${esc(node.wiki)}" target="_blank" rel="noopener noreferrer" class="accent-link px-3 py-2 text-[14px]">Wikipedia ↗</a>`);
+  if (node.url) links.push(`<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[14px] inline-flex items-center gap-1 whitespace-nowrap">Official Site ↗</a>`);
+  if (node.wiki) links.push(`<a href="${esc(node.wiki)}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">Wikipedia ↗</a>`);
+  if (node.id?.startsWith("ror-") && !String(node.url || "").includes("ror.org")) {
+    links.push(`<a href="https://ror.org/${esc(node.id.slice(4))}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">ROR ↗</a>`);
+  } else if (node.id?.startsWith("oa-") && !String(node.url || "").includes("openalex.org")) {
+    links.push(`<a href="https://openalex.org/${esc(node.id.slice(3))}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">OpenAlex ↗</a>`);
+  }
   const gEarth = `https://earth.google.com/web/@${node.lat},${node.lng},500a,2500d,35y,0h,45t,0r`;
-  links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-2 py-2 text-[14px]">Google Earth ↗</a>`);
+  links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">Google Earth ↗</a>`);
   if (linksEl) linksEl.innerHTML = links.join("");
 
   const stagesEl = document.getElementById("deeper-stages");
   if (stagesEl) {
     stagesEl.innerHTML = Object.keys(STAGE_META).filter(k => k !== "all").map(k => `
       <div class="rounded-2xl px-3.5 py-2.5 ${k === st ? "bg-white/12 border border-white/22" : "bg-white/[0.04] border border-white/10"}">
-        <div class="text-[13px] font-semibold text-white">${STAGE_META[k].label}</div>
-        <div class="text-[13.5px] text-neutral-300 mt-1 leading-snug">${esc(stages[k] || "—")}</div>
+        <div class="text-[14px] font-semibold text-white">${STAGE_META[k].label}</div>
+        <div class="text-[14px] text-neutral-300 mt-1 leading-snug">${esc(stages[k] || "—")}</div>
       </div>
     `).join("");
   }
 
-  // Live Wikimedia photo (skip .svg logo badges; only reveal container on actual photo load)
+  // Fair-use live Wikimedia photo (skip .svg logo badges; reveal only on real photograph)
   const photoWrap = document.getElementById("card-photo-wrap");
   const imgEl = document.getElementById("card-photo");
   const fallbackEl = document.getElementById("card-photo-fallback");
@@ -659,141 +682,196 @@ export function selectHubNode(id, fly = true) {
 
   const papersEl = document.getElementById("deeper-papers");
   if (papersEl) {
-    papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Loading recent papers…</div>`;
+    papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Loading recent papers…</div>`;
     fetch(proxyUrl(`https://api.openalex.org/works?search=${encodeURIComponent(node.name + " physics")}&sort=publication_date:desc&per-page=3`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (reqId !== activeWikiReq) return;
         if (!data?.results?.length) {
-          papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">No recent OpenAlex papers returned.</div>`;
+          papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">No recent papers returned.</div>`;
           return;
         }
         papersEl.innerHTML = data.results.map(w => `
           <a href="${esc(w.doi || w.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 p-3.5 transition">
             <div class="text-[14px] text-white leading-snug line-clamp-2">${esc(w.title || "Physics Publication")}</div>
-            <div class="text-[13px] accent-text mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
+            <div class="text-[14px] accent-text mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
           </a>
         `).join("");
       }).catch(() => {
-        if (reqId === activeWikiReq) papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">OpenAlex papers unavailable right now.</div>`;
+        if (reqId === activeWikiReq) papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Papers unavailable right now.</div>`;
       });
   }
 
   const authorsEl = document.getElementById("deeper-authors");
   if (authorsEl) {
-    authorsEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Loading physicists…</div>`;
+    authorsEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Loading researchers…</div>`;
     fetch(proxyUrl(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " physics")}&sort=cited_by_count:desc&per-page=3`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (reqId !== activeWikiReq) return;
         const list = data?.results || [];
         if (!list.length) {
-          authorsEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">No indexed PIs returned.</div>`;
+          authorsEl.innerHTML = `<div class="text-neutral-400 text-[14px]">No indexed researchers returned.</div>`;
           return;
         }
         authorsEl.innerHTML = list.map(a => `
           <a href="${esc(a.orcid || a.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-3 rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 px-3.5 py-2.5 transition">
             <div class="min-w-0">
               <div class="text-[14px] font-medium text-white truncate">${esc(a.display_name || "Researcher")}</div>
-              <div class="text-[13px] text-neutral-400 truncate">${esc(a.last_known_institutions?.[0]?.display_name || node.name)}</div>
+              <div class="text-[14px] text-neutral-400 truncate">${esc(a.last_known_institutions?.[0]?.display_name || node.name)}</div>
             </div>
-            <span class="text-[13px] accent-text shrink-0">${(a.cited_by_count || 0).toLocaleString()} cites ↗</span>
+            <span class="text-[14px] accent-text shrink-0">${(a.cited_by_count || 0).toLocaleString()} cites ↗</span>
           </a>
         `).join("");
       }).catch(() => {
-        if (reqId === activeWikiReq) authorsEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Researcher index unavailable right now.</div>`;
+        if (reqId === activeWikiReq) authorsEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Researcher index unavailable right now.</div>`;
       });
   }
 }
 
 // =========================================================================
-// UNIVERSAL SEARCH DROPDOWN
+// SPOTLIGHT COMMAND SEARCH
 // =========================================================================
+
+let spotlightIdx = -1;
+
+function updateSpotlightSelection() {
+  const box = document.getElementById("search-dropdown");
+  if (!box) return;
+  const items = Array.from(box.querySelectorAll(".spot-row"));
+  items.forEach((el, idx) => {
+    el.classList.toggle("spotlight-item-active", idx === spotlightIdx);
+    if (idx === spotlightIdx) {
+      el.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  });
+}
 
 function renderSearchDropdown(query) {
   const box = document.getElementById("search-dropdown");
   if (!box) return;
-  const { hubs, events, missions, subdomains } = universalSearch(query, 8);
+  const q = (query || "").trim();
   const parts = [];
+  spotlightIdx = -1;
+
+  if (!q) {
+    parts.push(`
+      <div class="px-2 pb-2 space-y-2.5">
+        <div class="section-label">Jump straight to</div>
+        <div class="flex flex-wrap gap-2">
+          ${["CERN", "Voyager 1", "Anaximander", "IceCube", "PsiQuantum", "SESAME", "JWST", "ITER"].map(tag => `
+            <button type="button" data-spot-chip="${esc(tag)}" class="glass-btn rounded-full px-3.5 py-1.5 text-[14px]">${esc(tag)}</button>
+          `).join("")}
+        </div>
+      </div>
+    `);
+  }
+
+  const { hubs, events, missions, subdomains } = universalSearch(q, 8);
+
+  const formatEntityBadge = (t) => ({
+    lab: "Lab",
+    uni: "University",
+    startup: "Startup",
+    company: "Company",
+    institute: "Institute",
+    project: "Project",
+    history: "History"
+  }[t] || "Hub");
 
   if (hubs.length) {
-    parts.push(`<div class="section-label px-3.5 pt-2 pb-1.5">Institutions, Labs &amp; Startups</div>`);
+    parts.push(`<div class="section-label px-2 pt-2 pb-1">Institutions &amp; Labs</div>`);
     parts.push(hubs.map(h => `
-      <button type="button" data-pick-hub="${esc(h.id)}" class="pick-hub w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
+      <button type="button" data-pick-hub="${esc(h.id)}" class="spot-row pick-hub w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
-          <div class="text-[14.5px] font-medium text-white truncate">${esc(h.name)}</div>
-          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(h.city)}${h.sector ? " · " + esc(h.sector) : ""}</div>
+          <div class="text-[15px] font-medium text-white truncate">${esc(h.name)}</div>
+          <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(h.city)}${h.sector ? " · " + esc(h.sector) : ""}</div>
         </div>
-        <span class="text-[12.5px] px-2.5 py-0.5 rounded-full bg-white/[0.08] text-neutral-300 shrink-0">${esc(h.entityType)}</span>
+        <span class="text-[14px] px-2.5 py-0.5 rounded-full bg-white/[0.08] text-neutral-300 shrink-0">${esc(formatEntityBadge(h.entityType))}</span>
       </button>
     `).join(""));
   }
 
   if (events.length) {
-    parts.push(`<div class="section-label px-3.5 pt-3 pb-1.5">History &amp; Timeline</div>`);
+    parts.push(`<div class="section-label px-2 pt-3 pb-1">Timeline</div>`);
     parts.push(events.map(ev => `
-      <button type="button" data-pick-ev="${esc(ev.id)}" data-ev-year="${ev.year}" class="pick-ev w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
+      <button type="button" data-pick-ev="${esc(ev.id)}" data-ev-year="${ev.year}" class="spot-row pick-ev w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
-          <div class="text-[14.5px] font-medium text-white truncate">${esc(ev.title)}</div>
-          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(ev.figure)} · ${esc(ev.location)}</div>
+          <div class="text-[15px] font-medium text-white truncate">${esc(ev.title)}</div>
+          <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(ev.figure)} · ${esc(ev.location)}</div>
         </div>
-        <span class="text-[13px] accent-text font-medium shrink-0">${formatYear(ev.year)}</span>
+        <span class="text-[14px] accent-text font-medium shrink-0">${formatYear(ev.year)}</span>
       </button>
     `).join(""));
   }
 
   if (missions.length) {
-    parts.push(`<div class="section-label px-3.5 pt-3 pb-1.5">Space Frontier (0 → 1 Light-Day)</div>`);
+    parts.push(`<div class="section-label px-2 pt-3 pb-1">Space Frontier</div>`);
     parts.push(missions.map(m => `
-      <button type="button" data-pick-mission="${esc(m.id)}" class="pick-mission w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
+      <button type="button" data-pick-mission="${esc(m.id)}" class="spot-row pick-mission w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
-          <div class="text-[14.5px] font-medium text-white truncate">${esc(m.name)}</div>
-          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(m.body)} · ${esc(m.agency)}</div>
+          <div class="text-[15px] font-medium text-white truncate">${esc(m.name)}</div>
+          <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(m.body)} · ${esc(m.agency)}</div>
         </div>
-        <span class="text-[13px] accent-text shrink-0">${esc(m.lightTimeLabel.split(" (")[0])}</span>
+        <span class="text-[14px] accent-text shrink-0">${esc(m.lightTimeLabel.split(" (")[0])}</span>
       </button>
     `).join(""));
   }
 
   if (subdomains.length) {
-    parts.push(`<div class="section-label px-3.5 pt-3 pb-1.5">Domains &amp; Materials</div>`);
+    parts.push(`<div class="section-label px-2 pt-3 pb-1">Domains &amp; Courses</div>`);
     parts.push(subdomains.map(s => `
-      <button type="button" data-pick-sub="${esc(s.domainId)}" class="pick-sub w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition cursor-pointer">
-        <div class="text-[14.5px] font-medium text-white truncate">${esc(s.name)}</div>
-        <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(s.domainName)}</div>
+      <button type="button" data-pick-sub="${esc(s.domainId)}" class="spot-row pick-sub w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition cursor-pointer">
+        <div class="text-[15px] font-medium text-white truncate">${esc(s.name)}</div>
+        <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(s.domainName)}</div>
       </button>
     `).join(""));
   }
 
-  if (!parts.length) {
-    parts.push(`<div class="px-4 py-5 text-center text-[14px] text-neutral-400">No local matches. Try <strong class="text-white">Live Search</strong> below.</div>`);
+  if (q && !hubs.length && !events.length && !missions.length && !subdomains.length) {
+    parts.push(`<div class="px-4 py-6 text-center text-[15px] text-neutral-400">No local matches. Click <strong class="text-white">Live Search</strong> above to query global registries.</div>`);
   }
 
   box.innerHTML = parts.join("");
-  closeAllSurfaces("dropdown");
-  document.getElementById("site-menu-dropdown")?.classList.add("hidden");
-  document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
-  box.classList.remove("hidden");
-  updateIslandExpanded();
 
+  if (q) {
+    const firstRow = box.querySelector(".spot-row");
+    if (firstRow) {
+      spotlightIdx = 0;
+      updateSpotlightSelection();
+    }
+  }
+
+  box.querySelectorAll("[data-spot-chip]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const inp = document.getElementById("search-input");
+      if (inp) { inp.value = btn.dataset.spotChip; inp.focus(); }
+      renderSearchDropdown(btn.dataset.spotChip);
+    });
+  });
   box.querySelectorAll(".pick-hub").forEach(btn => {
-    btn.addEventListener("click", () => selectHubNode(btn.dataset.pickHub, true));
+    btn.addEventListener("click", () => {
+      closeSpotlight();
+      selectHubNode(btn.dataset.pickHub, true);
+    });
   });
   box.querySelectorAll(".pick-ev").forEach(btn => {
     btn.addEventListener("click", () => {
+      closeSpotlight();
       setTimeMode(true, Number(btn.dataset.evYear));
       selectHubNode(`tl-${btn.dataset.pickEv}`, true);
     });
   });
   box.querySelectorAll(".pick-mission").forEach(btn => {
     btn.addEventListener("click", () => {
+      closeSpotlight();
       setViewMode("space");
       selectSpaceMission(btn.dataset.pickMission);
     });
   });
   box.querySelectorAll(".pick-sub").forEach(btn => {
     btn.addEventListener("click", () => {
-      closeDropdown();
+      closeSpotlight();
       openModal("domains", btn.dataset.pickSub);
     });
   });
@@ -821,7 +899,7 @@ export function openModal(mode, focusId = null) {
     shortcuts: "Keyboard Shortcuts",
     audit: "Verification & Open Data"
   };
-  titleEl.textContent = titles[mode] || "PhysAlts";
+  titleEl.textContent = titles[mode] || "Explore";
 
   if (mode === "domains") renderDomainsModal(bodyEl, focusId);
   if (mode === "countries") renderCountriesModal(bodyEl);
@@ -859,6 +937,9 @@ export function openModal(mode, focusId = null) {
           selectHubNode(store.state.selectedId, false);
         }
       },
+      onOpenSubmit: () => openModal("submit"),
+      onOpenAudit: () => openModal("audit"),
+      onOpenShortcuts: () => openModal("shortcuts"),
       showToast
     });
   }
@@ -882,14 +963,14 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
   const branchPills = PHYSICS_BRANCHES.map(b => {
     const isAct = store.state.branch === b.id;
     return `
-      <button type="button" data-filter-branch="${esc(b.id)}" class="branch-pill px-3.5 py-1.5 rounded-full text-[13.5px] transition ${isAct ? "glass-btn-active" : "glass-btn"}">
+      <button type="button" data-filter-branch="${esc(b.id)}" class="branch-pill px-3.5 py-1.5 rounded-full text-[14px] transition ${isAct ? "glass-btn-active" : "glass-btn"}">
         ${esc(b.label.split(/[\s,]+/)[0])}
       </button>
     `;
   }).join("");
 
   const domainTabs = store.domains.map(d => `
-    <button type="button" data-dom-tab="${esc(d.id)}" class="dom-tab px-3.5 py-2 rounded-xl text-[13.5px] transition ${d.id === activeDomain ? "glass-row-active font-medium" : "glass-row"}">
+    <button type="button" data-dom-tab="${esc(d.id)}" class="dom-tab px-3.5 py-2 rounded-xl text-[14px] transition ${d.id === activeDomain ? "glass-row-active font-medium" : "glass-row"}">
       ${esc(d.name.split(",")[0].split(" &")[0])}
     </button>
   `).join("");
@@ -899,8 +980,8 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
     <details class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 group" open>
       <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
         <div>
-          <div class="text-[15.5px] font-semibold text-white">${esc(sub.name)}</div>
-          <p class="text-[13.5px] text-neutral-400 mt-0.5 leading-relaxed">${esc(sub.summary)}</p>
+          <div class="text-[15px] font-semibold text-white">${esc(sub.name)}</div>
+          <p class="text-[14px] text-neutral-400 mt-0.5 leading-relaxed">${esc(sub.summary)}</p>
         </div>
       </summary>
 
@@ -916,9 +997,9 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
                   <div class="glass-row rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">
                     <a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer" class="min-w-0 flex-1">
                       <div class="text-[14px] font-medium text-white truncate">${esc(m.title)}</div>
-                      <div class="text-[13px] accent-text truncate">${esc(m.provider)} · ${esc(m.type)} ↗</div>
+                      <div class="text-[14px] accent-text truncate">${esc(m.provider)} · ${esc(m.type)} ↗</div>
                     </a>
-                    <button type="button" data-save-mat="${esc(matId)}" data-mat-title="${esc(m.title)}" data-mat-sub="${esc(m.provider + " · " + sub.name)}" data-mat-url="${esc(m.url)}" class="px-3 py-1 rounded-full text-[12.5px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}">
+                    <button type="button" data-save-mat="${esc(matId)}" data-mat-title="${esc(m.title)}" data-mat-sub="${esc(m.provider + " · " + sub.name)}" data-mat-url="${esc(m.url)}" class="px-3 py-1 rounded-full text-[14px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}">
                       ${saved ? "✓ Saved" : "+ Save"}
                     </button>
                   </div>
@@ -932,7 +1013,7 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
             <div class="section-label">Active &amp; Upcoming Projects</div>
             <div class="flex flex-wrap gap-2">
               ${sub.projects.map(p => `
-                <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1.5 rounded-full text-[13px]">
+                <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1.5 rounded-full text-[14px]">
                   ${esc(p.name)} ↗
                 </a>
               `).join("")}
@@ -981,7 +1062,7 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
       });
       refreshAccountHeader();
       btn.textContent = saved ? "✓ Saved" : "+ Save";
-      btn.className = `px-3 py-1 rounded-full text-[12.5px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}`;
+      btn.className = `px-3 py-1 rounded-full text-[14px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}`;
       showToast(saved ? "Saved material to Study List" : "Removed bookmark");
     });
   });
@@ -1003,10 +1084,10 @@ function renderCountriesModal(bodyEl) {
     const headerTabs = `
       <div class="flex items-center justify-between gap-3 pb-4 border-b border-white/10">
         <div class="flex items-center gap-2">
-          <button type="button" data-ctab="regions" class="px-4 py-2 rounded-full text-[13.5px] transition ${tab === "regions" ? "glass-btn-active" : "glass-btn"}">Continents &amp; Countries</button>
-          <button type="button" data-ctab="private" class="px-4 py-2 rounded-full text-[13.5px] transition ${tab === "private" ? "glass-btn-active" : "glass-btn"}">Private &amp; Startups</button>
+          <button type="button" data-ctab="regions" class="px-4 py-2 rounded-full text-[14px] transition ${tab === "regions" ? "glass-btn-active" : "glass-btn"}">Continents &amp; Countries</button>
+          <button type="button" data-ctab="private" class="px-4 py-2 rounded-full text-[14px] transition ${tab === "private" ? "glass-btn-active" : "glass-btn"}">Private &amp; Startups</button>
         </div>
-        ${store.state.countryFilter !== "all" ? `<button type="button" id="btn-clear-country" class="accent-link text-[13.5px] bg-transparent border-0 cursor-pointer">Reset</button>` : ""}
+        ${store.state.countryFilter !== "all" ? `<button type="button" id="btn-clear-country" class="accent-link text-[14px] bg-transparent border-0 cursor-pointer">Reset</button>` : ""}
       </div>
     `;
 
@@ -1026,7 +1107,7 @@ function renderCountriesModal(bodyEl) {
           <input id="country-search-input" type="text" value="${esc(query)}" placeholder="Search a country or continent…" class="glass-input" />
           <div class="flex flex-wrap gap-2">
             ${CONTINENTS.map(ct => `
-              <button type="button" data-cont="${esc(ct.id)}" class="px-3.5 py-1.5 rounded-full text-[13.5px] transition ${selectedContinent === ct.id ? "glass-btn-active" : "glass-btn"}">
+              <button type="button" data-cont="${esc(ct.id)}" class="px-3.5 py-1.5 rounded-full text-[14px] transition ${selectedContinent === ct.id ? "glass-btn-active" : "glass-btn"}">
                 ${esc(ct.label)}
               </button>
             `).join("")}
@@ -1034,7 +1115,7 @@ function renderCountriesModal(bodyEl) {
           ${selectedContinent !== "all" && activeContObj ? `
             <div class="flex items-center justify-between rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-2.5">
               <span class="text-[14px] text-neutral-200">${esc(activeContObj.label)}</span>
-              <button type="button" id="btn-fly-continent" class="accent-link text-[13.5px] font-medium bg-transparent border-0 cursor-pointer">Center globe on ${esc(activeContObj.label)} →</button>
+              <button type="button" id="btn-fly-continent" class="accent-link text-[14px] font-medium bg-transparent border-0 cursor-pointer">Center globe on ${esc(activeContObj.label)} →</button>
             </div>
           ` : ""}
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[310px] scroll-clean pr-1">
@@ -1043,7 +1124,7 @@ function renderCountriesModal(bodyEl) {
               return `
                 <button type="button" data-country="${esc(c.name)}" class="country-btn rounded-xl px-4 py-2.5 text-left text-[14px] flex items-center justify-between gap-2 transition ${act ? "glass-row-active font-medium" : "glass-row"}">
                   <span class="truncate">${esc(c.name)}</span>
-                  <span class="text-[12.5px] ${act ? "text-black/60" : "text-neutral-500"} shrink-0">${c.count}</span>
+                  <span class="text-[14px] ${act ? "text-black/60" : "text-neutral-500"} shrink-0">${c.count}</span>
                 </button>
               `;
             }).join("") || `<div class="col-span-2 text-center py-6 text-[14px] text-neutral-400">No matching countries found.</div>`}
@@ -1101,16 +1182,16 @@ function renderCountriesModal(bodyEl) {
           ${headerTabs}
           <div class="flex items-center gap-2.5">
             <input id="comp-search-input" type="text" value="${esc(query)}" placeholder="Search startups, institutes, or sectors…" class="glass-input" />
-            <button type="button" id="btn-filter-companies" class="glass-btn rounded-full px-4 py-2.5 text-[13.5px] whitespace-nowrap shrink-0">Show on Globe</button>
+            <button type="button" id="btn-filter-companies" class="glass-btn rounded-full px-4 py-2.5 text-[14px] whitespace-nowrap shrink-0">Show on Globe</button>
           </div>
           <div class="space-y-2 max-h-[340px] scroll-clean pr-1">
             ${filteredComp.slice(0, 60).map(c => `
               <button type="button" data-pick-comp="${esc(c.id)}" class="comp-row glass-row w-full text-left rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
                 <div class="min-w-0">
-                  <div class="text-[14.5px] font-medium text-white truncate">${esc(c.name)}</div>
-                  <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(c.city)}${c.sector ? " · " + esc(c.sector) : ""}</div>
+                  <div class="text-[14px] font-medium text-white truncate">${esc(c.name)}</div>
+                  <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(c.city)}${c.sector ? " · " + esc(c.sector) : ""}</div>
                 </div>
-                <span class="text-[12.5px] accent-text shrink-0">${esc(c.entityType)}</span>
+                <span class="text-[14px] accent-text shrink-0">${esc(c.entityType)}</span>
               </button>
             `).join("") || `<div class="text-center py-6 text-[14px] text-neutral-400">No matching organizations.</div>`}
           </div>
@@ -1170,7 +1251,7 @@ function renderLiveSearchModal(bodyEl) {
       </form>
       <div class="flex flex-wrap gap-2">
         ${["Quantum", "Fusion", "Observatory", "Synchrotron", "Photonics"].map(tag => `
-          <button type="button" data-quick="${esc(tag)}" class="live-quick glass-btn rounded-full px-3.5 py-1.5 text-[13px]">${esc(tag)}</button>
+          <button type="button" data-quick="${esc(tag)}" class="live-quick glass-btn rounded-full px-3.5 py-1.5 text-[14px]">${esc(tag)}</button>
         `).join("")}
       </div>
       <div id="live-results" class="space-y-2.5 pt-1"></div>
@@ -1240,10 +1321,10 @@ function renderLiveSearchModal(bodyEl) {
       out.innerHTML = items.map(it => `
         <button type="button" data-live-id="${esc(it.id)}" class="live-pick glass-row w-full text-left rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
           <div class="min-w-0">
-            <div class="text-[14.5px] font-medium text-white truncate">${esc(it.name)}</div>
-            <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(it.city)} · ${esc(it.sourceApi)}</div>
+            <div class="text-[14px] font-medium text-white truncate">${esc(it.name)}</div>
+            <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(it.city)} · ${esc(it.sourceApi)}</div>
           </div>
-          <span class="text-[13.5px] accent-text shrink-0">Locate →</span>
+          <span class="text-[14px] accent-text shrink-0">Locate →</span>
         </button>
       `).join("");
 
@@ -1279,10 +1360,10 @@ function renderAuditAndPrivacyModal(bodyEl) {
   bodyEl.innerHTML = `
     <div class="space-y-5">
       <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 space-y-2.5 text-[14px] text-neutral-300">
-        <div class="text-[15.5px] font-semibold text-white">Verified Open-Science Ledger</div>
+        <div class="text-[15px] font-semibold text-white">Verified Open-Science Ledger</div>
         <p class="leading-relaxed">All institutions, milestones, and space missions link directly to official primary registries (OpenAlex, ROR v2, INSPIRE-HEP, NASA/ESA, Wikimedia).</p>
-        <div class="text-[13px] text-neutral-400">Schema errors: <strong class="text-white">${s.schemaErrorsCount ?? 0}</strong> · Live link pass: <strong class="text-white">${esc(passRate)}</strong></div>
-        <div class="flex flex-wrap gap-3 pt-1 text-[13.5px]">
+        <div class="text-[14px] text-neutral-400">Schema errors: <strong class="text-white">${s.schemaErrorsCount ?? 0}</strong> · Live link pass: <strong class="text-white">${esc(passRate)}</strong></div>
+        <div class="flex flex-wrap gap-3 pt-1 text-[14px]">
           <a href="./data/provenance_ledger.json" target="_blank" rel="noopener noreferrer" class="accent-link">Provenance Ledger ↗</a>
           <a href="./data/physalts_schema.json" target="_blank" rel="noopener noreferrer" class="accent-link">JSON Schema ↗</a>
           <a href="./data/verification_report.json" target="_blank" rel="noopener noreferrer" class="accent-link">Audit Report ↗</a>
@@ -1293,18 +1374,18 @@ function renderAuditAndPrivacyModal(bodyEl) {
       <div class="space-y-2.5">
         <div class="section-label">Export Open Dataset</div>
         <div class="flex flex-wrap gap-2.5">
-          <button type="button" id="btn-exp-json" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Dataset .JSON</button>
-          <button type="button" id="btn-exp-kml" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Google Earth .KML</button>
-          <button type="button" id="btn-exp-csv" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Spreadsheet .CSV</button>
+          <button type="button" id="btn-exp-json" class="glass-btn rounded-full px-4 py-2 text-[14px]">Dataset .JSON</button>
+          <button type="button" id="btn-exp-kml" class="glass-btn rounded-full px-4 py-2 text-[14px]">Google Earth .KML</button>
+          <button type="button" id="btn-exp-csv" class="glass-btn rounded-full px-4 py-2 text-[14px]">Spreadsheet .CSV</button>
         </div>
       </div>
 
       <div class="border-t border-white/10 pt-4 space-y-3">
         <div class="text-[15px] font-semibold text-white">Privacy &amp; GDPR Controls</div>
         <div class="flex flex-wrap items-center gap-2.5">
-          <button type="button" id="btn-gdpr-export" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Export My Data (Art. 20)</button>
-          <button type="button" id="btn-gdpr-erase" class="accent-chip rounded-full px-4 py-2 text-[13.5px]">Erase Local Data (Art. 17)</button>
-          <a href="./privacy.html" class="accent-link text-[13.5px] px-2">Privacy Policy ↗</a>
+          <button type="button" id="btn-gdpr-export" class="glass-btn rounded-full px-4 py-2 text-[14px]">Export My Data (Art. 20)</button>
+          <button type="button" id="btn-gdpr-erase" class="accent-chip rounded-full px-4 py-2 text-[14px]">Erase Local Data (Art. 17)</button>
+          <a href="./privacy.html" class="accent-link text-[14px] px-2">Privacy Policy ↗</a>
         </div>
       </div>
     </div>
@@ -1312,32 +1393,32 @@ function renderAuditAndPrivacyModal(bodyEl) {
 
   document.getElementById("btn-exp-json")?.addEventListener("click", () => {
     downloadBlob(JSON.stringify({
-      meta: { name: "PhysAlts Global Physics Dataset", exportedAt: new Date().toISOString() },
+      meta: { name: "Global Physics Atlas Dataset", exportedAt: new Date().toISOString() },
       hubs: store.hubs,
       timelineEvents: store.timelineEvents,
       spaceMissions: store.spaceMissions
-    }, null, 2), "physalts_dataset.json", "application/json");
-    showToast("Exported physalts_dataset.json");
+    }, null, 2), "physics_atlas_dataset.json", "application/json");
+    showToast("Exported physics_atlas_dataset.json");
   });
 
   document.getElementById("btn-exp-kml")?.addEventListener("click", () => {
     const nodes = getVisibleGlobeNodes();
     const marks = nodes.map(n => `\n    <Placemark><name>${esc(n.name)}</name><description>${esc(n.summary)}</description><Point><coordinates>${n.lng},${n.lat},0</coordinates></Point></Placemark>`).join("");
-    const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>PhysAlts</name>${marks}\n</Document></kml>`;
-    downloadBlob(kml, "physalts_physics.kml", "application/vnd.google-earth.kml+xml");
-    showToast("Exported physalts_physics.kml");
+    const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>World of Physics</name>${marks}\n</Document></kml>`;
+    downloadBlob(kml, "world_of_physics.kml", "application/vnd.google-earth.kml+xml");
+    showToast("Exported world_of_physics.kml");
   });
 
   document.getElementById("btn-exp-csv")?.addEventListener("click", () => {
     const header = "name,city,country,entityType,branch,lat,lng,url";
     const rows = store.hubs.map(h => [h.name, h.city, h.country, h.entityType, h.branch, h.lat, h.lng, h.url].map(v => `"${String(v || "").replace(/"/g, '""')}"`).join(","));
-    downloadBlob([header, ...rows].join("\n"), "physalts_hubs.csv", "text/csv");
-    showToast("Exported physalts_hubs.csv");
+    downloadBlob([header, ...rows].join("\n"), "world_of_physics_hubs.csv", "text/csv");
+    showToast("Exported world_of_physics_hubs.csv");
   });
 
   document.getElementById("btn-gdpr-export")?.addEventListener("click", () => {
     const data = exportUserData(store.state.stage, store.state.shortlist);
-    downloadBlob(JSON.stringify(data, null, 2), "physalts_my_data_gdpr.json", "application/json");
+    downloadBlob(JSON.stringify(data, null, 2), "my_physics_bookmarks_gdpr.json", "application/json");
     showToast("Exported personal data (GDPR Art. 20)");
   });
 
@@ -1508,13 +1589,35 @@ export function initUI() {
   document.getElementById("btn-rabbit-hole")?.addEventListener("click", jumpRabbitHole);
   document.getElementById("btn-card-rabbit")?.addEventListener("click", jumpRabbitHole);
 
-  const searchInput = document.getElementById("search-input");
-  searchInput?.addEventListener("focus", () => renderSearchDropdown(searchInput.value));
-  searchInput?.addEventListener("input", () => renderSearchDropdown(searchInput.value));
+  // Centered Spotlight Command Palette
+  document.getElementById("btn-open-spotlight")?.addEventListener("click", openSpotlight);
+  document.getElementById("btn-close-spotlight")?.addEventListener("click", closeSpotlight);
+  document.getElementById("spotlight-backdrop")?.addEventListener("click", (e) => {
+    if (e.target.id === "spotlight-backdrop") closeSpotlight();
+  });
+  document.getElementById("btn-spotlight-live")?.addEventListener("click", () => {
+    closeSpotlight();
+    openModal("live");
+  });
 
-  document.getElementById("stage-dropdown-btn")?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    document.getElementById("stage-dropdown-menu")?.classList.toggle("hidden");
+  const searchInput = document.getElementById("search-input");
+  searchInput?.addEventListener("input", () => renderSearchDropdown(searchInput.value));
+  searchInput?.addEventListener("keydown", (e) => {
+    const box = document.getElementById("search-dropdown");
+    const items = box ? Array.from(box.querySelectorAll(".spot-row")) : [];
+    if (!items.length) return;
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      spotlightIdx = (spotlightIdx + 1) % items.length;
+      updateSpotlightSelection();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      spotlightIdx = spotlightIdx <= 0 ? items.length - 1 : spotlightIdx - 1;
+      updateSpotlightSelection();
+    } else if (e.key === "Enter" && spotlightIdx >= 0 && items[spotlightIdx]) {
+      e.preventDefault();
+      items[spotlightIdx].click();
+    }
   });
 
   // Account Button: Single-surface mutual exclusion!
@@ -1543,37 +1646,6 @@ export function initUI() {
     if (e.target.id === "drawer-backdrop") closeModal();
   });
 
-  // Dynamic Island Menu Toggle (mutually exclusive with Search, Modals, Auth)
-  const menuBtn = document.getElementById("btn-site-menu");
-  const menuDrop = document.getElementById("site-menu-dropdown");
-  menuBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    const willOpen = menuDrop?.classList.contains("hidden");
-    if (willOpen) {
-      closeAllSurfaces("dropdown");
-      document.getElementById("search-dropdown")?.classList.add("hidden");
-      document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
-      menuDrop?.classList.remove("hidden");
-    } else {
-      menuDrop?.classList.add("hidden");
-      document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
-    }
-    menuBtn.setAttribute("aria-expanded", String(Boolean(willOpen)));
-    updateIslandExpanded();
-  });
-
-  menuDrop?.querySelectorAll("[data-menu-action]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const act = btn.dataset.menuAction;
-      closeDropdown();
-      if (act === "bookmarks") openModal("account", "bookmarks");
-      if (act === "live") openModal("live");
-      if (act === "submit") openModal("submit");
-      if (act === "audit") openModal("audit");
-      if (act === "shortcuts") openModal("shortcuts");
-    });
-  });
-
   document.getElementById("btn-clear-filters")?.addEventListener("click", () => {
     store.state.branch = "all";
     store.state.countryFilter = "all";
@@ -1581,7 +1653,14 @@ export function initUI() {
     syncGlobeMarkers();
   });
 
-  document.getElementById("btn-mode-earth")?.addEventListener("click", () => setViewMode("earth"));
+  document.getElementById("btn-mode-earth")?.addEventListener("click", () => {
+    if (store.state.viewMode === "earth") {
+      closeAllSurfaces();
+      resetGlobeToSpace();
+    } else {
+      setViewMode("earth");
+    }
+  });
   document.getElementById("btn-mode-space")?.addEventListener("click", () => setViewMode("space"));
 
   document.getElementById("btn-arcs")?.addEventListener("click", (e) => {
@@ -1598,11 +1677,6 @@ export function initUI() {
     store.state.tilted = !store.state.tilted;
     e.currentTarget.classList.toggle("glass-btn-active", store.state.tilted);
     setGlobeTilt(store.state.tilted);
-  });
-  document.getElementById("btn-reset-space")?.addEventListener("click", () => {
-    closeDropdown();
-    if (store.state.viewMode === "space") setViewMode("earth");
-    resetGlobeToSpace();
   });
 
   document.getElementById("btn-zoom-in")?.addEventListener("click", zoomInGlobe);
@@ -1652,8 +1726,12 @@ export function initUI() {
 
   document.getElementById("btn-close-card")?.addEventListener("click", closePlaceCard);
   document.getElementById("btn-close-modal")?.addEventListener("click", closeModal);
-  document.getElementById("btn-deeper-toggle")?.addEventListener("click", () => {
-    document.getElementById("card-deeper-wrap")?.classList.toggle("hidden");
+  document.getElementById("btn-deeper-toggle")?.addEventListener("click", (e) => {
+    const wrap = document.getElementById("card-deeper-wrap");
+    if (!wrap) return;
+    const isNowHidden = wrap.classList.toggle("hidden");
+    const sp = e.currentTarget.querySelector("span");
+    if (sp) sp.textContent = isNowHidden ? "More" : "Less";
   });
   document.getElementById("btn-copy-link")?.addEventListener("click", copyCurrentShareLink);
 
@@ -1690,8 +1768,7 @@ export function initUI() {
 
     if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
       e.preventDefault();
-      searchInput?.focus();
-      searchInput?.select();
+      openSpotlight();
       return;
     }
     if (e.key === "Escape") {
@@ -1702,7 +1779,7 @@ export function initUI() {
 
     if (e.key === "/") {
       e.preventDefault();
-      searchInput?.focus();
+      openSpotlight();
     } else if (e.key.toLowerCase() === "r") {
       jumpRabbitHole();
     } else if (e.key === "1") {
@@ -1715,13 +1792,6 @@ export function initUI() {
       openModal("account", "bookmarks");
     } else if (e.key === "?") {
       openModal("shortcuts");
-    }
-  });
-
-  // Collapse Dynamic Island cleanly when clicking outside
-  document.addEventListener("click", (e) => {
-    if (!e.target.closest("#dynamic-island")) {
-      closeDropdown();
     }
   });
 
