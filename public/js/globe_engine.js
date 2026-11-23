@@ -268,21 +268,27 @@ function getAnchoredClusters(zoom) {
       continue;
     }
     let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180;
+    let sx = 0, sy = 0, sz = 0;
     for (const m of members) {
+      sx += m.x; sy += m.y; sz += m.z;
       if (m.n.lat < minLat) minLat = m.n.lat;
       if (m.n.lat > maxLat) maxLat = m.n.lat;
       if (m.n.lng < minLng) minLng = m.n.lng;
       if (m.n.lng > maxLng) maxLng = m.n.lng;
     }
+    const norm = Math.hypot(sx, sy, sz) || 1;
+    const centerLat = Math.asin(Math.max(-1, Math.min(1, sz / norm))) / RAD;
+    const centerLng = Math.atan2(sy, sx) / RAD;
+    const rawSpanLng = Math.min(maxLng - minLng, 360 - (maxLng - minLng));
+    const spanDeg = Math.max(maxLat - minLat, rawSpanLng * Math.max(0.15, Math.cos(centerLat * RAD)));
     const top = members.reduce((a, b) => (b.pr > a.pr ? b : a), seed).n;
     result.push({
       isCluster: true,
-      lat: seed.n.lat,
-      lng: seed.n.lng,
+      lat: centerLat,
+      lng: centerLng,
       count: members.length,
       top,
-      spanLat: maxLat - minLat,
-      spanLng: Math.min(maxLng - minLng, 360 - (maxLng - minLng))
+      spanDeg
     });
   }
 
@@ -682,7 +688,9 @@ function initGlobeHudOverlay() {
         ctx.restore();
       }
 
-      // Pass 1: project and merge only bubbles that genuinely overlap on screen (limb foreshortening)
+      // Pass 1: project nodes & clusters.
+      // Below z=9.5, merge any bubbles that collide due to globe limb foreshortening.
+      // At z>=9.5, NEVER re-merge into clusters — instead spiderfy co-located nodes into a clean ring!
       const anchored = getAnchoredClusters(zoom);
       const bubbleR = (count) => (count >= 150 ? 25 : count >= 60 ? 22 : count >= 15 ? 19 : 16);
       const projected = [];
@@ -698,33 +706,72 @@ function initGlobeHudOverlay() {
           top: item.top || item.node || null,
           lat: item.lat, lng: item.lng,
           x: pt.x, y: pt.y,
+          anchorX: pt.x, anchorY: pt.y,
+          spiderfied: false,
           count: item.count,
-          span: Math.max(item.spanLat || 0, item.spanLng || 0),
+          span: item.spanDeg || 0,
           selected,
           stableKey
         });
       }
       projected.sort((a, b) => (b.selected - a.selected) || (b.count - a.count) || (a.stableKey < b.stableKey ? -1 : 1));
-      const kept = [];
-      for (const p of projected) {
-        const pr = p.isCluster ? bubbleR(p.count) : 9;
-        let host = null;
-        if (!p.selected) {
-          for (const k of kept) {
-            if (k.selected) continue;
-            const kr = k.isCluster ? bubbleR(k.count) : 9;
-            const dx = k.x - p.x, dy = k.y - p.y;
-            if (dx * dx + dy * dy < (kr + pr + 4) * (kr + pr + 4)) { host = k; break; }
+
+      let kept = [];
+      if (zoom >= 9.5) {
+        // Spiderfy co-located nodes (within 18px) into neat radial rings around their city pin
+        const groups = [];
+        for (const p of projected) {
+          let g = null;
+          for (const cand of groups) {
+            const dx = cand.x - p.x, dy = cand.y - p.y;
+            if (dx * dx + dy * dy < 18 * 18) { g = cand; break; }
           }
+          if (g) g.items.push(p);
+          else groups.push({ x: p.x, y: p.y, items: [p] });
         }
-        if (host) {
-          host.isCluster = true;
-          host.count += p.count;
-          host.span = Math.max(host.span, p.span, Math.abs(host.lat - p.lat), Math.abs(host.lng - p.lng));
-          const hp = host.top ? nodePriority(host.top) : -1;
-          if (p.top && nodePriority(p.top) > hp) host.top = p.top;
-        } else {
-          kept.push(p);
+        for (const g of groups) {
+          if (g.items.length === 1) {
+            kept.push(g.items[0]);
+            continue;
+          }
+          const n = g.items.length;
+          const ringR = Math.min(72, Math.max(24, n * 5.5));
+          g.items.forEach((p, idx) => {
+            const ang = -Math.PI / 2 + (idx * Math.PI * 2) / n;
+            p.anchorX = g.x;
+            p.anchorY = g.y;
+            p.x = g.x + Math.cos(ang) * ringR;
+            p.y = g.y + Math.sin(ang) * ringR;
+            p.spiderfied = true;
+            kept.push(p);
+          });
+        }
+      } else {
+        for (const p of projected) {
+          const pr = p.isCluster ? bubbleR(p.count) : 9;
+          let host = null;
+          if (!p.selected) {
+            for (const k of kept) {
+              if (k.selected) continue;
+              const kr = k.isCluster ? bubbleR(k.count) : 9;
+              const dx = k.x - p.x, dy = k.y - p.y;
+              if (dx * dx + dy * dy < (kr + pr + 4) * (kr + pr + 4)) { host = k; break; }
+            }
+          }
+          if (host) {
+            const total = host.count + p.count;
+            const sepLat = Math.abs(host.lat - p.lat);
+            const sepLng = Math.min(Math.abs(host.lng - p.lng), 360 - Math.abs(host.lng - p.lng)) * Math.max(0.15, Math.cos(host.lat * rad));
+            host.lat = (host.lat * host.count + p.lat * p.count) / total;
+            host.lng = (host.lng * host.count + p.lng * p.count) / total;
+            host.isCluster = true;
+            host.count = total;
+            host.span = Math.max(host.span, p.span, Math.hypot(sepLat, sepLng));
+            const hp = host.top ? nodePriority(host.top) : -1;
+            if (p.top && nodePriority(p.top) > hp) host.top = p.top;
+          } else {
+            kept.push(p);
+          }
         }
       }
 
@@ -770,6 +817,15 @@ function initGlobeHudOverlay() {
           const curated = n.tier === "flagship" || n.tier === "timeline";
           const radius = selected ? 7.5 : curated ? 5.8 : 4.5;
           if (!selected && underUi(x, y, radius + 4)) continue;
+
+          if (item.spiderfied) {
+            ctx.beginPath();
+            ctx.moveTo(item.anchorX, item.anchorY);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = selected || isHov ? "rgba(255, 255, 255, 0.55)" : "rgba(255, 255, 255, 0.24)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
 
           ctx.beginPath();
           ctx.arc(x, y, selected ? 15 : isHov ? 14 : curated ? 11 : 8, 0, Math.PI * 2);
@@ -966,28 +1022,28 @@ function initGlobeHudOverlay() {
     }
 
     if (hit.type === "cluster") {
-      if (!useMainThreadOverlay && hit.clusterId != null) {
-        const source = map.getSource("physics-hubs");
-        try {
-          const nextZoom = await source.getClusterExpansionZoom(hit.clusterId);
-          map.easeTo({
-            center: [hit.lng, hit.lat],
-            zoom: Math.min(nextZoom + 0.85, 14),
-            duration: 680,
-            easing: t => 1 - Math.pow(1 - t, 3)
-          });
-          return;
-        } catch {}
-      }
-      // Zoom just enough for the bubble's members to spread out (~280px across)
       const cur = map.getZoom();
-      const spanDeg = Math.max(hit.span || 0, 0.02);
-      const fitZoom = Math.log2((280 * 360) / (512 * spanDeg));
+      const spanDeg = hit.span || 0;
+      let targetZoom;
+      if (spanDeg < 0.015) {
+        // Co-located / same-city institutions: jump straight to unclustered spiderfy zoom
+        targetZoom = Math.max(cur + 2.0, 10.6);
+      } else {
+        // Spread cluster members comfortably across ~360px on screen, guaranteeing a visible split
+        const viewMin = Math.min(container.clientWidth || 1200, container.clientHeight || 800);
+        const targetPx = Math.max(260, Math.min(440, viewMin * 0.48));
+        const fitZoom = Math.log2((targetPx * 360) / (512 * spanDeg));
+        const minStep = spanDeg < 2.0 ? 2.2 : 1.9;
+        const maxStep = spanDeg < 0.2 ? 6.0 : 3.4;
+        targetZoom = Math.max(cur + minStep, Math.min(fitZoom, cur + maxStep));
+      }
+      targetZoom = Math.min(targetZoom, 14.5);
       map.easeTo({
         center: [hit.lng, hit.lat],
-        zoom: Math.max(cur + 1.2, Math.min(fitZoom, cur + 4, 13)),
-        duration: 680,
-        easing: t => 1 - Math.pow(1 - t, 3)
+        zoom: targetZoom,
+        duration: 620,
+        easing: t => 1 - Math.pow(1 - t, 3),
+        essential: true
       });
     }
   });
@@ -1279,12 +1335,14 @@ export function syncGlobeMarkers() {
 
 export function flyToHub(node, zoomOverride = null) {
   if (!map || !node) return;
-  const targetZoom = zoomOverride != null ? zoomOverride : Math.min(node.zoom || 5.8, 6.2);
+  const defaultZoom = Math.min(node.zoom || 5.8, 6.2);
+  const curZoom = map.getZoom();
+  const targetZoom = zoomOverride != null ? zoomOverride : Math.max(curZoom, defaultZoom);
   map.easeTo({
     center: [node.lng, node.lat],
-    zoom: targetZoom,
+    zoom: Math.min(targetZoom, 14.5),
     pitch: store.state.tilted ? 48 : 0,
-    duration: 680,
+    duration: 620,
     easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true
   });
