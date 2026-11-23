@@ -1,12 +1,12 @@
 {
-  "name": "PhysAlts — World of Physics",
-  "short_name": "PhysAlts",
-  "description": "Interactive 3D global atlas of physics departments, national labs, mega-experiments, and career pathways.",
+  "name": "World of Physics",
+  "short_name": "World of Physics",
+  "description": "Interactive 3D global atlas of physics laboratories, universities, deep-tech startups, historical discoveries (1800 BCE–2045), and space missions out to 1 light-day.",
   "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#030509",
-  "theme_color": "#030509",
+  "background_color": "#050506",
+  "theme_color": "#050506",
   "icons": [
     {
       "src": "./icon.svg",

@@ -1,6 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import dns from "node:dns";
 import { fileURLToPath } from "node:url";
+
+try { dns.setDefaultResultOrder("ipv4first"); } catch {}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
@@ -11,8 +14,8 @@ const ARGS = new Set(process.argv.slice(2));
 const FULL_MODE = ARGS.has("--full");
 const STRICT_MODE = ARGS.has("--strict");
 
-const CONCURRENCY = 18;
-const TIMEOUT_MS = 7000;
+const CONCURRENCY = 12;
+const TIMEOUT_MS = 10000;
 const HUBS_SAMPLE_SIZE = 150;
 
 const BROWSER_HEADERS = {
@@ -308,25 +311,35 @@ async function verifyUrl(url) {
   if (!isValidHttpUrl(url)) {
     return { category: "broken", status: 0, reason: "Invalid URL syntax" };
   }
+  const isWiki = url.includes("wikipedia.org") || url.includes("wikimedia.org");
   return withHostLimit(url, async () => {
-    try {
-      const headRes = await probeUrlOnce(url, "HEAD");
-      if (headRes.status >= 200 && headRes.status < 400) {
-        return classifyHttpResponse(headRes);
-      }
-      if (![400, 403, 405, 501, 406].includes(headRes.status)) {
-        return classifyHttpResponse(headRes);
-      }
-    } catch {}
+    if (isWiki) await new Promise(r => setTimeout(r, 120));
+    for (let attempt = 0; attempt < 2; attempt++) {
+      try {
+        const headRes = await probeUrlOnce(url, "HEAD");
+        if (headRes.status >= 200 && headRes.status < 400) {
+          return classifyHttpResponse(headRes);
+        }
+        if (![400, 403, 405, 501, 406].includes(headRes.status)) {
+          return classifyHttpResponse(headRes);
+        }
+      } catch {}
 
-    try {
-      const getRes = await probeUrlOnce(url, "GET");
-      return classifyHttpResponse(getRes);
-    } catch (err) {
-      const causeCode = err?.cause?.code || err?.code || err?.name || "FETCH_ERROR";
-      const msg = err?.cause?.message || err?.message || String(err);
-      return { category: "broken", status: 0, reason: `${causeCode}: ${msg.slice(0, 120)}` };
+      try {
+        const getRes = await probeUrlOnce(url, "GET");
+        return classifyHttpResponse(getRes);
+      } catch (err) {
+        const causeCode = err?.cause?.code || err?.code || err?.name || "FETCH_ERROR";
+        const msg = err?.cause?.message || err?.message || String(err);
+        const isTimeout = causeCode === "TimeoutError" || causeCode === "ETIMEDOUT" || /timeout|aborted/i.test(msg);
+        if (attempt === 0 && isTimeout) {
+          await new Promise(r => setTimeout(r, 600));
+          continue;
+        }
+        return { category: "broken", status: 0, reason: `${causeCode}: ${msg.slice(0, 120)}` };
+      }
     }
+    return { category: "broken", status: 0, reason: "Retry exhausted" };
   });
 }
 

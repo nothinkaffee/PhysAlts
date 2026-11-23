@@ -1,22 +1,22 @@
 {
-  "appId": "org.physalts.app",
-  "appName": "PhysAlts",
+  "appId": "org.worldofphysics.app",
+  "appName": "World of Physics",
   "webDir": "public",
   "server": {
     "androidScheme": "https"
   },
   "ios": {
     "contentInset": "always",
-    "backgroundColor": "#030509"
+    "backgroundColor": "#050506"
   },
   "android": {
-    "backgroundColor": "#030509",
+    "backgroundColor": "#050506",
     "allowMixedContent": false
   },
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 1200,
-      "backgroundColor": "#030509",
+      "launchShowDuration": 900,
+      "backgroundColor": "#050506",
       "showSpinner": false
     }
   }
