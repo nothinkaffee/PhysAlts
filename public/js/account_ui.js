@@ -333,6 +333,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
   onOpenSubmit,
   onOpenAudit,
   onOpenShortcuts,
+  onCloseModal,
   showToast
 } = {}) {
   let activeTab = initialTab;
@@ -714,7 +715,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
     bodyEl.querySelector("#sec-signout-btn")?.addEventListener("click", async () => {
       await logoutAccount();
       refreshAccountHeader();
-      render();
+      onCloseModal?.();
       showToast?.("Signed out");
     });
 
@@ -724,7 +725,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
       await deleteAccountPermanently();
       refreshAccountHeader();
       onStageUpdated?.();
-      render();
+      onCloseModal?.();
       showToast?.("All account data permanently erased");
     });
   };

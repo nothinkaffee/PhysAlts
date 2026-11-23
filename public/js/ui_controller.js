@@ -241,7 +241,9 @@ function renderSpaceMissionRail() {
 }
 
 export function selectSpaceMission(missionId) {
-  const m = store.spaceMissions.find(x => x.id === missionId);
+  const norm = (v) => String(v || "").toLowerCase().replace(/[^a-z0-9]/g, "");
+  const m = store.spaceMissions.find(x => x.id === missionId)
+    || store.spaceMissions.find(x => norm(x.id) === norm(missionId) || norm(x.name) === norm(missionId));
   if (!m) return;
   closeAllSurfaces("card");
   const fullId = `sp-${m.id}`;
@@ -658,31 +660,40 @@ export function selectHubNode(id, fly = true) {
     `).join("");
   }
 
-  // Fair-use live Wikimedia photo (skip .svg logo badges; reveal only on real photograph)
+  // Fair-use live Wikimedia photo (only when we have a verified wikiSlug or wiki URL — zero blind 404s)
   const photoWrap = document.getElementById("card-photo-wrap");
   const imgEl = document.getElementById("card-photo");
   const fallbackEl = document.getElementById("card-photo-fallback");
   imgEl?.classList.add("opacity-0");
   fallbackEl?.classList.remove("hidden");
   const reqId = ++activeWikiReq;
-  const slug = node.wikiSlug || node.name.replace(/\s+/g, "_");
+  let slug = node.wikiSlug || "";
+  if (!slug && node.wiki && node.wiki.includes("/wiki/")) {
+    try {
+      slug = decodeURIComponent(node.wiki.split("/wiki/")[1].split(/[?#]/)[0]);
+    } catch {
+      slug = node.wiki.split("/wiki/")[1].split(/[?#]/)[0];
+    }
+  }
 
-  fetch(proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`))
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (reqId !== activeWikiReq || !data || !imgEl) return;
-      const pic = data.originalimage?.source || data.thumbnail?.source;
-      if (pic && !/\.svg(\.png)?(\?|$)/i.test(pic)) {
-        imgEl.onload = () => {
-          if (reqId !== activeWikiReq) return;
-          photoWrap?.classList.remove("hidden");
-          imgEl.classList.remove("opacity-0");
-          fallbackEl?.classList.add("hidden");
-        };
-        imgEl.src = proxyUrl(pic);
-        imgEl.alt = node.name;
-      }
-    }).catch(() => {});
+  if (slug) {
+    fetch(proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`))
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (reqId !== activeWikiReq || !data || !imgEl) return;
+        const pic = data.originalimage?.source || data.thumbnail?.source;
+        if (pic && !/\.svg(\.png)?(\?|$)/i.test(pic)) {
+          imgEl.onload = () => {
+            if (reqId !== activeWikiReq) return;
+            photoWrap?.classList.remove("hidden");
+            imgEl.classList.remove("opacity-0");
+            fallbackEl?.classList.add("hidden");
+          };
+          imgEl.src = proxyUrl(pic);
+          imgEl.alt = node.name;
+        }
+      }).catch(() => {});
+  }
 
   const papersEl = document.getElementById("deeper-papers");
   if (papersEl) {
@@ -944,6 +955,7 @@ export function openModal(mode, focusId = null) {
       onOpenSubmit: () => openModal("submit"),
       onOpenAudit: () => openModal("audit"),
       onOpenShortcuts: () => openModal("shortcuts"),
+      onCloseModal: closeModal,
       showToast
     });
   }
@@ -1518,6 +1530,9 @@ export function applyDeepLinkFromUrl() {
       selectSpaceMission(params.get("space"));
     } else if (params.get("hub")) {
       selectHubNode(params.get("hub"), true);
+    } else if (params.get("year")) {
+      const y = Number(params.get("year"));
+      if (Number.isFinite(y)) setTimeMode(true, y);
     } else if (params.get("era")) {
       const targetEra = store.eras.find(e => e.id === params.get("era"));
       setTimeMode(true, targetEra ? targetEra.startYear : -580);
