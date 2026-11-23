@@ -1025,8 +1025,28 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
 
   useMainThreadOverlay = isBlobPage || !workerOk;
 
-  const baseDir = new URL("./tiles/bluemarble/", location.href).href;
-  const baseTileUrl = `${baseDir}{z}/{y}/{x}.jpg`;
+  // Load local NASA Blue Marble z=0..2 tiles:
+  // On blob: preview pages, relative URLs cannot be resolved against location.href or fetched
+  // directly inside a blob Web Worker — so route the 21 tiny base tiles via RAM-cached main-thread fetch.
+  let baseTileUrl = "";
+  if (isBlobPage && typeof window.maplibregl.addProtocol === "function") {
+    const localTileCache = new Map();
+    window.maplibregl.addProtocol("localtile", async (params) => {
+      const rel = params.url.slice("localtile://".length);
+      let buf = localTileCache.get(rel);
+      if (!buf) {
+        const res = await fetch(`./tiles/bluemarble/${rel}`);
+        if (!res.ok) throw new Error(`Local tile HTTP ${res.status}`);
+        buf = await res.arrayBuffer();
+        localTileCache.set(rel, buf);
+      }
+      return { data: buf.slice(0) };
+    });
+    baseTileUrl = "localtile://{z}/{y}/{x}.jpg";
+  } else {
+    const baseDir = new URL("../tiles/bluemarble/", import.meta.url).href;
+    baseTileUrl = `${baseDir}{z}/{y}/{x}.jpg`;
+  }
   const esriMirrorA = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const esriMirrorB = ESRI_SAT_TEMPLATE;
 
