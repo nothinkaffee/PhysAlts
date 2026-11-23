@@ -1,13 +1,12 @@
 /**
- * PhysAlts — Interactive UI Controller (Atlas Engine v2)
- * Zero all-caps transforms, zero yellow/amber palette, museum-grade chronological
- * timeline with calibrated ruler & story cards, Space Frontier Mission Directory rail,
- * Domains/Materials, Global Countries & Private Deep-Tech, Live Search, and GDPR controls.
+ * PhysAlts — Interactive Production UI Controller (Atlas Engine v2.1)
+ * Pure neutral grey palette + rgb(160, 70, 70) editorial link accent (zero blue, zero yellow, zero all-caps).
+ * Generous 8pt spacing, 14–16px Helvetica/Inter typography, sleek Continent + Country selector,
+ * full Account/Login/Bookmarks workspace, Deep-Link sharing, Keyboard Shortcuts, and GDPR controls.
  */
 
 import {
-  PHYSICS_BRANCHES, STAGE_META, STAGE_PORTALS,
-  proxyUrl, formatYear, buildDefaultStages, classifyPhysicsBranch
+  PHYSICS_BRANCHES, STAGE_META, proxyUrl, formatYear, buildDefaultStages, classifyPhysicsBranch
 } from "./config.js";
 import {
   store, getNodeById, getVisibleGlobeNodes, universalSearch, mergeHubs
@@ -20,14 +19,40 @@ import {
   setSpaceZone, getSpaceZone, setSelectedSpaceMission, startSpaceLoop, stopSpaceLoop
 } from "./space_view.js";
 import {
-  syncPrefs, submitCommunityHub, exportUserData, eraseAllUserData, isCloudReady
-} from "./cloud_sync.js";
+  isBookmarked, toggleBookmark, updateAccountProfile, getAuthSnapshot
+} from "./auth_service.js";
+import {
+  refreshAccountHeader, openAuthModal, closeAuthModal,
+  renderAccountWorkspaceModal, renderSubmitInstitutionModal, renderKeyboardShortcutsModal
+} from "./account_ui.js";
+import { isCloudReady, exportUserData, eraseAllUserData } from "./cloud_sync.js";
 
 let activeWikiReq = 0;
-let activeJobsReq = 0;
 let toastTimer = null;
 let timeTourTimer = null;
 let activeTimelineIdx = 0;
+
+// Clean Continent → Camera Anchor + Country classification helper
+const CONTINENTS = [
+  { id: "all",           label: "All",           lat: 20,  lng: 12,  zoom: 1.9 },
+  { id: "Europe",        label: "Europe",        lat: 50,  lng: 12,  zoom: 3.6 },
+  { id: "North America", label: "North America", lat: 40,  lng: -98, zoom: 3.2 },
+  { id: "Asia",          label: "Asia",          lat: 32,  lng: 95,  zoom: 3.2 },
+  { id: "Africa",        label: "Africa",        lat: 4,   lng: 20,  zoom: 3.1 },
+  { id: "South America", label: "South America", lat: -16, lng: -60, zoom: 3.2 },
+  { id: "Oceania",       label: "Oceania",       lat: -25, lng: 138, zoom: 3.6 }
+];
+
+function inferContinent(countryName) {
+  const c = (countryName || "").toLowerCase();
+  if (/antarctica/.test(c)) return "Antarctica";
+  if (/united states|canada|mexico|cuba|jamaica|puerto rico|costa rica|panama|guatemala|barbados|trinidad|dominican|haiti|honduras|el salvador|nicaragua|bahamas|belize/.test(c)) return "North America";
+  if (/brazil|argentina|chile|colombia|peru|venezuela|ecuador|bolivia|paraguay|uruguay|guyana|suriname/.test(c)) return "South America";
+  if (/australia|new zealand|fiji|papua|samoa|tonga|vanuatu/.test(c)) return "Oceania";
+  if (/south africa|egypt|nigeria|kenya|morocco|algeria|tunisia|ghana|ethiopia|tanzania|uganda|rwanda|senegal|cameroon|zimbabwe|zambia|botswana|namibia|mozambique|angola|sudan|libya|benin|mali|niger|burkina|malawi|madagascar|mauritius|congo|ivory coast|cote d'ivoire|gabon|togo|sierra leone|liberia|somalia|chad|eritrea|lesotho|eswatini|gambia|guinea|seychelles|cape verde/.test(c)) return "Africa";
+  if (/china|japan|india|south korea|korea|taiwan|singapore|israel|iran|iraq|saudi|united arab|uae|turkey|türkiye|pakistan|bangladesh|indonesia|malaysia|thailand|vietnam|philippines|kazakhstan|uzbekistan|jordan|lebanon|qatar|kuwait|oman|bahrain|sri lanka|nepal|bhutan|mongolia|myanmar|cambodia|laos|brunei|azerbaijan|armenia|georgia|kyrgyzstan|tajikistan|turkmenistan|afghanistan|yemen|syria|palestine|hong kong|macao/.test(c)) return "Asia";
+  return "Europe";
+}
 
 function esc(s) {
   return String(s ?? "")
@@ -44,26 +69,35 @@ export function showToast(msg) {
   txt.textContent = msg;
   el.classList.add("visible");
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.classList.remove("visible"), 2500);
+  toastTimer = setTimeout(() => el.classList.remove("visible"), 2600);
 }
 
 export function refreshDbBadge() {
   const dot = document.getElementById("db-dot");
   const lbl = document.getElementById("db-status-text");
-  const prefix = isCloudReady() ? "Cloud DB" : "Verified Index";
-  const count = store.hubs.length;
-  const countries = store.countries.size;
+  const snap = getAuthSnapshot();
   if (dot) {
-    dot.className = "w-2 h-2 rounded-full " + (isCloudReady() ? "bg-sky-300 shadow-[0_0_8px_rgba(125,211,252,0.9)]" : "bg-sky-200/90 shadow-[0_0_6px_rgba(186,230,253,0.7)]");
+    dot.className = "w-2 h-2 rounded-full " + (isCloudReady() || snap.isAuthenticated ? "bg-white" : "bg-neutral-400");
   }
   if (lbl) {
-    lbl.textContent = `${prefix} · ${count.toLocaleString()} hubs · ${countries} countries`;
+    lbl.textContent = isCloudReady() ? "Cloud Synced" : "Verified Index";
   }
+}
+
+function updateIslandExpanded() {
+  const island = document.getElementById("dynamic-island");
+  if (!island) return;
+  const searchOpen = !document.getElementById("search-dropdown")?.classList.contains("hidden");
+  const menuOpen = !document.getElementById("site-menu-dropdown")?.classList.contains("hidden");
+  island.classList.toggle("island-expanded", searchOpen || menuOpen);
 }
 
 export function closeDropdown() {
   document.getElementById("search-dropdown")?.classList.add("hidden");
   document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
+  document.getElementById("site-menu-dropdown")?.classList.add("hidden");
+  document.getElementById("btn-site-menu")?.setAttribute("aria-expanded", "false");
+  updateIslandExpanded();
 }
 
 function closePlaceCard() {
@@ -76,7 +110,26 @@ function closePlaceCard() {
 }
 
 function closeModal() {
-  document.getElementById("drawer-modal")?.classList.add("hidden");
+  document.getElementById("drawer-backdrop")?.classList.add("hidden");
+}
+
+/**
+ * Single-Surface Mutual Exclusion State Machine:
+ * Guarantees only ONE overlay surface is open at any time — zero stacked overlaps ever.
+ */
+function closeAllSurfaces(except = null) {
+  if (except !== "dropdown") closeDropdown();
+  if (except !== "modal") closeModal();
+  if (except !== "auth") closeAuthModal();
+  if (except !== "card") closePlaceCard();
+}
+
+function updateBookmarkButtonUI(id) {
+  const saveBtn = document.getElementById("btn-save-shortlist");
+  if (!saveBtn) return;
+  const saved = isBookmarked(id);
+  saveBtn.textContent = saved ? "✓ Bookmarked" : "+ Bookmark";
+  saveBtn.className = `rounded-full px-4 py-2 text-[13.5px] transition ${saved ? "glass-btn-active" : "glass-btn"}`;
 }
 
 // =========================================================================
@@ -92,28 +145,32 @@ export function setViewMode(mode) {
   const zoomControls = document.getElementById("zoom-controls");
   const timeBar = document.getElementById("time-bar");
 
-  closePlaceCard();
-  closeDropdown();
-  closeModal();
+  closeAllSurfaces();
 
   if (mode === "space") {
     spaceOverlay?.classList.remove("space-hidden");
+    document.body.classList.add("space-mode");
     btnSpace?.classList.add("glass-btn-active");
     btnEarth?.classList.remove("glass-btn-active");
     if (earthControls) earthControls.style.display = "none";
     if (zoomControls) zoomControls.style.display = "none";
     timeBar?.classList.add("hidden");
+    document.body.classList.remove("time-open");
     stopTimeTour();
     renderSpaceZoneBar();
     renderSpaceMissionRail();
     startSpaceLoop();
   } else {
     spaceOverlay?.classList.add("space-hidden");
+    document.body.classList.remove("space-mode");
     btnEarth?.classList.add("glass-btn-active");
     btnSpace?.classList.remove("glass-btn-active");
     if (earthControls) earthControls.style.display = "";
     if (zoomControls) zoomControls.style.display = "";
-    if (store.state.timeMode) timeBar?.classList.remove("hidden");
+    if (store.state.timeMode) {
+      timeBar?.classList.remove("hidden");
+      document.body.classList.add("time-open");
+    }
     stopSpaceLoop();
     syncGlobeMarkers();
   }
@@ -136,7 +193,7 @@ function renderSpaceZoneBar() {
   const current = getSpaceZone();
   const zones = [{ id: "all", label: "All" }, ...store.spaceZones];
   bar.innerHTML = zones.map(z => `
-    <button type="button" data-szone="${esc(z.id)}" class="szone-btn px-2.5 py-1.5 rounded-full text-[11.5px] whitespace-nowrap transition ${z.id === current ? "glass-btn-active" : "glass-btn"}">
+    <button type="button" data-szone="${esc(z.id)}" class="szone-btn px-3.5 py-2 rounded-full text-[13px] whitespace-nowrap transition ${z.id === current ? "glass-btn-active" : "glass-btn"}">
       ${esc(COMPACT_ZONE_LABELS[z.id] || z.label)}
     </button>
   `).join("");
@@ -157,12 +214,12 @@ function renderSpaceMissionRail() {
   listEl.innerHTML = missions.map(m => {
     const active = store.state.selectedId === `sp-${m.id}`;
     return `
-      <button type="button" data-rail-mission="${esc(m.id)}" class="rail-mission w-full text-left rounded-2xl px-3 py-2.5 transition ${active ? "glass-row-active" : "glass-row"}">
-        <div class="flex items-center justify-between gap-2">
-          <span class="text-[12.5px] font-medium truncate">${esc(m.name)}</span>
-          <span class="text-[10.5px] shrink-0 ${active ? "text-black/65" : "text-sky-200/80"}">${esc(m.lightTimeLabel.split(" (")[0])}</span>
+      <button type="button" data-rail-mission="${esc(m.id)}" class="rail-mission w-full text-left rounded-2xl px-4 py-3 transition ${active ? "glass-row-active" : "glass-row"}">
+        <div class="flex items-center justify-between gap-2.5">
+          <span class="text-[14px] font-medium truncate">${esc(m.name)}</span>
+          <span class="text-[12.5px] shrink-0 ${active ? "text-black/65" : "accent-text"}">${esc(m.lightTimeLabel.split(" (")[0])}</span>
         </div>
-        <div class="text-[11px] mt-0.5 truncate ${active ? "text-black/65" : "text-white/55"}">${esc(m.body)} · ${esc(m.agency)} · ${m.launchYear}</div>
+        <div class="text-[13px] mt-1 truncate ${active ? "text-black/65" : "text-neutral-400"}">${esc(m.body)} · ${esc(m.agency)} · ${m.launchYear}</div>
       </button>
     `;
   }).join("");
@@ -175,10 +232,11 @@ function renderSpaceMissionRail() {
 export function selectSpaceMission(missionId) {
   const m = store.spaceMissions.find(x => x.id === missionId);
   if (!m) return;
-  store.state.selectedId = `sp-${m.id}`;
+  closeAllSurfaces("card");
+  const fullId = `sp-${m.id}`;
+  store.state.selectedId = fullId;
   setSelectedSpaceMission(m.id);
   renderSpaceMissionRail();
-  closeModal();
 
   const card = document.getElementById("place-card");
   if (!card) return;
@@ -195,27 +253,52 @@ export function selectSpaceMission(missionId) {
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     extra.innerHTML = (m.instruments || []).slice(0, 6).map(inst =>
-      `<span class="px-2.5 py-1 rounded-full text-[11.5px] bg-white/10 border border-white/15 text-white/90">${esc(inst)}</span>`
+      `<span class="px-3 py-1 rounded-full text-[13px] bg-white/[0.07] border border-white/12 text-neutral-200">${esc(inst)}</span>`
     ).join("");
   }
 
   const linksEl = document.getElementById("card-links");
   const links = [];
-  if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[12.5px] inline-flex items-center gap-1">Official Mission Site ↗</a>`);
-  if (m.wikiUrl) links.push(`<a href="${esc(m.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px]">Wikipedia ↗</a>`);
+  if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-4 py-2 text-[13.5px] inline-flex items-center gap-1.5">Official Mission Site ↗</a>`);
+  if (m.wikiUrl) links.push(`<a href="${esc(m.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link px-3 py-2 text-[14px]">Wikipedia ↗</a>`);
   if (linksEl) linksEl.innerHTML = links.join("");
 
   document.getElementById("card-deeper-wrap")?.classList.add("hidden");
   document.getElementById("btn-deeper-toggle")?.classList.add("hidden");
-  document.getElementById("btn-save-shortlist")?.classList.add("hidden");
+  document.getElementById("btn-save-shortlist")?.classList.remove("hidden");
   document.getElementById("card-photo-wrap")?.classList.add("hidden");
+  updateBookmarkButtonUI(fullId);
+
+  // Connected Space Missions (Keep Exploring revolving door)
+  const rWrap = document.getElementById("card-rabbit-wrap");
+  const rLinks = document.getElementById("card-rabbit-links");
+  if (rWrap && rLinks) {
+    const idx = store.spaceMissions.findIndex(x => x.id === m.id);
+    const nearby = [
+      store.spaceMissions[idx + 1],
+      store.spaceMissions[idx - 1],
+      store.spaceMissions[(idx + 5) % store.spaceMissions.length]
+    ].filter(x => x && x.id !== m.id);
+    if (nearby.length) {
+      rWrap.classList.remove("hidden");
+      rLinks.innerHTML = nearby.slice(0, 3).map(nb => `
+        <button type="button" data-jump-space="${esc(nb.id)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-[175px]">
+          ${esc(nb.name.split(" (")[0])} →
+        </button>
+      `).join("");
+      rLinks.querySelectorAll("[data-jump-space]").forEach(btn => {
+        btn.addEventListener("click", () => selectSpaceMission(btn.dataset.jumpSpace));
+      });
+    } else {
+      rWrap.classList.add("hidden");
+    }
+  }
 }
 
 // =========================================================================
-// MUSEUM-GRADE CHRONOLOGICAL PHYSICS TIMELINE (1800 BCE -> 2045 CE)
+// CHRONOLOGICAL PHYSICS TIMELINE (1800 BCE -> 2045 CE)
 // =========================================================================
 
-// Piecewise non-linear [0..1] scale so every era gets comfortable precision along the calibrated ruler
 function yearToPercent(year) {
   const y = Number(year);
   if (y <= 500)  return Math.max(0, ((y + 1850) / 2350) * 20);
@@ -276,14 +359,13 @@ function renderTimelineUI(flyToActive = false) {
   if (needleEl) needleEl.style.left = `${pct.toFixed(2)}%`;
   if (rulerEl) rulerEl.setAttribute("aria-valuenow", String(y));
 
-  // Era tabs
   const tabsEl = document.getElementById("time-era-tabs");
   if (tabsEl && store.eras.length) {
     tabsEl.innerHTML = store.eras.map(e => {
       const act = era && era.id === e.id;
       const shortLabel = e.label.split(" (")[0];
       return `
-        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3 py-1 rounded-full text-[11.5px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
+        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3.5 py-1.5 rounded-full text-[13px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
           ${esc(shortLabel)}
         </button>
       `;
@@ -304,7 +386,6 @@ function renderTimelineUI(flyToActive = false) {
     });
   }
 
-  // Ruler milestone dots
   const dotsEl = document.getElementById("timeline-dots");
   if (dotsEl && store.timelineEvents.length) {
     activeTimelineIdx = findNearestTimelineIndex(y);
@@ -315,7 +396,6 @@ function renderTimelineUI(flyToActive = false) {
     }).join("");
   }
 
-  // Synchronized horizontal Milestone Story Cards for the active era
   const stripEl = document.getElementById("timeline-event-strip");
   if (stripEl && store.timelineEvents.length) {
     const eraEvents = era
@@ -326,13 +406,13 @@ function renderTimelineUI(flyToActive = false) {
     stripEl.innerHTML = eraEvents.map(ev => {
       const isSel = activeEv && ev.id === activeEv.id;
       return `
-        <button type="button" data-tl-card="${esc(ev.id)}" class="tl-card shrink-0 w-[228px] text-left rounded-2xl px-3 py-2 transition ${isSel ? "glass-row-active" : "glass-row"}">
-          <div class="flex items-center justify-between gap-2 text-[11px] ${isSel ? "text-black/65" : "text-sky-200/85"}">
+        <button type="button" data-tl-card="${esc(ev.id)}" class="tl-card shrink-0 w-[256px] text-left rounded-2xl px-4 py-3 transition ${isSel ? "glass-row-active" : "glass-row"}">
+          <div class="flex items-center justify-between gap-2 text-[12.5px] ${isSel ? "text-black/65" : "accent-text"}">
             <span class="font-semibold">${formatYear(ev.year)}</span>
-            <span class="truncate">${esc(ev.location)}</span>
+            <span class="truncate ${isSel ? "text-black/60" : "text-neutral-400"}">${esc(ev.location)}</span>
           </div>
-          <div class="text-[12.5px] font-medium mt-0.5 line-clamp-1 ${isSel ? "text-black" : "text-white"}">${esc(ev.title)}</div>
-          <div class="text-[11px] mt-0.5 line-clamp-1 ${isSel ? "text-black/70" : "text-white/55"}">${esc(ev.figure)}</div>
+          <div class="text-[14px] font-medium mt-1 line-clamp-1 ${isSel ? "text-black" : "text-white"}">${esc(ev.title)}</div>
+          <div class="text-[13px] mt-0.5 line-clamp-1 ${isSel ? "text-black/70" : "text-neutral-400"}">${esc(ev.figure)}</div>
         </button>
       `;
     }).join("");
@@ -350,7 +430,7 @@ function renderTimelineUI(flyToActive = false) {
   }
 
   const visible = getVisibleGlobeNodes();
-  if (countEl) countEl.textContent = `${visible.length.toLocaleString()} sites in view`;
+  if (countEl) countEl.textContent = `${visible.length.toLocaleString()} in view`;
   syncGlobeMarkers();
 
   if (flyToActive && store.timelineEvents[activeTimelineIdx]) {
@@ -365,31 +445,8 @@ function jumpToTimelineIndex(idx, openCard = false) {
   activeTimelineIdx = clamped;
   const ev = store.timelineEvents[clamped];
   store.state.timeYear = ev.year;
-  renderTimelineUI(!openCard);
-  if (openCard) {
-    selectHubNode(`tl-${ev.id}`, true);
-  }
-}
-
-export function setTimeMode(enabled, targetYear = null) {
-  if (store.state.viewMode === "space" && enabled) setViewMode("earth");
-  store.state.timeMode = enabled;
-  if (targetYear != null) store.state.timeYear = targetYear;
-  const bar = document.getElementById("time-bar");
-  const btn = document.getElementById("btn-toggle-time");
-
-  if (enabled) {
-    closeModal();
-    bar?.classList.remove("hidden");
-    btn?.classList.add("glass-btn-active");
-    resetGlobeToSpace([32, 32], 2.1);
-    renderTimelineUI(false);
-  } else {
-    stopTimeTour();
-    bar?.classList.add("hidden");
-    btn?.classList.remove("glass-btn-active");
-    syncGlobeMarkers();
-  }
+  renderTimelineUI(true);
+  if (openCard) selectHubNode(`tl-${ev.id}`, false);
 }
 
 function bindTimelineRuler() {
@@ -397,29 +454,60 @@ function bindTimelineRuler() {
   if (!ruler) return;
   let dragging = false;
 
-  const updateFromClientX = (clientX) => {
+  const scrubFromClientX = (clientX) => {
     const rect = ruler.getBoundingClientRect();
-    const pct = ((clientX - rect.left) / Math.max(1, rect.width)) * 100;
+    const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / Math.max(1, rect.width)) * 100));
     store.state.timeYear = percentToYear(pct);
     renderTimelineUI(false);
   };
 
   ruler.addEventListener("pointerdown", (e) => {
-    stopTimeTour();
     dragging = true;
-    ruler.setPointerCapture(e.pointerId);
-    updateFromClientX(e.clientX);
+    stopTimeTour();
+    ruler.setPointerCapture?.(e.pointerId);
+    scrubFromClientX(e.clientX);
   });
   ruler.addEventListener("pointermove", (e) => {
-    if (!dragging) return;
-    updateFromClientX(e.clientX);
+    if (dragging) scrubFromClientX(e.clientX);
   });
-  ruler.addEventListener("pointerup", () => { dragging = false; });
-  ruler.addEventListener("pointercancel", () => { dragging = false; });
+  const endDrag = () => {
+    if (!dragging) return;
+    dragging = false;
+    const nearest = findNearestTimelineIndex(store.state.timeYear);
+    if (store.timelineEvents[nearest]) {
+      store.state.timeYear = store.timelineEvents[nearest].year;
+      renderTimelineUI(true);
+    }
+  };
+  ruler.addEventListener("pointerup", endDrag);
+  ruler.addEventListener("pointercancel", endDrag);
+}
+
+export function setTimeMode(enabled, jumpYear = null) {
+  store.state.timeMode = Boolean(enabled);
+  const bar = document.getElementById("time-bar");
+  const btn = document.getElementById("btn-toggle-time");
+
+  if (enabled) {
+    closeAllSurfaces("card");
+    if (store.state.viewMode === "space") setViewMode("earth");
+    bar?.classList.remove("hidden");
+    document.body.classList.add("time-open");
+    btn?.classList.add("glass-btn-active");
+    if (jumpYear !== null) store.state.timeYear = jumpYear;
+    else if (store.state.timeYear === 2026) store.state.timeYear = -580;
+    renderTimelineUI(true);
+  } else {
+    bar?.classList.add("hidden");
+    document.body.classList.remove("time-open");
+    btn?.classList.remove("glass-btn-active");
+    stopTimeTour();
+    syncGlobeMarkers();
+  }
 }
 
 // =========================================================================
-// HUB / TIMELINE DETAIL CARD
+// PLACE / MILESTONE DETAIL CARD
 // =========================================================================
 
 export function selectHubNode(id, fly = true) {
@@ -427,9 +515,9 @@ export function selectHubNode(id, fly = true) {
   if (!node) return;
   if (store.state.viewMode === "space") setViewMode("earth");
 
+  closeAllSurfaces("card");
   store.state.selectedId = node.id;
-  closeDropdown();
-  if (fly) flyToHub(node, node.tier === "timeline" ? 5.2 : null);
+  if (fly) flyToHub(node, node.tier === "timeline" ? 4.8 : null);
   syncGlobeMarkers();
 
   const card = document.getElementById("place-card");
@@ -450,7 +538,7 @@ export function selectHubNode(id, fly = true) {
     : "University Physics"
   );
   const yearPart = node.foundedYear != null ? ` · ${formatYear(node.foundedYear)}` : "";
-  document.getElementById("card-badge").textContent = `${typeLabel}${yearPart} · ${node.sourceApi}`;
+  document.getElementById("card-badge").textContent = `${typeLabel}${yearPart}`;
   document.getElementById("card-title").textContent = node.name;
   document.getElementById("card-sub").textContent = node.city;
   document.getElementById("card-summary").textContent = node.summary;
@@ -463,22 +551,63 @@ export function selectHubNode(id, fly = true) {
     : `${STAGE_META[st]?.label || "Academic"} Pathway`;
   document.getElementById("card-pathway").textContent = node.tier === "timeline" ? (node.nobel || node.summary) : stageText;
 
-  const saveBtn = document.getElementById("btn-save-shortlist");
-  if (saveBtn) {
-    const saved = store.state.shortlist.has(node.id);
-    saveBtn.textContent = saved ? "✓ Saved in Shortlist" : "+ Save to Shortlist";
-    saveBtn.className = `rounded-full px-3.5 py-1.5 text-[12px] transition ${saved ? "glass-btn-active" : "glass-btn"}`;
+  updateBookmarkButtonUI(node.id);
+
+  // Connected Rabbit Hole Portals (3 one-click revolving-door jumps to related hubs worldwide)
+  const rWrap = document.getElementById("card-rabbit-wrap");
+  const rLinks = document.getElementById("card-rabbit-links");
+  if (rWrap && rLinks) {
+    const picks = [];
+    const seen = new Set([node.id]);
+    for (const nextId of node.next || []) {
+      const target = getNodeById(nextId);
+      if (target && !seen.has(target.id)) {
+        picks.push(target);
+        seen.add(target.id);
+      }
+    }
+    if (picks.length < 3) {
+      const pool = store.hubs.filter(h =>
+        !seen.has(h.id) && (h.tier === "flagship" || h.tier === "deeptech") &&
+        (h.branch === node.branch || h.country !== node.country)
+      );
+      // Deterministic-feeling spread with light shuffle so each hop explores a new nation
+      for (const cand of pool) {
+        if (picks.length >= 3) break;
+        if (cand.branch === node.branch && cand.country !== node.country) {
+          picks.push(cand);
+          seen.add(cand.id);
+        }
+      }
+      for (const cand of pool) {
+        if (picks.length >= 3) break;
+        if (!seen.has(cand.id)) {
+          picks.push(cand);
+          seen.add(cand.id);
+        }
+      }
+    }
+    if (picks.length) {
+      rWrap.classList.remove("hidden");
+      rLinks.innerHTML = picks.slice(0, 3).map(p => `
+        <button type="button" data-jump-hub="${esc(p.id)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-[175px]">
+          ${esc(p.name.split(" (")[0])} →
+        </button>
+      `).join("");
+      rLinks.querySelectorAll("[data-jump-hub]").forEach(btn => {
+        btn.addEventListener("click", () => selectHubNode(btn.dataset.jumpHub, true));
+      });
+    } else {
+      rWrap.classList.add("hidden");
+    }
   }
 
-  // Projects / Nobel highlights (restrained monochrome/ice-blue — zero yellow)
+  // Concise project links (max 2 so action bar stays above the fold — full details inside More ↓)
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     const chips = [];
-    if (node.nobel && node.tier !== "timeline") {
-      chips.push(`<div class="w-full rounded-2xl bg-white/[0.06] border border-white/15 px-3 py-2 text-[12px] text-white/90">${esc(node.nobel)}</div>`);
-    }
-    for (const p of node.projects || []) {
-      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-full text-[11.5px] bg-sky-300/12 border border-sky-200/25 text-sky-100 hover:bg-sky-300/25 transition">${esc(p.name)} (${esc(p.status || "active")}) ↗</a>`);
+    for (const p of (node.projects || []).slice(0, 2)) {
+      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[13px] transition">${esc(p.name)} ↗</a>`);
     }
     extra.innerHTML = chips.join("");
   }
@@ -486,23 +615,23 @@ export function selectHubNode(id, fly = true) {
   // Official verified links
   const linksEl = document.getElementById("card-links");
   const links = [];
-  if (node.url) links.push(`<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[12.5px] inline-flex items-center gap-1">Official Site ↗</a>`);
-  if (node.wiki) links.push(`<a href="${esc(node.wiki)}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px]">Wikipedia ↗</a>`);
+  if (node.url) links.push(`<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-4 py-2 text-[13.5px] inline-flex items-center gap-1.5">Official Site ↗</a>`);
+  if (node.wiki) links.push(`<a href="${esc(node.wiki)}" target="_blank" rel="noopener noreferrer" class="accent-link px-3 py-2 text-[14px]">Wikipedia ↗</a>`);
   const gEarth = `https://earth.google.com/web/@${node.lat},${node.lng},500a,2500d,35y,0h,45t,0r`;
-  links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px]">Google Earth ↗</a>`);
+  links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-2 py-2 text-[14px]">Google Earth ↗</a>`);
   if (linksEl) linksEl.innerHTML = links.join("");
 
   const stagesEl = document.getElementById("deeper-stages");
   if (stagesEl) {
     stagesEl.innerHTML = Object.keys(STAGE_META).filter(k => k !== "all").map(k => `
-      <div class="rounded-xl px-2.5 py-2 ${k === st ? "bg-white/15 border border-white/25" : "bg-white/5 border border-white/10"}">
-        <div class="text-[11.5px] font-semibold text-white/80">${STAGE_META[k].label}</div>
-        <div class="text-[12px] text-white/85 mt-0.5 leading-snug">${esc(stages[k] || "—")}</div>
+      <div class="rounded-2xl px-3.5 py-2.5 ${k === st ? "bg-white/12 border border-white/22" : "bg-white/[0.04] border border-white/10"}">
+        <div class="text-[13px] font-semibold text-white">${STAGE_META[k].label}</div>
+        <div class="text-[13.5px] text-neutral-300 mt-1 leading-snug">${esc(stages[k] || "—")}</div>
       </div>
     `).join("");
   }
 
-  // Live Wikimedia photo (skip .svg trademarked logo badges per Phase 3 rights policy!)
+  // Live Wikimedia photo (skip .svg logo badges; only reveal container on actual photo load)
   const photoWrap = document.getElementById("card-photo-wrap");
   const imgEl = document.getElementById("card-photo");
   const fallbackEl = document.getElementById("card-photo-fallback");
@@ -530,49 +659,49 @@ export function selectHubNode(id, fly = true) {
 
   const papersEl = document.getElementById("deeper-papers");
   if (papersEl) {
-    papersEl.innerHTML = `<div class="text-white/50 text-[12px]">Loading recent physics papers…</div>`;
+    papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Loading recent papers…</div>`;
     fetch(proxyUrl(`https://api.openalex.org/works?search=${encodeURIComponent(node.name + " physics")}&sort=publication_date:desc&per-page=3`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (reqId !== activeWikiReq) return;
         if (!data?.results?.length) {
-          papersEl.innerHTML = `<div class="text-white/50 text-[12px]">No recent OpenAlex papers returned.</div>`;
+          papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">No recent OpenAlex papers returned.</div>`;
           return;
         }
         papersEl.innerHTML = data.results.map(w => `
-          <a href="${esc(w.doi || w.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.07] hover:bg-white/14 border border-white/10 p-2.5 transition">
-            <div class="text-[12.5px] text-white/95 leading-snug line-clamp-2">${esc(w.title || "Physics Publication")}</div>
-            <div class="text-[11.5px] text-white/55 mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
+          <a href="${esc(w.doi || w.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 p-3.5 transition">
+            <div class="text-[14px] text-white leading-snug line-clamp-2">${esc(w.title || "Physics Publication")}</div>
+            <div class="text-[13px] accent-text mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
           </a>
         `).join("");
       }).catch(() => {
-        if (reqId === activeWikiReq) papersEl.innerHTML = `<div class="text-white/50 text-[12px]">OpenAlex papers unavailable right now.</div>`;
+        if (reqId === activeWikiReq) papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">OpenAlex papers unavailable right now.</div>`;
       });
   }
 
   const authorsEl = document.getElementById("deeper-authors");
   if (authorsEl) {
-    authorsEl.innerHTML = `<div class="text-white/50 text-[12px]">Loading top cited physicists…</div>`;
+    authorsEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Loading physicists…</div>`;
     fetch(proxyUrl(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " physics")}&sort=cited_by_count:desc&per-page=3`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (reqId !== activeWikiReq) return;
         const list = data?.results || [];
         if (!list.length) {
-          authorsEl.innerHTML = `<div class="text-white/50 text-[12px]">No indexed PIs returned.</div>`;
+          authorsEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">No indexed PIs returned.</div>`;
           return;
         }
         authorsEl.innerHTML = list.map(a => `
-          <a href="${esc(a.orcid || a.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-2 rounded-2xl bg-white/[0.07] hover:bg-white/14 border border-white/10 px-3 py-2 transition">
+          <a href="${esc(a.orcid || a.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between gap-3 rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 px-3.5 py-2.5 transition">
             <div class="min-w-0">
-              <div class="text-[12.5px] font-medium text-white/95 truncate">${esc(a.display_name || "Researcher")}</div>
-              <div class="text-[11px] text-white/55 truncate">${esc(a.last_known_institutions?.[0]?.display_name || node.name)}</div>
+              <div class="text-[14px] font-medium text-white truncate">${esc(a.display_name || "Researcher")}</div>
+              <div class="text-[13px] text-neutral-400 truncate">${esc(a.last_known_institutions?.[0]?.display_name || node.name)}</div>
             </div>
-            <span class="text-[11px] text-white/75 shrink-0">${(a.cited_by_count || 0).toLocaleString()} cites ↗</span>
+            <span class="text-[13px] accent-text shrink-0">${(a.cited_by_count || 0).toLocaleString()} cites ↗</span>
           </a>
         `).join("");
       }).catch(() => {
-        if (reqId === activeWikiReq) authorsEl.innerHTML = `<div class="text-white/50 text-[12px]">OpenAlex researcher index unavailable right now.</div>`;
+        if (reqId === activeWikiReq) authorsEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Researcher index unavailable right now.</div>`;
       });
   }
 }
@@ -584,64 +713,68 @@ export function selectHubNode(id, fly = true) {
 function renderSearchDropdown(query) {
   const box = document.getElementById("search-dropdown");
   if (!box) return;
-  const { hubs, events, missions, subdomains } = universalSearch(query, 10);
+  const { hubs, events, missions, subdomains } = universalSearch(query, 8);
   const parts = [];
 
   if (hubs.length) {
-    parts.push(`<div class="section-label px-3 pt-1.5 pb-1">Institutions, Labs &amp; Companies</div>`);
+    parts.push(`<div class="section-label px-3.5 pt-2 pb-1.5">Institutions, Labs &amp; Startups</div>`);
     parts.push(hubs.map(h => `
-      <button type="button" data-pick-hub="${esc(h.id)}" class="pick-hub w-full text-left px-3 py-2 rounded-2xl hover:bg-white/12 transition flex items-center justify-between gap-2 cursor-pointer">
+      <button type="button" data-pick-hub="${esc(h.id)}" class="pick-hub w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
-          <div class="text-[13.5px] font-medium text-white truncate">${esc(h.name)}</div>
-          <div class="text-[11.5px] text-white/55 truncate">${esc(h.city)}${h.sector ? " · " + esc(h.sector) : ""}</div>
+          <div class="text-[14.5px] font-medium text-white truncate">${esc(h.name)}</div>
+          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(h.city)}${h.sector ? " · " + esc(h.sector) : ""}</div>
         </div>
-        <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/10 text-white/75 shrink-0">${esc(h.entityType)}</span>
+        <span class="text-[12.5px] px-2.5 py-0.5 rounded-full bg-white/[0.08] text-neutral-300 shrink-0">${esc(h.entityType)}</span>
       </button>
     `).join(""));
   }
 
   if (events.length) {
-    parts.push(`<div class="section-label px-3 pt-2 pb-1">History &amp; Timeline</div>`);
+    parts.push(`<div class="section-label px-3.5 pt-3 pb-1.5">History &amp; Timeline</div>`);
     parts.push(events.map(ev => `
-      <button type="button" data-pick-ev="${esc(ev.id)}" data-ev-year="${ev.year}" class="pick-ev w-full text-left px-3 py-2 rounded-2xl hover:bg-white/12 transition flex items-center justify-between gap-2 cursor-pointer">
+      <button type="button" data-pick-ev="${esc(ev.id)}" data-ev-year="${ev.year}" class="pick-ev w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
-          <div class="text-[13px] font-medium text-white truncate">${esc(ev.title)}</div>
-          <div class="text-[11.5px] text-white/55 truncate">${esc(ev.figure)} · ${esc(ev.location)}</div>
+          <div class="text-[14.5px] font-medium text-white truncate">${esc(ev.title)}</div>
+          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(ev.figure)} · ${esc(ev.location)}</div>
         </div>
-        <span class="text-[11px] text-sky-200/90 shrink-0">${formatYear(ev.year)}</span>
+        <span class="text-[13px] accent-text font-medium shrink-0">${formatYear(ev.year)}</span>
       </button>
     `).join(""));
   }
 
   if (missions.length) {
-    parts.push(`<div class="section-label px-3 pt-2 pb-1">Space Frontier (0 → 1 Light-Day)</div>`);
+    parts.push(`<div class="section-label px-3.5 pt-3 pb-1.5">Space Frontier (0 → 1 Light-Day)</div>`);
     parts.push(missions.map(m => `
-      <button type="button" data-pick-mission="${esc(m.id)}" class="pick-mission w-full text-left px-3 py-2 rounded-2xl hover:bg-white/12 transition flex items-center justify-between gap-2 cursor-pointer">
+      <button type="button" data-pick-mission="${esc(m.id)}" class="pick-mission w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
-          <div class="text-[13px] font-medium text-sky-100 truncate">${esc(m.name)}</div>
-          <div class="text-[11.5px] text-white/55 truncate">${esc(m.body)} · ${esc(m.agency)}</div>
+          <div class="text-[14.5px] font-medium text-white truncate">${esc(m.name)}</div>
+          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(m.body)} · ${esc(m.agency)}</div>
         </div>
-        <span class="text-[11px] text-sky-200/85 shrink-0">${esc(m.lightTimeLabel.split(" (")[0])}</span>
+        <span class="text-[13px] accent-text shrink-0">${esc(m.lightTimeLabel.split(" (")[0])}</span>
       </button>
     `).join(""));
   }
 
   if (subdomains.length) {
-    parts.push(`<div class="section-label px-3 pt-2 pb-1">Domains &amp; Vetted Materials</div>`);
+    parts.push(`<div class="section-label px-3.5 pt-3 pb-1.5">Domains &amp; Materials</div>`);
     parts.push(subdomains.map(s => `
-      <button type="button" data-pick-sub="${esc(s.domainId)}" class="pick-sub w-full text-left px-3 py-2 rounded-2xl hover:bg-white/12 transition cursor-pointer">
-        <div class="text-[13px] font-medium text-white truncate">${esc(s.name)}</div>
-        <div class="text-[11.5px] text-white/55 truncate">${esc(s.domainName)} · ${(s.materials || []).length} vetted sources</div>
+      <button type="button" data-pick-sub="${esc(s.domainId)}" class="pick-sub w-full text-left px-3.5 py-2.5 rounded-2xl hover:bg-white/10 transition cursor-pointer">
+        <div class="text-[14.5px] font-medium text-white truncate">${esc(s.name)}</div>
+        <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(s.domainName)}</div>
       </button>
     `).join(""));
   }
 
   if (!parts.length) {
-    parts.push(`<div class="px-3 py-4 text-center text-[12.5px] text-white/55">No local matches. Try <strong>Live Search</strong> below to query OpenAlex &amp; ROR globally.</div>`);
+    parts.push(`<div class="px-4 py-5 text-center text-[14px] text-neutral-400">No local matches. Try <strong class="text-white">Live Search</strong> below.</div>`);
   }
 
   box.innerHTML = parts.join("");
+  closeAllSurfaces("dropdown");
+  document.getElementById("site-menu-dropdown")?.classList.add("hidden");
+  document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
   box.classList.remove("hidden");
+  updateIslandExpanded();
 
   box.querySelectorAll(".pick-hub").forEach(btn => {
     btn.addEventListener("click", () => selectHubNode(btn.dataset.pickHub, true));
@@ -667,101 +800,159 @@ function renderSearchDropdown(query) {
 }
 
 // =========================================================================
-// DRAWER MODALS
+// CENTERED WORKSPACE WINDOW (Strict Single-Surface Mutual Exclusion)
 // =========================================================================
 
 export function openModal(mode, focusId = null) {
-  closeDropdown();
-  const modal = document.getElementById("drawer-modal");
+  closeAllSurfaces("modal");
+  const backdrop = document.getElementById("drawer-backdrop");
   const titleEl = document.getElementById("modal-title");
   const bodyEl = document.getElementById("modal-body");
-  if (!modal || !titleEl || !bodyEl) return;
+  if (!backdrop || !titleEl || !bodyEl) return;
 
-  modal.classList.remove("hidden");
+  backdrop.classList.remove("hidden");
   const titles = {
-    domains: "Domains, Subdomains & Vetted Materials",
-    countries: "Global Countries & Private Deep-Tech",
-    live: "Live Open-Science Global Search",
-    pathways: `${STAGE_META[store.state.stage]?.label || "Academic"} Pathways & Jobs`,
-    audit: "Data Engine, Verification Audit & GDPR Privacy"
+    domains: "Domains & Vetted Materials",
+    countries: "Countries & Continents",
+    live: "Live Open-Science Search",
+    pathways: "Bookmarks & Account",
+    account: "Bookmarks & Account",
+    submit: "Submit Missing Institution",
+    shortcuts: "Keyboard Shortcuts",
+    audit: "Verification & Open Data"
   };
   titleEl.textContent = titles[mode] || "PhysAlts";
 
   if (mode === "domains") renderDomainsModal(bodyEl, focusId);
-  if (mode === "countries") renderCountriesAndDeepTechModal(bodyEl);
+  if (mode === "countries") renderCountriesModal(bodyEl);
   if (mode === "live") renderLiveSearchModal(bodyEl);
-  if (mode === "pathways") renderPathwaysModal(bodyEl);
+  if (mode === "pathways" || mode === "account") {
+    renderAccountWorkspaceModal(bodyEl, {
+      initialTab: focusId || "bookmarks",
+      onNavigateToBookmark: (id, kind) => {
+        closeModal();
+        if (kind === "space" || id.startsWith("sp-")) {
+          setViewMode("space");
+          selectSpaceMission(id.replace(/^sp-/, ""));
+        } else if (kind === "timeline" || id.startsWith("tl-")) {
+          const ev = store.timelineEvents.find(e => `tl-${e.id}` === id);
+          if (ev) setTimeMode(true, ev.year);
+          selectHubNode(id, true);
+        } else {
+          selectHubNode(id, true);
+        }
+      },
+      onOpenAuth: (tab) => {
+        closeModal();
+        openAuthModal(tab, {
+          showToast,
+          onSuccess: () => {
+            renderStageMenu();
+            refreshDbBadge();
+            openModal("account", "bookmarks");
+          }
+        });
+      },
+      onStageUpdated: () => {
+        renderStageMenu();
+        if (store.state.selectedId && !store.state.selectedId.startsWith("sp-")) {
+          selectHubNode(store.state.selectedId, false);
+        }
+      },
+      showToast
+    });
+  }
+  if (mode === "submit") {
+    renderSubmitInstitutionModal(bodyEl, {
+      showToast,
+      onSubmitted: (node) => {
+        refreshDbBadge();
+        syncGlobeMarkers();
+        closeModal();
+        selectHubNode(node.id, true);
+      }
+    });
+  }
+  if (mode === "shortcuts") renderKeyboardShortcutsModal(bodyEl);
   if (mode === "audit") renderAuditAndPrivacyModal(bodyEl);
 }
 
 function renderDomainsModal(bodyEl, focusDomainId = null) {
   const activeDomain = focusDomainId || (store.state.branch !== "all" ? store.state.branch : (store.domains[0]?.id || "particle"));
   const branchPills = PHYSICS_BRANCHES.map(b => {
-    const count = b.id === "all" ? store.hubs.length : store.hubs.filter(h => h.branch === b.id).length;
     const isAct = store.state.branch === b.id;
     return `
-      <button type="button" data-filter-branch="${esc(b.id)}" class="branch-pill px-3 py-1.5 rounded-full text-[12px] transition ${isAct ? "glass-btn-active" : "glass-btn"}">
-        ${esc(b.label.split(/[\s,]+/)[0])} (${count.toLocaleString()})
+      <button type="button" data-filter-branch="${esc(b.id)}" class="branch-pill px-3.5 py-1.5 rounded-full text-[13.5px] transition ${isAct ? "glass-btn-active" : "glass-btn"}">
+        ${esc(b.label.split(/[\s,]+/)[0])}
       </button>
     `;
   }).join("");
 
   const domainTabs = store.domains.map(d => `
-    <button type="button" data-dom-tab="${esc(d.id)}" class="dom-tab px-3 py-1.5 rounded-xl text-[12px] transition ${d.id === activeDomain ? "glass-row-active font-medium" : "glass-row"}">
-      ${esc(d.name)}
+    <button type="button" data-dom-tab="${esc(d.id)}" class="dom-tab px-3.5 py-2 rounded-xl text-[13.5px] transition ${d.id === activeDomain ? "glass-row-active font-medium" : "glass-row"}">
+      ${esc(d.name.split(",")[0].split(" &")[0])}
     </button>
   `).join("");
 
   const selectedDom = store.domains.find(d => d.id === activeDomain) || store.domains[0];
   const subCards = (selectedDom?.subdomains || []).map(sub => `
-    <div class="rounded-2xl bg-white/[0.05] border border-white/10 p-3.5 space-y-2.5">
-      <div>
-        <div class="text-[14px] font-semibold text-white">${esc(sub.name)}</div>
-        <p class="text-[12px] text-white/70 mt-0.5 leading-relaxed">${esc(sub.summary)}</p>
+    <details class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 group" open>
+      <summary class="cursor-pointer list-none flex items-center justify-between gap-3">
+        <div>
+          <div class="text-[15.5px] font-semibold text-white">${esc(sub.name)}</div>
+          <p class="text-[13.5px] text-neutral-400 mt-0.5 leading-relaxed">${esc(sub.summary)}</p>
+        </div>
+      </summary>
+
+      <div class="mt-4 space-y-3.5">
+        ${sub.materials?.length ? `
+          <div class="space-y-2">
+            <div class="section-label">Vetted Open Materials</div>
+            <div class="space-y-2">
+              ${sub.materials.map((m, idx) => {
+                const matId = `mat-${selectedDom.id}-${sub.name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 24)}-${idx}`;
+                const saved = isBookmarked(matId);
+                return `
+                  <div class="glass-row rounded-xl px-4 py-2.5 flex items-center justify-between gap-3">
+                    <a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer" class="min-w-0 flex-1">
+                      <div class="text-[14px] font-medium text-white truncate">${esc(m.title)}</div>
+                      <div class="text-[13px] accent-text truncate">${esc(m.provider)} · ${esc(m.type)} ↗</div>
+                    </a>
+                    <button type="button" data-save-mat="${esc(matId)}" data-mat-title="${esc(m.title)}" data-mat-sub="${esc(m.provider + " · " + sub.name)}" data-mat-url="${esc(m.url)}" class="px-3 py-1 rounded-full text-[12.5px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}">
+                      ${saved ? "✓ Saved" : "+ Save"}
+                    </button>
+                  </div>
+                `;
+              }).join("")}
+            </div>
+          </div>
+        ` : ""}
+        ${sub.projects?.length ? `
+          <div class="space-y-2">
+            <div class="section-label">Active &amp; Upcoming Projects</div>
+            <div class="flex flex-wrap gap-2">
+              ${sub.projects.map(p => `
+                <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1.5 rounded-full text-[13px]">
+                  ${esc(p.name)} ↗
+                </a>
+              `).join("")}
+            </div>
+          </div>
+        ` : ""}
       </div>
-      ${sub.keyQuestions?.length ? `
-        <div class="flex flex-wrap gap-1.5">
-          ${sub.keyQuestions.map(q => `<span class="text-[11px] px-2.5 py-0.5 rounded-full bg-white/[0.07] text-white/75">${esc(q)}</span>`).join("")}
-        </div>
-      ` : ""}
-      ${sub.materials?.length ? `
-        <div class="space-y-1">
-          <div class="section-label">Vetted Open Materials &amp; References</div>
-          <div class="grid grid-cols-1 gap-1.5">
-            ${sub.materials.map(m => `
-              <a href="${esc(m.url)}" target="_blank" rel="noopener noreferrer" class="glass-row rounded-xl px-3 py-2 flex items-center justify-between gap-2 text-[12px]">
-                <span class="truncate"><strong class="text-white">${esc(m.title)}</strong> <span class="text-white/55">· ${esc(m.provider)}</span></span>
-                <span class="text-[11px] px-2 py-0.5 rounded-full bg-white/10 text-white/80 shrink-0">${esc(m.type)} ↗</span>
-              </a>
-            `).join("")}
-          </div>
-        </div>
-      ` : ""}
-      ${sub.projects?.length ? `
-        <div class="space-y-1">
-          <div class="section-label">Active &amp; Upcoming Projects</div>
-          <div class="flex flex-wrap gap-1.5">
-            ${sub.projects.map(p => `
-              <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-full text-[11.5px] bg-sky-300/12 border border-sky-200/25 text-sky-100 hover:bg-sky-300/25 transition">
-                ${esc(p.name)} · ${esc(p.status)} ↗
-              </a>
-            `).join("")}
-          </div>
-        </div>
-      ` : ""}
-    </div>
+    </details>
   `).join("");
 
   bodyEl.innerHTML = `
-    <div class="space-y-3">
-      <div>
-        <div class="section-label mb-1.5">Filter 3D Globe by Physics Branch</div>
-        <div class="flex flex-wrap gap-1.5">${branchPills}</div>
+    <div class="space-y-5">
+      <div class="space-y-2.5">
+        <div class="section-label">Filter Globe by Branch</div>
+        <div class="flex flex-wrap gap-2">${branchPills}</div>
       </div>
-      <div class="border-t border-white/10 pt-3">
-        <div class="section-label mb-1.5">Explore Subdomains, Materials &amp; Projects</div>
-        <div class="flex flex-wrap gap-1.5 mb-3">${domainTabs}</div>
-        <div class="space-y-2.5">${subCards || '<div class="text-white/55 text-[12.5px]">Loading domains catalog…</div>'}</div>
+      <div class="border-t border-white/10 pt-4 space-y-3.5">
+        <div class="section-label">Browse Domain Materials</div>
+        <div class="flex flex-wrap gap-2">${domainTabs}</div>
+        <div class="space-y-3">${subCards || '<div class="text-neutral-400 text-[14px]">Loading domains…</div>'}</div>
       </div>
     </div>
   `;
@@ -772,132 +963,224 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
       updateActiveFiltersPill();
       syncGlobeMarkers();
       renderDomainsModal(bodyEl, btn.dataset.filterBranch === "all" ? activeDomain : btn.dataset.filterBranch);
-      showToast(`Branch filter: ${PHYSICS_BRANCHES.find(b => b.id === store.state.branch)?.label || store.state.branch}`);
+      showToast(`Branch: ${PHYSICS_BRANCHES.find(b => b.id === store.state.branch)?.label || store.state.branch}`);
     });
   });
   bodyEl.querySelectorAll(".dom-tab").forEach(btn => {
     btn.addEventListener("click", () => renderDomainsModal(bodyEl, btn.dataset.domTab));
   });
+  bodyEl.querySelectorAll("[data-save-mat]").forEach(btn => {
+    btn.addEventListener("click", async () => {
+      const saved = await toggleBookmark({
+        id: btn.dataset.saveMat,
+        kind: "material",
+        title: btn.dataset.matTitle,
+        subtitle: btn.dataset.matSub,
+        url: btn.dataset.matUrl,
+        folder: "Study List"
+      });
+      refreshAccountHeader();
+      btn.textContent = saved ? "✓ Saved" : "+ Save";
+      btn.className = `px-3 py-1 rounded-full text-[12.5px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}`;
+      showToast(saved ? "Saved material to Study List" : "Removed bookmark");
+    });
+  });
 }
 
-function renderCountriesAndDeepTechModal(bodyEl) {
-  const sortedCountries = [...store.countries.entries()].sort((a, b) => a[0].localeCompare(b[0]));
-  const smallCountries = sortedCountries.filter(([, count]) => count <= 10);
+// Sleek, uncluttered Continent + Quick Search Country Selector (zero wall of text!)
+function renderCountriesModal(bodyEl) {
+  let tab = "regions"; // "regions" | "private"
+  let selectedContinent = "all";
+  let query = "";
+
+  const sortedCountries = [...store.countries.entries()]
+    .map(([name, count]) => ({ name, count, continent: inferContinent(name) }))
+    .sort((a, b) => a.name.localeCompare(b.name));
+
   const companies = store.hubs.filter(h => h.group === "company" || h.entityType === "startup" || h.entityType === "institute");
 
-  bodyEl.innerHTML = `
-    <div class="space-y-4">
-      <div class="grid grid-cols-3 gap-2">
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[19px] font-semibold text-white">${store.countries.size}</div>
-          <div class="text-[11.5px] text-white/55">Countries Indexed</div>
+  const render = () => {
+    const headerTabs = `
+      <div class="flex items-center justify-between gap-3 pb-4 border-b border-white/10">
+        <div class="flex items-center gap-2">
+          <button type="button" data-ctab="regions" class="px-4 py-2 rounded-full text-[13.5px] transition ${tab === "regions" ? "glass-btn-active" : "glass-btn"}">Continents &amp; Countries</button>
+          <button type="button" data-ctab="private" class="px-4 py-2 rounded-full text-[13.5px] transition ${tab === "private" ? "glass-btn-active" : "glass-btn"}">Private &amp; Startups</button>
         </div>
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[19px] font-semibold text-sky-200">${smallCountries.length}</div>
-          <div class="text-[11.5px] text-white/55">Small &amp; Emerging Nations</div>
-        </div>
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[19px] font-semibold text-sky-300">${companies.length}</div>
-          <div class="text-[11.5px] text-white/55">Private &amp; Startups</div>
-        </div>
+        ${store.state.countryFilter !== "all" ? `<button type="button" id="btn-clear-country" class="accent-link text-[13.5px] bg-transparent border-0 cursor-pointer">Reset</button>` : ""}
       </div>
+    `;
 
-      <div class="space-y-2">
-        <div class="flex items-center justify-between gap-2">
-          <div class="section-label">Filter Globe by Country (All ${store.countries.size} Nations)</div>
-          ${store.state.countryFilter !== "all" ? `<button type="button" id="btn-clear-country" class="text-[11.5px] text-sky-300 hover:underline cursor-pointer">Show All Countries</button>` : ""}
-        </div>
-        <input id="country-search-input" type="text" placeholder="Search any country (e.g. Iceland, Jordan, Rwanda, Estonia, Uruguay)..." class="w-full rounded-2xl bg-white/[0.07] border border-white/12 px-3 py-2 text-[13px] text-white placeholder-white/40 outline-none focus:border-white/30" />
-        <div id="country-chip-list" class="flex flex-wrap gap-1.5 max-h-[160px] scroll-clean pr-1"></div>
-      </div>
-
-      <div class="border-t border-white/10 pt-3 space-y-2">
-        <div class="flex items-center justify-between">
-          <div class="section-label">Private Research Institutes, Companies &amp; Startups</div>
-          <button type="button" id="btn-filter-companies" class="glass-btn rounded-full px-3 py-1 text-[11.5px]">Focus on Globe</button>
-        </div>
-        <div class="space-y-1.5 max-h-[240px] scroll-clean pr-1">
-          ${companies.slice(0, 80).map(c => `
-            <button type="button" data-pick-comp="${esc(c.id)}" class="comp-row glass-row w-full text-left rounded-2xl px-3 py-2 flex items-center justify-between gap-2">
-              <div class="min-w-0">
-                <div class="text-[13px] font-medium text-white truncate">${esc(c.name)}</div>
-                <div class="text-[11.5px] text-white/55 truncate">${esc(c.city)}${c.sector ? " · " + esc(c.sector) : ""}</div>
-              </div>
-              <span class="text-[11px] px-2 py-0.5 rounded-full bg-sky-300/15 text-sky-200 shrink-0">${esc(c.entityType)}</span>
-            </button>
-          `).join("")}
-        </div>
-      </div>
-    </div>
-  `;
-
-  const renderCountryChips = (filter = "") => {
-    const f = filter.trim().toLowerCase();
-    const list = sortedCountries.filter(([name]) => !f || name.toLowerCase().includes(f));
-    const el = document.getElementById("country-chip-list");
-    if (!el) return;
-    el.innerHTML = list.map(([name, cnt]) => {
-      const act = store.state.countryFilter === name;
-      return `<button type="button" data-country="${esc(name)}" class="country-btn px-2.5 py-1 rounded-full text-[11.5px] transition ${act ? "glass-btn-active" : "glass-btn"}">${esc(name)} <span class="opacity-65">(${cnt})</span></button>`;
-    }).join("");
-    el.querySelectorAll(".country-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const chosen = btn.dataset.country;
-        store.state.countryFilter = store.state.countryFilter === chosen ? "all" : chosen;
-        updateActiveFiltersPill();
-        syncGlobeMarkers();
-        const firstHub = store.hubs.find(h => h.country === store.state.countryFilter);
-        if (firstHub) flyToHub(firstHub, 5.5);
-        renderCountriesAndDeepTechModal(bodyEl);
-        showToast(store.state.countryFilter === "all" ? "Showing all countries" : `Filtered to ${store.state.countryFilter}`);
+    if (tab === "regions") {
+      const f = query.trim().toLowerCase();
+      const filtered = sortedCountries.filter(c => {
+        if (selectedContinent !== "all" && c.continent !== selectedContinent) return false;
+        if (f && !c.name.toLowerCase().includes(f) && !c.continent.toLowerCase().includes(f)) return false;
+        return true;
       });
+
+      const activeContObj = CONTINENTS.find(x => x.id === selectedContinent);
+
+      bodyEl.innerHTML = `
+        <div class="space-y-4">
+          ${headerTabs}
+          <input id="country-search-input" type="text" value="${esc(query)}" placeholder="Search a country or continent…" class="glass-input" />
+          <div class="flex flex-wrap gap-2">
+            ${CONTINENTS.map(ct => `
+              <button type="button" data-cont="${esc(ct.id)}" class="px-3.5 py-1.5 rounded-full text-[13.5px] transition ${selectedContinent === ct.id ? "glass-btn-active" : "glass-btn"}">
+                ${esc(ct.label)}
+              </button>
+            `).join("")}
+          </div>
+          ${selectedContinent !== "all" && activeContObj ? `
+            <div class="flex items-center justify-between rounded-2xl bg-white/[0.04] border border-white/10 px-4 py-2.5">
+              <span class="text-[14px] text-neutral-200">${esc(activeContObj.label)}</span>
+              <button type="button" id="btn-fly-continent" class="accent-link text-[13.5px] font-medium bg-transparent border-0 cursor-pointer">Center globe on ${esc(activeContObj.label)} →</button>
+            </div>
+          ` : ""}
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-[310px] scroll-clean pr-1">
+            ${filtered.map(c => {
+              const act = store.state.countryFilter === c.name;
+              return `
+                <button type="button" data-country="${esc(c.name)}" class="country-btn rounded-xl px-4 py-2.5 text-left text-[14px] flex items-center justify-between gap-2 transition ${act ? "glass-row-active font-medium" : "glass-row"}">
+                  <span class="truncate">${esc(c.name)}</span>
+                  <span class="text-[12.5px] ${act ? "text-black/60" : "text-neutral-500"} shrink-0">${c.count}</span>
+                </button>
+              `;
+            }).join("") || `<div class="col-span-2 text-center py-6 text-[14px] text-neutral-400">No matching countries found.</div>`}
+          </div>
+        </div>
+      `;
+
+      const inp = bodyEl.querySelector("#country-search-input");
+      inp?.addEventListener("input", (e) => {
+        query = e.target.value;
+        const pos = e.target.selectionStart;
+        render();
+        const next = bodyEl.querySelector("#country-search-input");
+        if (next) { next.focus(); next.setSelectionRange(pos, pos); }
+      });
+
+      bodyEl.querySelectorAll("[data-cont]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          selectedContinent = btn.dataset.cont;
+          render();
+          const obj = CONTINENTS.find(x => x.id === selectedContinent);
+          if (obj && selectedContinent !== "all") {
+            flyToHub({ lat: obj.lat, lng: obj.lng, zoom: obj.zoom }, obj.zoom);
+          }
+        });
+      });
+
+      bodyEl.querySelector("#btn-fly-continent")?.addEventListener("click", () => {
+        if (activeContObj) {
+          flyToHub({ lat: activeContObj.lat, lng: activeContObj.lng, zoom: activeContObj.zoom }, activeContObj.zoom);
+          closeModal();
+        }
+      });
+
+      bodyEl.querySelectorAll(".country-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const chosen = btn.dataset.country;
+          store.state.countryFilter = store.state.countryFilter === chosen ? "all" : chosen;
+          updateActiveFiltersPill();
+          syncGlobeMarkers();
+          const firstHub = store.hubs.find(h => h.country === store.state.countryFilter);
+          if (firstHub) flyToHub(firstHub, 5.2);
+          closeModal();
+          showToast(store.state.countryFilter === "all" ? "Showing all countries" : store.state.countryFilter);
+        });
+      });
+    } else {
+      const f = query.trim().toLowerCase();
+      const filteredComp = companies.filter(c =>
+        !f || c.name.toLowerCase().includes(f) || (c.city || "").toLowerCase().includes(f) || (c.sector || "").toLowerCase().includes(f)
+      );
+
+      bodyEl.innerHTML = `
+        <div class="space-y-4">
+          ${headerTabs}
+          <div class="flex items-center gap-2.5">
+            <input id="comp-search-input" type="text" value="${esc(query)}" placeholder="Search startups, institutes, or sectors…" class="glass-input" />
+            <button type="button" id="btn-filter-companies" class="glass-btn rounded-full px-4 py-2.5 text-[13.5px] whitespace-nowrap shrink-0">Show on Globe</button>
+          </div>
+          <div class="space-y-2 max-h-[340px] scroll-clean pr-1">
+            ${filteredComp.slice(0, 60).map(c => `
+              <button type="button" data-pick-comp="${esc(c.id)}" class="comp-row glass-row w-full text-left rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="text-[14.5px] font-medium text-white truncate">${esc(c.name)}</div>
+                  <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(c.city)}${c.sector ? " · " + esc(c.sector) : ""}</div>
+                </div>
+                <span class="text-[12.5px] accent-text shrink-0">${esc(c.entityType)}</span>
+              </button>
+            `).join("") || `<div class="text-center py-6 text-[14px] text-neutral-400">No matching organizations.</div>`}
+          </div>
+        </div>
+      `;
+
+      const inp = bodyEl.querySelector("#comp-search-input");
+      inp?.addEventListener("input", (e) => {
+        query = e.target.value;
+        const pos = e.target.selectionStart;
+        render();
+        const next = bodyEl.querySelector("#comp-search-input");
+        if (next) { next.focus(); next.setSelectionRange(pos, pos); }
+      });
+
+      bodyEl.querySelector("#btn-filter-companies")?.addEventListener("click", () => {
+        setGroupFilter("company");
+        closeModal();
+      });
+
+      bodyEl.querySelectorAll(".comp-row").forEach(btn => {
+        btn.addEventListener("click", () => {
+          closeModal();
+          selectHubNode(btn.dataset.pickComp, true);
+        });
+      });
+    }
+
+    bodyEl.querySelectorAll("[data-ctab]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        tab = btn.dataset.ctab;
+        query = "";
+        render();
+      });
+    });
+
+    bodyEl.querySelector("#btn-clear-country")?.addEventListener("click", () => {
+      store.state.countryFilter = "all";
+      updateActiveFiltersPill();
+      syncGlobeMarkers();
+      render();
     });
   };
 
-  renderCountryChips();
-  document.getElementById("country-search-input")?.addEventListener("input", (e) => renderCountryChips(e.target.value));
-  document.getElementById("btn-clear-country")?.addEventListener("click", () => {
-    store.state.countryFilter = "all";
-    updateActiveFiltersPill();
-    syncGlobeMarkers();
-    renderCountriesAndDeepTechModal(bodyEl);
-  });
-  document.getElementById("btn-filter-companies")?.addEventListener("click", () => {
-    setGroupFilter("company");
-    closeModal();
-    showToast(`Showing ${companies.length} private institutes & deep-tech companies`);
-  });
-  bodyEl.querySelectorAll(".comp-row").forEach(btn => {
-    btn.addEventListener("click", () => {
-      closeModal();
-      selectHubNode(btn.dataset.pickComp, true);
-    });
-  });
+  render();
 }
 
 function renderLiveSearchModal(bodyEl) {
   bodyEl.innerHTML = `
-    <div class="space-y-3">
-      <p class="text-[12.5px] text-white/65 leading-relaxed">
-        Query live CC0 open-science registries (<strong>OpenAlex</strong> &amp; <strong>ROR v2</strong>) for any physics lab, university, observatory, or startup worldwide and add it directly to your atlas.
+    <div class="space-y-4">
+      <p class="text-[14px] text-neutral-400 leading-relaxed">
+        Query live OpenAlex &amp; ROR registries for any research institution worldwide and plot it immediately.
       </p>
-      <form id="live-search-form" class="flex gap-2">
-        <input id="live-search-input" type="text" placeholder="e.g. synchrotron, neutrino, Leiden, quantum, Ghana..." class="flex-1 rounded-2xl bg-white/[0.08] border border-white/15 px-3.5 py-2 text-[13px] text-white placeholder-white/40 outline-none focus:border-white/35" />
-        <button type="submit" class="glass-btn-active rounded-2xl px-4 py-2 text-[13px]">Search</button>
+      <form id="live-search-form" class="flex gap-2.5">
+        <input id="live-search-input" type="text" placeholder="e.g., synchrotron, neutrino, Leiden, quantum…" class="glass-input flex-1" />
+        <button type="submit" class="glass-btn-active rounded-full px-5 py-2.5 text-[14px] shrink-0">Search</button>
       </form>
-      <div class="flex flex-wrap gap-1.5">
-        ${["Quantum", "Fusion", "Observatory", "Synchrotron", "Photonics", "Africa Physics"].map(tag => `
-          <button type="button" data-quick="${esc(tag)}" class="live-quick glass-btn rounded-full px-3 py-1 text-[11.5px]">${esc(tag)}</button>
+      <div class="flex flex-wrap gap-2">
+        ${["Quantum", "Fusion", "Observatory", "Synchrotron", "Photonics"].map(tag => `
+          <button type="button" data-quick="${esc(tag)}" class="live-quick glass-btn rounded-full px-3.5 py-1.5 text-[13px]">${esc(tag)}</button>
         `).join("")}
       </div>
-      <div id="live-results" class="space-y-2 pt-1"></div>
+      <div id="live-results" class="space-y-2.5 pt-1"></div>
     </div>
   `;
 
   const runLive = async (q) => {
     const out = document.getElementById("live-results");
     if (!out || !q.trim()) return;
-    out.innerHTML = `<div class="text-[12.5px] text-white/55 py-2">Querying OpenAlex &amp; ROR v2 live…</div>`;
+    out.innerHTML = `<div class="text-[14px] text-neutral-400 py-2">Searching registries…</div>`;
     try {
       const [oa, ror] = await Promise.allSettled([
         fetch(proxyUrl(`https://api.openalex.org/institutions?search=${encodeURIComponent(q)}&per-page=10`)).then(r => r.ok ? r.json() : null),
@@ -941,27 +1224,26 @@ function renderLiveSearchModal(bodyEl) {
             branch: classifyPhysicsBranch(name),
             sourceApi: "ROR v2 Live",
             url: org.links?.[0]?.value || org.id || "",
-            summary: `Verified ROR v2 organization (${(org.types || []).join(", ") || "research"}).`
+            summary: `Verified ROR v2 organization.`
           });
         }
       }
 
       if (!items.length) {
-        out.innerHTML = `<div class="text-[12.5px] text-white/55">No geocoded physics results found for "${esc(q)}".</div>`;
+        out.innerHTML = `<div class="text-[14px] text-neutral-400">No geocoded results found for "${esc(q)}".</div>`;
         return;
       }
 
       mergeHubs(items, "scraped");
-      refreshDbBadge();
       syncGlobeMarkers();
 
       out.innerHTML = items.map(it => `
-        <button type="button" data-live-id="${esc(it.id)}" class="live-pick glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2">
+        <button type="button" data-live-id="${esc(it.id)}" class="live-pick glass-row w-full text-left rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
           <div class="min-w-0">
-            <div class="text-[13px] font-medium text-white truncate">${esc(it.name)}</div>
-            <div class="text-[11.5px] text-white/55 truncate">${esc(it.city)} · ${esc(it.sourceApi)}</div>
+            <div class="text-[14.5px] font-medium text-white truncate">${esc(it.name)}</div>
+            <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(it.city)} · ${esc(it.sourceApi)}</div>
           </div>
-          <span class="text-[11px] text-sky-200 shrink-0">Locate →</span>
+          <span class="text-[13.5px] accent-text shrink-0">Locate →</span>
         </button>
       `).join("");
 
@@ -972,7 +1254,7 @@ function renderLiveSearchModal(bodyEl) {
         });
       });
     } catch {
-      out.innerHTML = `<div class="text-[12.5px] text-rose-200/80">Live registry query failed. Please try again.</div>`;
+      out.innerHTML = `<div class="text-[14px] accent-text">Live query failed. Please try again.</div>`;
     }
   };
 
@@ -989,210 +1271,40 @@ function renderLiveSearchModal(bodyEl) {
   });
 }
 
-function renderPathwaysModal(bodyEl) {
-  const st = store.state.stage;
-  const portals = STAGE_PORTALS[st] || STAGE_PORTALS.all;
-  const savedNodes = [...store.state.shortlist].map(id => getNodeById(id)).filter(Boolean);
-
-  bodyEl.innerHTML = `
-    <div class="space-y-4">
-      <div>
-        <div class="section-label mb-2">Official ${esc(STAGE_META[st]?.label)} Portals</div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-          ${portals.map(p => `
-            <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="glass-row rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-2 text-[12.5px]">
-              <span class="font-medium text-white truncate">${esc(p.name)}</span>
-              <span class="text-white/55">↗</span>
-            </a>
-          `).join("")}
-        </div>
-      </div>
-
-      <div class="border-t border-white/10 pt-3">
-        <div class="section-label mb-2">Your Saved Shortlist (${savedNodes.length})</div>
-        ${savedNodes.length ? `
-          <div class="space-y-1.5">
-            ${savedNodes.map(n => `
-              <button type="button" data-sl-id="${esc(n.id)}" class="sl-pick glass-row w-full text-left rounded-2xl px-3.5 py-2 flex items-center justify-between gap-2">
-                <div class="min-w-0">
-                  <div class="text-[13px] font-medium text-white truncate">${esc(n.name)}</div>
-                  <div class="text-[11.5px] text-white/55 truncate">${esc(n.city)}</div>
-                </div>
-                <span class="text-[11px] text-white/60">Open →</span>
-              </button>
-            `).join("")}
-          </div>
-        ` : `<div class="text-[12.5px] text-white/50">Click any institution on the globe and press <strong>+ Save to Shortlist</strong> to build your list.</div>`}
-      </div>
-
-      <div class="border-t border-white/10 pt-3">
-        <div class="section-label mb-2">Live Open Physics Positions (INSPIRE-HEP)</div>
-        <div id="inspire-jobs-list" class="space-y-1.5 text-[12px] text-white/55">Fetching live openings…</div>
-      </div>
-
-      <div class="border-t border-white/10 pt-3">
-        <details class="rounded-2xl bg-white/[0.04] border border-white/10 p-3">
-          <summary class="text-[12.5px] font-medium text-white cursor-pointer">+ Submit a Missing Lab, University, or Startup</summary>
-          <form id="add-hub-form" class="mt-3 space-y-2">
-            <div class="grid grid-cols-2 gap-2">
-              <input id="add-name" required placeholder="Institution / Startup Name" class="rounded-xl bg-white/[0.08] border border-white/12 px-3 py-1.5 text-[12.5px] text-white outline-none" />
-              <input id="add-city" required placeholder="City, Country" class="rounded-xl bg-white/[0.08] border border-white/12 px-3 py-1.5 text-[12.5px] text-white outline-none" />
-            </div>
-            <div class="grid grid-cols-3 gap-2">
-              <input id="add-lat" required type="number" step="any" placeholder="Latitude" class="rounded-xl bg-white/[0.08] border border-white/12 px-3 py-1.5 text-[12.5px] text-white outline-none" />
-              <input id="add-lng" required type="number" step="any" placeholder="Longitude" class="rounded-xl bg-white/[0.08] border border-white/12 px-3 py-1.5 text-[12.5px] text-white outline-none" />
-              <select id="add-type" class="rounded-xl bg-[#0e131e] border border-white/12 px-2.5 py-1.5 text-[12.5px] text-white outline-none">
-                <option value="lab">Lab / Facility</option>
-                <option value="uni">University</option>
-                <option value="company">Company / Startup</option>
-                <option value="institute">Private Institute</option>
-              </select>
-            </div>
-            <input id="add-url" type="url" placeholder="Official Website (https://...)" class="w-full rounded-xl bg-white/[0.08] border border-white/12 px-3 py-1.5 text-[12.5px] text-white outline-none" />
-            <textarea id="add-summary" rows="2" placeholder="Short factual summary of physics work..." class="w-full rounded-xl bg-white/[0.08] border border-white/12 px-3 py-1.5 text-[12.5px] text-white outline-none"></textarea>
-            <button type="submit" class="glass-btn-active rounded-full px-4 py-1.5 text-[12px]">Add to Atlas</button>
-          </form>
-        </details>
-      </div>
-    </div>
-  `;
-
-  bodyEl.querySelectorAll(".sl-pick").forEach(btn => {
-    btn.addEventListener("click", () => {
-      closeModal();
-      selectHubNode(btn.dataset.slId, true);
-    });
-  });
-
-  const rankMap = { phd: "PHD", postdoc: "POSTDOC", assoc_prof: "JUNIOR", prof: "SENIOR" };
-  const rank = rankMap[st] || "";
-  const reqId = ++activeJobsReq;
-  const q = rank ? `status:open and rank:${rank}` : "status:open";
-  fetch(proxyUrl(`https://inspirehep.net/api/jobs?q=${encodeURIComponent(q)}&size=5&sort=mostrecent`))
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (reqId !== activeJobsReq) return;
-      const el = document.getElementById("inspire-jobs-list");
-      if (!el) return;
-      const hits = data?.hits?.hits || [];
-      if (!hits.length) {
-        el.innerHTML = `<div>No open positions returned for this stage right now.</div>`;
-        return;
-      }
-      el.innerHTML = hits.map(h => {
-        const md = h.metadata || {};
-        const pos = md.position || "Physics Position";
-        const inst = md.institutions?.[0]?.value || "Research Institution";
-        const url = `https://inspirehep.net/jobs/${h.id}`;
-        return `
-          <a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="glass-row rounded-2xl px-3.5 py-2 block">
-            <div class="text-[12.5px] font-medium text-white line-clamp-1">${esc(pos)}</div>
-            <div class="text-[11.5px] text-white/55 flex justify-between gap-2 mt-0.5">
-              <span class="truncate">${esc(inst)}</span>
-              <span class="shrink-0">${esc(md.deadline_date || "Open")} ↗</span>
-            </div>
-          </a>
-        `;
-      }).join("");
-    }).catch(() => {
-      const el = document.getElementById("inspire-jobs-list");
-      if (el) el.textContent = "INSPIRE-HEP live jobs unavailable right now.";
-    });
-
-  document.getElementById("add-hub-form")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const name = document.getElementById("add-name").value.trim();
-    const city = document.getElementById("add-city").value.trim();
-    const lat = Number(document.getElementById("add-lat").value);
-    const lng = Number(document.getElementById("add-lng").value);
-    const entityType = document.getElementById("add-type").value;
-    const url = document.getElementById("add-url").value.trim();
-    const summary = document.getElementById("add-summary").value.trim() || "Community-submitted physics hub.";
-    if (!name || Number.isNaN(lat) || Number.isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
-      showToast("Enter valid name and coordinates.");
-      return;
-    }
-    const node = {
-      id: `custom-${Date.now()}`,
-      name,
-      city,
-      country: city.includes(",") ? city.split(",").pop().trim() : "",
-      lat,
-      lng,
-      group: entityType === "company" || entityType === "institute" ? "company" : entityType,
-      entityType,
-      branch: classifyPhysicsBranch(`${name} ${summary}`),
-      url,
-      summary,
-      sourceApi: "Community"
-    };
-    mergeHubs([node], "custom");
-    await submitCommunityHub(node);
-    refreshDbBadge();
-    syncGlobeMarkers();
-    closeModal();
-    selectHubNode(node.id, true);
-    showToast(`Added "${name}" to PhysAlts`);
-  });
-}
-
 function renderAuditAndPrivacyModal(bodyEl) {
   const rep = store.verificationReport;
   const s = rep?.summary || {};
   const passRate = s.passRatePct != null ? `${s.passRatePct}%` : "Verified";
-  const checkedAt = rep?.generatedAt ? new Date(rep.generatedAt).toLocaleString() : "Latest build";
 
   bodyEl.innerHTML = `
-    <div class="space-y-4">
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[18px] font-semibold text-white">${store.hubs.length.toLocaleString()}</div>
-          <div class="text-[11px] text-white/55">Total Hubs</div>
-        </div>
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[18px] font-semibold text-white">${store.countries.size}</div>
-          <div class="text-[11px] text-white/55">Countries</div>
-        </div>
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[18px] font-semibold text-sky-200">${esc(passRate)}</div>
-          <div class="text-[11px] text-white/55">Live Link Pass</div>
-        </div>
-        <div class="rounded-2xl bg-white/[0.06] border border-white/10 p-3 text-center">
-          <div class="text-[18px] font-semibold text-sky-300">${store.timelineEvents.length + store.spaceMissions.length}</div>
-          <div class="text-[11px] text-white/55">Time + Space Nodes</div>
+    <div class="space-y-5">
+      <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 space-y-2.5 text-[14px] text-neutral-300">
+        <div class="text-[15.5px] font-semibold text-white">Verified Open-Science Ledger</div>
+        <p class="leading-relaxed">All institutions, milestones, and space missions link directly to official primary registries (OpenAlex, ROR v2, INSPIRE-HEP, NASA/ESA, Wikimedia).</p>
+        <div class="text-[13px] text-neutral-400">Schema errors: <strong class="text-white">${s.schemaErrorsCount ?? 0}</strong> · Live link pass: <strong class="text-white">${esc(passRate)}</strong></div>
+        <div class="flex flex-wrap gap-3 pt-1 text-[13.5px]">
+          <a href="./data/provenance_ledger.json" target="_blank" rel="noopener noreferrer" class="accent-link">Provenance Ledger ↗</a>
+          <a href="./data/physalts_schema.json" target="_blank" rel="noopener noreferrer" class="accent-link">JSON Schema ↗</a>
+          <a href="./data/verification_report.json" target="_blank" rel="noopener noreferrer" class="accent-link">Audit Report ↗</a>
+          <a href="./about.html" class="accent-link">Methodology ↗</a>
         </div>
       </div>
 
-      <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-3.5 space-y-2 text-[12px] text-white/75">
-        <div class="text-[12.5px] font-semibold text-white">Automated Fact-Check, Link Verification &amp; Provenance Ledger</div>
-        <p>Last audited: <strong class="text-white">${esc(checkedAt)}</strong> · Links checked: <strong class="text-white">${(s.linksChecked || 0).toLocaleString()}</strong> · Schema errors: <strong class="text-sky-200">${s.schemaErrorsCount ?? 0}</strong></p>
-        ${store.provenanceLedger?.merkleRootSha256 ? `<p class="font-mono text-[11px] text-sky-200/85 truncate">SHA-256 Merkle Root: ${esc(store.provenanceLedger.merkleRootSha256)}</p>` : ""}
-        <p class="text-white/55">Open registries: OpenAlex (CC0) · ROR v2 (CC0) · INSPIRE-HEP (CC0) · Wikimedia (CC-BY-SA) · Esri World Imagery.</p>
-        <div class="flex flex-wrap gap-1.5 pt-1">
-          <a href="./data/provenance_ledger.json" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1 text-[11px]">Provenance Ledger JSON ↗</a>
-          <a href="./data/physalts_schema.json" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1 text-[11px]">JSON Schema 2020-12 ↗</a>
-          <a href="./data/verification_report.json" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3 py-1 text-[11px]">Full Audit Report ↗</a>
+      <div class="space-y-2.5">
+        <div class="section-label">Export Open Dataset</div>
+        <div class="flex flex-wrap gap-2.5">
+          <button type="button" id="btn-exp-json" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Dataset .JSON</button>
+          <button type="button" id="btn-exp-kml" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Google Earth .KML</button>
+          <button type="button" id="btn-exp-csv" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Spreadsheet .CSV</button>
         </div>
       </div>
 
-      <div class="space-y-2">
-        <div class="section-label">Export Full Open Dataset</div>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" id="btn-exp-json" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">Dataset .JSON</button>
-          <button type="button" id="btn-exp-kml" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">Google Earth .KML</button>
-          <button type="button" id="btn-exp-csv" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">Spreadsheet .CSV</button>
-        </div>
-      </div>
-
-      <div class="border-t border-white/10 pt-3 space-y-2.5">
-        <div class="text-[12.5px] font-semibold text-white">GDPR Privacy &amp; Your Data Controls</div>
-        <p class="text-[12px] text-white/65 leading-relaxed">
-          PhysAlts collects zero PII, zero GPS location, and zero ad tracking cookies. Only your career stage and shortlist are stored (locally or via anonymous Firebase UID when configured).
-        </p>
-        <div class="flex flex-wrap gap-2">
-          <button type="button" id="btn-gdpr-export" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">Export My Data (Art. 20)</button>
-          <button type="button" id="btn-gdpr-erase" class="rounded-full px-3.5 py-1.5 text-[12px] bg-rose-500/20 border border-rose-400/35 text-rose-100 hover:bg-rose-500/35 transition cursor-pointer">Erase All My Data (Art. 17)</button>
-          <a href="./privacy.html" target="_blank" rel="noopener noreferrer" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">Full Privacy Policy ↗</a>
+      <div class="border-t border-white/10 pt-4 space-y-3">
+        <div class="text-[15px] font-semibold text-white">Privacy &amp; GDPR Controls</div>
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button type="button" id="btn-gdpr-export" class="glass-btn rounded-full px-4 py-2 text-[13.5px]">Export My Data (Art. 20)</button>
+          <button type="button" id="btn-gdpr-erase" class="accent-chip rounded-full px-4 py-2 text-[13.5px]">Erase Local Data (Art. 17)</button>
+          <a href="./privacy.html" class="accent-link text-[13.5px] px-2">Privacy Policy ↗</a>
         </div>
       </div>
     </div>
@@ -1200,12 +1312,12 @@ function renderAuditAndPrivacyModal(bodyEl) {
 
   document.getElementById("btn-exp-json")?.addEventListener("click", () => {
     downloadBlob(JSON.stringify({
-      meta: { name: "PhysAlts Global Physics Dataset", exportedAt: new Date().toISOString(), totalHubs: store.hubs.length, totalCountries: store.countries.size },
+      meta: { name: "PhysAlts Global Physics Dataset", exportedAt: new Date().toISOString() },
       hubs: store.hubs,
       timelineEvents: store.timelineEvents,
       spaceMissions: store.spaceMissions
     }, null, 2), "physalts_dataset.json", "application/json");
-    showToast(`Exported ${store.hubs.length.toLocaleString()} hubs to JSON`);
+    showToast("Exported physalts_dataset.json");
   });
 
   document.getElementById("btn-exp-kml")?.addEventListener("click", () => {
@@ -1213,20 +1325,20 @@ function renderAuditAndPrivacyModal(bodyEl) {
     const marks = nodes.map(n => `\n    <Placemark><name>${esc(n.name)}</name><description>${esc(n.summary)}</description><Point><coordinates>${n.lng},${n.lat},0</coordinates></Point></Placemark>`).join("");
     const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>PhysAlts</name>${marks}\n</Document></kml>`;
     downloadBlob(kml, "physalts_physics.kml", "application/vnd.google-earth.kml+xml");
-    showToast(`Exported ${nodes.length.toLocaleString()} places to KML`);
+    showToast("Exported physalts_physics.kml");
   });
 
   document.getElementById("btn-exp-csv")?.addEventListener("click", () => {
     const header = "name,city,country,entityType,branch,lat,lng,url";
     const rows = store.hubs.map(h => [h.name, h.city, h.country, h.entityType, h.branch, h.lat, h.lng, h.url].map(v => `"${String(v || "").replace(/"/g, '""')}"`).join(","));
     downloadBlob([header, ...rows].join("\n"), "physalts_hubs.csv", "text/csv");
-    showToast(`Exported ${store.hubs.length.toLocaleString()} hubs to CSV`);
+    showToast("Exported physalts_hubs.csv");
   });
 
   document.getElementById("btn-gdpr-export")?.addEventListener("click", () => {
     const data = exportUserData(store.state.stage, store.state.shortlist);
     downloadBlob(JSON.stringify(data, null, 2), "physalts_my_data_gdpr.json", "application/json");
-    showToast("Exported your personal preferences (GDPR Art. 20)");
+    showToast("Exported personal data (GDPR Art. 20)");
   });
 
   document.getElementById("btn-gdpr-erase")?.addEventListener("click", async () => {
@@ -1235,7 +1347,7 @@ function renderAuditAndPrivacyModal(bodyEl) {
     store.state.stage = "undergrad";
     renderStageMenu();
     renderAuditAndPrivacyModal(bodyEl);
-    showToast("All your saved data has been permanently erased (GDPR Art. 17)");
+    showToast("Local data erased (GDPR Art. 17)");
   });
 }
 
@@ -1263,16 +1375,15 @@ export function renderStageMenu() {
   menu.innerHTML = Object.entries(STAGE_META).map(([key, meta]) => {
     const active = store.state.stage === key;
     return `
-      <button type="button" data-stage-opt="${key}" class="w-full text-left px-3 py-2 rounded-[14px] text-[13px] flex items-center justify-between cursor-pointer ${active ? "stage-opt-active" : "stage-opt"}">
+      <button type="button" data-stage-opt="${key}" class="w-full text-left px-3.5 py-2.5 rounded-[14px] text-[14px] flex items-center justify-between cursor-pointer ${active ? "stage-opt-active" : "stage-opt"}">
         <span>${meta.label}</span>
         ${active ? "<span>✓</span>" : ""}
       </button>
     `;
   }).join("");
   menu.querySelectorAll("[data-stage-opt]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      store.state.stage = btn.dataset.stageOpt;
-      syncPrefs(store.state.stage, store.state.shortlist);
+    btn.addEventListener("click", async () => {
+      await updateAccountProfile({ stage: btn.dataset.stageOpt });
       renderStageMenu();
       menu.classList.add("hidden");
       if (store.state.selectedId && !store.state.selectedId.startsWith("sp-")) selectHubNode(store.state.selectedId, false);
@@ -1297,37 +1408,171 @@ function updateActiveFiltersPill() {
   const txt = document.getElementById("active-filter-text");
   if (!pill || !txt) return;
   const labels = [];
-  if (store.state.branch !== "all") labels.push(PHYSICS_BRANCHES.find(b => b.id === store.state.branch)?.label || store.state.branch);
+  if (store.state.branch !== "all") labels.push(PHYSICS_BRANCHES.find(b => b.id === store.state.branch)?.label.split(/[\s,]+/)[0] || store.state.branch);
   if (store.state.countryFilter !== "all") labels.push(store.state.countryFilter);
   if (labels.length) {
     txt.textContent = labels.join(" · ");
     pill.classList.remove("hidden");
+    pill.classList.add("inline-flex");
   } else {
     pill.classList.add("hidden");
+    pill.classList.remove("inline-flex");
   }
 }
 
 // =========================================================================
-// INITIALIZE ALL DOM LISTENERS
+// SHAREABLE DEEP LINKS (?hub=, ?space=, ?era=, ?domain=, ?country=, ?auth=)
+// =========================================================================
+
+export function applyDeepLinkFromUrl() {
+  try {
+    if (location.protocol === "blob:") return;
+    const params = new URLSearchParams(location.search);
+    if (params.get("space")) {
+      setViewMode("space");
+      selectSpaceMission(params.get("space"));
+    } else if (params.get("hub")) {
+      selectHubNode(params.get("hub"), true);
+    } else if (params.get("era")) {
+      const targetEra = store.eras.find(e => e.id === params.get("era"));
+      setTimeMode(true, targetEra ? targetEra.startYear : -580);
+    } else if (params.get("domain")) {
+      openModal("domains", params.get("domain"));
+    } else if (params.get("country")) {
+      store.state.countryFilter = params.get("country");
+      updateActiveFiltersPill();
+      syncGlobeMarkers();
+      const firstHub = store.hubs.find(h => h.country.toLowerCase() === store.state.countryFilter.toLowerCase());
+      if (firstHub) flyToHub(firstHub, 5.2);
+    } else if (params.get("auth") === "signup" || params.get("auth") === "signin") {
+      closeAllSurfaces("auth");
+      openAuthModal(params.get("auth"), { showToast });
+    }
+  } catch {}
+}
+
+function copyCurrentShareLink() {
+  const id = store.state.selectedId;
+  if (!id) return;
+  let query = "";
+  if (id.startsWith("sp-")) query = `?space=${encodeURIComponent(id.slice(3))}`;
+  else query = `?hub=${encodeURIComponent(id)}`;
+
+  const base = location.protocol === "blob:" ? "https://physalts.org/" : `${location.origin}${location.pathname}`;
+  const fullUrl = `${base}${query}`;
+  if (navigator.clipboard?.writeText) {
+    navigator.clipboard.writeText(fullUrl).then(() => showToast("Share link copied")).catch(() => showToast(fullUrl));
+  } else {
+    showToast(fullUrl);
+  }
+}
+
+const recentRabbitIds = [];
+
+function jumpRabbitHole() {
+  if (store.state.viewMode === "space" && store.spaceMissions.length) {
+    const pool = store.spaceMissions.filter(m => !recentRabbitIds.includes(`sp-${m.id}`));
+    const pick = (pool.length ? pool : store.spaceMissions)[Math.floor(Math.random() * (pool.length || store.spaceMissions.length))];
+    if (!pick) return;
+    recentRabbitIds.push(`sp-${pick.id}`);
+    if (recentRabbitIds.length > 24) recentRabbitIds.shift();
+    selectSpaceMission(pick.id);
+    showToast(`Rabbit Hole → ${pick.name}`);
+    return;
+  }
+
+  // Curated curiosity pool: flagships, small-nation labs, deep-tech startups, and rich hubs
+  const curatedPool = store.hubs.filter(h => (h.tier === "flagship" || h.tier === "deeptech") && !recentRabbitIds.includes(h.id));
+  const fallbackPool = store.hubs.filter(h => !recentRabbitIds.includes(h.id));
+  const pool = curatedPool.length ? curatedPool : (fallbackPool.length ? fallbackPool : store.hubs);
+  if (!pool.length) return;
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  recentRabbitIds.push(pick.id);
+  if (recentRabbitIds.length > 32) recentRabbitIds.shift();
+
+  if (store.state.timeMode) setTimeMode(false);
+  selectHubNode(pick.id, true);
+  showToast(`Rabbit Hole → ${pick.name}`);
+}
+
+// =========================================================================
+// INITIALIZE ALL DOM LISTENERS & GLOBAL KEYBOARD SHORTCUTS
 // =========================================================================
 
 export function initUI() {
   renderStageMenu();
   refreshDbBadge();
+  refreshAccountHeader();
   bindTimelineRuler();
+
+  document.getElementById("btn-rabbit-hole")?.addEventListener("click", jumpRabbitHole);
+  document.getElementById("btn-card-rabbit")?.addEventListener("click", jumpRabbitHole);
 
   const searchInput = document.getElementById("search-input");
   searchInput?.addEventListener("focus", () => renderSearchDropdown(searchInput.value));
   searchInput?.addEventListener("input", () => renderSearchDropdown(searchInput.value));
-  document.getElementById("btn-explore")?.addEventListener("click", () => renderSearchDropdown(searchInput?.value || ""));
 
   document.getElementById("stage-dropdown-btn")?.addEventListener("click", (e) => {
     e.stopPropagation();
-    document.getElementById("search-dropdown")?.classList.add("hidden");
     document.getElementById("stage-dropdown-menu")?.classList.toggle("hidden");
   });
 
-  document.getElementById("db-status-pill")?.addEventListener("click", () => openModal("audit"));
+  // Account Button: Single-surface mutual exclusion!
+  document.getElementById("btn-account")?.addEventListener("click", () => {
+    const snap = getAuthSnapshot();
+    if (snap.isAuthenticated) {
+      openModal("account", "bookmarks");
+    } else {
+      closeAllSurfaces("auth");
+      openAuthModal("signin", {
+        showToast,
+        onSuccess: () => {
+          renderStageMenu();
+          refreshDbBadge();
+        }
+      });
+    }
+  });
+
+  document.getElementById("btn-close-auth")?.addEventListener("click", closeAuthModal);
+  document.getElementById("auth-modal-backdrop")?.addEventListener("click", (e) => {
+    if (e.target.id === "auth-modal-backdrop") closeAuthModal();
+  });
+
+  document.getElementById("drawer-backdrop")?.addEventListener("click", (e) => {
+    if (e.target.id === "drawer-backdrop") closeModal();
+  });
+
+  // Dynamic Island Menu Toggle (mutually exclusive with Search, Modals, Auth)
+  const menuBtn = document.getElementById("btn-site-menu");
+  const menuDrop = document.getElementById("site-menu-dropdown");
+  menuBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const willOpen = menuDrop?.classList.contains("hidden");
+    if (willOpen) {
+      closeAllSurfaces("dropdown");
+      document.getElementById("search-dropdown")?.classList.add("hidden");
+      document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
+      menuDrop?.classList.remove("hidden");
+    } else {
+      menuDrop?.classList.add("hidden");
+      document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
+    }
+    menuBtn.setAttribute("aria-expanded", String(Boolean(willOpen)));
+    updateIslandExpanded();
+  });
+
+  menuDrop?.querySelectorAll("[data-menu-action]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const act = btn.dataset.menuAction;
+      closeDropdown();
+      if (act === "bookmarks") openModal("account", "bookmarks");
+      if (act === "live") openModal("live");
+      if (act === "submit") openModal("submit");
+      if (act === "audit") openModal("audit");
+      if (act === "shortcuts") openModal("shortcuts");
+    });
+  });
 
   document.getElementById("btn-clear-filters")?.addEventListener("click", () => {
     store.state.branch = "all";
@@ -1354,13 +1599,18 @@ export function initUI() {
     e.currentTarget.classList.toggle("glass-btn-active", store.state.tilted);
     setGlobeTilt(store.state.tilted);
   });
-  document.getElementById("btn-reset-space")?.addEventListener("click", () => resetGlobeToSpace());
+  document.getElementById("btn-reset-space")?.addEventListener("click", () => {
+    closeDropdown();
+    if (store.state.viewMode === "space") setViewMode("earth");
+    resetGlobeToSpace();
+  });
 
   document.getElementById("btn-zoom-in")?.addEventListener("click", zoomInGlobe);
   document.getElementById("btn-zoom-out")?.addEventListener("click", zoomOutGlobe);
 
   document.querySelectorAll("[data-group-tab]").forEach(btn => {
     btn.addEventListener("click", () => {
+      closeAllSurfaces();
       if (store.state.viewMode === "space") setViewMode("earth");
       setGroupFilter(btn.dataset.groupTab);
     });
@@ -1371,10 +1621,8 @@ export function initUI() {
   });
   document.getElementById("btn-open-domains")?.addEventListener("click", () => openModal("domains"));
   document.getElementById("btn-open-countries")?.addEventListener("click", () => openModal("countries"));
-  document.getElementById("btn-open-live")?.addEventListener("click", () => openModal("live"));
-  document.getElementById("btn-open-pathways")?.addEventListener("click", () => openModal("pathways"));
+  document.getElementById("btn-open-pathways")?.addEventListener("click", () => openModal("account", "bookmarks"));
 
-  // Museum-grade Timeline step & tour controls
   document.getElementById("btn-time-prev")?.addEventListener("click", () => {
     stopTimeTour();
     jumpToTimelineIndex(activeTimelineIdx - 1, true);
@@ -1403,31 +1651,81 @@ export function initUI() {
   document.getElementById("btn-time-close")?.addEventListener("click", () => setTimeMode(false));
 
   document.getElementById("btn-close-card")?.addEventListener("click", closePlaceCard);
+  document.getElementById("btn-close-modal")?.addEventListener("click", closeModal);
   document.getElementById("btn-deeper-toggle")?.addEventListener("click", () => {
     document.getElementById("card-deeper-wrap")?.classList.toggle("hidden");
   });
-  document.getElementById("btn-save-shortlist")?.addEventListener("click", () => {
+  document.getElementById("btn-copy-link")?.addEventListener("click", copyCurrentShareLink);
+
+  // Unified Bookmarking for Hubs, Timeline Milestones, AND Space Missions
+  document.getElementById("btn-save-shortlist")?.addEventListener("click", async () => {
     const id = store.state.selectedId;
-    if (!id || id.startsWith("sp-")) return;
-    if (store.state.shortlist.has(id)) {
-      store.state.shortlist.delete(id);
-      showToast("Removed from shortlist");
+    if (!id) return;
+    let payload = null;
+    if (id.startsWith("sp-")) {
+      const m = store.spaceMissions.find(x => `sp-${x.id}` === id);
+      if (!m) return;
+      payload = { id, kind: "space", title: m.name, subtitle: `${m.body} · ${m.lightTimeLabel}`, url: m.officialUrl || m.wikiUrl || "" };
     } else {
-      store.state.shortlist.add(id);
-      showToast("Saved to shortlist");
+      const node = getNodeById(id);
+      if (!node) return;
+      payload = {
+        id,
+        kind: node.tier === "timeline" ? "timeline" : "hub",
+        title: node.name,
+        subtitle: node.city || "",
+        url: node.url || node.wiki || ""
+      };
     }
-    syncPrefs(store.state.stage, store.state.shortlist);
-    selectHubNode(id, false);
+    const saved = await toggleBookmark(payload);
+    updateBookmarkButtonUI(id);
+    refreshAccountHeader();
+    showToast(saved ? "Saved to Bookmarks" : "Removed from Bookmarks");
   });
 
-  document.getElementById("btn-close-modal")?.addEventListener("click", closeModal);
+  // Global keyboard shortcuts
+  document.addEventListener("keydown", (e) => {
+    const tag = (e.target?.tagName || "").toLowerCase();
+    const typing = tag === "input" || tag === "textarea" || tag === "select" || e.target?.isContentEditable;
 
-  window.addEventListener("keydown", (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      e.preventDefault();
+      searchInput?.focus();
+      searchInput?.select();
+      return;
+    }
     if (e.key === "Escape") {
-      closeDropdown();
-      closeModal();
+      closeAllSurfaces();
+      return;
+    }
+    if (typing) return;
+
+    if (e.key === "/") {
+      e.preventDefault();
+      searchInput?.focus();
+    } else if (e.key.toLowerCase() === "r") {
+      jumpRabbitHole();
+    } else if (e.key === "1") {
+      setViewMode("earth");
+    } else if (e.key === "2") {
+      setViewMode("space");
+    } else if (e.key.toLowerCase() === "t") {
+      setTimeMode(!store.state.timeMode, store.state.timeMode ? null : -580);
+    } else if (e.key.toLowerCase() === "b") {
+      openModal("account", "bookmarks");
+    } else if (e.key === "?") {
+      openModal("shortcuts");
     }
   });
 
-  if (window.lucide?.createIcons) window.lucide.createIcons();
+  // Collapse Dynamic Island cleanly when clicking outside
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#dynamic-island")) {
+      closeDropdown();
+    }
+  });
+
+  if (typeof window.lucide?.createIcons === "function") {
+    window.lucide.createIcons();
+  }
 }

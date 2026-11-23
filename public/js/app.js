@@ -1,33 +1,48 @@
 /**
- * PhysAlts — Main Application Bootstrap (Atlas Engine v2)
+ * PhysAlts — Main Application Bootstrap (Atlas Engine v2.1)
+ * Progressive instant boot, Auth & Bookmarks hydration, Deep-Link URL routing, and PWA Service Worker.
  */
 
 import { store, loadAllDatasets, mergeHubs } from "./data_store.js";
 import { initGlobe, syncGlobeMarkers } from "./globe_engine.js";
 import { initSpaceFrontierView } from "./space_view.js";
+import { initAuth, onAuthChange } from "./auth_service.js";
 import { initCloudSync, loadLocalPrefs } from "./cloud_sync.js";
+import { refreshAccountHeader } from "./account_ui.js";
 import {
   initUI, refreshDbBadge, renderStageMenu,
-  selectHubNode, selectSpaceMission, closeDropdown
+  selectHubNode, selectSpaceMission, closeDropdown, applyDeepLinkFromUrl
 } from "./ui_controller.js";
 
 async function boot() {
-  // Restore local preferences immediately (GDPR-minimal local state)
   const prefs = loadLocalPrefs();
   store.state.stage = prefs.stage;
   store.state.shortlist = new Set(prefs.shortlist);
 
-  // Bind UI controls first so interface is immediately responsive
+  // Bind UI & Dynamic Island controls immediately so interface responds on frame 1
   initUI();
+
+  // Keep header account pill & stage synchronized with auth/bookmark changes
+  onAuthChange(() => {
+    refreshAccountHeader();
+    refreshDbBadge();
+    renderStageMenu();
+  });
 
   // Initialize Space Frontier (Earth → ~1 Light-Day) canvas engine
   initSpaceFrontierView({
     onSelectMission: (missionId) => selectSpaceMission(missionId)
   });
 
-  // Load all verified local datasets + boot 3D globe in parallel
-  const [stats] = await Promise.all([
-    loadAllDatasets(),
+  // Progressive instant boot: Auth + Core Datasets + 3D Globe all initialize concurrently
+  const [, stats] = await Promise.all([
+    initAuth(),
+    loadAllDatasets({
+      onCoreReady: () => {
+        refreshDbBadge();
+        syncGlobeMarkers();
+      }
+    }),
     initGlobe({
       onSelectNode: (id, fly) => selectHubNode(id, fly),
       onBackgroundClick: () => closeDropdown()
@@ -40,9 +55,11 @@ async function boot() {
   ]);
 
   refreshDbBadge();
+  refreshAccountHeader();
   syncGlobeMarkers();
+  applyDeepLinkFromUrl();
 
-  // Optional lazy Cloud Sync (only loads Firebase if PROD_FIREBASE_CONFIG is set)
+  // Optional lazy Cloud Sync (activates automatically if PROD_FIREBASE_CONFIG is set)
   initCloudSync({
     onStatusChange: (ready) => {
       store.state.cloudReady = ready;
@@ -59,6 +76,11 @@ async function boot() {
       renderStageMenu();
     }
   });
+
+  // Register production PWA Service Worker (skip on blob: preview URLs)
+  if ("serviceWorker" in navigator && location.protocol !== "blob:") {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  }
 
   if (window.__PHYSALTS_DEV_PROXY__) {
     fetch("./_diag?tag=boot_ok&d=" + encodeURIComponent(JSON.stringify(stats))).catch(() => {});

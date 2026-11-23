@@ -42,6 +42,10 @@ export const store = {
     labels: false,
     tilted: false,
     shortlist: new Set(),
+    bookmarks: [],
+    folders: ["Shortlist", "Study List", "Apply & Jobs", "Research"],
+    user: null,
+    authBackend: "detecting",
     globeReady: false,
     cloudReady: false,
     ingesting: false
@@ -134,25 +138,26 @@ async function fetchJsonSafe(url) {
   }
 }
 
-export async function loadAllDatasets() {
+export async function loadAllDatasets({ onCoreReady } = {}) {
   const f = SUBJECT_CONFIG.dataFiles;
-  const [flagships, startups, scraped, history, space, domains, audit, ledger] = await Promise.all([
+
+  // Stage 1: Instant core load (~300 KB total — flagships, startups, timeline, space, domains)
+  const scrapedPromise = fetchJsonSafe(f.scrapedHubs);
+  const auditPromise = fetchJsonSafe(f.verificationReport);
+  const ledgerPromise = fetchJsonSafe(f.provenanceLedger);
+
+  const [flagships, startups, history, space, domains] = await Promise.all([
     fetchJsonSafe(f.flagships),
     fetchJsonSafe(f.privateStartups),
-    fetchJsonSafe(f.scrapedHubs),
     fetchJsonSafe(f.historyTimeline),
     fetchJsonSafe(f.spaceFrontier),
-    fetchJsonSafe(f.domainsCatalog),
-    fetchJsonSafe(f.verificationReport),
-    fetchJsonSafe(f.provenanceLedger)
+    fetchJsonSafe(f.domainsCatalog)
   ]);
 
-  // Priority order: Flagships first, then Private/Deep-Tech, then Custom local, then Scraped Global
   if (flagships?.hubs) mergeHubs(flagships.hubs, "flagship");
   if (startups?.hubs) mergeHubs(startups.hubs, "deeptech");
   const localCustom = loadLocalCustomNodes();
   if (localCustom.length) mergeHubs(localCustom, "custom");
-  if (scraped?.hubs) mergeHubs(scraped.hubs, "scraped");
 
   if (history) {
     store.eras = history.eras || [];
@@ -165,12 +170,15 @@ export async function loadAllDatasets() {
   if (domains?.domains) {
     store.domains = domains.domains;
   }
-  if (audit) {
-    store.verificationReport = audit;
-  }
-  if (ledger) {
-    store.provenanceLedger = ledger;
-  }
+
+  rebuildIndexes();
+  onCoreReady?.();
+
+  // Stage 2: Merge full 156-country index + verification ledger seamlessly
+  const [scraped, audit, ledger] = await Promise.all([scrapedPromise, auditPromise, ledgerPromise]);
+  if (scraped?.hubs) mergeHubs(scraped.hubs, "scraped");
+  if (audit) store.verificationReport = audit;
+  if (ledger) store.provenanceLedger = ledger;
 
   rebuildIndexes();
   return {

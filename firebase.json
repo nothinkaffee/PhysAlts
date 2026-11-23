@@ -4,6 +4,8 @@
   },
   "hosting": {
     "public": "public",
+    "cleanUrls": true,
+    "trailingSlash": false,
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -17,6 +19,12 @@
           { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
           { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
           { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=()" }
+        ]
+      },
+      {
+        "source": "/sw.js",
+        "headers": [
+          { "key": "Cache-Control", "value": "no-cache" }
         ]
       },
       {

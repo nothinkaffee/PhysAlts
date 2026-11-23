@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#080809" />
+  <meta name="description" content="About PhysAlts — Open, verified directory of global physics laboratories, universities, deep-tech startups, historical discoveries, and space missions." />
+  <title>About — PhysAlts</title>
+  <link rel="icon" type="image/svg+xml" href="./icon.svg" />
+  <style>
+    :root {
+      --bg: #080809;
+      --glass: rgba(18, 18, 20, 0.72);
+      --border: rgba(255, 255, 255, 0.12);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --dim: #71717a;
+      --link: rgb(160, 70, 70);
+      --link-hover: rgb(190, 92, 92);
+    }
+    * { box-sizing: border-box; font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+    html { font-size: 16px; }
+    body { margin: 0; background: radial-gradient(circle at 50% 0%, #151517 0%, #080809 62%); color: var(--text); line-height: 1.65; }
+    a { color: var(--link); text-decoration: none; }
+    a:hover { color: var(--link-hover); text-decoration: underline; text-underline-offset: 3px; }
+    .nav-wrap { position: sticky; top: 18px; z-index: 30; display: flex; justify-content: center; padding: 0 20px; }
+    .island { display: flex; align-items: center; gap: 20px; flex-wrap: wrap; background: rgba(18, 18, 20, 0.66); backdrop-filter: blur(26px); -webkit-backdrop-filter: blur(26px); border: 1px solid var(--border); border-radius: 999px; padding: 10px 22px; box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45); }
+    .brand { color: #ffffff; font-weight: 600; font-size: 15px; display: inline-flex; align-items: center; gap: 8px; }
+    .brand:hover { text-decoration: none; }
+    .dot { width: 9px; height: 9px; border-radius: 999px; background: #ffffff; display: inline-block; }
+    .nav-links { display: flex; align-items: center; gap: 18px; font-size: 14px; }
+    .nav-links a { color: var(--muted); }
+    .nav-links a:hover, .nav-links a.active { color: #ffffff; text-decoration: none; }
+    .cta { background: #f4f4f5; color: #09090b !important; padding: 7px 16px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+    .cta:hover { background: #ffffff; text-decoration: none; }
+    main { max-width: 780px; margin: 0 auto; padding: 56px 24px 72px; }
+    .eyebrow { color: var(--link); font-size: 14px; font-weight: 500; margin-bottom: 10px; }
+    h1 { margin: 0 0 16px; font-size: clamp(2rem, 4vw, 2.75rem); font-weight: 600; letter-spacing: -0.025em; line-height: 1.18; }
+    .lead { font-size: 17px; color: var(--muted); margin: 0 0 40px; max-width: 640px; }
+    .card { background: var(--glass); backdrop-filter: blur(24px); border: 1px solid var(--border); border-radius: 24px; padding: 28px 30px; margin-bottom: 24px; }
+    h2 { margin: 0 0 12px; font-size: 19px; font-weight: 600; color: #ffffff; }
+    p { margin: 0 0 14px; color: var(--muted); font-size: 15.5px; }
+    p:last-child { margin-bottom: 0; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; margin-top: 18px; }
+    .tile { background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 18px; padding: 18px 20px; }
+    .tile strong { display: block; font-size: 15px; color: #ffffff; margin-bottom: 6px; }
+    .tile span { font-size: 14px; color: var(--muted); line-height: 1.5; }
+    details { border-top: 1px solid rgba(255, 255, 255, 0.09); padding: 16px 0; }
+    details:first-of-type { border-top: 0; padding-top: 4px; }
+    summary { cursor: pointer; font-size: 15.5px; font-weight: 500; color: #ffffff; list-style: none; }
+    details p { margin-top: 10px; font-size: 15px; }
+    footer { max-width: 780px; margin: 0 auto; padding: 24px 24px 56px; border-top: 1px solid rgba(255, 255, 255, 0.09); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-size: 14px; color: var(--dim); }
+    footer .links { display: flex; gap: 20px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <div class="nav-wrap">
+    <nav class="island" aria-label="Site navigation">
+      <a href="./" class="brand"><span class="dot"></span>PhysAlts</a>
+      <div class="nav-links">
+        <a href="./about.html" class="active">About</a>
+        <a href="./privacy.html">Privacy</a>
+        <a href="./terms.html">Terms</a>
+      </div>
+      <a href="./" class="cta">Open Atlas</a>
+    </nav>
+  </div>
+
+  <main>
+    <div class="eyebrow">World of Physics</div>
+    <h1>A revolving door to every verified physics source on Earth and out to 1 light-day.</h1>
+    <p class="lead">
+      PhysAlts maps universities, national laboratories, private deep-tech startups, historical discoveries from 1800 BCE onward, and deep-space missions — sending you straight to primary official sources.
+    </p>
+
+    <section class="card">
+      <h2>How it works</h2>
+      <div class="grid">
+        <div class="tile">
+          <strong>Global coverage</strong>
+          <span>Includes every region and small or emerging research nations alongside flagship facilities.</span>
+        </div>
+        <div class="tile">
+          <strong>Verified links</strong>
+          <span>Built from OpenAlex, ROR v2, INSPIRE-HEP, NASA/ESA, and official institutional pages with automated audits.</span>
+        </div>
+        <div class="tile">
+          <strong>Personal bookmarks</strong>
+          <span>Create an account to organize labs, milestones, missions, and open courses into folders with notes.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Open data &amp; provenance</h2>
+      <p>
+        Every dataset is schema-validated (JSON Schema 2020-12) and hashed with SHA-256 into a public provenance ledger so anyone can audit or reuse the index.
+      </p>
+      <p>
+        <a href="./data/provenance_ledger.json" target="_blank">Provenance Ledger ↗</a> &nbsp;·&nbsp;
+        <a href="./data/physalts_schema.json" target="_blank">JSON Schema ↗</a> &nbsp;·&nbsp;
+        <a href="./data/verification_report.json" target="_blank">Link Audit Report ↗</a>
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Common questions</h2>
+      <details>
+        <summary>Why does PhysAlts link out instead of hosting articles?</summary>
+        <p>PhysAlts is designed as a fast discovery hub — you find the institution, mission, or course here and go straight to the authoritative official source.</p>
+      </details>
+      <details>
+        <summary>Do I need an account to explore?</summary>
+        <p>No. Everything is free to explore immediately. Accounts are optional and only used to save bookmarks, folders, notes, and your academic stage.</p>
+      </details>
+      <details>
+        <summary>Are mobile apps coming?</summary>
+        <p>Yes. After the web release, native iOS and Android builds share the exact same verified database and account sync.</p>
+      </details>
+    </section>
+  </main>
+
+  <footer>
+    <span>PhysAlts — Open Physics Discovery Atlas</span>
+    <div class="links">
+      <a href="./">Atlas</a>
+      <a href="./privacy.html">Privacy Policy</a>
+      <a href="./terms.html">Terms of Service</a>
+    </div>
+  </footer>
+</body>
+</html>

@@ -126,12 +126,14 @@ service cloud.firestore {
         && isOptionalNumber(data, 'updatedAt', 0, 9999999999999);
     }
 
-    // Validate owner-scoped user preference / shortlist documents
+    // Validate owner-scoped user account, profile, bookmarks & preference documents
     function isValidUserPayload(data) {
       return data.keys().hasOnly([
           'stage', 'shortlist', 'updatedAt', 'createdAt',
           'preferences', 'filter', 'branch', 'year', 'scale',
-          'consentVersion', 'theme'
+          'consentVersion', 'theme',
+          'displayName', 'bio', 'researchFocus',
+          'bookmarks', 'folders', 'gdprConsentAt'
         ])
         && isOptionalString(data, 'stage', 40)
         && isOptionalStringList(data, 'shortlist', 500)
@@ -143,7 +145,13 @@ service cloud.firestore {
         && isOptionalNumber(data, 'year', -5000, 3000)
         && isOptionalString(data, 'scale', 64)
         && isOptionalString(data, 'consentVersion', 32)
-        && isOptionalString(data, 'theme', 32);
+        && isOptionalString(data, 'theme', 32)
+        && isOptionalString(data, 'displayName', 80)
+        && isOptionalString(data, 'bio', 320)
+        && isOptionalString(data, 'researchFocus', 120)
+        && isOptionalStringList(data, 'folders', 20)
+        && (!( 'bookmarks' in data ) || (data.bookmarks is list && data.bookmarks.size() <= 500))
+        && isOptionalNumber(data, 'gdprConsentAt', 0, 9999999999999);
     }
 
     // ── Public Atlas Data Collections ───────────────────────────────────────

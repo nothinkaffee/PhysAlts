@@ -3,11 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#030509" />
+  <meta name="theme-color" content="#080809" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="PhysAlts" />
-  <meta name="description" content="PhysAlts — Global 3D interactive atlas of physics departments, national labs, private deep-tech startups, historical eras (1800 BCE to future), and space missions out to ~1 light-day." />
+  <meta name="description" content="PhysAlts — Interactive 3D atlas of global physics laboratories, universities, deep-tech startups, historical discoveries (1800 BCE–2045), and space missions to 1 light-day." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="PhysAlts — World of Physics" />
+  <meta property="og:description" content="Discover official physics laboratories, universities, startups, historical milestones, and space missions out to 1 light-day." />
+  <meta property="og:site_name" content="PhysAlts" />
+  <meta name="twitter:card" content="summary_large_image" />
   <title>PhysAlts — World of Physics</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/svg+xml" href="./icon.svg" />
@@ -15,6 +20,16 @@
   <link href="./vendor/maplibre-gl.css" rel="stylesheet" />
   <link href="./vendor/tailwind.css" rel="stylesheet" />
   <link href="./styles/app.css" rel="stylesheet" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "PhysAlts",
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Web, iOS, Android",
+    "isAccessibleForFree": true
+  }
+  </script>
   <script src="./vendor/lucide.min.js"></script>
   <script src="./vendor/maplibre-gl-csp.js"></script>
 </head>
@@ -26,163 +41,221 @@
   <div id="space-frontier-view" class="space-hidden" aria-label="Space Frontier Explorer from Earth to 1 Light-Day">
     <canvas id="space-canvas" class="w-full h-full block"></canvas>
 
-    <!-- Space Zone Selector Bar -->
-    <div class="fixed left-4 md:left-[404px] right-4 md:right-[224px] top-[156px] md:top-[18px] z-20 flex flex-col items-start md:items-center gap-2">
-      <div id="space-zone-pills" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar max-w-full py-0.5"></div>
+    <!-- Space Zone Filter Bar centered neatly below Dynamic Island -->
+    <div class="fixed inset-x-0 top-[88px] z-20 flex justify-center px-5 pointer-events-none">
+      <div id="space-zone-pills" class="pointer-events-auto liquid-pill rounded-full px-2 py-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar max-w-full"></div>
     </div>
 
-    <!-- Desktop Mission Navigator Rail (Zero Canvas Label Clutter) -->
-    <aside id="space-mission-rail" class="fixed top-[72px] right-4 bottom-[78px] w-[290px] z-20 liquid-glass rounded-[24px] flex flex-col overflow-hidden">
-      <div class="px-4 py-3 border-b border-white/10 shrink-0">
-        <div class="text-[13.5px] font-semibold text-white">Space Frontier Directory</div>
-        <div class="text-[11.5px] text-white/55 mt-0.5">Earth (0 ls) to Voyager 1 (~1 light-day)</div>
+    <!-- Desktop Mission Directory Rail (starts cleanly below Space Zone Filter Bar) -->
+    <aside id="space-mission-rail" class="fixed top-[148px] right-6 bottom-[96px] w-[320px] z-20 liquid-glass rounded-[26px] flex flex-col overflow-hidden">
+      <div class="px-5 py-4 border-b border-white/10 shrink-0">
+        <div class="text-[15.5px] font-semibold text-white">Space Missions</div>
+        <div class="text-[13px] text-neutral-400 mt-0.5">Earth to 1 Light-Day</div>
       </div>
-      <div id="space-mission-list" class="p-2.5 space-y-1.5 scroll-clean flex-1"></div>
+      <div id="space-mission-list" class="p-3 space-y-2 scroll-clean flex-1"></div>
     </aside>
   </div>
 
-  <!-- Toast notification -->
-  <div id="toast" class="liquid-pill rounded-full px-4 py-2 text-[13px] font-medium text-white">
+  <!-- Toast Notification -->
+  <div id="toast" role="status" aria-live="polite" class="liquid-pill rounded-full px-5 py-2.5 text-[14px] font-medium text-white">
     <span id="toast-text">Ready</span>
   </div>
 
-  <!-- Top-Left: Universal Search + Career Stage + Verified Index Badge -->
-  <div id="top-left-bar" class="fixed top-4 left-4 z-[35] flex flex-col gap-2 w-[380px] max-w-[calc(100vw-20px)]">
-    <div class="relative">
-      <div class="liquid-pill rounded-full px-3.5 py-2 flex items-center gap-2">
-        <i data-lucide="search" class="w-4 h-4 text-white/55 shrink-0"></i>
+  <!-- CENTERED TOP DYNAMIC ISLAND (One unified, translucent, clutter-free command bar) -->
+  <header id="dynamic-island" class="liquid-pill rounded-full px-2.5 sm:px-3 py-2 w-[min(920px,calc(100vw-24px))]">
+    <div class="flex items-center gap-1.5 sm:gap-2.5">
+      <!-- Brand Mark -->
+      <button id="btn-reset-space" type="button" title="Reset globe view" class="pl-1.5 sm:pl-2 pr-1 py-1 flex items-center gap-2 text-white font-semibold text-[15px] tracking-tight shrink-0 cursor-pointer bg-transparent border-0">
+        <span class="w-2.5 h-2.5 rounded-full bg-white shrink-0"></span>
+        <span class="hidden sm:inline">PhysAlts</span>
+      </button>
+
+      <div class="w-px h-5 bg-white/12 shrink-0 hidden sm:block"></div>
+
+      <!-- Integrated Search Input -->
+      <div class="flex items-center gap-2 flex-1 min-w-0 px-1.5 sm:px-2">
+        <i data-lucide="search" class="w-4 h-4 text-neutral-400 shrink-0"></i>
         <input
           id="search-input"
           type="text"
           autocomplete="off"
-          placeholder="Search CERN, 1800 BCE, Voyager, Iceland, PsiQuantum..."
-          class="bg-transparent border-0 outline-none text-[13.5px] text-white placeholder-white/45 flex-1 min-w-0"
+          aria-label="Search institutions, countries, milestones, or missions"
+          placeholder="Search labs, countries, 1800 BCE, Voyager…"
+          class="bg-transparent border-0 outline-none text-[14.5px] text-white placeholder-neutral-400 flex-1 min-w-0"
         />
-        <button id="btn-explore" type="button" class="glass-btn rounded-full px-3 py-1 text-[12px] flex items-center gap-1 shrink-0">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-          <span>Explore</span>
-        </button>
-      </div>
-      <div id="search-dropdown" class="hidden absolute left-0 right-0 top-full mt-2 liquid-glass rounded-[22px] p-2 max-h-[62vh] scroll-clean z-[60] panel-animate"></div>
-    </div>
-
-    <div class="flex flex-wrap items-center gap-2">
-      <div class="relative">
-        <button id="stage-dropdown-btn" type="button" class="liquid-pill rounded-full px-3 py-1.5 min-h-[34px] flex items-center gap-1.5 text-[12px] text-white/90 hover:bg-white/10 transition cursor-pointer">
-          <i data-lucide="graduation-cap" class="w-3.5 h-3.5 text-white/65"></i>
-          <span class="text-white/55">Stage:</span>
-          <span id="stage-current-label" class="font-medium text-white">Undergrad</span>
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-white/55"></i>
-        </button>
-        <div id="stage-dropdown-menu" role="listbox" class="hidden absolute left-0 top-full mt-2 w-[220px] liquid-glass rounded-[20px] p-1.5 z-[60] space-y-0.5 panel-animate"></div>
       </div>
 
-      <button id="db-status-pill" type="button" class="liquid-pill rounded-full px-3 py-1.5 min-h-[34px] flex items-center gap-2 text-[12px] text-white/85 hover:bg-white/10 transition cursor-pointer" title="Open Verification Audit & GDPR Controls">
-        <span id="db-dot" class="w-2 h-2 rounded-full bg-sky-300"></span>
-        <span id="db-status-text">Loading index…</span>
-        <i data-lucide="shield-check" class="w-3.5 h-3.5 text-sky-200/80"></i>
+      <!-- Rabbit Hole Curiosity Jump Button -->
+      <button id="btn-rabbit-hole" type="button" title="Rabbit Hole — jump to a curated discovery (R)" class="glass-btn rounded-full px-2.5 sm:px-3.5 py-1.5 text-[13.5px] flex items-center gap-1.5 shrink-0">
+        <i data-lucide="sparkles" class="w-3.5 h-3.5 accent-text"></i>
+        <span class="hidden sm:inline whitespace-nowrap">Rabbit Hole</span>
       </button>
 
-      <div id="active-filter-pill" class="hidden liquid-pill rounded-full px-3 py-1 flex items-center gap-1.5 text-[11.5px] text-sky-100">
+      <!-- Earth / 1 Light-Day Switcher -->
+      <div class="flex items-center gap-1 bg-white/[0.05] rounded-full p-1 shrink-0">
+        <button id="btn-mode-earth" type="button" title="Earth Globe" class="glass-btn-active rounded-full px-2.5 sm:px-3 py-1.5 text-[13.5px] flex items-center gap-1.5">
+          <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+          <span class="hidden lg:inline">Earth</span>
+        </button>
+        <button id="btn-mode-space" type="button" class="glass-btn rounded-full px-2.5 sm:px-3 py-1.5 text-[13.5px] flex items-center gap-1.5" title="Space Frontier (0 to 1 Light-Day)">
+          <i data-lucide="orbit" class="w-3.5 h-3.5"></i>
+          <span class="hidden lg:inline">1 Light-Day</span>
+        </button>
+      </div>
+
+      <!-- Active Filter Pill (appears inside island only when filtering) -->
+      <div id="active-filter-pill" class="hidden items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-[13px] text-neutral-100 shrink-0">
         <span id="active-filter-text"></span>
-        <button id="btn-clear-filters" type="button" class="hover:text-white cursor-pointer" aria-label="Clear filters">✕</button>
+        <button id="btn-clear-filters" type="button" class="hover:text-white cursor-pointer bg-transparent border-0 p-0" aria-label="Clear filter">✕</button>
+      </div>
+
+      <!-- Account Sign-In / Profile Pill -->
+      <button id="btn-account" type="button" title="Account &amp; Bookmarks" class="glass-btn rounded-full px-2.5 sm:px-3.5 py-1.5 flex items-center gap-1.5 sm:gap-2 text-[13.5px] font-medium text-white shrink-0">
+        <span id="account-avatar" class="hidden w-5 h-5 rounded-full bg-white text-black text-[11.5px] font-semibold items-center justify-center shrink-0"></span>
+        <i id="account-guest-icon" data-lucide="user" class="w-3.5 h-3.5 text-neutral-300 shrink-0"></i>
+        <span id="account-btn-label" class="hidden sm:inline whitespace-nowrap">Sign in</span>
+        <span id="account-bm-badge" class="hidden px-1.5 py-0.5 rounded-full bg-white/12 text-[11.5px] text-neutral-200">0</span>
+      </button>
+
+      <!-- Clean Site & Globe Options Menu -->
+      <button id="btn-site-menu" type="button" aria-label="Menu" aria-expanded="false" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-neutral-200 shrink-0">
+        <i data-lucide="menu" class="w-4 h-4"></i>
+      </button>
+    </div>
+
+    <!-- Dynamic Island Expanded Body: Instant Search Results -->
+    <div id="search-dropdown" class="hidden mt-3 pt-3 border-t border-white/10 max-h-[54dvh] scroll-clean space-y-1"></div>
+
+    <!-- Dynamic Island Expanded Body: Menu, Globe Toggles, Stage & Website Pages -->
+    <div id="site-menu-dropdown" class="hidden mt-3 pt-4 pb-1 px-1 border-t border-white/10 space-y-4">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2" id="earth-only-controls">
+          <span class="section-label mr-1">Globe:</span>
+          <button id="btn-arcs" type="button" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px]">Arcs</button>
+          <button id="btn-labels" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13px]">Labels</button>
+          <button id="btn-tilt" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13px]">3D Tilt</button>
+        </div>
+
+        <div class="relative flex items-center gap-2">
+          <span class="section-label">Stage:</span>
+          <button id="stage-dropdown-btn" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13px] flex items-center gap-1.5">
+            <span id="stage-current-label" class="font-medium text-white">Undergrad</span>
+            <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-neutral-400"></i>
+          </button>
+          <div id="stage-dropdown-menu" role="listbox" class="hidden absolute right-0 top-full mt-2 w-[230px] liquid-glass rounded-[20px] p-2 z-[60] space-y-1"></div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+        <button type="button" data-menu-action="bookmarks" class="glass-row rounded-2xl px-4 py-3 text-left text-[13.5px] flex items-center gap-2.5">
+          <i data-lucide="bookmark" class="w-4 h-4 text-neutral-400 shrink-0"></i>
+          <span>Bookmarks</span>
+        </button>
+        <button type="button" data-menu-action="live" class="glass-row rounded-2xl px-4 py-3 text-left text-[13.5px] flex items-center gap-2.5">
+          <i data-lucide="radar" class="w-4 h-4 text-neutral-400 shrink-0"></i>
+          <span>Live Search</span>
+        </button>
+        <button type="button" data-menu-action="submit" class="glass-row rounded-2xl px-4 py-3 text-left text-[13.5px] flex items-center gap-2.5">
+          <i data-lucide="plus-circle" class="w-4 h-4 text-neutral-400 shrink-0"></i>
+          <span>Submit Lab</span>
+        </button>
+        <button type="button" data-menu-action="audit" class="glass-row rounded-2xl px-4 py-3 text-left text-[13.5px] flex items-center gap-2.5">
+          <i data-lucide="shield-check" class="w-4 h-4 text-neutral-400 shrink-0"></i>
+          <span>Open Data</span>
+        </button>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/10 text-[13.5px]">
+        <div class="flex items-center gap-5">
+          <a href="./about.html" class="accent-link">About PhysAlts</a>
+          <a href="./privacy.html" class="accent-link">Privacy</a>
+          <a href="./terms.html" class="accent-link">Terms</a>
+        </div>
+        <button type="button" data-menu-action="shortcuts" class="text-neutral-400 hover:text-white text-[13px] cursor-pointer bg-transparent border-0">Shortcuts (?)</button>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Top-Right: Earth <-> Space Frontier Switcher + Globe Controls -->
-  <div id="top-right-controls" class="fixed top-4 right-4 z-[35] flex items-center gap-2">
-    <div class="liquid-pill rounded-full p-1 flex items-center gap-1">
-      <button id="btn-mode-earth" type="button" class="glass-btn-active rounded-full px-3 py-1 text-[12px] flex items-center gap-1.5">
-        <i data-lucide="globe" class="w-3.5 h-3.5"></i>
-        <span>Earth</span>
-      </button>
-      <button id="btn-mode-space" type="button" class="glass-btn rounded-full px-3 py-1 text-[12px] flex items-center gap-1.5" title="Explore Earth → Moon → Planets → ~1 Light-Day">
-        <i data-lucide="orbit" class="w-3.5 h-3.5"></i>
-        <span>1 Light-Day</span>
-      </button>
-    </div>
-
-    <div id="earth-only-controls" class="hidden md:flex liquid-pill rounded-full p-1 items-center gap-1">
-      <button id="btn-arcs" type="button" class="glass-btn-active rounded-full px-3 py-1 text-[12px]">Arcs</button>
-      <button id="btn-labels" type="button" class="glass-btn rounded-full px-3 py-1 text-[12px]">Labels</button>
-      <button id="btn-tilt" type="button" class="glass-btn rounded-full px-3 py-1 text-[12px]">3D Tilt</button>
-      <button id="btn-reset-space" type="button" class="glass-btn rounded-full px-3 py-1 text-[12px]">Reset</button>
-    </div>
-  </div>
-
-  <!-- Place / Timeline / Space Mission Detail Card -->
-  <aside id="place-card" class="hidden fixed top-[148px] left-4 z-[38] w-[390px] max-w-[calc(100vw-20px)] max-h-[calc(100vh-230px)] liquid-glass rounded-[26px] overflow-hidden flex flex-col panel-animate">
-    <div id="card-photo-wrap" class="relative h-[132px] w-full bg-white/[0.03] shrink-0 overflow-hidden">
+  <!-- Concise Revolving-Door Source Card (source-first, zero notice-board bloat) -->
+  <aside id="place-card" class="hidden fixed top-[92px] left-6 z-[38] w-[392px] max-w-[calc(100vw-32px)] max-h-[calc(100dvh-200px)] liquid-glass rounded-[26px] overflow-hidden flex flex-col">
+    <div id="card-photo-wrap" class="hidden relative h-[124px] w-full bg-white/[0.03] shrink-0 overflow-hidden">
       <img id="card-photo" class="w-full h-full object-cover opacity-0 transition-opacity duration-300" alt="" />
-      <div id="card-photo-fallback" class="absolute inset-0 flex items-center justify-center text-white/35 text-[12px]">
-        Verified institution record
-      </div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#0b0e15] via-transparent to-black/25"></div>
+      <div id="card-photo-fallback" class="absolute inset-0"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#101012] via-transparent to-black/20"></div>
     </div>
 
-    <button id="btn-close-card" type="button" aria-label="Close card" class="absolute top-3 right-3 z-10 glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]">✕</button>
+    <button id="btn-close-card" type="button" aria-label="Close card" class="absolute top-4 right-4 z-10 glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13.5px]">✕</button>
 
-    <div class="p-4 space-y-3 scroll-clean">
+    <div class="p-6 space-y-4 scroll-clean">
       <div>
-        <div id="card-badge" class="text-[11.5px] font-medium text-sky-200/85 pr-9"></div>
-        <h2 id="card-title" class="text-[18px] font-semibold text-white leading-snug mt-0.5"></h2>
-        <div id="card-sub" class="text-[12.5px] text-white/60 mt-0.5"></div>
+        <div id="card-badge" class="text-[13px] font-medium accent-text pr-9"></div>
+        <h2 id="card-title" class="text-[20px] font-semibold text-white leading-snug mt-1 pr-6"></h2>
+        <div id="card-sub" class="text-[14px] text-neutral-400 mt-0.5"></div>
       </div>
 
-      <p id="card-summary" class="text-[13px] text-white/85 leading-relaxed"></p>
+      <p id="card-summary" class="text-[14.5px] text-neutral-200 leading-relaxed line-clamp-2"></p>
 
-      <div class="rounded-2xl bg-white/[0.05] border border-white/10 p-3">
-        <div id="card-pathway-label" class="section-label"></div>
-        <p id="card-pathway" class="text-[12.5px] text-white/90 mt-1 leading-relaxed"></p>
+      <!-- Official Primary Sources -->
+      <div id="card-links" class="flex flex-wrap items-center gap-2.5"></div>
+
+      <!-- Connected Rabbit Hole Portals -->
+      <div id="card-rabbit-wrap" class="hidden space-y-2 pt-1">
+        <div class="section-label">Keep Exploring</div>
+        <div id="card-rabbit-links" class="flex flex-wrap gap-2"></div>
       </div>
 
-      <div id="card-extra-chips" class="flex flex-wrap gap-1.5"></div>
+      <div id="card-extra-chips" class="flex flex-wrap gap-2"></div>
 
-      <div id="card-links" class="flex flex-wrap gap-1.5 pt-0.5"></div>
-
-      <div class="flex items-center gap-2 pt-1">
-        <button id="btn-save-shortlist" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">+ Save to Shortlist</button>
-        <button id="btn-deeper-toggle" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[12px]">Go Deeper ↓</button>
+      <div class="flex flex-wrap items-center gap-2 pt-2 border-t border-white/10">
+        <button id="btn-save-shortlist" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13.5px]">+ Bookmark</button>
+        <button id="btn-card-rabbit" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13.5px] flex items-center gap-1.5">
+          <span class="accent-text">↻</span>
+          <span>Next</span>
+        </button>
+        <button id="btn-copy-link" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13.5px]">Share</button>
+        <button id="btn-deeper-toggle" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13.5px] ml-auto">More ↓</button>
       </div>
 
-      <div id="card-deeper-wrap" class="hidden space-y-3 border-t border-white/10 pt-3">
-        <div>
-          <div class="section-label mb-1.5">Recent Physics Papers (OpenAlex)</div>
-          <div id="deeper-papers" class="space-y-1.5"></div>
+      <!-- Optional Expanded Details (collapsed by default) -->
+      <div id="card-deeper-wrap" class="hidden space-y-4 border-t border-white/10 pt-4">
+        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4">
+          <div id="card-pathway-label" class="section-label"></div>
+          <p id="card-pathway" class="text-[14px] text-neutral-200 mt-1.5 leading-relaxed"></p>
         </div>
         <div>
-          <div class="section-label mb-1.5">Top Cited Physicists &amp; PIs</div>
-          <div id="deeper-authors" class="space-y-1.5"></div>
+          <div class="section-label mb-2">Recent Papers</div>
+          <div id="deeper-papers" class="space-y-2"></div>
         </div>
         <div>
-          <div class="section-label mb-1.5">All 7 Career Stages</div>
-          <div id="deeper-stages" class="space-y-1.5"></div>
+          <div class="section-label mb-2">Key Researchers</div>
+          <div id="deeper-authors" class="space-y-2"></div>
+        </div>
+        <div>
+          <div class="section-label mb-2">Academic Stages</div>
+          <div id="deeper-stages" class="space-y-2"></div>
         </div>
       </div>
     </div>
   </aside>
 
-  <!-- Museum-Grade Chronological Physics Timeline (1800 BCE → 2045 CE) -->
-  <section id="time-bar" class="hidden fixed bottom-[76px] inset-x-0 mx-auto z-[36] w-[820px] max-w-[calc(100vw-24px)] liquid-glass rounded-[26px] p-4 space-y-3 panel-animate" aria-label="Chronological Physics Timeline">
-    <div class="flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-baseline gap-3 min-w-0">
-        <span id="time-year-display" class="text-[20px] font-semibold text-white tabular-nums tracking-tight shrink-0">580 BCE</span>
-        <span id="time-era-title" class="text-[13px] font-medium text-sky-200/90 truncate">Pre-Classical &amp; Ancient Foundations</span>
-        <span id="time-visible-count" class="text-[11.5px] text-white/50 hidden sm:inline shrink-0"></span>
+  <!-- Centered Chronological Timeline (1800 BCE → 2045 CE) -->
+  <section id="time-bar" class="hidden fixed bottom-[92px] inset-x-0 mx-auto z-[36] w-[min(840px,calc(100vw-32px))] liquid-glass rounded-[26px] p-5 space-y-3.5" aria-label="Chronological Physics Timeline">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-baseline gap-3.5 min-w-0">
+        <span id="time-year-display" class="text-[22px] font-semibold text-white tabular-nums tracking-tight shrink-0">580 BCE</span>
+        <span id="time-era-title" class="text-[14.5px] font-medium accent-text truncate">Pre-Classical &amp; Ancient Foundations</span>
+        <span id="time-visible-count" class="hidden"></span>
       </div>
-      <div class="flex items-center gap-1.5 shrink-0">
-        <button id="btn-time-prev" type="button" class="glass-btn rounded-full w-7 h-7 flex items-center justify-center text-[12px]" title="Previous milestone">←</button>
-        <button id="btn-time-play" type="button" class="glass-btn rounded-full px-3 py-1 text-[11.5px] font-medium">Play Tour</button>
-        <button id="btn-time-next" type="button" class="glass-btn rounded-full w-7 h-7 flex items-center justify-center text-[12px]" title="Next milestone">→</button>
-        <button id="btn-time-close" type="button" class="glass-btn rounded-full w-7 h-7 flex items-center justify-center text-[12px] ml-1" aria-label="Exit timeline">✕</button>
+      <div class="flex items-center gap-2 shrink-0">
+        <button id="btn-time-prev" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[14px]" title="Previous">←</button>
+        <button id="btn-time-play" type="button" class="glass-btn rounded-full px-4 py-1.5 text-[13.5px] font-medium">Play Tour</button>
+        <button id="btn-time-next" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[14px]" title="Next">→</button>
+        <button id="btn-time-close" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[14px] ml-1" aria-label="Close timeline">✕</button>
       </div>
     </div>
 
-    <!-- Era Filter Tabs -->
-    <div id="time-era-tabs" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar"></div>
+    <div id="time-era-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
 
-    <!-- Custom Precision Calibrated Ruler (No default browser range slider) -->
     <div id="timeline-ruler" class="timeline-ruler" role="slider" aria-label="Chronological Year Ruler" aria-valuemin="-1800" aria-valuemax="2045" aria-valuenow="-580">
       <div class="timeline-track"></div>
       <div id="timeline-fill" class="timeline-fill" style="width: 12%"></div>
@@ -190,54 +263,66 @@
       <div id="timeline-needle" class="timeline-needle" style="left: 12%"></div>
     </div>
 
-    <!-- Synchronized Milestone Story Strip -->
-    <div id="timeline-event-strip" class="flex items-stretch gap-2 overflow-x-auto no-scrollbar pb-0.5"></div>
+    <div id="timeline-event-strip" class="flex items-stretch gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
   </section>
 
-  <!-- Drawer Modal (Domains/Materials, Countries & Deep-Tech, Live Search, Pathways, Audit/GDPR) -->
-  <section id="drawer-modal" class="hidden fixed bottom-[76px] right-4 z-[45] w-[540px] max-w-[calc(100vw-20px)] max-h-[72vh] liquid-glass rounded-[26px] flex flex-col overflow-hidden panel-animate">
-    <div class="px-5 py-3.5 border-b border-white/10 flex items-center justify-between gap-3 shrink-0">
-      <h3 id="modal-title" class="text-[15px] font-semibold text-white">Explore</h3>
-      <button id="btn-close-modal" type="button" aria-label="Close panel" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]">✕</button>
-    </div>
-    <div id="modal-body" class="p-4 scroll-clean flex-1"></div>
-  </section>
+  <!-- CENTERED WORKSPACE WINDOW -->
+  <div id="drawer-backdrop" class="hidden fixed inset-0 z-[55] modal-backdrop flex items-center justify-center p-5">
+    <section id="drawer-modal" role="dialog" aria-modal="true" class="w-full max-w-[660px] max-h-[min(82dvh,740px)] liquid-glass rounded-[28px] flex flex-col overflow-hidden">
+      <div class="px-6 py-4 border-b border-white/10 flex items-center justify-between gap-4 shrink-0">
+        <h3 id="modal-title" class="text-[18px] font-semibold text-white">Explore</h3>
+        <button id="btn-close-modal" type="button" aria-label="Close window" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[14px]">✕</button>
+      </div>
+      <div id="modal-body" class="p-6 scroll-clean flex-1"></div>
+    </section>
+  </div>
 
-  <!-- Bottom Floating Dock -->
-  <nav id="bottom-dock" class="fixed bottom-4 left-1/2 -translate-x-1/2 z-[35] liquid-pill rounded-full p-1.5 flex items-center gap-1 no-scrollbar">
-    <button type="button" data-group-tab="all" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[12.5px] whitespace-nowrap">All</button>
-    <button type="button" data-group-tab="lab" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] whitespace-nowrap">Labs</button>
-    <button type="button" data-group-tab="uni" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] whitespace-nowrap">Universities</button>
-    <button type="button" data-group-tab="company" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] whitespace-nowrap">Private &amp; Startups</button>
+  <!-- CENTERED AUTHENTICATION WINDOW -->
+  <div id="auth-modal-backdrop" class="hidden fixed inset-0 z-[70] modal-backdrop flex items-center justify-center p-5">
+    <section id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-heading" class="liquid-glass rounded-[28px] w-full max-w-[448px] max-h-[90dvh] flex flex-col overflow-hidden">
+      <div class="px-6 pt-6 pb-4 border-b border-white/10 flex items-start justify-between gap-4">
+        <div>
+          <div class="text-[13px] font-medium accent-text">PhysAlts Account</div>
+          <h2 id="auth-modal-heading" class="text-[21px] font-semibold text-white mt-1">Sign in</h2>
+          <p id="auth-modal-sub" class="text-[14px] text-neutral-400 mt-1">Save bookmarks, collections, and notes.</p>
+        </div>
+        <button id="btn-close-auth" type="button" aria-label="Close" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[14px] shrink-0">✕</button>
+      </div>
+      <div id="auth-modal-body" class="p-6 scroll-clean space-y-5"></div>
+    </section>
+  </div>
 
-    <div class="w-px h-5 bg-white/15 mx-1 shrink-0"></div>
+  <!-- Centered Bottom Floating Dock -->
+  <nav id="bottom-dock" aria-label="Primary atlas navigation" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-[35] liquid-pill rounded-full p-2 flex items-center gap-1.5 no-scrollbar">
+    <button type="button" data-group-tab="all" class="glass-btn-active rounded-full px-4 py-2 text-[14px] whitespace-nowrap">All</button>
+    <button type="button" data-group-tab="lab" class="glass-btn rounded-full px-4 py-2 text-[14px] whitespace-nowrap">Labs</button>
+    <button type="button" data-group-tab="uni" class="glass-btn rounded-full px-4 py-2 text-[14px] whitespace-nowrap">Universities</button>
+    <button type="button" data-group-tab="company" class="glass-btn rounded-full px-4 py-2 text-[14px] whitespace-nowrap">Startups</button>
 
-    <button id="btn-toggle-time" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] flex items-center gap-1.5 whitespace-nowrap" title="Explore Physics across Time (1800 BCE → 2045+)">
-      <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+    <div class="w-px h-6 bg-white/12 mx-1 shrink-0"></div>
+
+    <button id="btn-toggle-time" type="button" class="glass-btn rounded-full px-3.5 py-2 text-[14px] flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="clock" class="w-4 h-4"></i>
       <span>Timeline</span>
     </button>
-    <button id="btn-open-domains" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] flex items-center gap-1.5 whitespace-nowrap">
-      <i data-lucide="atom" class="w-3.5 h-3.5"></i>
+    <button id="btn-open-domains" type="button" class="glass-btn rounded-full px-3.5 py-2 text-[14px] flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="atom" class="w-4 h-4"></i>
       <span>Domains</span>
     </button>
-    <button id="btn-open-countries" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] flex items-center gap-1.5 whitespace-nowrap">
-      <i data-lucide="flag" class="w-3.5 h-3.5"></i>
+    <button id="btn-open-countries" type="button" class="glass-btn rounded-full px-3.5 py-2 text-[14px] flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="globe-2" class="w-4 h-4"></i>
       <span>Countries</span>
     </button>
-    <button id="btn-open-live" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] flex items-center gap-1.5 whitespace-nowrap">
-      <i data-lucide="radar" class="w-3.5 h-3.5"></i>
-      <span>Live Search</span>
-    </button>
-    <button id="btn-open-pathways" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px] flex items-center gap-1.5 whitespace-nowrap">
-      <i data-lucide="bookmark" class="w-3.5 h-3.5"></i>
-      <span>Pathways</span>
+    <button id="btn-open-pathways" type="button" class="glass-btn rounded-full px-3.5 py-2 text-[14px] flex items-center gap-2 whitespace-nowrap">
+      <i data-lucide="bookmark" class="w-4 h-4"></i>
+      <span>Bookmarks</span>
     </button>
   </nav>
 
   <!-- Bottom-Right Zoom Controls -->
-  <div id="zoom-controls" class="fixed bottom-4 right-4 z-[35] liquid-pill rounded-full p-1 flex items-center gap-1">
-    <button id="btn-zoom-in" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center" title="Zoom In" aria-label="Zoom In">+</button>
-    <button id="btn-zoom-out" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center" title="Zoom Out" aria-label="Zoom Out">−</button>
+  <div id="zoom-controls" class="fixed bottom-5 right-6 z-[35] liquid-pill rounded-full p-1.5 flex items-center gap-1.5">
+    <button id="btn-zoom-in" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[16px]" title="Zoom In" aria-label="Zoom In">+</button>
+    <button id="btn-zoom-out" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[16px]" title="Zoom Out" aria-label="Zoom Out">−</button>
   </div>
 
   <script type="module" src="./js/app.js"></script>

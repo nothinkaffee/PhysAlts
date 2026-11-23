@@ -3,15 +3,19 @@ import fs from "node:fs/promises";
 import http from "node:http";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import zlib from "node:zlib";
+import { AuthStore } from "./auth_store.mjs";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, "..");
 
 const PORT = Number(process.env.PORT || 5173);
 const PUBLIC_DIR = path.join(ROOT_DIR, "public");
+const LOCAL_DATA_DIR = path.join(ROOT_DIR, "data_local");
 const VERIFICATION_REPORT_PATH = path.join(PUBLIC_DIR, "data/verification_report.json");
 const DISK_CACHE_DIR = "/tmp/physalts_tile_cache";
 const STARTED_AT_MS = Date.now();
+const authStore = new AuthStore(LOCAL_DATA_DIR);
 
 const ALLOWED_PROXY_HOSTS = new Set([
   "services.arcgisonline.com",
@@ -30,6 +34,7 @@ const MIME_TYPES = {
   ".mjs": "application/javascript; charset=utf-8",
   ".css": "text/css; charset=utf-8",
   ".json": "application/json; charset=utf-8",
+  ".ndjson": "application/x-ndjson; charset=utf-8",
   ".svg": "image/svg+xml",
   ".png": "image/png",
   ".jpg": "image/jpeg",
@@ -37,7 +42,9 @@ const MIME_TYPES = {
   ".webp": "image/webp",
   ".ico": "image/x-icon",
   ".pbf": "application/x-protobuf",
-  ".woff2": "font/woff2"
+  ".woff2": "font/woff2",
+  ".xml": "application/xml; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8"
 };
 
 const SECURITY_HEADERS = {
@@ -164,22 +171,31 @@ async function fetchCached(urlStr) {
     return disk;
   }
 
-  // 3. Upstream fetch
-  const upstream = await fetch(urlStr, {
-    headers: { "User-Agent": "PhysAlts/2.0 (https://physalts.org; contact@physalts.org)" },
-    signal: AbortSignal.timeout(15000)
-  });
-  const buf = Buffer.from(await upstream.arrayBuffer());
-  const entry = {
-    status: upstream.status,
-    contentType: upstream.headers.get("content-type") || "application/octet-stream",
-    buf
-  };
-  if (upstream.ok) {
-    setMemoryLru(urlStr, entry);
-    writeDiskCache(urlStr, entry).catch(() => {});
+  // 3. Upstream fetch with 1 automatic retry for flaky tile requests
+  let lastErr = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const upstream = await fetch(urlStr, {
+        headers: { "User-Agent": "PhysAlts/2.0 (https://physalts.org; contact@physalts.org)" },
+        signal: AbortSignal.timeout(12000)
+      });
+      const buf = Buffer.from(await upstream.arrayBuffer());
+      const entry = {
+        status: upstream.status,
+        contentType: upstream.headers.get("content-type") || "application/octet-stream",
+        buf
+      };
+      if (upstream.ok) {
+        setMemoryLru(urlStr, entry);
+        writeDiskCache(urlStr, entry).catch(() => {});
+        return entry;
+      }
+      if (attempt === 1) return entry;
+    } catch (err) {
+      lastErr = err;
+    }
   }
-  return entry;
+  throw lastErr || new Error("Upstream fetch failed");
 }
 
 function sendJson(res, status, obj) {
@@ -266,7 +282,166 @@ async function handleProxy(reqUrl, res) {
   }
 }
 
-async function handleStatic(reqUrl, res) {
+async function readJsonBody(req, maxBytes = 256 * 1024) {
+  return new Promise((resolve, reject) => {
+    const chunks = [];
+    let total = 0;
+    req.on("data", (chunk) => {
+      total += chunk.length;
+      if (total > maxBytes) {
+        reject(new Error("Payload too large"));
+        req.destroy();
+        return;
+      }
+      chunks.push(chunk);
+    });
+    req.on("end", () => {
+      if (!chunks.length) return resolve({});
+      try {
+        resolve(JSON.parse(Buffer.concat(chunks).toString("utf8")));
+      } catch {
+        reject(new Error("Invalid JSON body"));
+      }
+    });
+    req.on("error", reject);
+  });
+}
+
+function extractToken(req) {
+  const auth = req.headers.authorization || "";
+  if (auth.startsWith("Bearer ")) return auth.slice(7).trim();
+  const cookie = req.headers.cookie || "";
+  const match = cookie.match(/(?:^|;\s*)physalts_session=([^;]+)/);
+  return match ? decodeURIComponent(match[1]) : null;
+}
+
+function sendJsonWithCookie(res, status, obj, cookieValue = undefined) {
+  const buf = Buffer.from(JSON.stringify(obj), "utf8");
+  const headers = {
+    ...SECURITY_HEADERS,
+    "Content-Type": "application/json; charset=utf-8",
+    "Content-Length": buf.length,
+    "Cache-Control": "no-store"
+  };
+  if (cookieValue !== undefined) {
+    headers["Set-Cookie"] = cookieValue;
+  }
+  res.writeHead(status, headers);
+  res.end(buf);
+}
+
+async function handleAuthApi(req, reqUrl, res) {
+  const p = reqUrl.pathname;
+  const ip = req.socket?.remoteAddress || "local";
+
+  if ((p === "/api/auth/register" || p === "/api/auth/login") && !authStore.checkRateLimit(ip)) {
+    return sendJson(res, 429, { ok: false, error: "Too many authentication attempts. Please wait a minute." });
+  }
+
+  try {
+    if (p === "/api/auth/register" && req.method === "POST") {
+      const body = await readJsonBody(req);
+      const out = await authStore.register(body);
+      if (out.error) return sendJson(res, out.status, { ok: false, error: out.error });
+      return sendJsonWithCookie(
+        res,
+        201,
+        { ok: true, user: out.user, token: out.token },
+        `physalts_session=${encodeURIComponent(out.token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`
+      );
+    }
+
+    if (p === "/api/auth/login" && req.method === "POST") {
+      const body = await readJsonBody(req);
+      const out = await authStore.login(body);
+      if (out.error) return sendJson(res, out.status, { ok: false, error: out.error });
+      return sendJsonWithCookie(
+        res,
+        200,
+        { ok: true, user: out.user, token: out.token },
+        `physalts_session=${encodeURIComponent(out.token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`
+      );
+    }
+
+    if (p === "/api/auth/logout" && req.method === "POST") {
+      const token = extractToken(req);
+      if (token) await authStore.logout(token);
+      return sendJsonWithCookie(
+        res,
+        200,
+        { ok: true },
+        "physalts_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
+      );
+    }
+
+    if (p === "/api/auth/me" && req.method === "GET") {
+      const token = extractToken(req);
+      const verified = await authStore.verifyToken(token);
+      if (!verified) return sendJson(res, 200, { ok: true, authenticated: false, user: null });
+      return sendJson(res, 200, { ok: true, authenticated: true, user: authStore.sanitizeUser(verified.user) });
+    }
+
+    // Authenticated-only routes below
+    const token = extractToken(req);
+    const verified = await authStore.verifyToken(token);
+    if (!verified) return sendJson(res, 401, { ok: false, error: "Sign in required." });
+    const uid = verified.user.id;
+
+    if (p === "/api/auth/change-password" && req.method === "POST") {
+      const body = await readJsonBody(req);
+      const out = await authStore.changePassword(uid, body);
+      if (out.error) return sendJson(res, out.status, { ok: false, error: out.error });
+      return sendJsonWithCookie(
+        res,
+        200,
+        { ok: true, user: out.user, token: out.token },
+        `physalts_session=${encodeURIComponent(out.token)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=2592000`
+      );
+    }
+
+    if (p === "/api/account/profile" && (req.method === "PATCH" || req.method === "POST")) {
+      const body = await readJsonBody(req);
+      const out = await authStore.updateProfile(uid, body);
+      if (out.error) return sendJson(res, out.status, { ok: false, error: out.error });
+      return sendJson(res, 200, { ok: true, user: out.user });
+    }
+
+    if (p === "/api/account/bookmarks" && (req.method === "PUT" || req.method === "POST")) {
+      const body = await readJsonBody(req);
+      const out = await authStore.updateBookmarks(uid, body);
+      if (out.error) return sendJson(res, out.status, { ok: false, error: out.error });
+      return sendJson(res, 200, { ok: true, user: out.user });
+    }
+
+    if (p === "/api/account/export" && req.method === "GET") {
+      return sendJson(res, 200, {
+        meta: {
+          app: "PhysAlts",
+          exportedAt: new Date().toISOString(),
+          gdprBasis: "Article 20 — Right to Data Portability"
+        },
+        account: authStore.sanitizeUser(verified.user)
+      });
+    }
+
+    if (p === "/api/account" && req.method === "DELETE") {
+      const out = await authStore.deleteAccount(uid, token);
+      if (out.error) return sendJson(res, out.status, { ok: false, error: out.error });
+      return sendJsonWithCookie(
+        res,
+        200,
+        { ok: true },
+        "physalts_session=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0"
+      );
+    }
+
+    return sendJson(res, 404, { ok: false, error: "Endpoint not found." });
+  } catch (err) {
+    return sendJson(res, 400, { ok: false, error: err?.message || "Invalid request." });
+  }
+}
+
+async function handleStatic(req, reqUrl, res) {
   let pathname;
   try {
     pathname = decodeURIComponent(reqUrl.pathname);
@@ -277,7 +452,7 @@ async function handleStatic(reqUrl, res) {
   }
 
   if (pathname === "/") pathname = "/index.html";
-  const resolved = path.resolve(PUBLIC_DIR, "." + pathname);
+  let resolved = path.resolve(PUBLIC_DIR, "." + pathname);
   if (!resolved.startsWith(PUBLIC_DIR + path.sep) && resolved !== PUBLIC_DIR) {
     res.writeHead(403, { ...SECURITY_HEADERS, "Content-Type": "text/plain" });
     res.end("Forbidden");
@@ -285,7 +460,23 @@ async function handleStatic(reqUrl, res) {
   }
 
   try {
-    const stat = await fs.stat(resolved);
+    let stat;
+    try {
+      stat = await fs.stat(resolved);
+    } catch {
+      // Clean URL support: /about -> /about.html, /privacy -> /privacy.html, /terms -> /terms.html
+      if (!path.extname(pathname)) {
+        const htmlCandidate = path.resolve(PUBLIC_DIR, "." + pathname + ".html");
+        if (htmlCandidate.startsWith(PUBLIC_DIR + path.sep)) {
+          stat = await fs.stat(htmlCandidate);
+          resolved = htmlCandidate;
+        } else {
+          throw new Error("Not found");
+        }
+      } else {
+        throw new Error("Not found");
+      }
+    }
     const filePath = stat.isDirectory() ? path.join(resolved, "index.html") : resolved;
     let data = await fs.readFile(filePath);
     const ext = path.extname(filePath).toLowerCase();
@@ -293,12 +484,22 @@ async function handleStatic(reqUrl, res) {
       const html = data.toString("utf8").replace("<head>", DEV_HEAD_SNIPPET);
       data = Buffer.from(html, "utf8");
     }
-    res.writeHead(200, {
+    const isLongCache = pathname.startsWith("/vendor/") || pathname.startsWith("/data/");
+    const cacheHeader = isLongCache ? "public, max-age=3600, stale-while-revalidate=86400" : "no-cache";
+    const acceptsGzip = /\bgzip\b/i.test(req.headers["accept-encoding"] || "");
+    const compressible = acceptsGzip && ext !== ".html" && /\.(js|mjs|css|json|ndjson|svg|xml|txt)$/.test(ext) && data.length > 4096;
+    const headers = {
       ...SECURITY_HEADERS,
       "Content-Type": MIME_TYPES[ext] || "application/octet-stream",
-      "Content-Length": data.length,
-      "Cache-Control": "no-cache"
-    });
+      "Cache-Control": cacheHeader
+    };
+    if (compressible) {
+      data = zlib.gzipSync(data, { level: 6 });
+      headers["Content-Encoding"] = "gzip";
+      headers["Vary"] = "Accept-Encoding";
+    }
+    headers["Content-Length"] = data.length;
+    res.writeHead(200, headers);
     res.end(data);
   } catch {
     if (pathname.startsWith("/vendor/fonts/") && pathname.endsWith(".pbf")) {
@@ -317,6 +518,16 @@ async function handleStatic(reqUrl, res) {
         return;
       } catch {}
     }
+    try {
+      const notFoundHtml = await fs.readFile(path.join(PUBLIC_DIR, "404.html"));
+      res.writeHead(404, {
+        ...SECURITY_HEADERS,
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": notFoundHtml.length
+      });
+      res.end(notFoundHtml);
+      return;
+    } catch {}
     res.writeHead(404, { ...SECURITY_HEADERS, "Content-Type": "text/plain" });
     res.end("Not found");
   }
@@ -328,8 +539,8 @@ const server = http.createServer((req, res) => {
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       ...SECURITY_HEADERS,
-      "Access-Control-Allow-Methods": "GET, HEAD, POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type"
+      "Access-Control-Allow-Methods": "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization"
     });
     res.end();
     return;
@@ -364,6 +575,11 @@ const server = http.createServer((req, res) => {
     return;
   }
 
+  if (reqUrl.pathname.startsWith("/api/auth/") || reqUrl.pathname === "/api/account" || reqUrl.pathname.startsWith("/api/account/")) {
+    handleAuthApi(req, reqUrl, res);
+    return;
+  }
+
   if (reqUrl.pathname !== "/_proxy") {
     console.log(`[REQ] ${req.method} ${reqUrl.pathname}`);
   }
@@ -371,10 +587,10 @@ const server = http.createServer((req, res) => {
   if (reqUrl.pathname === "/_proxy") {
     handleProxy(reqUrl, res);
   } else {
-    handleStatic(reqUrl, res);
+    handleStatic(req, reqUrl, res);
   }
 });
 
 server.listen(PORT, "0.0.0.0", () => {
-  console.log(`PhysAlts dev server running at http://localhost:${PORT} (disk cache: ${DISK_CACHE_DIR})`);
+  console.log(`PhysAlts web server running at http://localhost:${PORT} (disk cache: ${DISK_CACHE_DIR})`);
 });

@@ -269,10 +269,10 @@ function setupClusteredLayers() {
     paint: {
       "circle-color": [
         "case",
-        ["==", ["get", "selected"], 1], "rgba(255, 255, 255, 0.36)",
-        ["==", ["get", "kind"], "company"], "rgba(147, 197, 253, 0.26)",
-        ["==", ["get", "kind"], "history"], "rgba(226, 232, 240, 0.30)",
-        "rgba(203, 213, 225, 0.20)"
+        ["==", ["get", "selected"], 1], "rgba(160, 70, 70, 0.42)",
+        ["==", ["get", "kind"], "company"], "rgba(228, 228, 231, 0.28)",
+        ["==", ["get", "kind"], "history"], "rgba(212, 212, 216, 0.30)",
+        "rgba(212, 212, 216, 0.20)"
       ],
       "circle-radius": ["case", ["==", ["get", "selected"], 1], 14, ["==", ["get", "curated"], 1], 10, 7]
     }
@@ -287,14 +287,14 @@ function setupClusteredLayers() {
       "circle-color": [
         "case",
         ["==", ["get", "selected"], 1], "#ffffff",
-        ["==", ["get", "kind"], "company"], "#93c5fd",
-        ["==", ["get", "kind"], "history"], "#e2e8f0",
-        ["==", ["get", "curated"], 1], "#f1f5f9",
-        "#cbd5e1"
+        ["==", ["get", "kind"], "company"], "#e4e4e7",
+        ["==", ["get", "kind"], "history"], "#d4d4d8",
+        ["==", ["get", "curated"], 1], "#f4f4f5",
+        "#a1a1aa"
       ],
       "circle-radius": ["case", ["==", ["get", "selected"], 1], 7.5, ["==", ["get", "curated"], 1], 5.5, 4.2],
       "circle-stroke-width": ["case", ["==", ["get", "selected"], 1], 2.4, 1.5],
-      "circle-stroke-color": "rgba(255, 255, 255, 0.92)"
+      "circle-stroke-color": ["case", ["==", ["get", "selected"], 1], "rgb(160, 70, 70)", "rgba(255, 255, 255, 0.90)"]
     }
   });
 
@@ -453,8 +453,8 @@ function initMainThreadOverlay() {
         ctx.strokeStyle = "rgba(241, 245, 249, 0.82)";
         ctx.stroke();
 
-        ctx.fillStyle = "#f8fafc";
-        ctx.font = "600 12px Inter, -apple-system, sans-serif";
+        ctx.fillStyle = "#f4f4f5";
+        ctx.font = "600 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
         ctx.fillText(fmtCount(count), x, y + 0.5);
         hits.push({ type: "cluster", x, y, r: radius + 4, lng: item.lng, lat: item.lat, span: Math.max(item.spanLat || 0, item.spanLng || 0) });
       } else {
@@ -467,26 +467,26 @@ function initMainThreadOverlay() {
 
         ctx.beginPath();
         ctx.arc(x, y, selected ? 14 : curated ? 10 : 7, 0, Math.PI * 2);
-        ctx.fillStyle = selected ? "rgba(255,255,255,0.34)" : isCompany ? "rgba(147,197,253,0.26)" : "rgba(226,232,240,0.22)";
+        ctx.fillStyle = selected ? "rgba(160, 70, 70, 0.42)" : isCompany ? "rgba(228, 228, 231, 0.28)" : "rgba(212, 212, 216, 0.22)";
         ctx.fill();
 
         ctx.beginPath();
         ctx.arc(x, y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = selected ? "#ffffff" : isCompany ? "#93c5fd" : isHistory ? "#e2e8f0" : curated ? "#f1f5f9" : "#cbd5e1";
+        ctx.fillStyle = selected ? "#ffffff" : isCompany ? "#e4e4e7" : isHistory ? "#d4d4d8" : curated ? "#f4f4f5" : "#a1a1aa";
         ctx.fill();
         ctx.lineWidth = selected ? 2.4 : 1.5;
-        ctx.strokeStyle = "rgba(255,255,255,0.92)";
+        ctx.strokeStyle = selected ? "rgb(160, 70, 70)" : "rgba(255, 255, 255, 0.90)";
         ctx.stroke();
 
         if (selected || store.state.timeMode || (zoom >= 5.2 && curated)) {
           ctx.save();
           ctx.textAlign = "left";
-          ctx.font = "600 11.5px Inter, -apple-system, sans-serif";
+          ctx.font = "600 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
           ctx.lineWidth = 3;
-          ctx.strokeStyle = "rgba(6,9,15,0.90)";
-          ctx.strokeText(n.name, x + radius + 6, y);
-          ctx.fillStyle = "rgba(248,250,252,0.96)";
-          ctx.fillText(n.name, x + radius + 6, y);
+          ctx.strokeStyle = "rgba(9, 9, 10, 0.92)";
+          ctx.strokeText(n.name, x + radius + 7, y);
+          ctx.fillStyle = "rgba(244, 244, 245, 0.96)";
+          ctx.fillText(n.name, x + radius + 7, y);
           ctx.restore();
         }
         hits.push({ type: "node", x, y, r: Math.max(radius + 8, 13), id: n.id });
@@ -605,7 +605,10 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
       glyphs: glyphsUrl,
       projection: { type: "globe" },
       sky: {
-        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 1, 5, 1, 7, 0]
+        "sky-color": "#0b0b0c",
+        "horizon-color": "#1c1c1f",
+        "fog-color": "#0c0c0e",
+        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.85, 5, 0.7, 7, 0]
       },
       sources: {
         "esri-satellite": {
@@ -626,16 +629,16 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
         {
           id: "ocean-base",
           type: "background",
-          paint: { "background-color": "#050a14" }
+          paint: { "background-color": "#0a0a0b" }
         },
         {
           id: "satellite-layer",
           type: "raster",
           source: "esri-satellite",
           paint: {
-            "raster-fade-duration": 220,
-            "raster-saturation": -0.06,
-            "raster-contrast": 0.08
+            "raster-fade-duration": 150,
+            "raster-saturation": -0.08,
+            "raster-contrast": 0.06
           }
         },
         {
@@ -648,6 +651,16 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
       ]
     }
   });
+
+  if (typeof ResizeObserver !== "undefined") {
+    const mapEl = document.getElementById("map");
+    if (mapEl) {
+      const ro = new ResizeObserver(() => {
+        if (map) map.resize();
+      });
+      ro.observe(mapEl);
+    }
+  }
 
   map.on("style.load", () => {
     try { map.setProjection({ type: "globe" }); } catch {}
@@ -683,25 +696,26 @@ export function syncGlobeMarkers() {
 
 export function flyToHub(node, zoomOverride = null) {
   if (!map || !node) return;
-  const targetZoom = zoomOverride != null ? zoomOverride : Math.min(node.zoom || 11.5, 13);
-  map.flyTo({
+  const targetZoom = zoomOverride != null ? zoomOverride : Math.min(node.zoom || 6.4, 7.2);
+  map.easeTo({
     center: [node.lng, node.lat],
     zoom: targetZoom,
-    pitch: store.state.tilted ? 52 : 0,
-    speed: 1.05,
-    curve: 1.4,
+    pitch: store.state.tilted ? 48 : 0,
+    duration: 850,
+    easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true
   });
 }
 
-export function resetGlobeToSpace(center = [15, 28], zoom = 1.9) {
+export function resetGlobeToSpace(center = [15, 26], zoom = 1.95) {
   if (!map) return;
-  map.flyTo({
+  map.easeTo({
     center,
     zoom,
     pitch: 0,
     bearing: 0,
-    duration: 900,
+    duration: 800,
+    easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true
   });
 }

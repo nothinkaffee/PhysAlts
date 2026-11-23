@@ -30,17 +30,17 @@ function initStars() {
   }
 }
 
-// Restrained astronomical silver / pearl / cool ice-blue palette (zero yellow)
+// Pure neutral monochrome platinum / silver / charcoal palette (zero blue, zero yellow)
 const LANDMARKS = [
-  { label: "Earth / LEO", sub: "0 ls",      sec: 0.002, normX: 0.06, r: 13, color: "#60a5fa" },
-  { label: "Moon",        sub: "1.28 ls",   sec: 1.28,  normX: 0.14, r: 8,  color: "#cbd5e1" },
-  { label: "L1 / L2",     sub: "5 ls",      sec: 5,     normX: 0.22, r: 5,  color: "#93c5fd" },
-  { label: "Inner Solar", sub: "8.3 lm",    sec: 499,   normX: 0.31, r: 12, color: "#f8fafc" },
-  { label: "Mars",        sub: "12.5 lm",   sec: 750,   normX: 0.40, r: 8,  color: "#e2e8f0" },
-  { label: "Jupiter",     sub: "43 lm",     sec: 2600,  normX: 0.49, r: 13, color: "#cbd5e1" },
-  { label: "Saturn",      sub: "79 lm",     sec: 4750,  normX: 0.58, r: 11, color: "#e2e8f0", ring: true },
-  { label: "Kuiper Belt", sub: "5.5 lh",    sec: 19800, normX: 0.66, r: 7,  color: "#94a3b8" },
-  { label: "1 Light-Day", sub: "~173 AU",   sec: 86400, normX: 0.73, r: 10, color: "#bae6fd", frontier: true }
+  { label: "Earth / LEO", sub: "0 ls",      sec: 0.002, normX: 0.06, r: 13, color: "#f4f4f5" },
+  { label: "Moon",        sub: "1.28 ls",   sec: 1.28,  normX: 0.14, r: 8,  color: "#d4d4d8" },
+  { label: "L1 / L2",     sub: "5 ls",      sec: 5,     normX: 0.22, r: 5,  color: "#a1a1aa" },
+  { label: "Inner Solar", sub: "8.3 lm",    sec: 499,   normX: 0.31, r: 12, color: "#fafafa" },
+  { label: "Mars",        sub: "12.5 lm",   sec: 750,   normX: 0.40, r: 8,  color: "#d4d4d8" },
+  { label: "Jupiter",     sub: "43 lm",     sec: 2600,  normX: 0.49, r: 13, color: "#c4c4c9" },
+  { label: "Saturn",      sub: "79 lm",     sec: 4750,  normX: 0.58, r: 11, color: "#e4e4e7", ring: true },
+  { label: "Kuiper Belt", sub: "5.5 lh",    sec: 19800, normX: 0.66, r: 7,  color: "#9f9fa8" },
+  { label: "1 Light-Day", sub: "~173 AU",   sec: 86400, normX: 0.73, r: 10, color: "#f4f4f5", frontier: true }
 ];
 
 function lightTimeToNorm(sec) {
@@ -74,11 +74,11 @@ function drawFrame(now) {
   const isWide = w >= 900;
   const scaleX = (norm) => isWide ? norm * w : (0.06 + (norm - 0.06) / 0.67 * 0.88) * w;
 
-  // Starfield
+  // Starfield (pure neutral silver/white)
   const t = now * 0.001;
   for (const st of stars) {
     const alpha = st.a * (0.8 + 0.2 * Math.sin(t * 0.8 + st.twinkle));
-    ctx.fillStyle = `rgba(226, 232, 240, ${alpha.toFixed(3)})`;
+    ctx.fillStyle = `rgba(228, 228, 231, ${alpha.toFixed(3)})`;
     ctx.beginPath();
     ctx.arc(st.x * w, st.y * h, st.r, 0, Math.PI * 2);
     ctx.fill();
@@ -88,11 +88,11 @@ function drawFrame(now) {
   const leftX = scaleX(0.04);
   const rightX = scaleX(0.75);
 
-  // Subtle calibrated horizontal spine
+  // Subtle calibrated horizontal spine (neutral silver gradient)
   const grad = ctx.createLinearGradient(leftX, axisY, rightX, axisY);
-  grad.addColorStop(0, "rgba(147, 197, 253, 0.55)");
-  grad.addColorStop(0.5, "rgba(226, 232, 240, 0.22)");
-  grad.addColorStop(1, "rgba(186, 230, 253, 0.65)");
+  grad.addColorStop(0, "rgba(228, 228, 231, 0.52)");
+  grad.addColorStop(0.5, "rgba(161, 161, 170, 0.24)");
+  grad.addColorStop(1, "rgba(244, 244, 245, 0.60)");
   ctx.strokeStyle = grad;
   ctx.lineWidth = 1.25;
   ctx.beginPath();
@@ -105,7 +105,7 @@ function drawFrame(now) {
     const x = scaleX(lm.normX);
 
     // Hairline distance tick
-    ctx.strokeStyle = lm.frontier ? "rgba(186, 230, 253, 0.30)" : "rgba(255, 255, 255, 0.06)";
+    ctx.strokeStyle = lm.frontier ? "rgba(160, 70, 70, 0.45)" : "rgba(255, 255, 255, 0.07)";
     ctx.lineWidth = 1;
     ctx.setLineDash(lm.frontier ? [4, 4] : []);
     ctx.beginPath();
@@ -115,12 +115,12 @@ function drawFrame(now) {
     ctx.setLineDash([]);
 
     // Soft halo
-    const glow = ctx.createRadialGradient(x, axisY, 0, x, axisY, lm.r * 2.6);
-    glow.addColorStop(0, "rgba(226, 232, 240, 0.22)");
+    const glow = ctx.createRadialGradient(x, axisY, 0, x, axisY, lm.r * 2.5);
+    glow.addColorStop(0, lm.frontier ? "rgba(160, 70, 70, 0.26)" : "rgba(228, 228, 231, 0.20)");
     glow.addColorStop(1, "rgba(0, 0, 0, 0)");
     ctx.fillStyle = glow;
     ctx.beginPath();
-    ctx.arc(x, axisY, lm.r * 2.6, 0, Math.PI * 2);
+    ctx.arc(x, axisY, lm.r * 2.5, 0, Math.PI * 2);
     ctx.fill();
 
     // Orb
@@ -130,7 +130,7 @@ function drawFrame(now) {
     ctx.fill();
 
     if (lm.ring) {
-      ctx.strokeStyle = "rgba(226, 232, 240, 0.72)";
+      ctx.strokeStyle = "rgba(228, 228, 231, 0.72)";
       ctx.lineWidth = 1.6;
       ctx.beginPath();
       ctx.ellipse(x, axisY, lm.r * 1.85, lm.r * 0.48, -0.32, 0, Math.PI * 2);
@@ -138,15 +138,15 @@ function drawFrame(now) {
     }
 
     ctx.textAlign = "center";
-    ctx.fillStyle = "rgba(241, 245, 249, 0.90)";
-    ctx.font = "500 11px Inter, -apple-system, sans-serif";
-    ctx.fillText(lm.label, x, axisY + lm.r + 18);
-    ctx.fillStyle = "rgba(148, 163, 184, 0.72)";
-    ctx.font = "400 10px Inter, -apple-system, sans-serif";
-    ctx.fillText(lm.sub, x, axisY + lm.r + 32);
+    ctx.fillStyle = "rgba(244, 244, 245, 0.92)";
+    ctx.font = "500 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
+    ctx.fillText(lm.label, x, axisY + lm.r + 20);
+    ctx.fillStyle = "rgba(161, 161, 170, 0.78)";
+    ctx.font = "400 12px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
+    ctx.fillText(lm.sub, x, axisY + lm.r + 36);
   }
 
-  // Mission beacons — minimalist, zero overlapping text clutter!
+  // Mission beacons — minimalist pure grey/white + rgb(160, 70, 70) selected accent
   const missions = store.spaceMissions.filter(m => activeZone === "all" || m.zoneId === activeZone);
   const hits = [];
   const placed = [];
@@ -155,19 +155,19 @@ function drawFrame(now) {
   missions.forEach((m, idx) => {
     const x = scaleX(lightTimeToNorm(m.lightTimeSec));
     const dir = idx % 2 === 0 ? -1 : 1;
-    let y = axisY + dir * 56;
+    let y = axisY + dir * 60;
     for (let step = 0; step < 6; step++) {
-      const cand = axisY + dir * (56 + step * 30);
-      const clash = placed.some(p => Math.abs(p.x - x) < 28 && Math.abs(p.y - cand) < 24);
+      const cand = axisY + dir * (60 + step * 32);
+      const clash = placed.some(p => Math.abs(p.x - x) < 28 && Math.abs(p.y - cand) < 26);
       if (!clash) { y = cand; break; }
       y = cand;
     }
-    y = Math.max(152, Math.min(h - 102, y));
+    y = Math.max(164, Math.min(h - 112, y));
     placed.push({ x, y });
 
     const isSelected = selectedMissionId === m.id;
     const isHovered = hoveredMissionId === m.id;
-    const dotColor = isSelected ? "#ffffff" : m.status === "active" ? "#93c5fd" : m.status === "upcoming" ? "#e2e8f0" : "#94a3b8";
+    const dotColor = isSelected ? "#ffffff" : m.status === "active" ? "#e4e4e7" : m.status === "upcoming" ? "#a1a1aa" : "#71717a";
 
     ctx.strokeStyle = isSelected || isHovered ? "rgba(255,255,255,0.65)" : "rgba(255,255,255,0.14)";
     ctx.lineWidth = isSelected || isHovered ? 1.5 : 0.9;
@@ -179,7 +179,7 @@ function drawFrame(now) {
     const r = isSelected ? 6.5 : isHovered ? 5.5 : 4.2;
     ctx.beginPath();
     ctx.arc(x, y, r + 5, 0, Math.PI * 2);
-    ctx.fillStyle = isSelected ? "rgba(255,255,255,0.26)" : "rgba(147,197,253,0.15)";
+    ctx.fillStyle = isSelected ? "rgba(160, 70, 70, 0.36)" : "rgba(228, 228, 231, 0.14)";
     ctx.fill();
 
     ctx.beginPath();
@@ -187,7 +187,7 @@ function drawFrame(now) {
     ctx.fillStyle = dotColor;
     ctx.fill();
     ctx.lineWidth = 1.3;
-    ctx.strokeStyle = "#f8fafc";
+    ctx.strokeStyle = isSelected ? "rgb(160, 70, 70)" : "#f4f4f5";
     ctx.stroke();
 
     if (isSelected || isHovered) {
@@ -201,15 +201,15 @@ function drawFrame(now) {
   if (tooltipMission) {
     const { m, x, y, dir } = tooltipMission;
     const text = `${m.name} · ${m.lightTimeLabel.split(" (")[0]}`;
-    ctx.font = "500 11.5px Inter, -apple-system, sans-serif";
-    const tw = ctx.measureText(text).width + 20;
-    const th = 26;
-    const maxRight = isWide ? (w - 318) : (w - 12);
-    const bx = Math.max(12, Math.min(maxRight - tw, x - tw / 2));
-    const by = dir < 0 ? y - 38 : y + 14;
+    ctx.font = "500 13px 'Inter', 'Helvetica Neue', Helvetica, sans-serif";
+    const tw = ctx.measureText(text).width + 24;
+    const th = 30;
+    const maxRight = isWide ? (w - 356) : (w - 16);
+    const bx = Math.max(16, Math.min(maxRight - tw, x - tw / 2));
+    const by = dir < 0 ? y - 42 : y + 16;
 
-    ctx.fillStyle = "rgba(12, 16, 24, 0.96)";
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+    ctx.fillStyle = "rgba(17, 17, 19, 0.96)";
+    ctx.strokeStyle = "rgba(255, 255, 255, 0.24)";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.roundRect(bx, by, tw, th, 999);
@@ -218,8 +218,8 @@ function drawFrame(now) {
 
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
-    ctx.fillStyle = "#f8fafc";
-    ctx.fillText(text, bx + 10, by + th / 2 + 0.5);
+    ctx.fillStyle = "#f4f4f5";
+    ctx.fillText(text, bx + 12, by + th / 2 + 0.5);
   }
 
   missionHitboxes = hits;
