@@ -253,6 +253,9 @@ def render_variant(variant, blender_frames, ui_imgs, vertical=False):
     W, H = (1080, 1920) if vertical else (1920, 1080)
     suffix = "vertical" if vertical else ("curiosity_rabbithole" if variant == "A" else "scale_of_science")
     out_mp4 = os.path.join(OUT_VID_DIR, f"launch_video_{variant}_{suffix}.mp4")
+    if os.path.exists(out_mp4) and os.path.getsize(out_mp4) > 1_500_000:
+        print(f"SKIPPED_EXISTING {out_mp4}", flush=True)
+        return out_mp4
     wav_path = f"/tmp/audio_{variant}.wav"
     if not os.path.exists(wav_path):
         synth_soundtrack(wav_path, DURATION, variant=variant)

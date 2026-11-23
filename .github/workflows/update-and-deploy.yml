@@ -17,10 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -36,26 +33,32 @@ jobs:
         run: |
           node scripts/scrape_physics.mjs
           node scripts/build_provenance_and_db.mjs
+          node scripts/build_offline_packs.mjs
 
       - name: Commit updated dataset (if changed)
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/physics_hubs.json public/data/physalts_unified.ndjson public/data/provenance_ledger.json public/data/physalts_schema.json
+          git add public/data/physics_hubs.json public/data/physalts_unified.ndjson public/data/provenance_ledger.json public/data/physalts_schema.json public/data/packs/
           git diff --staged --quiet || git commit -m "chore(data): scheduled index refresh"
           git push || true
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
-        with:
-          enablement: true
 
       - name: Upload public/ artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: "public"
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
