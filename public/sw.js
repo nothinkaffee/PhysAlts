@@ -5,7 +5,7 @@
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v4";
+const APP_CACHE = "world-physics-app-v5";
 const TILE_CACHE = "world-physics-tiles-v1";
 
 const PRECACHE_APP = [
@@ -18,6 +18,11 @@ const PRECACHE_APP = [
   "./vendor/maplibre-gl-csp.js",
   "./vendor/maplibre-gl-csp-worker.js",
   "./vendor/lucide.min.js",
+  "./tiles/bluemarble/0/0/0.jpg",
+  "./tiles/bluemarble/1/0/0.jpg",
+  "./tiles/bluemarble/1/0/1.jpg",
+  "./tiles/bluemarble/1/1/0.jpg",
+  "./tiles/bluemarble/1/1/1.jpg",
   "./data/curated_flagships.json",
   "./data/private_startups.json",
   "./data/history_timeline.json",
@@ -26,12 +31,18 @@ const PRECACHE_APP = [
 ];
 
 function isGlobeTileRequest(url) {
-  if (url.hostname === "services.arcgisonline.com" && url.pathname.includes("/World_Imagery/MapServer/tile/")) {
+  if (
+    (url.hostname === "services.arcgisonline.com" || url.hostname === "server.arcgisonline.com") &&
+    /\/World_Imagery\/MapServer\/tile\//i.test(url.pathname)
+  ) {
+    return true;
+  }
+  if (url.origin === self.location.origin && url.pathname.startsWith("/tiles/bluemarble/")) {
     return true;
   }
   if (url.origin === self.location.origin && url.pathname === "/_proxy") {
     const target = url.searchParams.get("url") || "";
-    return target.includes("World_Imagery/MapServer/tile/");
+    return /World_Imagery\/MapServer\/tile\//i.test(target);
   }
   return false;
 }

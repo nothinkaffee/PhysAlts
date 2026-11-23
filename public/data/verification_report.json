@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-22T22:39:44.486Z",
+  "generatedAt": "2026-11-23T17:02:21.865Z",
   "mode": "standard",
-  "durationSec": 69.9,
+  "durationSec": 156.7,
   "summary": {
     "totalDatasets": 6,
     "presentDatasets": 6,
     "missingDatasets": 0,
-    "totalEntities": 4277,
+    "totalEntities": 4253,
     "totalCountries": 165,
     "linksChecked": 721,
-    "linksOk": 563,
-    "linksBotProtected": 52,
-    "linksBroken": 106,
-    "passRatePct": 85.3,
-    "strictOkRatePct": 78.09,
+    "linksOk": 498,
+    "linksBotProtected": 34,
+    "linksBroken": 189,
+    "passRatePct": 73.79,
+    "strictOkRatePct": 69.07,
     "schemaErrorsCount": 0
   },
   "datasets": {
@@ -23,9 +23,9 @@
       "schemaErrors": 0,
       "linksScheduled": 151,
       "linksChecked": 151,
-      "linksOk": 127,
-      "linksBotProtected": 16,
-      "linksBroken": 8,
+      "linksOk": 86,
+      "linksBotProtected": 4,
+      "linksBroken": 61,
       "sampling": "100%"
     },
     "history_timeline.json": {
@@ -34,9 +34,9 @@
       "schemaErrors": 0,
       "linksScheduled": 130,
       "linksChecked": 130,
-      "linksOk": 87,
-      "linksBotProtected": 7,
-      "linksBroken": 36,
+      "linksOk": 78,
+      "linksBotProtected": 6,
+      "linksBroken": 46,
       "sampling": "100%"
     },
     "space_frontier.json": {
@@ -56,9 +56,9 @@
       "schemaErrors": 0,
       "linksScheduled": 152,
       "linksChecked": 152,
-      "linksOk": 134,
-      "linksBotProtected": 13,
-      "linksBroken": 5,
+      "linksOk": 124,
+      "linksBotProtected": 10,
+      "linksBroken": 18,
       "sampling": "100%"
     },
     "private_startups.json": {
@@ -67,20 +67,20 @@
       "schemaErrors": 0,
       "linksScheduled": 66,
       "linksChecked": 66,
-      "linksOk": 60,
-      "linksBotProtected": 5,
-      "linksBroken": 1,
+      "linksOk": 58,
+      "linksBotProtected": 3,
+      "linksBroken": 5,
       "sampling": "100%"
     },
     "physics_hubs.json": {
       "status": "ok",
-      "entities": 4032,
+      "entities": 4008,
       "schemaErrors": 0,
       "linksScheduled": 150,
       "linksChecked": 150,
-      "linksOk": 119,
+      "linksOk": 116,
       "linksBotProtected": 11,
-      "linksBroken": 20,
+      "linksBroken": 23,
       "sampling": "stratified-150"
     }
   },
@@ -88,11 +88,107 @@
   "brokenLinks": [
     {
       "file": "curated_flagships.json",
+      "id": "cern",
+      "name": "CERN",
+      "url": "https://home.cern/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "cern",
+      "name": "CERN",
+      "url": "https://fcc.web.cern.ch/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "icecube",
+      "name": "IceCube Neutrino Observatory",
+      "url": "https://www.icecube-gen2.de/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "mit",
+      "name": "MIT Physics",
+      "url": "https://physics.mit.edu/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "eth",
+      "name": "ETH Zurich Physics",
+      "url": "https://www.paulicenter.ch/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ligo",
+      "name": "LIGO Hanford",
+      "url": "https://www.ligo.caltech.edu/WA",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ligo",
+      "name": "LIGO Hanford",
+      "url": "https://www.ligo.caltech.edu/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
       "id": "parissaclay",
       "name": "Paris-Saclay Physics",
-      "url": "https://www.universite-paris-saclay.fr/en/quantum",
-      "status": 404,
-      "reason": "HTTP 404"
+      "url": "https://www.universite-paris-saclay.fr/en/node/79657",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "parissaclay",
+      "name": "Paris-Saclay Physics",
+      "url": "https://www.universite-paris-saclay.fr/en/research",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "cambridge",
+      "name": "Cavendish Laboratory",
+      "url": "https://www.phy.cam.ac.uk/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "cambridge",
+      "name": "Cavendish Laboratory",
+      "url": "https://simonsobservatory.org/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "utokyo",
+      "name": "University of Tokyo Physics",
+      "url": "https://www.u-tokyo.ac.jp/en/prospective-students/mext_scholarship.html",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "utokyo",
+      "name": "University of Tokyo Physics",
+      "url": "https://www.hyperk.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "curated_flagships.json",
@@ -101,6 +197,214 @@
       "url": "https://gwcenter.icrr.u-tokyo.ac.jp/en/",
       "status": 0,
       "reason": "EHOSTUNREACH: connect EHOSTUNREACH 157.82.231.108:443"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "superk",
+      "name": "Super-Kamiokande",
+      "url": "https://www.hyperk.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "perimeter",
+      "name": "Perimeter Institute",
+      "url": "https://perimeterinstitute.ca/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "perimeter",
+      "name": "Perimeter Institute",
+      "url": "https://perimeterinstitute.ca/research/research-initiatives/perimeter-institute-quantum-intelligence-lab",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "qutech",
+      "name": "QuTech & TU Delft",
+      "url": "https://www.quantum-inspire.com/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "asml",
+      "name": "ASML (EUV Physics)",
+      "url": "https://www.asml.com/en/company/about-asml/locations/veldhoven",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "asml",
+      "name": "ASML (EUV Physics)",
+      "url": "https://arcnl.nl/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "iter",
+      "name": "ITER Fusion Tokamak",
+      "url": "https://www.iter.org/construction/construction",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "cfs",
+      "name": "Commonwealth Fusion (SPARC)",
+      "url": "https://cfs.energy/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "fermilab",
+      "name": "Fermilab",
+      "url": "https://www.fnal.gov/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "fermilab",
+      "name": "Fermilab",
+      "url": "https://www.dunescience.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "fermilab",
+      "name": "Fermilab",
+      "url": "https://pip2.fnal.gov/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "slac",
+      "name": "SLAC & Stanford",
+      "url": "https://www6.slac.stanford.edu/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "slac",
+      "name": "SLAC & Stanford",
+      "url": "https://lcls.slac.stanford.edu/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "slac",
+      "name": "SLAC & Stanford",
+      "url": "https://rubinobservatory.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "desy",
+      "name": "DESY",
+      "url": "https://www.desy.de/index_eng.html",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "desy",
+      "name": "DESY",
+      "url": "https://www.desy.de/research/facilities__projects/petra_iv/index_eng.html",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "mpq",
+      "name": "Max Planck Quantum Optics",
+      "url": "https://www.attoworld.de/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "mpq",
+      "name": "Max Planck Quantum Optics",
+      "url": "https://www.mcqst.de/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "psi",
+      "name": "Paul Scherrer Institute",
+      "url": "https://www.psi.ch/en/research/large-research-facilities",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "psi",
+      "name": "Paul Scherrer Institute",
+      "url": "https://www.psi.ch/en/sls",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "psi",
+      "name": "Paul Scherrer Institute",
+      "url": "https://www.psi.ch/en/swissfel",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "esrf",
+      "name": "ESRF Synchrotron",
+      "url": "https://www.esrf.fr/home.html",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "esrf",
+      "name": "ESRF Synchrotron",
+      "url": "https://www.esrf.fr/about/upgrade",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ess",
+      "name": "European Spallation Source",
+      "url": "https://europeanspallationsource.se/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "gransasso",
+      "name": "INFN Gran Sasso",
+      "url": "https://www.lngs.infn.it/en",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "gransasso",
+      "name": "INFN Gran Sasso",
+      "url": "https://legend-exp.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "curated_flagships.json",
@@ -120,9 +424,65 @@
     },
     {
       "file": "curated_flagships.json",
-      "id": "ictp",
-      "name": "Abdus Salam ICTP",
-      "url": "https://www.ictp.it/opportunity/ictp-postgraduate-diploma-programme",
+      "id": "iqm",
+      "name": "IQM Quantum Computers",
+      "url": "https://www.meetiqm.com/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "iqm",
+      "name": "IQM Quantum Computers",
+      "url": "https://www.lrz.de/en",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "triumf",
+      "name": "TRIUMF Cyclotron",
+      "url": "https://www.triumf.ca/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "triumf",
+      "name": "TRIUMF Cyclotron",
+      "url": "https://www.triumf.ca/ariel",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "kek",
+      "name": "KEK Accelerator Lab",
+      "url": "https://j-parc.jp/c/en/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "riken",
+      "name": "RIKEN Wako",
+      "url": "https://www.riken.jp/en/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "riken",
+      "name": "RIKEN Wako",
+      "url": "https://rqc.riken.jp/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "kaist",
+      "name": "KAIST Physics",
+      "url": "https://physics.kaist.ac.kr/",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
@@ -133,6 +493,70 @@
       "url": "https://capp.ibs.re.kr/",
       "status": 0,
       "reason": "ENOTFOUND: getaddrinfo ENOTFOUND capp.ibs.re.kr"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "cqt",
+      "name": "Centre for Quantum Tech",
+      "url": "https://www.quantumlah.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "ictpsaifr",
+      "name": "ICTP-SAIFR",
+      "url": "https://www.ictp-saifr.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "miletus",
+      "name": "Miletus (Anaximander)",
+      "url": "https://en.wikipedia.org/wiki/Miletus",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "bern",
+      "name": "Bern Patent Office (Einstein)",
+      "url": "https://www.unibe.ch/index_eng.html",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "princeton",
+      "name": "Princeton & IAS",
+      "url": "https://www.ias.edu/sns",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "caltech",
+      "name": "Caltech Physics (PMA)",
+      "url": "https://www.ligo.caltech.edu/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "berkeley",
+      "name": "UC Berkeley & LBNL",
+      "url": "https://physics.berkeley.edu/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "curated_flagships.json",
+      "id": "tum",
+      "name": "TU Munich & LMU (MCQST)",
+      "url": "https://www.origins-cluster.de/en/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "curated_flagships.json",
@@ -152,9 +576,17 @@
     },
     {
       "file": "history_timeline.json",
-      "id": "theodoric_freiberg_1304",
-      "name": "Rainbow Refraction Explained with Water-Filled Glass Spheres",
-      "url": "https://en.wikipedia.org/wiki/Theodoric_of_Freiberg",
+      "id": "aryabhata_499",
+      "name": "Aryabhatiya: Earth's Rotation & Eclipse Mechanics",
+      "url": "https://en.wikipedia.org/wiki/Aryabhata",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "copernicus_1543",
+      "name": "De Revolutionibus: Heliocentric Solar System",
+      "url": "https://en.wikipedia.org/wiki/De_revolutionibus_orbium_coelestium",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -163,6 +595,30 @@
       "id": "newton_principia_1687",
       "name": "Philosophiæ Naturalis Principia Mathematica",
       "url": "https://en.wikipedia.org/wiki/Philosophi%C3%A6_Naturalis_Principia_Mathematica",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "euler_1755",
+      "name": "Euler's Equations of Fluid Dynamics & Analytical Mechanics",
+      "url": "https://en.wikipedia.org/wiki/Leonhard_Euler",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "faraday_1831",
+      "name": "Electromagnetic Induction & Field Concept",
+      "url": "https://en.wikipedia.org/wiki/Faraday%27s_law_of_induction",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "maxwell_1865",
+      "name": "Maxwell's Equations & Light as an Electromagnetic Wave",
+      "url": "https://en.wikipedia.org/wiki/A_Dynamical_Theory_of_the_Electromagnetic_Field",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -179,6 +635,22 @@
       "id": "general_relativity_1915",
       "name": "General Theory of Relativity",
       "url": "https://en.wikipedia.org/wiki/General_relativity",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "noether_1918",
+      "name": "Noether's Theorem: Symmetries & Conservation Laws",
+      "url": "https://en.wikipedia.org/wiki/Noether%27s_theorem",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "solvay_1927",
+      "name": "Fifth Solvay Congress: Electrons and Photons",
+      "url": "https://en.wikipedia.org/wiki/Solvay_Conference",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -360,6 +832,14 @@
     },
     {
       "file": "history_timeline.json",
+      "id": "rubin_lsst_2025",
+      "name": "Vera C. Rubin Observatory First Light & LSST Survey",
+      "url": "https://rubinobservatory.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "history_timeline.json",
       "id": "sparc_fusion_2027",
       "name": "SPARC High-Field Compact Fusion Tokamak Target Operations",
       "url": "https://en.wikipedia.org/wiki/SPARC_(tokamak)",
@@ -373,6 +853,14 @@
       "url": "https://en.wikipedia.org/wiki/Hyper-Kamiokande",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "hyper_k_2027",
+      "name": "Hyper-Kamiokande Operations Begin",
+      "url": "https://www.hyperk.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "history_timeline.json",
@@ -397,6 +885,14 @@
       "url": "https://en.wikipedia.org/wiki/Deep_Underground_Neutrino_Experiment",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "dune_2031",
+      "name": "DUNE (Deep Underground Neutrino Experiment) Beam Operations",
+      "url": "https://www.dunescience.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "history_timeline.json",
@@ -437,6 +933,14 @@
       "url": "https://en.wikipedia.org/wiki/Future_Circular_Collider",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "fcc_2045",
+      "name": "Future Circular Collider (FCC-ee) Precision Higgs Factory",
+      "url": "https://fcc.web.cern.ch/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "space_frontier.json",
@@ -728,11 +1232,59 @@
     },
     {
       "file": "domains_catalog.json",
+      "id": "particle",
+      "name": "Particle, Nuclear & High-Energy Physics",
+      "url": "https://fcc.web.cern.ch/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "particle",
+      "name": "Particle, Nuclear & High-Energy Physics",
+      "url": "https://www.dunescience.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "particle",
+      "name": "Particle, Nuclear & High-Energy Physics",
+      "url": "https://www.hyperk.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "particle",
+      "name": "Particle, Nuclear & High-Energy Physics",
+      "url": "https://pip2.fnal.gov/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "quantum",
+      "name": "Quantum Science, AMO & Photonics",
+      "url": "https://www.mcqst.de/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "domains_catalog.json",
       "id": "quantum",
       "name": "Quantum Science, AMO & Photonics",
       "url": "https://magis.stanford.edu/",
       "status": 0,
       "reason": "ENOTFOUND: getaddrinfo ENOTFOUND magis.stanford.edu"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "quantum",
+      "name": "Quantum Science, AMO & Photonics",
+      "url": "https://www.attoworld.de/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "domains_catalog.json",
@@ -744,17 +1296,65 @@
     },
     {
       "file": "domains_catalog.json",
+      "id": "quantum",
+      "name": "Quantum Science, AMO & Photonics",
+      "url": "https://arcnl.nl/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
       "id": "astro",
       "name": "Astrophysics & Cosmology",
       "url": "https://cosmology.amsterdam/education/cosmology/",
       "status": 0,
-      "reason": "ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE: C0EC1544E97F0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../deps/openssl/openssl/ssl"
+      "reason": "ERR_SSL_SSL/TLS_ALERT_HANDSHAKE_FAILURE: C04C5645A47F0000:error:0A000410:SSL routines:ssl3_read_bytes:ssl/tls alert handshake failure:../deps/openssl/openssl/ssl"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "astro",
+      "name": "Astrophysics & Cosmology",
+      "url": "https://rubinobservatory.org/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "astro",
+      "name": "Astrophysics & Cosmology",
+      "url": "https://simonsobservatory.org/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "astro",
+      "name": "Astrophysics & Cosmology",
+      "url": "https://www.icecube-gen2.de/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "domains_catalog.json",
       "id": "gravity",
       "name": "Gravitational Waves, Relativity & Fundamental Theory",
       "url": "https://www.et-gw.eu/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "gravity",
+      "name": "Gravitational Waves, Relativity & Fundamental Theory",
+      "url": "https://perimeterinstitute.ca/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "domains_catalog.json",
+      "id": "fusion",
+      "name": "Fusion Energy & Plasma Physics",
+      "url": "https://cfs.energy/",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
@@ -767,6 +1367,38 @@
       "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.cems.riken.jp"
     },
     {
+      "file": "domains_catalog.json",
+      "id": "condensed",
+      "name": "Condensed Matter, Materials & Statistical Physics",
+      "url": "https://europeanspallationsource.se/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "private_startups.json",
+      "id": "dt_iqm",
+      "name": "IQM Quantum Computers",
+      "url": "https://www.meetiqm.com/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "private_startups.json",
+      "id": "dt_cfs",
+      "name": "Commonwealth Fusion Systems (CFS)",
+      "url": "https://cfs.energy/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "private_startups.json",
+      "id": "dt_perimeter",
+      "name": "Perimeter Institute for Theoretical Physics",
+      "url": "https://perimeterinstitute.ca/",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
       "file": "private_startups.json",
       "id": "dt_ictp",
       "name": "Abdus Salam ICTP",
@@ -775,28 +1407,28 @@
       "reason": "23: The operation was aborted due to timeout"
     },
     {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210136004",
-      "name": "University of Bisha",
-      "url": "http://www.ub.edu.sa",
+      "file": "private_startups.json",
+      "id": "dt_ias_princeton",
+      "name": "Institute for Advanced Study (School of Natural Sciences)",
+      "url": "https://www.ias.edu/sns",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I2800875726",
-      "name": "Fritz Haber Institute of the Max Planck Society",
-      "url": "http://www.fhi-berlin.mpg.de",
+      "id": "oa-I4210128819",
+      "name": "Institute of Electrical Engineering",
+      "url": "https://english.iee.cas.cn",
       "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
+      "reason": "DEPTH_ZERO_SELF_SIGNED_CERT: self-signed certificate"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4405266797",
-      "name": "Indian Institute of Geomagnetism",
-      "url": "https://www.iigm.res.in",
+      "id": "oa-I140786321",
+      "name": "Tibet University",
+      "url": "https://www.utibet.edu.cn",
       "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
+      "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "physics_hubs.json",
@@ -810,17 +1442,9 @@
       "file": "physics_hubs.json",
       "id": "oa-I15807432",
       "name": "Osaka Prefecture University",
-      "url": "http://www.osakafu-u.ac.jp/english/",
+      "url": "https://www.osakafu-u.ac.jp/english/",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I18167132",
-      "name": "Universidade Presbiteriana Mackenzie",
-      "url": "http://up.mackenzie.br/upm/",
-      "status": 0,
-      "reason": "TypeError: redirect count exceeded"
     },
     {
       "file": "physics_hubs.json",
@@ -832,17 +1456,41 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-00ern2s92",
-      "name": "Département de Physique Nucléaire",
-      "url": "http://irfu.cea.fr/sphn/index.php",
-      "status": 404,
-      "reason": "HTTP 404"
+      "id": "oa-I82002896",
+      "name": "Universidad Central de Venezuela",
+      "url": "https://www.ucv.ve",
+      "status": 0,
+      "reason": "ECONNREFUSED: connect ECONNREFUSED 190.169.30.8:443"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-04ynn1b95",
-      "name": "Astronomy and Space",
-      "url": "http://www.csiro.au/en/Research/Astronomy",
+      "id": "oa-I5422934",
+      "name": "Shanxi Datong University",
+      "url": "https://www.sxdtdx.edu.cn",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210110734",
+      "name": "Laboratoire Catalyse et Spectrochimie",
+      "url": "https://www-lcs.ensicaen.fr/?lang=en",
+      "status": 0,
+      "reason": "ERR_TLS_CERT_ALTNAME_INVALID: Hostname/IP does not match certificate's altnames: Host: www-lcs.ensicaen.fr. is not in the cert's altnames: DNS:www.lcs"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-013v8tf96",
+      "name": "Winer Observatory",
+      "url": "https://www.winer.org",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-03s6brr03",
+      "name": "Sonneberg Observatory",
+      "url": "https://www.sonobs.de/observatory/observatory.html",
       "status": 404,
       "reason": "HTTP 404"
     },
@@ -850,17 +1498,25 @@
       "file": "physics_hubs.json",
       "id": "oa-I4400600953",
       "name": "Masdar Institute of Science and Technology",
-      "url": "http://www2.masdar.ac.ae",
+      "url": "https://www2.masdar.ac.ae",
       "status": 0,
       "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www2.masdar.ac.ae"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-03v7tny92",
-      "name": "Institute of Physics Rosario",
-      "url": "https://www.ifir-conicet.gov.ar/index.php/es/",
-      "status": 404,
-      "reason": "HTTP 404"
+      "id": "oa-I178254495",
+      "name": "Dayalbagh Educational Institute",
+      "url": "https://www.dei.ac.in/dei",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-029yt9178",
+      "name": "Physics of Life",
+      "url": "https://physics-of-life.tu-dresden.de",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
     },
     {
       "file": "physics_hubs.json",
@@ -880,14 +1536,6 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-04sqtxy36",
-      "name": "Research Institute \"Quantum\"",
-      "url": "http://www.rdi-kvant.ru/Page.aspx?id=171",
-      "status": 404,
-      "reason": "HTTP 404"
-    },
-    {
-      "file": "physics_hubs.json",
       "id": "ror-04qdwq068",
       "name": "QuantIC",
       "url": "https://www.quantic.ac.uk",
@@ -898,41 +1546,57 @@
       "file": "physics_hubs.json",
       "id": "ror-049wyn804",
       "name": "Data Fusion Research Center",
-      "url": "http://www.dfrc.ch",
+      "url": "https://www.dfrc.ch",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "physics_hubs.json",
+      "id": "ror-02m7v0022",
+      "name": "Fusion Innovations (United Kingdom)",
+      "url": "https://www.fusion-innovations.com",
+      "status": 0,
+      "reason": "CERT_HAS_EXPIRED: certificate has expired"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-00aac7f28",
+      "name": "Ion Physics (United States)",
+      "url": "https://ionphysics.com",
+      "status": 0,
+      "reason": "ERR_SSL_TLSV1_UNRECOGNIZED_NAME: C04C5645A47F0000:error:0A000458:SSL routines:ssl3_read_bytes:tlsv1 unrecognized name:../deps/openssl/openssl/ssl/record/"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-016p2sb76",
+      "name": "Particle Beam Lasers (United States)",
+      "url": "https://www.particlebeamlasers.com",
+      "status": 0,
+      "reason": "CERT_HAS_EXPIRED: certificate has expired"
+    },
+    {
+      "file": "physics_hubs.json",
       "id": "ror-04e25k642",
       "name": "Metal Plasma (Brazil)",
-      "url": "http://www.metalplasma.com.br",
+      "url": "https://www.metalplasma.com.br",
       "status": 0,
       "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.metalplasma.com.br"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I108743333",
-      "name": "Inner Mongolia University for Nationalities",
-      "url": "http://www.imun.edu.cn",
+      "id": "ror-01r6jny18",
+      "name": "Intrepid Geophysics (Australia)",
+      "url": "https://www.intrepid-geophysics.com",
       "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210091629",
-      "name": "Illawarra Health and Medical Research Institute",
-      "url": "https://www.ihmri.org.au",
-      "status": 0,
-      "reason": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR: C0EC1544E97F0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:../deps/openssl/openssl/ssl/reco"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210143353",
-      "name": "Institut Universitaire des Systèmes Thermiques Industriels",
-      "url": "http://iusti.univ-provence.fr",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND iusti.univ-provence.fr"
+      "id": "oa-I102826571",
+      "name": "Setsunan University",
+      "url": "https://www.setsunan.ac.jp/english/",
+      "status": 404,
+      "reason": "HTTP 404"
     }
   ]
 }

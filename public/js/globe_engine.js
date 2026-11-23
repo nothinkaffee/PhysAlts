@@ -567,8 +567,24 @@ function initGlobeHudOverlay() {
   container.appendChild(hudCanvas);
 
   let rafPending = false;
+  let cachedUiZones = [];
+  let lastUiZonesAt = 0;
+  const getUiZones = (force = false) => {
+    const now = performance.now();
+    if (!force && now - lastUiZonesAt < 180) return cachedUiZones;
+    lastUiZonesAt = now;
+    const zones = [];
+    for (const id of ["dynamic-island", "bottom-dock", "earth-only-controls", "zoom-controls", "place-card", "time-bar"]) {
+      const el = document.getElementById(id);
+      if (!el || el.classList.contains("hidden")) continue;
+      const r = el.getBoundingClientRect();
+      if (r.width > 0 && r.height > 0) zones.push(r);
+    }
+    cachedUiZones = zones;
+    return zones;
+  };
 
-  const renderHudNow = () => {
+  const renderHudNow = (forceUiMeasure = false) => {
     rafPending = false;
     if (!hudCanvas || !map || typeof map.project !== "function") return;
     if (store.state.viewMode !== "earth") return;
@@ -601,17 +617,22 @@ function initGlobeHudOverlay() {
 
     const hits = [];
     const placedRects = [];
-    const labelCandidates = [];
+    const regionRects = [];
+    const normalLabels = [];
+    const priorityLabels = [];
     let clusterHint = null;
-    let labelBlocked = () => false;
 
-    // Safe UI exclusion margins so labels don't sit behind top Dynamic Island or bottom dock
-    const safeTop = 86;
-    const safeBottom = h - 88;
-    const safeLeft = 18;
-    const safeRight = w - 18;
+    // Safe UI exclusion margins & live fixed-panel masks
+    const safeTop = 82;
+    const safeBottom = h - 84;
+    const safeLeft = 16;
+    const safeRight = w - 16;
 
-    // 1. Optional clean Inter country/region labels (when user toggles "Labels" on)
+    const uiZones = getUiZones(forceUiMeasure);
+    const underUi = (x, y, r) => uiZones.some(z => x + r > z.left - 6 && x - r < z.right + 6 && y + r > z.top - 6 && y - r < z.bottom + 6);
+    const labelBlocked = (rx, ry, rw, rh) => uiZones.some(z => rx + rw > z.left - 6 && rx < z.right + 6 && ry + rh > z.top - 6 && ry < z.bottom + 6);
+
+    // 1. Optional clean Inter country/region labels (drawn softly behind markers, never blocking hub labels)
     if (store.state.labels) {
       ctx.save();
       ctx.font = `500 12px ${FONT_STACK}`;
@@ -624,21 +645,20 @@ function initGlobeHudOverlay() {
         if (pt.x < safeLeft + 40 || pt.x > safeRight - 40 || pt.y < safeTop + 12 || pt.y > safeBottom - 12) continue;
         const tw = ctx.measureText(reg.name).width;
         const rect = [pt.x - tw / 2 - 4, pt.y - 8, tw + 8, 16];
-        if (placedRects.some(r => rectsOverlap(r, rect, 10))) continue;
-        placedRects.push(rect);
+        if (labelBlocked(rect[0], rect[1], rect[2], rect[3])) continue;
+        if (regionRects.some(r => rectsOverlap(r, rect, 14))) continue;
+        regionRects.push(rect);
         ctx.lineWidth = 3;
         ctx.strokeStyle = "rgba(8, 8, 10, 0.78)";
         ctx.strokeText(reg.name, pt.x, pt.y);
-        ctx.fillStyle = "rgba(244, 244, 245, 0.62)";
+        ctx.fillStyle = "rgba(244, 244, 245, 0.64)";
         ctx.fillText(reg.name, pt.x, pt.y);
       }
       ctx.restore();
     }
 
-    // 2. Gather visible clusters & unclustered nodes.
-    // Markers are always drawn on this canvas (one source of truth for bubbles, counts, labels & hitboxes).
+    // 2. Gather visible clusters & unclustered nodes (single source of truth for bubbles, counts, labels & hitboxes)
     if (CANVAS_MARKERS || useMainThreadOverlay) {
-      // Arcs are drawn by WebGL when available; canvas only draws them in the main-thread fallback
       if (useMainThreadOverlay && store.state.arcs && !store.state.timeMode) {
         const arcs = buildArcsGeoJSON().features || [];
         ctx.save();
@@ -662,8 +682,7 @@ function initGlobeHudOverlay() {
         ctx.restore();
       }
 
-      // Pass 1: project, then merge any bubbles that collide on screen (limb foreshortening),
-      // so nothing ever overlaps and counts stay honest.
+      // Pass 1: project and merge only bubbles that genuinely overlap on screen (limb foreshortening)
       const anchored = getAnchoredClusters(zoom);
       const bubbleR = (count) => (count >= 150 ? 25 : count >= 60 ? 22 : count >= 15 ? 19 : 16);
       const projected = [];
@@ -672,6 +691,7 @@ function initGlobeHudOverlay() {
         const pt = map.project([item.lng, item.lat]);
         if (pt.x < -36 || pt.x > w + 36 || pt.y < -36 || pt.y > h + 36) continue;
         const selected = !item.isCluster && store.state.selectedId === item.node.id;
+        const stableKey = item.isCluster ? (item.top?.id || `${item.lat}:${item.lng}`) : item.node.id;
         projected.push({
           isCluster: item.isCluster,
           node: item.node || null,
@@ -680,10 +700,11 @@ function initGlobeHudOverlay() {
           x: pt.x, y: pt.y,
           count: item.count,
           span: Math.max(item.spanLat || 0, item.spanLng || 0),
-          selected
+          selected,
+          stableKey
         });
       }
-      projected.sort((a, b) => (b.selected - a.selected) || (b.count - a.count));
+      projected.sort((a, b) => (b.selected - a.selected) || (b.count - a.count) || (a.stableKey < b.stableKey ? -1 : 1));
       const kept = [];
       for (const p of projected) {
         const pr = p.isCluster ? bubbleR(p.count) : 9;
@@ -707,18 +728,7 @@ function initGlobeHudOverlay() {
         }
       }
 
-      // Keep the globe clean under floating UI: no markers behind island, dock, card or controls
-      const uiZones = [];
-      for (const sel of ["#dynamic-island", "#bottom-dock", "#earth-only-controls", "#zoom-controls", "#place-card", "#time-bar"]) {
-        const el = document.getElementById(sel.slice(1));
-        if (!el || el.classList.contains("hidden")) continue;
-        const r = el.getBoundingClientRect();
-        if (r.width > 0 && r.height > 0) uiZones.push(r);
-      }
-      const underUi = (x, y, r) => uiZones.some(z => x + r > z.left - 6 && x - r < z.right + 6 && y + r > z.top - 6 && y - r < z.bottom + 6);
-      labelBlocked = (rx, ry, rw, rh) => uiZones.some(z => rx + rw > z.left - 6 && rx < z.right + 6 && ry + rh > z.top - 6 && ry < z.bottom + 6);
-
-      // Pass 2: draw
+      // Pass 2: draw markers & collect deterministic label candidates
       for (const item of kept) {
         const x = item.x, y = item.y;
 
@@ -752,17 +762,6 @@ function initGlobeHudOverlay() {
           hits.push({ type: "cluster", key: cKey, x, y, r: radius + 10, lng: item.lng, lat: item.lat, span: item.span });
           if (isHov && item.top) {
             clusterHint = { name: `${shortGlobeName(item.top.name)} + ${fmtCount(count - 1)} more`, x, y, r: radius };
-          } else if (item.top && nodePriority(item.top) >= 1 && zoom >= 2.4) {
-            // Famous anchor names beside their bubble (click the name to open that place)
-            labelCandidates.push({
-              id: item.top.id,
-              name: shortGlobeName(item.top.name),
-              x, y,
-              dotR: radius,
-              selected: false,
-              hovered: false,
-              priority: 30 + Math.min(count, 500) / 50
-            });
           }
         } else {
           const n = item.node;
@@ -787,177 +786,76 @@ function initGlobeHudOverlay() {
 
           placedRects.push([x - radius - 1, y - radius - 1, (radius + 1) * 2, (radius + 1) * 2]);
           hits.push({ type: "node", key: `n:${n.id}`, id: n.id, name: n.name, x, y, r: Math.max(radius + 16, 22) });
-          if (selected || isHov || store.state.timeMode || n.pinned || (curated && zoom >= 2.2) || zoom >= 3.4) {
-            labelCandidates.push({
-              id: n.id,
-              name: shortGlobeName(n.name),
-              x, y,
-              dotR: radius,
-              selected,
-              hovered: isHov,
-              priority: selected ? 100 : isHov ? 90 : store.state.timeMode ? 70 : curated ? 50 : 20
-            });
-          }
-        }
-      }
-    } else if (map.getLayer("clusters") && map.getLayer("unclustered-point")) {
-      // WebGL mode: MapLibre renders the dots/clusters at 60fps; we draw razor-sharp Inter text + hover rings + build generous hitboxes
-      const renderedClusters = map.queryRenderedFeatures({ layers: ["clusters"] }) || [];
-      const seenClusterIds = new Set();
-      ctx.font = `600 13px ${FONT_STACK}`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
 
-      for (const f of renderedClusters) {
-        const cid = f.properties?.cluster_id;
-        if (cid == null || seenClusterIds.has(cid)) continue;
-        seenClusterIds.add(cid);
-        const coords = f.geometry?.coordinates;
-        if (!coords) continue;
-        const pt = map.project(coords);
-        if (pt.x < -36 || pt.x > w + 36 || pt.y < -36 || pt.y > h + 36) continue;
-        const count = Number(f.properties?.point_count) || 2;
-        const radius = count >= 150 ? 28 : count >= 60 ? 24 : count >= 15 ? 20 : 16;
-        const cKey = `c:${cid}`;
-        const isHov = hoveredKey === cKey;
-
-        if (isHov) {
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.y, radius + 3.5, 0, Math.PI * 2);
-          ctx.strokeStyle = "rgba(255, 255, 255, 0.92)";
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
-
-        ctx.fillStyle = "#f4f4f5";
-        ctx.fillText(fmtCount(count), pt.x, pt.y + 0.5);
-
-        placedRects.push([pt.x - radius - 2, pt.y - radius - 2, (radius + 2) * 2, (radius + 2) * 2]);
-        hits.push({
-          type: "cluster",
-          key: cKey,
-          clusterId: cid,
-          lng: coords[0],
-          lat: coords[1],
-          x: pt.x,
-          y: pt.y,
-          r: radius + 10
-        });
-      }
-
-      const renderedNodes = map.queryRenderedFeatures({ layers: ["unclustered-point"] }) || [];
-      const seenNodeIds = new Set();
-      for (const f of renderedNodes) {
-        const id = f.properties?.id;
-        if (!id || seenNodeIds.has(id)) continue;
-        seenNodeIds.add(id);
-        const coords = f.geometry?.coordinates;
-        if (!coords) continue;
-        const pt = map.project(coords);
-        if (pt.x < -28 || pt.x > w + 28 || pt.y < -28 || pt.y > h + 28) continue;
-
-        const selected = store.state.selectedId === id;
-        const isHov = hoveredKey === `n:${id}`;
-        const curated = Number(f.properties?.curated) === 1;
-        const pinned = Number(f.properties?.pinned) === 1;
-        const dotR = selected ? 7.5 : curated ? 5.8 : 4.5;
-
-        if (isHov && !selected) {
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.y, dotR + 6, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(255, 255, 255, 0.22)";
-          ctx.fill();
-          ctx.beginPath();
-          ctx.arc(pt.x, pt.y, dotR + 1.5, 0, Math.PI * 2);
-          ctx.strokeStyle = "#ffffff";
-          ctx.lineWidth = 2;
-          ctx.stroke();
-        }
-
-        hits.push({
-          type: "node",
-          key: `n:${id}`,
-          id,
-          name: f.properties?.name || "",
-          x: pt.x,
-          y: pt.y,
-          r: Math.max(dotR + 16, 22)
-        });
-
-        const showLabel = selected || isHov || store.state.timeMode || pinned || (curated && zoom >= 2.2) || zoom >= 5.2;
-        if (showLabel) {
-          labelCandidates.push({
-            id,
-            name: shortGlobeName(f.properties?.name || ""),
-            x: pt.x,
-            y: pt.y,
-            dotR,
+          const cand = {
+            id: n.id,
+            name: shortGlobeName(n.name),
+            x, y,
+            dotR: radius,
             selected,
             hovered: isHov,
-            priority: selected ? 100 : isHov ? 90 : store.state.timeMode ? 75 : pinned ? 65 : curated ? 50 : 20
-          });
+            priority: store.state.timeMode ? 70 : n.pinned ? 60 : curated ? 50 : 20
+          };
+          if (selected || isHov) {
+            priorityLabels.push(cand);
+          } else if (store.state.timeMode || n.pinned || (curated && zoom >= 2.3) || zoom >= 3.8) {
+            normalLabels.push(cand);
+          }
         }
       }
     }
 
-    // 3. Draw collision-free crisp Inter glass label pills (highest priority first)
-    labelCandidates.sort((a, b) => b.priority - a.priority);
+    // 3. Draw stable, non-flickering Inter glass pills (normal pass first, then selected/hovered on top)
+    // Deterministic sort with id tie-breaker so labels NEVER swap or jump when panning/hovering.
+    normalLabels.sort((a, b) => (b.priority - a.priority) || (a.id < b.id ? -1 : 1));
     ctx.textAlign = "left";
     ctx.textBaseline = "middle";
 
-    for (const c of labelCandidates) {
-      if (!c.name) continue;
-      const forceShow = c.selected || c.hovered;
-      ctx.font = `${forceShow ? 600 : 500} 13px ${FONT_STACK}`;
+    const drawPill = (c, isEmphasis) => {
+      if (!c.name) return;
+      ctx.font = `${isEmphasis ? 600 : 500} 13px ${FONT_STACK}`;
       const textW = ctx.measureText(c.name).width;
-      const padX = 8;
+      const padX = 9;
       const pillW = Math.ceil(textW + padX * 2);
       const pillH = 26;
 
-      // Try placing pill to the right of dot, else left of dot, else above dot
-      const placements = [
-        [Math.round(c.x + c.dotR + 7), Math.round(c.y - pillH / 2)],
-        [Math.round(c.x - c.dotR - 7 - pillW), Math.round(c.y - pillH / 2)],
-        [Math.round(c.x - pillW / 2), Math.round(c.y - c.dotR - pillH - 6)]
-      ];
-
-      let chosen = null;
-      for (const [lx, ly] of placements) {
-        if (!forceShow && (lx < safeLeft || lx + pillW > safeRight || ly < safeTop || ly + pillH > safeBottom)) {
-          continue;
-        }
-        const rect = [lx, ly, pillW, pillH];
-        if (!c.selected && labelBlocked(lx, ly, pillW, pillH)) continue;
-        if (forceShow || !placedRects.some(r => rectsOverlap(r, rect, 5))) {
-          chosen = rect;
-          break;
-        }
+      // Always prefer right of dot; only flip left if near right viewport edge (never bounces randomly)
+      let lx = c.x + c.dotR + 10;
+      if (lx + pillW > safeRight) {
+        lx = c.x - c.dotR - 10 - pillW;
       }
-      if (!chosen) continue;
+      const ly = c.y - pillH / 2;
 
-      const [lx, ly, lw, lh] = chosen;
-      placedRects.push(chosen);
+      if (!isEmphasis) {
+        if (lx < safeLeft || lx + pillW > safeRight || ly < safeTop || ly + pillH > safeBottom) return;
+        if (labelBlocked(lx, ly, pillW, pillH)) return;
+        const rect = [lx, ly, pillW, pillH];
+        if (placedRects.some(r => rectsOverlap(r, rect, 4))) return;
+        placedRects.push(rect);
+      } else if (!c.selected && labelBlocked(lx, ly, pillW, pillH)) {
+        return;
+      }
 
-      drawRoundedRect(ctx, lx, ly, lw, lh, 13);
+      const rect = [lx, ly, pillW, pillH];
+      drawRoundedRect(ctx, lx, ly, pillW, pillH, 13);
       ctx.fillStyle = c.selected
-        ? "rgba(22, 16, 17, 0.88)"
+        ? "rgba(22, 16, 17, 0.92)"
         : c.hovered
-          ? "rgba(24, 24, 27, 0.90)"
-          : "rgba(14, 14, 16, 0.74)";
+          ? "rgba(24, 24, 27, 0.94)"
+          : "rgba(14, 14, 16, 0.78)";
       ctx.fill();
 
-      ctx.lineWidth = c.selected || c.hovered ? 1.25 : 1;
+      ctx.lineWidth = isEmphasis ? 1.35 : 1;
       ctx.strokeStyle = c.selected
-        ? "rgba(160, 70, 70, 0.92)"
+        ? "rgba(160, 70, 70, 0.95)"
         : c.hovered
-          ? "rgba(255, 255, 255, 0.52)"
-          : "rgba(255, 255, 255, 0.14)";
+          ? "rgba(255, 255, 255, 0.56)"
+          : "rgba(255, 255, 255, 0.16)";
       ctx.stroke();
 
-      ctx.fillStyle = c.selected || c.hovered ? "#ffffff" : "rgba(244, 244, 245, 0.94)";
-      ctx.fillText(c.name, lx + padX, ly + lh / 2 + 0.5);
+      ctx.fillStyle = isEmphasis ? "#ffffff" : "rgba(244, 244, 245, 0.94)";
+      ctx.fillText(c.name, lx + padX, ly + pillH / 2 + 0.5);
 
-      // Register the entire pill rectangle as an effortless click target!
       hits.push({
         type: "node",
         key: `n:${c.id}`,
@@ -966,24 +864,29 @@ function initGlobeHudOverlay() {
         x: c.x,
         y: c.y,
         r: 0,
-        rect: chosen
+        rect
       });
-    }
+    };
 
-    // Hovering a bubble previews its best-known member (non-blocking, never covers other UI)
+    for (const c of normalLabels) drawPill(c, false);
+    // Selected draws below hovered if both exist
+    priorityLabels.sort((a, b) => (a.hovered ? 1 : 0) - (b.hovered ? 1 : 0));
+    for (const c of priorityLabels) drawPill(c, true);
+
+    // Cluster hover preview tooltip (drawn last, never perturbs any other label)
     if (clusterHint) {
       ctx.font = `500 13px ${FONT_STACK}`;
       const tw = ctx.measureText(clusterHint.name).width;
       const pw = Math.ceil(tw + 20), ph = 28;
-      let lx = Math.round(clusterHint.x - pw / 2);
-      let ly = Math.round(clusterHint.y - clusterHint.r - ph - 8);
-      if (ly < safeTop) ly = Math.round(clusterHint.y + clusterHint.r + 8);
+      let lx = clusterHint.x - pw / 2;
+      let ly = clusterHint.y - clusterHint.r - ph - 8;
+      if (ly < safeTop) ly = clusterHint.y + clusterHint.r + 8;
       lx = Math.max(safeLeft, Math.min(safeRight - pw, lx));
       drawRoundedRect(ctx, lx, ly, pw, ph, 14);
-      ctx.fillStyle = "rgba(20, 20, 22, 0.92)";
+      ctx.fillStyle = "rgba(20, 20, 22, 0.94)";
       ctx.fill();
       ctx.lineWidth = 1;
-      ctx.strokeStyle = "rgba(255, 255, 255, 0.28)";
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.30)";
       ctx.stroke();
       ctx.fillStyle = "#ffffff";
       ctx.textAlign = "left";
@@ -998,12 +901,12 @@ function initGlobeHudOverlay() {
   drawHudFn = () => {
     if (rafPending) return;
     rafPending = true;
-    requestAnimationFrame(renderHudNow);
+    requestAnimationFrame(() => renderHudNow(true));
   };
 
-  map.on("render", drawHudFn);
-  map.on("resize", drawHudFn);
-  map.on("move", drawHudFn);
+  // Frame-lock HUD directly to MapLibre's WebGL render pass (ZERO 1-frame drag lag!)
+  map.on("render", () => renderHudNow(false));
+  map.on("resize", () => renderHudNow(true));
 
   map.on("mousemove", (e) => {
     if (!e?.point) return;
@@ -1122,14 +1025,14 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
 
   useMainThreadOverlay = isBlobPage || !workerOk;
 
-  // Use direct HTTPS Esri CDN tiles in MapLibre's Web Worker:
-  // HTTP/2 multiplexed, off-thread createImageBitmap, native abort on fast zoom,
-  // + Service Worker Cache-First (world-physics-tiles-v1).
-  const satTileUrl = ESRI_SAT_TEMPLATE;
+  const baseDir = new URL("./tiles/bluemarble/", location.href).href;
+  const baseTileUrl = `${baseDir}{z}/{y}/{x}.jpg`;
+  const esriMirrorA = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
+  const esriMirrorB = ESRI_SAT_TEMPLATE;
 
   try {
     if (typeof window.maplibregl.setMaxParallelImageRequests === "function") {
-      window.maplibregl.setMaxParallelImageRequests(32);
+      window.maplibregl.setMaxParallelImageRequests(16);
     }
   } catch {}
 
@@ -1157,21 +1060,41 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
         "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.25, 5, 0.15, 7, 0]
       },
       sources: {
+        "nasa-bluemarble": {
+          type: "raster",
+          tiles: [baseTileUrl],
+          tileSize: 256,
+          minzoom: 0,
+          maxzoom: 2,
+          attribution: "Blue Marble © NASA"
+        },
         "esri-satellite": {
           type: "raster",
-          tiles: [satTileUrl],
+          tiles: [esriMirrorA, esriMirrorB],
           tileSize: 256,
+          minzoom: 3,
           maxzoom: 19,
           attribution: "Imagery © Esri"
         }
       },
       layers: [
         {
+          id: "bluemarble-base",
+          type: "raster",
+          source: "nasa-bluemarble",
+          paint: {
+            "raster-fade-duration": 0,
+            "raster-saturation": -0.06,
+            "raster-contrast": 0.08
+          }
+        },
+        {
           id: "satellite-layer",
           type: "raster",
           source: "esri-satellite",
+          minzoom: 2.5,
           paint: {
-            "raster-fade-duration": 0,
+            "raster-fade-duration": 220,
             "raster-saturation": -0.08,
             "raster-contrast": 0.06
           }
@@ -1255,15 +1178,6 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
   }
 
   map.on("style.load", () => {
-    try { map.setProjection({ type: "globe" }); } catch {}
-    try {
-      map.setSky({
-        "sky-color": "rgba(0, 0, 0, 0)",
-        "horizon-color": "rgba(255, 255, 255, 0.09)",
-        "fog-color": "rgba(0, 0, 0, 0)",
-        "atmosphere-blend": ["interpolate", ["linear"], ["zoom"], 0, 0.24, 5, 0.14, 7, 0]
-      });
-    } catch {}
     if (!useMainThreadOverlay) {
       setupWebGLVectorLayers();
     } else {
@@ -1271,16 +1185,10 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
     }
     initGlobeHudOverlay();
     syncGlobeMarkers();
-    // Redraw all canvas labels immediately once the bundled Inter variable font finishes loading
     if (document.fonts?.ready) {
       document.fonts.ready.then(() => drawHudFn()).catch(() => {});
     }
     initIdleDrift();
-  });
-
-  // Warm the remaining z=0..2 globe tiles once initial viewport is painted
-  map.once("load", () => {
-    setTimeout(preloadCoreGlobeTiles, 250);
   });
 
   // Automatic fallback to local dev proxy only if direct Esri CDN is unreachable
