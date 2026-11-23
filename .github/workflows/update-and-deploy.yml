@@ -32,18 +32,24 @@ jobs:
           node-version: "20"
 
       - name: Run Global Physics ETL Scraper
-        run: node scripts/scrape_physics.mjs
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: |
+          node scripts/scrape_physics.mjs
+          node scripts/build_provenance_and_db.mjs
 
       - name: Commit updated dataset (if changed)
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add public/data/physics_hubs.json
-          git diff --staged --quiet || git commit -m "chore(data): weekly PhysAlts refresh"
+          git add public/data/physics_hubs.json public/data/physalts_unified.ndjson public/data/provenance_ledger.json public/data/physalts_schema.json
+          git diff --staged --quiet || git commit -m "chore(data): scheduled index refresh"
           git push || true
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
+        with:
+          enablement: true
 
       - name: Upload public/ artifact
         uses: actions/upload-pages-artifact@v3

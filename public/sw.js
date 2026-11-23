@@ -31,7 +31,7 @@ const PRECACHE_APP = [
 ];
 
 function isGlobeTileRequest(url) {
-  if (url.origin === self.location.origin && url.pathname.startsWith("/tiles/bluemarble/")) {
+  if (url.origin === self.location.origin && url.pathname.includes("/tiles/bluemarble/")) {
     return true;
   }
   if (url.origin === self.location.origin && url.pathname === "/_proxy") {
