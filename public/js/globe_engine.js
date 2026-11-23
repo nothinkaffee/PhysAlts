@@ -1106,9 +1106,54 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
   const esriMirrorA = "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
   const esriMirrorB = ESRI_SAT_TEMPLATE;
 
+  let satProxyRegistered = false;
+  const getProxySatTiles = () => {
+    if (isBlobPage && typeof window.maplibregl.addProtocol === "function") {
+      if (!satProxyRegistered) {
+        satProxyRegistered = true;
+        window.maplibregl.addProtocol("satproxy", async (params, abortController) => {
+          const rest = params.url.slice("satproxy://".length);
+          const raw = esriMirrorB.replace("{z}/{y}/{x}", rest);
+          const mem = tileMemCache.get(raw);
+          if (mem) return { data: mem.slice(0) };
+          const res = await fetch(proxiedTileUrl(raw), { cache: "force-cache", signal: abortController?.signal });
+          if (!res.ok) throw new Error(`Proxy tile HTTP ${res.status}`);
+          const buf = await res.arrayBuffer();
+          setTileMemCache(raw, buf);
+          return { data: buf.slice(0) };
+        });
+      }
+      return ["satproxy://{z}/{y}/{x}"];
+    }
+    const proxyBase = new URL("./_proxy?url=", location.href).href;
+    return [
+      `${proxyBase}${encodeURIComponent(esriMirrorB).replace(/%7B([zxy])%7D/gi, "{$1}")}`
+    ];
+  };
+
+  // Use DIRECT dual-host Esri HTTP/2 URLs so MapLibre fetches & decodes tiles natively in its
+  // Web Worker using the browser's C++ HTTP cache. Probe once at startup; if direct Esri access
+  // is blocked (e.g. strict iframe sandbox / firewall), fall back seamlessly to the local dev proxy.
+  let satTileUrl = [esriMirrorA, esriMirrorB];
+  if (USE_DEV_PROXY) {
+    let directOk = false;
+    try {
+      const probe = await fetch(
+        "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/0/0/0",
+        { mode: "cors", credentials: "omit", cache: "force-cache", signal: AbortSignal.timeout(2500) }
+      );
+      directOk = probe.ok;
+    } catch {
+      directOk = false;
+    }
+    if (!directOk) {
+      satTileUrl = getProxySatTiles();
+    }
+  }
+
   try {
     if (typeof window.maplibregl.setMaxParallelImageRequests === "function") {
-      window.maplibregl.setMaxParallelImageRequests(16);
+      window.maplibregl.setMaxParallelImageRequests(32);
     }
   } catch {}
 
@@ -1117,14 +1162,14 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
     center: [12, 30],
     zoom: 1.95,
     minZoom: 1.2,
-    maxZoom: 18.2,
+    maxZoom: 17.0,
     pitch: 0,
     bearing: 0,
     antialias: true,
     clickTolerance: 10,
     attributionControl: true,
     canvasContextAttributes: { alpha: true, antialias: true },
-    maxTileCacheSize: 1024,
+    maxTileCacheSize: 1536,
     fadeDuration: 0,
     style: {
       version: 8,
@@ -1146,10 +1191,10 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
         },
         "esri-satellite": {
           type: "raster",
-          tiles: [esriMirrorA, esriMirrorB],
+          tiles: satTileUrl,
           tileSize: 256,
-          minzoom: 3,
-          maxzoom: 19,
+          minzoom: 0,
+          maxzoom: 17,
           attribution: "Imagery © Esri"
         }
       },
@@ -1168,9 +1213,9 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
           id: "satellite-layer",
           type: "raster",
           source: "esri-satellite",
-          minzoom: 2.5,
+          minzoom: 0,
           paint: {
-            "raster-fade-duration": 220,
+            "raster-fade-duration": 80,
             "raster-saturation": -0.08,
             "raster-contrast": 0.06
           }
@@ -1268,14 +1313,14 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
   });
 
   // Automatic fallback to local dev proxy only if direct Esri CDN is unreachable
-  let switchedToProxy = false;
+  let switchedToProxy = satTileUrl !== null && satTileUrl[0] !== esriMirrorA;
   map.on("error", (ev) => {
     if (switchedToProxy || !USE_DEV_PROXY) return;
     if (ev?.sourceId === "esri-satellite") {
       switchedToProxy = true;
       const src = map.getSource("esri-satellite");
       if (src?.setTiles) {
-        src.setTiles([`./_proxy?url=${encodeURIComponent(ESRI_SAT_TEMPLATE).replace(/%7B([zxy])%7D/gi, "{$1}")}`]);
+        src.setTiles(getProxySatTiles());
       }
     }
   });

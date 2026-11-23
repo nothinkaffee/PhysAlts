@@ -19,6 +19,7 @@ const authStore = new AuthStore(LOCAL_DATA_DIR);
 
 const ALLOWED_PROXY_HOSTS = new Set([
   "services.arcgisonline.com",
+  "server.arcgisonline.com",
   "demotiles.maplibre.org",
   "api.openalex.org",
   "api.ror.org",
