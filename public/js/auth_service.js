@@ -258,22 +258,24 @@ export async function initAuth() {
     }
   }
 
-  // 2. Probe live PhysAlts server API (./api/auth/me)
-  try {
-    const res = await apiFetch("./api/auth/me", { method: "GET" });
-    if (res.ok && res.data && typeof res.data.authenticated === "boolean") {
-      authState.backend = "server";
-      if (res.data.authenticated && res.data.user) {
-        hydrateFromUser(res.data.user);
-      } else {
-        if (authState.token) setStoredToken(null);
-        authState.user = null;
+  // 2. Probe live server API (./api/auth/me) — skip inside native Capacitor bundles
+  if (!window.Capacitor?.isNativePlatform?.()) {
+    try {
+      const res = await apiFetch("./api/auth/me", { method: "GET" });
+      if (res.ok && res.data && typeof res.data.authenticated === "boolean") {
+        authState.backend = "server";
+        if (res.data.authenticated && res.data.user) {
+          hydrateFromUser(res.data.user);
+        } else {
+          if (authState.token) setStoredToken(null);
+          authState.user = null;
+        }
+        authState.ready = true;
+        emit();
+        return getAuthSnapshot();
       }
-      authState.ready = true;
-      emit();
-      return getAuthSnapshot();
-    }
-  } catch {}
+    } catch {}
+  }
 
   // 3. Static WebCrypto PBKDF2 local vault fallback
   authState.backend = "vault";

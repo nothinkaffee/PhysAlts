@@ -332,6 +332,9 @@ html, body {
   line-height: 1.1;
   white-space: nowrap;
 }
+.card-action.hidden {
+  display: none !important;
+}
 
 /* Responsive bottom dock buttons */
 .dock-btn {
@@ -347,8 +350,8 @@ html, body {
 }
 
 body.space-mode #place-card {
-  top: 144px;
-  max-height: calc(100dvh - 236px);
+  top: 156px;
+  max-height: calc(100dvh - 248px);
 }
 body.space-mode #earth-only-controls {
   display: none !important;
@@ -362,6 +365,14 @@ body.space-mode #earth-only-controls {
     margin-right: 0 !important;
     width: auto !important;
     max-width: 820px !important;
+  }
+}
+
+/* On narrow/mobile screens (<1024px), never stack #place-card on top of #time-bar:
+   tuck #time-bar cleanly while a milestone card is open; closing the card brings #time-bar right back! */
+@media (max-width: 1023px) {
+  body.card-open.time-open #time-bar {
+    display: none !important;
   }
 }
 

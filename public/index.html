@@ -82,12 +82,6 @@
         </button>
       </div>
 
-      <!-- Active Filter Pill -->
-      <div id="active-filter-pill" class="hidden items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 text-[14px] text-neutral-100 shrink-0">
-        <span id="active-filter-text" class="max-w-[140px] truncate"></span>
-        <button id="btn-clear-filters" type="button" class="hover:text-white cursor-pointer bg-transparent border-0 p-0" aria-label="Clear filter">✕</button>
-      </div>
-
       <!-- Account Sign-In / Profile Pill -->
       <button id="btn-account" type="button" title="Account &amp; Bookmarks" class="glass-btn rounded-full px-3 sm:px-3.5 py-2 flex items-center gap-2 text-[14px] font-medium text-white shrink-0">
         <span id="account-avatar" class="hidden w-5 h-5 rounded-full bg-white text-black text-[12px] font-semibold items-center justify-center shrink-0"></span>
@@ -97,6 +91,12 @@
       </button>
     </div>
   </header>
+
+  <!-- Floating Active Filter Pill (centered cleanly below Dynamic Island, zero island clipping) -->
+  <div id="active-filter-pill" class="hidden fixed top-[74px] sm:top-[80px] left-1/2 -translate-x-1/2 z-[40] liquid-pill items-center gap-2 px-3.5 py-1.5 rounded-full text-[14px] text-neutral-100 max-w-[calc(100vw-32px)]">
+    <span id="active-filter-text" class="truncate"></span>
+    <button id="btn-clear-filters" type="button" class="text-neutral-400 hover:text-white cursor-pointer bg-transparent border-0 p-0 ml-1 shrink-0" aria-label="Clear filter">✕</button>
+  </div>
 
   <!-- CENTERED SPOTLIGHT COMMAND SEARCH WINDOW (Cmd+K / / / Search button) -->
   <div id="spotlight-backdrop" class="hidden fixed inset-0 z-[65] modal-backdrop flex items-start justify-center pt-[12vh] px-5">
@@ -128,7 +128,7 @@
 
     <button id="btn-close-card" type="button" aria-label="Close card" class="absolute top-3.5 right-3.5 z-10 glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[14px]">✕</button>
 
-    <div class="p-5 space-y-3.5 scroll-clean min-w-0">
+    <div id="card-scroll-body" class="p-5 pb-4 space-y-3.5 scroll-clean min-w-0 flex-1">
       <div class="min-w-0">
         <div id="card-badge" class="text-[14px] font-medium accent-text pr-10 truncate"></div>
         <h2 id="card-title" class="text-[20px] font-semibold text-white leading-snug mt-1 pr-6 break-words"></h2>
@@ -147,21 +147,6 @@
       </div>
 
       <div id="card-extra-chips" class="flex flex-wrap gap-1.5 min-w-0"></div>
-
-      <div class="card-actions flex items-center gap-1.5 pt-3 border-t border-white/10">
-        <button id="btn-save-shortlist" type="button" class="glass-btn card-action" title="Bookmark">
-          <i data-lucide="bookmark" class="w-3.5 h-3.5 shrink-0"></i><span>Save</span>
-        </button>
-        <button id="btn-card-rabbit" type="button" class="glass-btn card-action" title="Next discovery">
-          <i data-lucide="shuffle" class="w-3.5 h-3.5 accent-text shrink-0"></i><span>Next</span>
-        </button>
-        <button id="btn-copy-link" type="button" class="glass-btn card-action" title="Copy share link">
-          <i data-lucide="share-2" class="w-3.5 h-3.5 shrink-0"></i><span>Share</span>
-        </button>
-        <button id="btn-deeper-toggle" type="button" class="glass-btn card-action" title="More details">
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 shrink-0"></i><span>More</span>
-        </button>
-      </div>
 
       <!-- Optional Expanded Details -->
       <div id="card-deeper-wrap" class="hidden space-y-4 border-t border-white/10 pt-4">
@@ -182,6 +167,21 @@
           <div id="deeper-stages" class="space-y-2"></div>
         </div>
       </div>
+    </div>
+
+    <div class="card-actions flex items-center gap-1.5 px-5 py-3 border-t border-white/10 shrink-0 bg-black/20">
+      <button id="btn-save-shortlist" type="button" class="glass-btn card-action" title="Bookmark">
+        <i data-lucide="bookmark" class="w-3.5 h-3.5 shrink-0"></i><span>Save</span>
+      </button>
+      <button id="btn-card-rabbit" type="button" class="glass-btn card-action" title="Next discovery">
+        <i data-lucide="shuffle" class="w-3.5 h-3.5 accent-text shrink-0"></i><span>Next</span>
+      </button>
+      <button id="btn-copy-link" type="button" class="glass-btn card-action" title="Copy share link">
+        <i data-lucide="share-2" class="w-3.5 h-3.5 shrink-0"></i><span>Share</span>
+      </button>
+      <button id="btn-deeper-toggle" type="button" class="glass-btn card-action" title="More details">
+        <i data-lucide="chevron-down" class="w-3.5 h-3.5 shrink-0"></i><span>More</span>
+      </button>
     </div>
   </aside>
 

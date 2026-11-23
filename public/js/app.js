@@ -77,8 +77,9 @@ async function boot() {
     }
   });
 
-  // Register production PWA Service Worker (skip on blob: preview URLs)
-  if ("serviceWorker" in navigator && location.protocol !== "blob:") {
+  // Register production PWA Service Worker (skip on blob: preview URLs and native Capacitor apps)
+  const isNative = Boolean(window.Capacitor?.isNativePlatform?.());
+  if ("serviceWorker" in navigator && !isNative && (location.protocol === "https:" || location.protocol === "http:")) {
     navigator.serviceWorker.register("./sw.js").catch(() => {});
   }
 

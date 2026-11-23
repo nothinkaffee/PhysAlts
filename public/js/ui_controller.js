@@ -253,6 +253,8 @@ export function selectSpaceMission(missionId) {
   if (!card) return;
   card.classList.remove("hidden");
   document.body.classList.add("card-open");
+  const scrollBody = document.getElementById("card-scroll-body");
+  if (scrollBody) scrollBody.scrollTop = 0;
 
   document.getElementById("card-badge").textContent = `${m.body} · ${m.lightTimeLabel}`;
   document.getElementById("card-title").textContent = m.name;
@@ -263,8 +265,8 @@ export function selectSpaceMission(missionId) {
 
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
-    extra.innerHTML = (m.instruments || []).slice(0, 6).map(inst =>
-      `<span class="px-3 py-1 rounded-full text-[14px] bg-white/[0.07] border border-white/12 text-neutral-200">${esc(inst)}</span>`
+    extra.innerHTML = (m.instruments || []).slice(0, 2).map(inst =>
+      `<span class="px-3 py-1 rounded-full text-[14px] bg-white/[0.07] border border-white/12 text-neutral-200 truncate max-w-full inline-block">${esc(inst)}</span>`
     ).join("");
   }
 
@@ -533,6 +535,8 @@ export function selectHubNode(id, fly = true) {
   if (!card) return;
   card.classList.remove("hidden");
   document.body.classList.add("card-open");
+  const scrollBody = document.getElementById("card-scroll-body");
+  if (scrollBody) scrollBody.scrollTop = 0;
   if (fly) flyToHub(node, node.tier === "timeline" ? 4.8 : null);
   syncGlobeMarkers();
   const deeperWrap = document.getElementById("card-deeper-wrap");
