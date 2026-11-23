@@ -2,8 +2,8 @@
   "meta": {
     "name": "PhysAlts Private Institutes & Deep-Tech Companies",
     "version": "2.0",
-    "updatedAt": "2026-11-22",
-    "description": "Curated global directory of 66 private physics research institutes, quantum computing firms, fusion energy ventures, photonics/EUV leaders, cryogenic hardware makers, and aerospace physics companies.",
+    "updatedAt": "2026-11-23",
+    "description": "Curated global directory of 60 private physics research institutes, quantum computing firms, fusion energy ventures, photonics/EUV leaders, cryogenic hardware makers, and aerospace physics companies.",
     "totalEntities": 60
   },
   "hubs": [
@@ -24,7 +24,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.quantinuum.com/",
-      "summary": "Merged Honeywell Quantum Solutions and Cambridge Quantum to build high-fidelity trapped-ion quantum computers (H-Series) with record two-qubit gate accuracy and fault-tolerant logical qubits."
+      "summary": "Merged Honeywell Quantum Solutions and Cambridge Quantum to build high-fidelity trapped-ion quantum computers (H-Series) with record two-qubit gate accuracy and fault-tolerant logical qubits.",
+      "stages": {
+        "highschool": "Explore trapped-ion quantum computing tutorials and TKET open-source circuit compilation notebooks.",
+        "undergrad": "Summer hardware & quantum software internships in Broomfield, Minneapolis, Oxford, and Cambridge.",
+        "masters": "MSc thesis collaborations & graduate engineering internships in ion-trap optics, cryogenics, and TKET.",
+        "phd": "PhD research internships in fault-tolerant quantum error correction, quantum chemistry, and trapped-ion physics.",
+        "postdoc": "Staff Research Scientist roles transitioning directly from AMO, trapped-ion, or quantum-info postdocs.",
+        "assoc_prof": "Joint academic-industry benchmarking grants and early H-Series hardware access for university groups.",
+        "prof": "Scientific advisory roles, multi-institution quantum error-correction consortia, and visiting research collaborations."
+      }
     },
     {
       "id": "dt_psiquantum",
@@ -43,7 +52,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.psiquantum.com/",
-      "summary": "Developing utility-scale fault-tolerant photonic quantum computers fabricated on commercial silicon-photonics semiconductor lines with superconducting single-photon detectors."
+      "summary": "Developing utility-scale fault-tolerant photonic quantum computers fabricated on commercial silicon-photonics semiconductor lines with superconducting single-photon detectors.",
+      "stages": {
+        "highschool": "Learn silicon photonics and single-photon interference fundamentals through open quantum optics resources.",
+        "undergrad": "Paid summer engineering & physics internships in Palo Alto (photonics design, cryo-testing, software).",
+        "masters": "MSc/MEng internships and full-time roles in silicon-photonics PIC layout, cryogenic packaging, and FPGA control.",
+        "phd": "PhD internships & R&D scientist tracks in integrated photonics, SNSPD detectors, and fusion-based QEC architectures.",
+        "postdoc": "Quantum Architect and Principal Photonics Scientist roles for postdocs in quantum optics or condensed matter.",
+        "assoc_prof": "Collaborative foundry & cryogenic testbed partnerships with academic photonics and QEC theory groups.",
+        "prof": "Large-scale utility-application partnerships (materials/chemistry) and joint government-funded quantum consortia."
+      }
     },
     {
       "id": "dt_ionq",
@@ -62,7 +80,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://ionq.com/",
-      "summary": "Spun out of University of Maryland and Duke University, building all-to-all connected ytterbium and barium trapped-ion quantum processors and photonic quantum networking."
+      "summary": "Spun out of University of Maryland and Duke University, building all-to-all connected ytterbium and barium trapped-ion quantum processors and photonic quantum networking.",
+      "stages": {
+        "highschool": "Run introductory quantum circuits on IonQ cloud simulators and study atomic-physics laser cooling basics.",
+        "undergrad": "Summer internships in College Park, Seattle, and Bothell spanning optics, FPGA electronics, and quantum algorithms.",
+        "masters": "Graduate internships and engineering roles in vacuum systems, RF trap design, and cloud quantum compilers.",
+        "phd": "PhD research internships & Scientist roles in barium/ytterbium ion traps, photonic interconnects, and quantum networking.",
+        "postdoc": "Senior Quantum Physicist roles for AMO and trapped-ion postdocs scaling networked multi-core QPU modules.",
+        "assoc_prof": "IonQ Research Credits & academic hardware-access grants via UMD, Duke, UW, and partner universities.",
+        "prof": "Co-PI research partnerships in quantum networking, national quantum testbeds, and scientific advisory leadership."
+      }
     },
     {
       "id": "dt_rigetti",
@@ -81,7 +108,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.rigetti.com/",
-      "summary": "Full-stack superconducting quantum computing company operating its own dedicated Fab-1 quantum chip foundry in Fremont and modular multi-chip Ankaa processors."
+      "summary": "Full-stack superconducting quantum computing company operating its own dedicated Fab-1 quantum chip foundry in Fremont and modular multi-chip Ankaa processors.",
+      "stages": {
+        "highschool": "Program superconducting circuits with open-source pyQuil / Quilc tutorials and superconducting qubit primers.",
+        "undergrad": "Summer internships in Berkeley and Fremont covering cryogenic microwave engineering, chip fab, and QPU software.",
+        "masters": "Graduate roles in Fab-1 nanofabrication, superconducting circuit simulation, and cryogenic readout firmware.",
+        "phd": "PhD internships & Physicist roles in Josephson junction coherence, multi-chip couplers, and tunable-gate physics.",
+        "postdoc": "Staff Experimental / Theoretical Quantum Physicist positions for cQED and superconducting-device postdocs.",
+        "assoc_prof": "NQI / DOE Superconducting Quantum Materials & Systems (SQMS) joint academic-industry research programs.",
+        "prof": "Multi-institution foundry fabrication partnerships (Fab-1) and national quantum testbed collaborations."
+      }
     },
     {
       "id": "dt_quera",
@@ -100,7 +136,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.quera.com/",
-      "summary": "Harvard and MIT spinout building reconfigurable neutral-atom rubidium optical-tweezer quantum computers (Aquila) and pioneering transversal fault-tolerant logical-qubit demonstrations."
+      "summary": "Harvard and MIT spinout building reconfigurable neutral-atom rubidium optical-tweezer quantum computers (Aquila) and pioneering transversal fault-tolerant logical-qubit demonstrations.",
+      "stages": {
+        "highschool": "Experiment with analog Hamiltonian neutral-atom simulations on QuEra's open-source Bloqade SDK.",
+        "undergrad": "Boston-area summer internships in optical tweezers, laser stabilization, and neutral-atom algorithm design.",
+        "masters": "MSc/MEng internships and engineering roles in ultra-high vacuum, AOM/AOD laser control, and Rydberg compilation.",
+        "phd": "PhD internships & R&D Scientist tracks in Rydberg-atom logical qubits, transversal gates, and quantum simulation.",
+        "postdoc": "Quantum Hardware & Theory Scientist roles for ultracold-atom, AMO, and quantum-many-body postdocs.",
+        "assoc_prof": "Joint Harvard/MIT/academic access programs on Aquila neutral-atom QPUs and DARPA/NSF research grants.",
+        "prof": "Consortium leadership in fault-tolerant neutral-atom computing and joint PhD/postdoc fellowship co-supervision."
+      }
     },
     {
       "id": "dt_pasqal",
@@ -119,7 +164,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.pasqal.com/",
-      "summary": "Co-founded by Nobel laureate Alain Aspect from Institut d'Optique, deploying hundreds-of-qubits neutral-atom optical-tweezer quantum processors integrated with European HPC centers."
+      "summary": "Co-founded by Nobel laureate Alain Aspect from Institut d'Optique, deploying hundreds-of-qubits neutral-atom optical-tweezer quantum processors integrated with European HPC centers.",
+      "stages": {
+        "highschool": "Explore neutral-atom quantum computing tutorials using Pasqal's open-source Pulser library.",
+        "undergrad": "European summer internships (Paris-Saclay / Amsterdam) in photonics, optical instrumentation, and Python SDKs.",
+        "masters": "Paid 6-month M2 / Master's internships (stages) in Paris-Saclay covering optical tweezers, lasers, and QML.",
+        "phd": "CIFRE industrial PhD fellowships (France) and doctoral research internships in Rydberg physics and HPC-quantum.",
+        "postdoc": "Research Scientist positions for AMO, quantum optics, and quantum simulation postdocs across EU labs.",
+        "assoc_prof": "Joint European HPC-QS / EuroHPC hybrid quantum-supercomputer access and Institut d'Optique collaborations.",
+        "prof": "European Quantum Flagship consortia, joint doctoral schools, and strategic scientific advisory partnerships."
+      }
     },
     {
       "id": "dt_alice_bob",
@@ -138,7 +192,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://alice-bob.com/",
-      "summary": "French quantum hardware startup engineering self-correcting superconducting 'cat qubits' that exponentially suppress bit-flip errors to slash fault-tolerant hardware overhead."
+      "summary": "French quantum hardware startup engineering self-correcting superconducting 'cat qubits' that exponentially suppress bit-flip errors to slash fault-tolerant hardware overhead.",
+      "stages": {
+        "highschool": "Explore cat-qubit error-correction explainers and try open-source Dynamiqs / Felis quantum circuit simulators.",
+        "undergrad": "Paris summer internships in cryogenic microwave hardware, circuit QED simulation, and Python quantum tooling.",
+        "masters": "6-month French M2 / European MSc thesis internships in superconducting resonator design and biased-noise QEC.",
+        "phd": "CIFRE industrial PhD tracks co-supervised with ENS Paris, Mines Paris, and Inria on bosonic cat qubits.",
+        "postdoc": "Quantum Hardware & Error-Correction Physicist roles for superconducting-qubit and bosonic-code postdocs.",
+        "assoc_prof": "Joint CNRS / Inria / academic research grants on dissipative stabilization and LDPC cat-qubit codes.",
+        "prof": "Co-supervision of CIFRE PhD fellows and European Quantum Flagship collaborative consortia."
+      }
     },
     {
       "id": "dt_xanadu",
@@ -157,7 +220,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.xanadu.ai/",
-      "summary": "Photonic quantum computing pioneer developing room-temperature squeezed-light silicon-nitride chips (Borealis / Aurora) and maintaining the open-source PennyLane quantum ML library."
+      "summary": "Photonic quantum computing pioneer developing room-temperature squeezed-light silicon-nitride chips (Borealis / Aurora) and maintaining the open-source PennyLane quantum ML library.",
+      "stages": {
+        "highschool": "Complete Xanadu's free interactive PennyLane Codebook and Quantum Machine Learning challenges.",
+        "undergrad": "Paid Toronto Residency & summer internships in quantum software (PennyLane), photonics, and quantum chemistry.",
+        "masters": "Graduate internships & engineering roles in silicon-nitride nanophotonics, squeezed light, and quantum compilation.",
+        "phd": "PhD internships & Research Scientist tracks in photonic fault-tolerant GKP qubits and quantum chemistry algorithms.",
+        "postdoc": "Senior Quantum Scientist roles for quantum optics, integrated photonics, and quantum-algorithm postdocs.",
+        "assoc_prof": "Open-source PennyLane academic community grants, joint Canadian NSERC Alliance projects, and workshops.",
+        "prof": "Major academic-industry partnerships in fault-tolerant photonic architecture and quantum chemistry benchmarks."
+      }
     },
     {
       "id": "dt_dwave",
@@ -176,7 +248,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.dwavesys.com/",
-      "summary": "Pioneer of commercial superconducting flux-qubit quantum annealing systems (Advantage) with 5,000+ qubits for combinatorial optimization and spin-glass dynamics simulations."
+      "summary": "Pioneer of commercial superconducting flux-qubit quantum annealing systems (Advantage) with 5,000+ qubits for combinatorial optimization and spin-glass dynamics simulations.",
+      "stages": {
+        "highschool": "Solve optimization puzzles using D-Wave's free Leap cloud quantum-annealing developer tier and Ocean SDK.",
+        "undergrad": "Co-op placements and summer internships in Burnaby & Palo Alto in cryogenics, flux qubits, and Python SDKs.",
+        "masters": "Graduate co-op & engineering roles in superconducting chip fab, cryo-packaging, and hybrid quantum-classical solvers.",
+        "phd": "PhD internships & Scientist positions in spin-glass dynamics, non-equilibrium quantum annealing, and qubit coherence.",
+        "postdoc": "Quantum Research Scientist roles for condensed-matter, statistical-physics, and superconducting-device postdocs.",
+        "assoc_prof": "Academic Leap research access for spin-glass, quantum phase transition, and optimization benchmark publications.",
+        "prof": "Co-authored quantum-supremacy / spin-dynamics collaborations and Canadian Mitacs/NSERC industry-academic grants."
+      }
     },
     {
       "id": "dt_photonic_inc",
@@ -195,7 +276,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://photonic.com/",
-      "summary": "Simon Fraser University spinout building optically linked silicon T-center spin qubits communicating directly at telecom wavelengths for distributed fault-tolerant quantum computing."
+      "summary": "Simon Fraser University spinout building optically linked silicon T-center spin qubits communicating directly at telecom wavelengths for distributed fault-tolerant quantum computing.",
+      "stages": {
+        "highschool": "Study silicon photonics and spin-photon entanglement fundamentals via Canadian quantum outreach resources.",
+        "undergrad": "Co-op placements in Coquitlam / Greater Vancouver spanning silicon optics, cryo-testing, and control electronics.",
+        "masters": "MSc/MASc research co-ops and engineering roles in T-center silicon spin devices and telecom-band photonics.",
+        "phd": "PhD internships & Mitacs Accelerate fellowships in silicon spin-photon interfaces and distributed qLDPC QEC.",
+        "postdoc": "Quantum Hardware & Architecture Scientist roles for solid-state spin, color-center, and quantum-networking postdocs.",
+        "assoc_prof": "Joint SFU / UBC / UK academic partnerships on distributed entanglement and telecom-band quantum memories.",
+        "prof": "Strategic R&D consortia and co-supervised graduate fellowships in scalable distributed quantum computing."
+      }
     },
     {
       "id": "dt_riverlane",
@@ -214,7 +304,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.riverlane.com/",
-      "summary": "Quantum error correction specialist building Deltaflow—ultra-low-latency FPGA/ASIC real-time syndrome decoders capable of decoding millions of quantum operations per second."
+      "summary": "Quantum error correction specialist building Deltaflow—ultra-low-latency FPGA/ASIC real-time syndrome decoders capable of decoding millions of quantum operations per second.",
+      "stages": {
+        "highschool": "Explore interactive Quantum Error Correction explainers and surface-code decoder visualizations.",
+        "undergrad": "Cambridge (UK) & Boston summer internships in FPGA/ASIC engineering, QEC simulation, and quantum software.",
+        "masters": "MSc / MPhil project placements and graduate roles in real-time syndrome decoding and embedded control stacks.",
+        "phd": "PhD internships & Research Scientist roles in qLDPC codes, fault-tolerant compilation, and decoder microarchitecture.",
+        "postdoc": "Quantum Information Scientist roles for QEC, fault-tolerant architecture, and quantum-control postdocs.",
+        "assoc_prof": "Joint UK National Quantum Computing Centre (NQCC) & academic collaborations benchmarking Deltaflow decoders.",
+        "prof": "Co-PI leadership on UKRI / DARPA fault-tolerant quantum computing programs and joint doctoral training."
+      }
     },
     {
       "id": "dt_qctrl",
@@ -233,7 +332,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://q-ctrl.com/",
-      "summary": "University of Sydney spinout applying quantum control engineering to suppress decoherence in quantum processors and build GPS-free cold-atom quantum navigation sensors."
+      "summary": "University of Sydney spinout applying quantum control engineering to suppress decoherence in quantum processors and build GPS-free cold-atom quantum navigation sensors.",
+      "stages": {
+        "highschool": "Explore Black Opal interactive visual lessons on qubits, Bloch spheres, and quantum control physics.",
+        "undergrad": "Summer internships in Sydney, Los Angeles, and Berlin in quantum control software, cold atoms, and DSP.",
+        "masters": "Graduate engineering & physics internships in optimal control, error suppression, and quantum sensing hardware.",
+        "phd": "PhD research internships & Quantum Control Scientist tracks in pulse engineering and cold-atom gravimetry/navigation.",
+        "postdoc": "Lead Quantum Physicist roles for AMO, quantum-sensing, and open-quantum-systems postdocs.",
+        "assoc_prof": "Academic Boulder Opal licenses, joint University of Sydney / ARC quantum-control grants, and co-publications.",
+        "prof": "Strategic defense/civilian quantum-navigation consortia and co-supervised industrial PhD programs."
+      }
     },
     {
       "id": "dt_oqc",
@@ -252,7 +360,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://oqc.tech/",
-      "summary": "University of Oxford spinout building 3D coaxial 'Coaxmon' superconducting quantum computers deployed directly inside commercial colocation data centers."
+      "summary": "University of Oxford spinout building 3D coaxial 'Coaxmon' superconducting quantum computers deployed directly inside commercial colocation data centers.",
+      "stages": {
+        "highschool": "Learn superconducting circuit basics and 3D cavity QED principles via UK National Quantum outreach events.",
+        "undergrad": "UK summer placements in Reading and Oxford across cryogenic engineering, RF electronics, and quantum cloud stacks.",
+        "masters": "MSc/MPhys project placements & graduate roles in Coaxmon fabrication, microwave measurement, and cryo-integration.",
+        "phd": "Industrial PhD studentships (UK EPSRC iCASE) & R&D internships in 3D superconducting qubit scaling and calibration.",
+        "postdoc": "Quantum Hardware Scientist roles for superconducting-qubit, cryogenic-RF, and quantum-control postdocs.",
+        "assoc_prof": "Joint Oxford / UKRI collaborative R&D grants and academic cloud access on data-center-deployed QPUs.",
+        "prof": "Co-supervision of EPSRC CDT/iCASE doctoral researchers and UK National Quantum Technologies Programme partnerships."
+      }
     },
     {
       "id": "dt_atom_computing",
@@ -271,7 +388,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://atom-computing.com/",
-      "summary": "First quantum hardware company to exceed 1,000 nuclear-spin neutral-atom qubits in a single array, demonstrating multi-second coherence and mid-circuit measurement."
+      "summary": "First quantum hardware company to exceed 1,000 nuclear-spin neutral-atom qubits in a single array, demonstrating multi-second coherence and mid-circuit measurement.",
+      "stages": {
+        "highschool": "Learn how optical tweezers trap single neutral atoms using Boulder/JILA public AMO physics resources.",
+        "undergrad": "Paid summer internships in Boulder and Berkeley in laser optics, FPGA control, and atomic-physics instrumentation.",
+        "masters": "Graduate internships & optical/vacuum engineering roles supporting 1,000+ nuclear-spin qubit arrays.",
+        "phd": "PhD research internships & Experimental Physicist roles in alkaline-earth optical tweezers and mid-circuit readout.",
+        "postdoc": "Staff Atomic Physicist roles for ultracold-atom, optical-clock, and Rydberg-qubit postdocs.",
+        "assoc_prof": "Joint CU Boulder / UC Berkeley / academic benchmarking collaborations on logical neutral-atom qubits.",
+        "prof": "Multi-institution fault-tolerant quantum testbed consortia and joint federal (NSF/DOE/DARPA) research programs."
+      }
     },
     {
       "id": "dt_infleqtion",
@@ -290,7 +416,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.infleqtion.com/",
-      "summary": "Formerly ColdQuanta, spun out of JILA/CU Boulder to commercialize neutral-atom quantum computers (Sqale), optical atomic clocks (Tiqker), and quantum RF receivers."
+      "summary": "Formerly ColdQuanta, spun out of JILA/CU Boulder to commercialize neutral-atom quantum computers (Sqale), optical atomic clocks (Tiqker), and quantum RF receivers.",
+      "stages": {
+        "highschool": "Explore cold-atom glass-cell physics and quantum clock demonstrations through Colorado quantum outreach.",
+        "undergrad": "Paid summer internships in Boulder, Madison, and Oxford in laser optics, vacuum cells, and quantum software.",
+        "masters": "MSc/MEng engineering roles in miniaturized cold-atom physics packages, optical clocks (Tiqker), and RF sensing.",
+        "phd": "PhD internships & Physicist tracks in neutral-atom computing (Sqale), Rydberg RF electrometry, and atom interferometry.",
+        "postdoc": "Principal Quantum Physicist roles for AMO, atomic-clock, and BEC/atom-interferometry postdocs.",
+        "assoc_prof": "Joint JILA / UW–Madison / UK academic grants deploying cold-atom glass cells and quantum sensors.",
+        "prof": "Co-PI leadership on DARPA / NASA / UKRI quantum-clock and spaceborne cold-atom instrumentation missions."
+      }
     },
     {
       "id": "dt_universal_quantum",
@@ -309,7 +444,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://universalquantum.com/",
-      "summary": "University of Sussex spinout engineering modular silicon-microchip trapped-ion quantum modules using microwave gates and fast electric-field ion shuttling links."
+      "summary": "University of Sussex spinout engineering modular silicon-microchip trapped-ion quantum modules using microwave gates and fast electric-field ion shuttling links.",
+      "stages": {
+        "highschool": "Explore modular trapped-ion computing videos and microwave quantum-gate fundamentals via Sussex outreach.",
+        "undergrad": "UK summer placements near Brighton/Haywards Heath in RF/microwave electronics, microfabrication, and cryo-systems.",
+        "masters": "MPhys/MSc internships & graduate engineering roles in silicon ion-trap microchips and fast ion-shuttling control.",
+        "phd": "EPSRC iCASE PhD fellowships & internships in scalable microwave-driven trapped-ion modules and error correction.",
+        "postdoc": "Senior Quantum Physicist roles for trapped-ion, microfabricated-trap, and RF-control postdocs.",
+        "assoc_prof": "Joint University of Sussex / German DLR collaborative projects scaling modular trapped-ion architectures.",
+        "prof": "Co-supervision of industrial PhDs and European/UK large-scale fault-tolerant quantum hardware consortia."
+      }
     },
     {
       "id": "dt_classiq",
@@ -328,7 +472,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.classiq.io/",
-      "summary": "Develops high-level quantum circuit synthesis and compilation platforms translating functional algorithms into depth- and qubit-optimized circuits across hardware backends."
+      "summary": "Develops high-level quantum circuit synthesis and compilation platforms translating functional algorithms into depth- and qubit-optimized circuits across hardware backends.",
+      "stages": {
+        "highschool": "Join Classiq's global quantum coding competitions and free high-level quantum circuit synthesis tutorials.",
+        "undergrad": "Internships in Tel Aviv and remote/US teams in quantum algorithm compilation, Python SDKs, and optimization.",
+        "masters": "MSc thesis collaborations & Quantum Applications Engineer tracks translating physics models into optimized circuits.",
+        "phd": "PhD research internships in automated circuit synthesis, Hamiltonian simulation, and resource-efficient QEC compilation.",
+        "postdoc": "Research Scientist roles for quantum-algorithms, quantum-chemistry, and compiler-theory postdocs.",
+        "assoc_prof": "Free Classiq Academic licenses for university quantum-computing courses and joint algorithm-synthesis publications.",
+        "prof": "Co-authored quantum-application benchmarks and university curriculum integration across physics & CS departments."
+      }
     },
     {
       "id": "dt_quantum_brilliance",
@@ -347,7 +500,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://quantumbrilliance.com/",
-      "summary": "Australian National University spinout building room-temperature diamond nitrogen-vacancy (NV) center quantum accelerators requiring no cryogenics or vacuum chambers."
+      "summary": "Australian National University spinout building room-temperature diamond nitrogen-vacancy (NV) center quantum accelerators requiring no cryogenics or vacuum chambers.",
+      "stages": {
+        "highschool": "Discover how room-temperature diamond NV-center defects act as solid-state spins without liquid helium.",
+        "undergrad": "Summer internships in Canberra and Stuttgart in diamond nanophotonics, microwave control, and Qristal SDK.",
+        "masters": "MSc/MEng projects in precision ion implantation, optical confocal detection, and edge quantum-accelerator software.",
+        "phd": "PhD internships & Research Scientist tracks in NV-center spin coherence, diamond nanofabrication, and hybrid HPC.",
+        "postdoc": "Senior Quantum Physicist roles for solid-state spin, diamond NV-center, and quantum-sensing postdocs.",
+        "assoc_prof": "Joint ANU / Fraunhofer IAF / Pawsey Supercomputing Centre collaborations on room-temperature quantum clusters.",
+        "prof": "Australian ARC & German BMBF collaborative grants co-developing diamond fabrication and edge QPU ecosystems."
+      }
     },
     {
       "id": "dt_helion",
@@ -366,7 +528,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.helionenergy.com/",
-      "summary": "Developing pulsed magneto-inertial field-reversed configuration (FRC) fusion machines (Trenta & Polaris) designed for direct electromagnetic energy recovery using D–³He fuel."
+      "summary": "Developing pulsed magneto-inertial field-reversed configuration (FRC) fusion machines (Trenta & Polaris) designed for direct electromagnetic energy recovery using D–³He fuel.",
+      "stages": {
+        "highschool": "Learn pulsed magneto-inertial fusion and field-reversed configuration (FRC) physics via open plasma primers.",
+        "undergrad": "Paid summer internships in Everett, WA across pulsed power, plasma diagnostics, vacuum systems, and control software.",
+        "masters": "Graduate engineering roles in high-voltage capacitor banks, magnetic-compression coils, and fusion instrumentation.",
+        "phd": "PhD internships & Plasma Physicist roles in FRC formation/merging, kinetic/MHD modeling, and D–³He direct recovery.",
+        "postdoc": "Staff Plasma & Pulsed-Power Scientist roles transitioning from fusion, HEDP, or accelerator-physics postdocs.",
+        "assoc_prof": "Collaborative university plasma-diagnostics and MHD simulation projects supporting Polaris and commercial plants.",
+        "prof": "Scientific advisory partnerships and joint DOE INFUSE / university fusion workforce training initiatives."
+      }
     },
     {
       "id": "dt_tae",
@@ -385,7 +556,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://tae.com/",
-      "summary": "Pioneering beam-driven field-reversed configuration (FRC) plasmas (Norman & Copernicus) pursuing aneutronic hydrogen-boron (p–¹¹B) fusion alongside power-management and medical BNCT spinouts."
+      "summary": "Pioneering beam-driven field-reversed configuration (FRC) plasmas (Norman & Copernicus) pursuing aneutronic hydrogen-boron (p–¹¹B) fusion alongside power-management and medical BNCT spinouts.",
+      "stages": {
+        "highschool": "Explore aneutronic hydrogen-boron (p–¹¹B) fusion physics and particle-beam plasma confinement concepts.",
+        "undergrad": "Summer internships in Foothill Ranch, CA in neutral-beam injectors, plasma diagnostics, and power electronics.",
+        "masters": "MSc/MEng roles in high-energy neutral beams, vacuum engineering, and machine-learning plasma optimization.",
+        "phd": "PhD internships & Physicist roles in beam-driven FRC stability, kinetic plasma theory, and p–¹¹B fusion diagnostics.",
+        "postdoc": "Senior Plasma Physicist positions for magnetic-fusion, neutral-beam, and computational-plasma postdocs.",
+        "assoc_prof": "DOE INFUSE & university collaborations (UC Irvine, UW, national labs) on FRC physics and ML control.",
+        "prof": "Visiting collaborations, scientific advisory boards, and joint fusion-energy & accelerator-physics consortia."
+      }
     },
     {
       "id": "dt_tokamak_energy",
@@ -404,7 +584,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://tokamakenergy.com/",
-      "summary": "Combines compact spherical tokamak geometry (ST40, which achieved 100-million-kelvin ion temperatures) with commercial high-temperature superconducting magnets."
+      "summary": "Combines compact spherical tokamak geometry (ST40, which achieved 100-million-kelvin ion temperatures) with commercial high-temperature superconducting magnets.",
+      "stages": {
+        "highschool": "Explore spherical tokamak geometry and high-temperature superconductor (HTS) magnet demos via UK fusion outreach.",
+        "undergrad": "Paid UK industrial placements near Oxford in HTS coil testing, cryogenics, plasma diagnostics, and CAD/FEA.",
+        "masters": "MSc/MEng graduate schemes in REBCO magnet engineering, spherical-tokamak equilibrium modeling, and vacuum tech.",
+        "phd": "EPSRC iCASE / Fusion CDT PhD sponsorships in high-field spherical tokamak transport, RF heating, and HTS magnets.",
+        "postdoc": "Principal Plasma Physicist & HTS Magnet Scientist roles for tokamak and applied-superconductivity postdocs.",
+        "assoc_prof": "Joint UKAEA / Culham / Oxford & York university partnerships on ST40 experiments and DEMO magnet technology.",
+        "prof": "Co-supervision of Fusion CDT doctoral students and international public-private fusion pilot plant consortia."
+      }
     },
     {
       "id": "dt_first_light_fusion",
@@ -423,7 +612,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://firstlightfusion.com/",
-      "summary": "University of Oxford spinout developing projectile-driven inertial fusion amplifiers that focus hypervelocity shock waves onto fuel targets."
+      "summary": "University of Oxford spinout developing projectile-driven inertial fusion amplifiers that focus hypervelocity shock waves onto fuel targets.",
+      "stages": {
+        "highschool": "Discover hypervelocity shock-wave physics and inertial-confinement target amplification principles.",
+        "undergrad": "UK summer placements in Oxfordshire in shock hydrodynamics, optical diagnostics, and two-stage light-gas guns.",
+        "masters": "MPhys/MSc thesis projects and graduate roles in multiphysics radiation-hydrodynamics simulation and target fab.",
+        "phd": "PhD research partnerships (Oxford, Imperial, York) in high-energy-density physics, equations of state, and shock focusing.",
+        "postdoc": "Staff HEDP & Computational Physicist roles for ICF, shock-physics, and radiation-hydrodynamics postdocs.",
+        "assoc_prof": "Collaborative university & Sandia Z-machine experimental campaigns validating amplifier target designs.",
+        "prof": "Co-PI research grants on inertial fusion energy (IFE) target physics and academic advisory boards."
+      }
     },
     {
       "id": "dt_proxima_fusion",
@@ -442,7 +640,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.proximafusion.com/",
-      "summary": "First spinout from the Max Planck Institute for Plasma Physics (Wendelstein 7-X), designing quasi-isodynamic HTS stellarator fusion power plants via simulation-driven engineering."
+      "summary": "First spinout from the Max Planck Institute for Plasma Physics (Wendelstein 7-X), designing quasi-isodynamic HTS stellarator fusion power plants via simulation-driven engineering.",
+      "stages": {
+        "highschool": "Learn how twisted 3D stellarator magnetic cages confine fusion plasma without disruptive plasma currents.",
+        "undergrad": "Munich summer internships in computational plasma optimization, HTS magnet engineering, and scientific Python/Julia.",
+        "masters": "Master's thesis placements (TUM / LMU / ETH) in quasi-isodynamic stellarator optimization and divertor physics.",
+        "phd": "Industrial PhD collaborations with Max Planck IPP on 3D MHD equilibria, neoclassical transport, and HTS coils.",
+        "postdoc": "Senior Stellarator Physicist & Magnet Engineer roles for magnetic-fusion and computational-physics postdocs.",
+        "assoc_prof": "Joint Max Planck IPP / EUROfusion / university grants designing next-generation HTS stellarator pilot plants.",
+        "prof": "Co-supervision of Munich/Greifswald fusion PhDs and European stellarator-reactor engineering consortia."
+      }
     },
     {
       "id": "dt_marvel_fusion",
@@ -461,7 +668,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://marvelfusion.com/",
-      "summary": "Pursuing short-pulse petawatt laser-driven fusion using nanostructured targets engineered to enhance laser absorption and non-thermal proton-boron fusion yield."
+      "summary": "Pursuing short-pulse petawatt laser-driven fusion using nanostructured targets engineered to enhance laser absorption and non-thermal proton-boron fusion yield.",
+      "stages": {
+        "highschool": "Study chirped-pulse petawatt lasers and laser-plasma particle acceleration fundamentals.",
+        "undergrad": "Internships in Munich and Fort Collins (CSU) in ultrafast laser optics, nanofabricated targets, and PIC codes.",
+        "masters": "MSc thesis collaborations (LMU / TUM / Colorado State) in laser-solid interaction and nanostructured target physics.",
+        "phd": "Joint PhD projects in short-pulse laser-plasma physics, particle-in-cell (PIC) simulations, and proton-boron fusion.",
+        "postdoc": "Research Scientist roles for high-intensity laser, HEDP, and plasma-simulation postdocs.",
+        "assoc_prof": "Collaborative experimental campaigns at ELI, Colorado State ATLAS, and German petawatt laser facilities.",
+        "prof": "Co-PI leadership on public-private laser-fusion testbeds and joint university-industry doctoral fellowships."
+      }
     },
     {
       "id": "dt_type_one_energy",
@@ -480,7 +696,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.typeoneenergy.com/",
-      "summary": "Developing the Infinity Two HTS stellarator fusion pilot plant in partnership with TVA and Oak Ridge National Laboratory, leveraging high-field 3D optimized coils."
+      "summary": "Developing the Infinity Two HTS stellarator fusion pilot plant in partnership with TVA and Oak Ridge National Laboratory, leveraging high-field 3D optimized coils.",
+      "stages": {
+        "highschool": "Explore 3D stellarator coil geometry and high-temperature superconducting magnet fundamentals.",
+        "undergrad": "Summer engineering & physics internships in Knoxville, Madison, and Boston in magnet design and plasma modeling.",
+        "masters": "Graduate engineering roles in cryogenic coil winding, neutronics, and divertor thermal-hydraulics for Infinity Two.",
+        "phd": "PhD internships & Scientist roles in stellarator turbulence, gyrokinetic transport, and 3D HTS magnet mechanics.",
+        "postdoc": "Staff Fusion Physicist roles for stellarator-theory, gyrokinetics, and superconducting-magnet postdocs.",
+        "assoc_prof": "DOE INFUSE & ORNL / UW–Madison partnerships advancing Infinity Two stellarator physics and materials.",
+        "prof": "Scientific advisory leadership and joint national-lab/TVA fusion pilot plant research consortia."
+      }
     },
     {
       "id": "dt_zap_energy",
@@ -499,7 +724,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.zapenergy.com/",
-      "summary": "University of Washington spinout confining fusion plasma via sheared-flow-stabilized Z-pinches—eliminating expensive external superconducting magnets entirely."
+      "summary": "University of Washington spinout confining fusion plasma via sheared-flow-stabilized Z-pinches—eliminating expensive external superconducting magnets entirely.",
+      "stages": {
+        "highschool": "Learn how sheared plasma flows stabilize Z-pinches without external superconducting magnets.",
+        "undergrad": "Paid summer internships in Everett, WA in pulsed power, plasma spectroscopy, liquid-metal blankets, and diagnostics.",
+        "masters": "MSc/MEng roles in high-current electrode physics, neutron diagnostics, and thermal-hydraulic heat extraction.",
+        "phd": "PhD internships & Plasma Physicist roles in sheared-flow Z-pinch stability, MHD/kinetic simulations, and FuZE campaigns.",
+        "postdoc": "Senior Experimental & Computational Plasma Physicist roles for Z-pinch, HEDP, and fusion postdocs.",
+        "assoc_prof": "DOE ARPA-E / INFUSE & University of Washington / LLNL collaborations on Z-pinch diagnostics and theory.",
+        "prof": "Joint fusion-energy pilot-plant working groups and co-supervised UW/national-lab doctoral research."
+      }
     },
     {
       "id": "dt_general_fusion",
@@ -518,7 +752,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://generalfusion.com/",
-      "summary": "Developing Magnetized Target Fusion (MTF) using synchronized mechanical pistons compressing a spinning liquid-lithium cavity around injected magnetized plasma (LM26)."
+      "summary": "Developing Magnetized Target Fusion (MTF) using synchronized mechanical pistons compressing a spinning liquid-lithium cavity around injected magnetized plasma (LM26).",
+      "stages": {
+        "highschool": "Explore Magnetized Target Fusion (MTF) and liquid-metal compression engineering concepts.",
+        "undergrad": "Canadian co-op placements in Richmond, BC in plasma injectors, pneumatic compression systems, and diagnostics.",
+        "masters": "MASc/MSc co-ops and graduate roles in magnetized plasma formation, liquid-lithium hydrodynamics, and controls.",
+        "phd": "Mitacs industrial PhD fellowships & Physicist tracks in spherical-tokamak MTF compression and LM26 plasma physics.",
+        "postdoc": "Staff Fusion Scientist roles for magnetic-confinement, pulsed-plasma, and MHD-simulation postdocs.",
+        "assoc_prof": "NSERC / Mitacs / UKAEA academic collaborations on plasma-wall interactions and MTF compression modeling.",
+        "prof": "Collaborative fusion-engineering consortia and co-supervised Canadian/international plasma physics PhDs."
+      }
     },
     {
       "id": "dt_focused_energy",
@@ -537,7 +780,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.focused-energy.world/",
-      "summary": "German-American TU Darmstadt spinout developing proton fast-ignition laser fusion, separating fuel compression from petawatt laser-accelerated proton ignition."
+      "summary": "German-American TU Darmstadt spinout developing proton fast-ignition laser fusion, separating fuel compression from petawatt laser-accelerated proton ignition.",
+      "stages": {
+        "highschool": "Learn how petawatt lasers accelerate proton beams to ignite compressed inertial-fusion fuel.",
+        "undergrad": "Summer internships in Darmstadt and Austin, TX in high-power optics, cryogenic targets, and laser diagnostics.",
+        "masters": "MSc thesis placements (TU Darmstadt / UT Austin) in laser-driven proton acceleration and IFE chamber physics.",
+        "phd": "Joint PhD programs with TU Darmstadt, GSI, and US national labs on proton fast-ignition fusion physics.",
+        "postdoc": "Research Scientist positions for inertial-fusion, laser-plasma, and target-fabrication postdocs.",
+        "assoc_prof": "Joint DOE FIRE / German BMBF laser-fusion hub collaborations and shared beamtime at petawatt facilities.",
+        "prof": "Co-PI leadership in international inertial fusion energy (IFE) consortia and doctoral training networks."
+      }
     },
     {
       "id": "dt_zeiss_smt",
@@ -556,7 +808,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.zeiss.com/semiconductor-manufacturing-technology/home.html",
-      "summary": "Crafts the world's smoothest multilayer Bragg reflective mirrors (surface flatness equivalent to sub-millimeter bumps over Germany) powering every ASML EUV lithography system."
+      "summary": "Crafts the world's smoothest multilayer Bragg reflective mirrors (surface flatness equivalent to sub-millimeter bumps over Germany) powering every ASML EUV lithography system.",
+      "stages": {
+        "highschool": "Explore precision optics, wave diffraction limits, and how EUV mirrors print nanometer transistors.",
+        "undergrad": "Dual-study programs & paid Praktika in Oberkochen in optical metrology, vacuum mechanics, and computational optics.",
+        "masters": "Paid Master's thesis placements (Masterarbeit) in Bragg multilayer coatings, interferometry, and optomechanics.",
+        "phd": "Industrial PhD tracks (Promotionsstellen) in EUV/High-NA lithography optics, X-ray reflectometry, and laser metrology.",
+        "postdoc": "Senior Optical Physicist & Systems Architect roles for optics, photonics, and precision-metrology postdocs.",
+        "assoc_prof": "Joint German BMBF / Fraunhofer IOF / university research chairs in extreme-UV optics and computational imaging.",
+        "prof": "Long-term collaborative research centers (SFB) and industrial advisory boards on next-generation lithography physics."
+      }
     },
     {
       "id": "dt_trumpf",
@@ -575,7 +836,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.trumpf.com/",
-      "summary": "Builds the 30-kilowatt CO₂ drive lasers that vaporize 50,000 tin droplets per second inside EUV lithography machines alongside ultrafast industrial and scientific disk lasers."
+      "summary": "Builds the 30-kilowatt CO₂ drive lasers that vaporize 50,000 tin droplets per second inside EUV lithography machines alongside ultrafast industrial and scientific disk lasers.",
+      "stages": {
+        "highschool": "Discover high-power industrial lasers and how CO₂ laser pulses generate EUV plasma light from tin droplets.",
+        "undergrad": "Paid German Praxissemester & summer internships in Ditzingen in laser physics, optics, and power electronics.",
+        "masters": "Master's thesis placements (Masterarbeit) in ultrafast thin-disk lasers, EUV drive lasers, and beam delivery.",
+        "phd": "Industrial PhDs (Kooperative Promotion) in high-average-power ultrafast lasers, nonlinear optics, and plasma sources.",
+        "postdoc": "R&D Laser Physicist roles for ultrafast-optics, fiber/disk-laser, and high-power photonics postdocs.",
+        "assoc_prof": "Joint Fraunhofer ILT / University of Stuttgart / RWTH Aachen grants on next-generation laser-matter physics.",
+        "prof": "Collaborative European photonics consortia and endowed university-industry laser technology partnerships."
+      }
     },
     {
       "id": "dt_coherent",
@@ -594,7 +864,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.coherent.com/",
-      "summary": "Global leader in ultrafast Ti:sapphire and excimer lasers, silicon-carbide substrates, optical transceivers, and precision photonics used across atomic physics and semiconductor fabs."
+      "summary": "Global leader in ultrafast Ti:sapphire and excimer lasers, silicon-carbide substrates, optical transceivers, and precision photonics used across atomic physics and semiconductor fabs.",
+      "stages": {
+        "highschool": "Learn how Ti:sapphire, excimer, and semiconductor diode lasers power modern science and telecommunications.",
+        "undergrad": "Paid summer internships across US and European sites in laser engineering, silicon carbide, and optical testing.",
+        "masters": "MSc/MEng roles in ultrafast laser systems, optical transceiver photonics, and wide-bandgap semiconductor growth.",
+        "phd": "PhD internships & Principal Engineer tracks in high-power fiber/diode lasers, SiC epitaxy, and optical materials.",
+        "postdoc": "Senior Photonics & Materials Physicist roles for AMO, laser-physics, and condensed-matter postdocs.",
+        "assoc_prof": "Academic laser-instrumentation partnerships and joint federal photonics manufacturing (AIM Photonics) grants.",
+        "prof": "Joint industry-university R&D centers in wide-bandgap semiconductors, ultrafast lasers, and optical interconnects."
+      }
     },
     {
       "id": "dt_hamamatsu",
@@ -613,7 +892,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.hamamatsu.com/",
-      "summary": "Manufactured the iconic 20-inch golden photomultiplier tubes lining Super-Kamiokande, IceCube, and Hyper-Kamiokande, alongside SiPMs, scientific CMOS cameras, and single-photon detectors."
+      "summary": "Manufactured the iconic 20-inch golden photomultiplier tubes lining Super-Kamiokande, IceCube, and Hyper-Kamiokande, alongside SiPMs, scientific CMOS cameras, and single-photon detectors.",
+      "stages": {
+        "highschool": "Discover how 20-inch photomultiplier tubes detect single Cherenkov photons inside Super-Kamiokande and IceCube.",
+        "undergrad": "Engineering & physics internships in Hamamatsu and global offices covering photodetectors, SiPMs, and optics.",
+        "masters": "Graduate R&D roles in semiconductor photo-sensors, scientific CMOS cameras, and vacuum photomultiplier design.",
+        "phd": "PhD research careers in single-photon avalanche diodes (SPADs), X-ray detectors, and ultra-fast optical sensors.",
+        "postdoc": "Senior Detector Physicist roles for particle-detector, astrophysics-instrumentation, and photonics postdocs.",
+        "assoc_prof": "Custom sensor co-development partnerships for neutrino telescopes, collider calorimeters, and medical PET.",
+        "prof": "Multi-decade instrumentation collaborations with Hyper-Kamiokande, IceCube-Gen2, CERN, and CTAO."
+      }
     },
     {
       "id": "dt_ipg_photonics",
@@ -632,7 +920,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.ipgphotonics.com/",
-      "summary": "Pioneered high-power ytterbium- and erbium-doped fiber lasers and amplifiers transforming precision materials processing, directed energy, and spectroscopy."
+      "summary": "Pioneered high-power ytterbium- and erbium-doped fiber lasers and amplifiers transforming precision materials processing, directed energy, and spectroscopy.",
+      "stages": {
+        "highschool": "Explore how rare-earth-doped optical fibers amplify laser light to tens of kilowatts with high wall-plug efficiency.",
+        "undergrad": "Summer internships in Marlborough, MA and Germany in fiber optics, laser diodes, and optical testing.",
+        "masters": "MSc/MEng engineering roles in ytterbium/erbium fiber-laser resonators, nonlinear suppression, and thermal optics.",
+        "phd": "PhD R&D Scientist tracks in high-brightness specialty fibers, ultrafast fiber lasers, and mid-IR spectroscopy sources.",
+        "postdoc": "Principal Optical Physicist roles for laser-physics, nonlinear-fiber-optics, and optoelectronics postdocs.",
+        "assoc_prof": "Joint academic-industry grants in high-power beam combining, specialty glass fibers, and laser-materials physics.",
+        "prof": "Strategic photonics consortia and collaborative university research on next-generation directed-energy and medical lasers."
+      }
     },
     {
       "id": "dt_lightmatter",
@@ -651,7 +948,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://lightmatter.co/",
-      "summary": "MIT spinout engineering silicon-photonics wafer-scale optical interconnects (Passage) and photonic compute engines to break the electrical power wall in AI supercomputers."
+      "summary": "MIT spinout engineering silicon-photonics wafer-scale optical interconnects (Passage) and photonic compute engines to break the electrical power wall in AI supercomputers.",
+      "stages": {
+        "highschool": "Learn how silicon waveguides replace copper wires to route AI compute data using pulses of light.",
+        "undergrad": "Summer internships in Mountain View and Boston in silicon photonics layout, optical testing, and ML systems.",
+        "masters": "MSc/MEng roles in photonic integrated circuit (PIC) verification, laser packaging, and high-speed SerDes electronics.",
+        "phd": "PhD internships & Photonics Architect roles in wafer-scale optical interposers (Passage) and integrated modulators.",
+        "postdoc": "Senior Silicon Photonics & Optical Systems Physicist roles for integrated-photonics postdocs.",
+        "assoc_prof": "Joint MIT / academic research collaborations on ultra-low-energy optical computing and dense WDM packaging.",
+        "prof": "Foundry-ecosystem partnerships and advisory roles scaling photonic interconnects for exascale scientific AI."
+      }
     },
     {
       "id": "dt_ayar_labs",
@@ -670,7 +976,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://ayarlabs.com/",
-      "summary": "MIT, UC Berkeley, and CU Boulder spinout building co-packaged optical I/O chiplets (TeraPHY) moving terabits per second with photons directly off silicon processors."
+      "summary": "MIT, UC Berkeley, and CU Boulder spinout building co-packaged optical I/O chiplets (TeraPHY) moving terabits per second with photons directly off silicon processors.",
+      "stages": {
+        "highschool": "Discover how multi-wavelength optical chiplets overcome electrical bandwidth bottlenecks inside supercomputers.",
+        "undergrad": "Summer internships in San Jose and Boston in optical lab characterization, silicon-photonics CAD, and firmware.",
+        "masters": "Graduate engineering roles in co-packaged optics (TeraPHY), micro-ring modulators, and multi-wavelength laser sources.",
+        "phd": "PhD internships & R&D Scientist tracks in monolithic CMOS-photonics integration and terabit optical interconnects.",
+        "postdoc": "Staff Optical Physicist roles for silicon-photonics, optoelectronics, and laser-integration postdocs.",
+        "assoc_prof": "Joint UC Berkeley / MIT / CU Boulder DARPA PIPES and optical-I/O university-industry research grants.",
+        "prof": "Co-PI leadership in next-generation HPC optical-fabric standards and joint graduate photonics fellowships."
+      }
     },
     {
       "id": "dt_menlo_systems",
@@ -689,7 +1004,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.menlosystems.com/",
-      "summary": "Co-founded by Nobel laureate Theodor Hänsch out of Max Planck Quantum Optics, commercializing optical frequency combs, ultra-stable cavity lasers, and terahertz spectrometers."
+      "summary": "Co-founded by Nobel laureate Theodor Hänsch out of Max Planck Quantum Optics, commercializing optical frequency combs, ultra-stable cavity lasers, and terahertz spectrometers.",
+      "stages": {
+        "highschool": "Learn how Nobel-winning optical frequency combs act as 'gears of light' measuring optical frequencies to 18 digits.",
+        "undergrad": "Paid Praktika & Werkstudent roles near Munich in fiber-laser optics, electronic feedback loops, and terahertz labs.",
+        "masters": "Master's thesis placements (LMU / TUM / MPQ) in ultra-low-noise optical frequency combs and cavity-stabilized lasers.",
+        "phd": "Industrial PhD collaborations in astrocombs, spaceborne optical clocks, and quantum-metrology laser racks.",
+        "postdoc": "Senior Optical & Metrology Physicist roles for frequency-comb, atomic-clock, and ultrafast-laser postdocs.",
+        "assoc_prof": "Joint MPQ / PTB / European metrology consortia deploying frequency combs at observatories and clock networks.",
+        "prof": "Strategic partnerships building astrocombs for ELT/VLT and optical-clock subsystems for ESA space missions."
+      }
     },
     {
       "id": "dt_toptica",
@@ -708,7 +1032,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.toptica.com/",
-      "summary": "Builds narrow-linewidth tunable diode lasers, sodium guide-star lasers for ESO's VLT/ELT adaptive optics, and precision laser racks for trapped-ion and neutral-atom labs worldwide."
+      "summary": "Builds narrow-linewidth tunable diode lasers, sodium guide-star lasers for ESO's VLT/ELT adaptive optics, and precision laser racks for trapped-ion and neutral-atom labs worldwide.",
+      "stages": {
+        "highschool": "Discover how narrow-linewidth tunable diode lasers cool atoms to microkelvin temperatures and create artificial guide stars.",
+        "undergrad": "Paid Praktika & working-student positions near Munich in diode-laser assembly, fiber optics, and FPGA locking.",
+        "masters": "Master's thesis projects (Masterarbeit) in external-cavity diode lasers, SHG frequency conversion, and THz systems.",
+        "phd": "Collaborative PhD tracks in sodium guide-star lasers, integrated quantum laser racks, and ultrafast fiber oscillators.",
+        "postdoc": "R&D Laser Physicist roles for AMO, quantum-optics, and adaptive-optics instrumentation postdocs.",
+        "assoc_prof": "Joint German/EU quantum-technology consortia co-developing turnkey laser systems for ion and neutral-atom labs.",
+        "prof": "Major observatory partnerships (ESO VLT/ELT laser guide stars) and international quantum-metrology collaborations."
+      }
     },
     {
       "id": "dt_thorlabs",
@@ -727,7 +1060,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.thorlabs.com/",
-      "summary": "Ubiquitous backbone of experimental optics and quantum physics laboratories worldwide—manufacturing optomechanics, optical tables, lasers, photodetectors, and OCT imaging systems."
+      "summary": "Ubiquitous backbone of experimental optics and quantum physics laboratories worldwide—manufacturing optomechanics, optical tables, lasers, photodetectors, and OCT imaging systems.",
+      "stages": {
+        "highschool": "Explore Thorlabs' free educational optics kits, photonics tutorials, and hands-on interferometry demos.",
+        "undergrad": "Paid summer internships in Newton, NJ and global sites in optical engineering, mechanics, and photonics testing.",
+        "masters": "MSc/MEng engineering roles in ultrafast lasers, OCT imaging, fiber optics, and precision optomechanical design.",
+        "phd": "PhD R&D Physicist careers across Thorlabs' global photonics divisions (lasers, quantum optics, adaptive optics).",
+        "postdoc": "Senior Photonics R&D Scientist roles commercializing academic optical instrumentation breakthroughs.",
+        "assoc_prof": "Technology-transfer partnerships licensing university optical inventions into globally distributed lab hardware.",
+        "prof": "Collaborative photonics instrumentation development and global academic-lab supply partnerships."
+      }
     },
     {
       "id": "dt_bluefors",
@@ -746,7 +1088,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://bluefors.com/",
-      "summary": "Aalto University spinout and world leader in cryogen-free helium-3/helium-4 dilution refrigerators cooling superconducting quantum processors and condensed-matter labs below 10 millikelvin."
+      "summary": "Aalto University spinout and world leader in cryogen-free helium-3/helium-4 dilution refrigerators cooling superconducting quantum processors and condensed-matter labs below 10 millikelvin.",
+      "stages": {
+        "highschool": "Learn how helium-3/helium-4 dilution refrigerators cool quantum chips below 10 millikelvin—colder than deep space.",
+        "undergrad": "Paid summer trainee positions in Helsinki and Syracuse in cryogenics, vacuum engineering, and microwave wiring.",
+        "masters": "Master's thesis placements (Aalto University / Helsinki) in ultra-low-temperature thermometry and cryo-RF packaging.",
+        "phd": "Industrial PhD collaborations in high-cooling-power cryogenic platforms for million-qubit quantum data centers.",
+        "postdoc": "Cryogenic Physicist & Systems R&D roles for low-temperature condensed-matter and quantum-hardware postdocs.",
+        "assoc_prof": "Joint Aalto / VTT / EU Horizon partnerships advancing milli-kelvin cryostats and cryogenic microwave integration.",
+        "prof": "Strategic infrastructure partnerships equipping national quantum testbeds and dark-matter/bolometer labs worldwide."
+      }
     },
     {
       "id": "dt_oxford_instruments",
@@ -765,7 +1116,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://nanoscience.oxinst.com/",
-      "summary": "Historic University of Oxford spinout that built the first commercial superconducting magnets and now supplies Proteox dilution refrigerators and high-field cryostats globally."
+      "summary": "Historic University of Oxford spinout that built the first commercial superconducting magnets and now supplies Proteox dilution refrigerators and high-field cryostats globally.",
+      "stages": {
+        "highschool": "Explore how superconducting magnets and dilution refrigerators unlock quantum phases near absolute zero.",
+        "undergrad": "Paid UK industrial year-in-industry placements near Oxford in cryogenics, magnetics, and low-temp testing.",
+        "masters": "MPhys/MSc graduate engineering schemes in Proteox cryostat design, high-field superconducting magnets, and software.",
+        "phd": "EPSRC iCASE PhD sponsorships & R&D roles in ultra-high-field magnets, dry dilution cooling, and quantum characterization.",
+        "postdoc": "Application Scientist & Cryo-Magnet Physicist roles for condensed-matter and quantum-device postdocs.",
+        "assoc_prof": "Joint academic-industry testbed grants (Oxford, Royal Holloway, NQCC) and Nicholas Kurti Science Prize network.",
+        "prof": "Custom ultra-high-field magnet and cryostat co-design for global condensed-matter and quantum centers."
+      }
     },
     {
       "id": "dt_lake_shore",
@@ -784,7 +1144,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.lakeshore.com/",
-      "summary": "Industry-standard manufacturer of cryogenic temperature sensors, Hall-effect measurement systems, superconducting magnet power supplies, and cryogenic probe stations."
+      "summary": "Industry-standard manufacturer of cryogenic temperature sensors, Hall-effect measurement systems, superconducting magnet power supplies, and cryogenic probe stations.",
+      "stages": {
+        "highschool": "Learn how cryogenic resistance thermometers and Hall-effect sensors measure matter from 4 K to 1,000 K.",
+        "undergrad": "Paid co-op and summer internships in Westerville, OH in cryogenic sensors, analog instrumentation, and test physics.",
+        "masters": "MSc/MEng engineering roles in cryogenic probe stations, vibrating-sample magnetometers, and superconducting supplies.",
+        "phd": "PhD R&D Scientist roles in ultra-low-temperature thermometry, terahertz characterization, and magnetic metrology.",
+        "postdoc": "Principal Application Scientist roles for experimental condensed-matter and materials-physics postdocs.",
+        "assoc_prof": "Collaborative characterization benchmarks with university quantum-materials and spintronics laboratories.",
+        "prof": "Standards-grade cryogenic metrology partnerships with NIST, national labs, and spaceflight sensor qualification."
+      }
     },
     {
       "id": "dt_cryomech",
@@ -803,7 +1172,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.cryomech.com/",
-      "summary": "Invented Gifford-McMahon cryocoolers and builds the low-vibration pulse-tube cryocoolers and liquid-helium reliquefiers essential to dry dilution refrigerators and MRI/NMR magnets."
+      "summary": "Invented Gifford-McMahon cryocoolers and builds the low-vibration pulse-tube cryocoolers and liquid-helium reliquefiers essential to dry dilution refrigerators and MRI/NMR magnets.",
+      "stages": {
+        "highschool": "Discover how closed-cycle pulse-tube cryocoolers liquefy helium and cool quantum and MRI magnets without boil-off.",
+        "undergrad": "Paid summer engineering internships in Syracuse, NY in thermodynamics, acoustics, and low-vibration cryocoolers.",
+        "masters": "MSc/MEng roles in regenerative cryocooler thermodynamics, helium reliquefaction, and ultra-low-vibration mechanics.",
+        "phd": "PhD R&D roles in high-efficiency pulse-tube and Gifford-McMahon cryocoolers for fusion, quantum, and astronomy.",
+        "postdoc": "Senior Cryogenic Scientist roles for applied-thermodynamics, low-temp physics, and accelerator-cryo postdocs.",
+        "assoc_prof": "University collaborative testing of next-generation 4 K / 2 K cryocoolers for CMB telescopes and quantum arrays.",
+        "prof": "Custom cryogenic cooling partnerships for major observatories, accelerators, and national quantum facilities."
+      }
     },
     {
       "id": "dt_superpower_hts",
@@ -822,7 +1200,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.superpower-inc.com/",
-      "summary": "Key manufacturer of second-generation REBCO high-temperature superconducting (HTS) coated conductor tape powering 20–45 tesla research and compact fusion magnets."
+      "summary": "Key manufacturer of second-generation REBCO high-temperature superconducting (HTS) coated conductor tape powering 20–45 tesla research and compact fusion magnets.",
+      "stages": {
+        "highschool": "Learn how paper-thin REBCO superconducting tapes carry hundreds of amperes with zero electrical resistance.",
+        "undergrad": "Summer materials-science & physics internships in Glenville, NY in thin-film deposition and critical-current testing.",
+        "masters": "MSc/MEng roles in MOCVD/IBAD epitaxial buffer layers, superconducting tape metrology, and quench characterization.",
+        "phd": "PhD Scientist careers in high-field flux pinning, radiation-tolerant HTS conductors, and 20–45 T magnet cables.",
+        "postdoc": "Senior Superconductivity Scientist roles for condensed-matter, thin-film, and applied-superconductivity postdocs.",
+        "assoc_prof": "Joint NHMFL (MagLab) / MIT PSFC / DOE grants optimizing REBCO tape performance under high fields and neutron flux.",
+        "prof": "Strategic fusion-magnet and high-field-accelerator conductor supply consortia (SPARC, FCC, MagLab)."
+      }
     },
     {
       "id": "dt_zurich_instruments",
@@ -841,7 +1228,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.zhinst.com/",
-      "summary": "ETH Zurich spinout producing precision lock-in amplifiers and scalable microwave/arbitrary-waveform quantum control electronics used in qubit labs worldwide."
+      "summary": "ETH Zurich spinout producing precision lock-in amplifiers and scalable microwave/arbitrary-waveform quantum control electronics used in qubit labs worldwide.",
+      "stages": {
+        "highschool": "Explore lock-in amplification and how phase-sensitive detection pulls tiny physics signals out of noise.",
+        "undergrad": "Paid Swiss internships & semester projects (ETH Zurich / EPFL) in FPGA signal processing and RF electronics.",
+        "masters": "Master's thesis collaborations in real-time quantum feedback, microwave pulse synthesis, and impedance spectroscopy.",
+        "phd": "Application Scientist & R&D Engineer roles for PhDs in superconducting qubits, spin qubits, and scanning probe microscopy.",
+        "postdoc": "Quantum Systems Architect & Product Scientist roles transitioning from experimental quantum-computing postdocs.",
+        "assoc_prof": "Joint ETH Quantum Center / EU OpenSuperQ / QuTech collaborations developing scalable qubit control racks.",
+        "prof": "Long-term instrumentation co-development for multi-hundred-qubit academic testbeds and precision metrology labs."
+      }
     },
     {
       "id": "dt_flatiron",
@@ -860,7 +1256,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.simonsfoundation.org/flatiron/",
-      "summary": "Privately funded computational research powerhouse housing the Centers for Computational Astrophysics (CCA), Quantum Physics (CCQ), Biology (CCB), and Mathematics (CCM)."
+      "summary": "Privately funded computational research powerhouse housing the Centers for Computational Astrophysics (CCA), Quantum Physics (CCQ), Biology (CCB), and Mathematics (CCM).",
+      "stages": {
+        "highschool": "Watch Flatiron Institute & Simons Foundation public lectures and explore open astrophysics/quantum visualizations.",
+        "undergrad": "Paid 10-week Summer Undergraduate Research Program (SURP) in NYC across CCA (Astro), CCQ (Quantum), and CCM.",
+        "masters": "Pre-Doctoral Program (5-month paid visiting fellowships) for graduate students in computational astrophysics & quantum physics.",
+        "phd": "Flatiron Research Fellowships & Pre-Doctoral placements pairing PhD candidates with NYC computational physics groups.",
+        "postdoc": "Prestigious 3-year Flatiron Research Fellowships (FRF) with generous salary, computing clusters, and full independence.",
+        "assoc_prof": "Associate Research Scientist appointments and joint university-Flatiron faculty positions in NYC.",
+        "prof": "Senior Research Scientist chairs, Center Directorships, and Simons Collaborations international leadership."
+      }
     },
     {
       "id": "dt_santa_fe",
@@ -879,7 +1284,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.santafe.edu/",
-      "summary": "Co-founded by Nobel laureates Murray Gell-Mann and Philip Anderson as the world's premier independent institute for complex systems, statistical physics, and nonlinear dynamics."
+      "summary": "Co-founded by Nobel laureates Murray Gell-Mann and Philip Anderson as the world's premier independent institute for complex systems, statistical physics, and nonlinear dynamics.",
+      "stages": {
+        "highschool": "Take free Complexity Explorer online courses on nonlinear dynamics, fractals, chaos, and statistical physics.",
+        "undergrad": "Paid 10-week SFI Undergraduate Complexity Research (UCR) summer fellowship in Santa Fe, New Mexico.",
+        "masters": "Complex Systems Summer School (CSSS) intensive 4-week residential program for graduate students worldwide.",
+        "phd": "Graduate Workshop in Computational Social Science / Complex Systems & visiting PhD research stays.",
+        "postdoc": "Prestigious 3-year SFI Complexity Postdoctoral Fellowships pursuing self-directed interdisciplinary physics research.",
+        "assoc_prof": "SFI External Faculty appointments and working-group leadership in statistical mechanics & active matter.",
+        "prof": "Resident Professor chairs, Science Board membership, and Sabbatical Visiting Fellowships in Santa Fe."
+      }
     },
     {
       "id": "dt_aspen_physics",
@@ -898,7 +1312,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://aspenphys.org/",
-      "summary": "Independent Rocky Mountain physicist-run retreat hosting over 1,000 visiting researchers annually—site of the 1984 First Superstring Revolution and countless breakthroughs."
+      "summary": "Independent Rocky Mountain physicist-run retreat hosting over 1,000 visiting researchers annually—site of the 1984 First Superstring Revolution and countless breakthroughs.",
+      "stages": {
+        "highschool": "Watch Aspen Center for Physics Heinz R. Pagels public physics lectures and student science outreach events.",
+        "undergrad": "Explore Aspen Physics public lecture archives and prepare for future doctoral participation in Aspen workshops.",
+        "masters": "Apply with thesis advisors to winter conferences in condensed matter, cosmology, and particle phenomenology.",
+        "phd": "Attend Aspen Winter Conferences (with student travel support) presenting early doctoral work to global leaders.",
+        "postdoc": "Highly selective Summer Program research stays (2–4 weeks) fostering spontaneous cross-subfield collaborations.",
+        "assoc_prof": "Co-organize Summer Workshops and Winter Conferences shaping emerging frontiers in string theory, QIS, and astro.",
+        "prof": "General Membership, Board of Trustees leadership, and multi-week collaborative summer research residencies."
+      }
     },
     {
       "id": "dt_kavli_ipmu",
@@ -917,7 +1340,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.ipmu.jp/",
-      "summary": "International English-speaking WPI research institute uniting mathematicians, astronomers, and particle physicists to investigate dark matter, dark energy, neutrinos, and string theory."
+      "summary": "International English-speaking WPI research institute uniting mathematicians, astronomers, and particle physicists to investigate dark matter, dark energy, neutrinos, and string theory.",
+      "stages": {
+        "highschool": "Attend Kavli IPMU public science cafés and online lectures on dark matter, neutrinos, and the origin of the universe.",
+        "undergrad": "University of Tokyo international summer internships & English-taught graduate school preparation at Kashiwa.",
+        "masters": "English-taught MSc through UTokyo Physics/Astronomy with Kavli IPMU advisors and MEXT scholarship options.",
+        "phd": "Funded PhD tracks in dark energy (PFS/HSC), neutrino physics (Hyper-K), string theory, and mathematical physics.",
+        "postdoc": "3-year Kavli IPMU Postdoctoral Fellowships (English working environment, generous travel & relocation support).",
+        "assoc_prof": "Project Assistant/Associate Professor appointments and long-term visiting scholar programs in Kashiwa.",
+        "prof": "Principal Investigator chairs, Kavli Satellite Director roles, and international collaboration leadership (LiteBIRD, Subaru PFS)."
+      }
     },
     {
       "id": "dt_oist",
@@ -936,7 +1368,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.oist.jp/",
-      "summary": "Interdisciplinary, department-free international graduate university overlooking the East China Sea conducting frontier research in quantum gravity, ultracold atoms, fluid turbulence, and quantum materials."
+      "summary": "Interdisciplinary, department-free international graduate university overlooking the East China Sea conducting frontier research in quantum gravity, ultracold atoms, fluid turbulence, and quantum materials.",
+      "stages": {
+        "highschool": "Explore OIST public science festivals and virtual lab tours showcasing Okinawa's interdisciplinary physics campus.",
+        "undergrad": "Paid OIST Research Internship (2–6 months, flights + housing + stipend) open to undergrads worldwide.",
+        "masters": "OIST admits directly into its 5-year fully funded English PhD (no separate terminal Master's needed).",
+        "phd": "5-year fully funded international PhD with lab rotations across quantum gravity, ultracold atoms, and fluid turbulence.",
+        "postdoc": "OIST Postdoctoral Scholar appointments & JSPS International Fellowships in English-speaking research units.",
+        "assoc_prof": "Tenure-track Assistant & Associate Professor faculty searches with generous internal baseline lab funding.",
+        "prof": "Full Professor unit leadership, Visiting Scholar residencies (TSVP), and international workshop hosting in Okinawa."
+      }
     },
     {
       "id": "dt_nordita",
@@ -955,7 +1396,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://nordita.org/",
-      "summary": "Founded by Niels Bohr and Torsten Gustafson for the five Nordic nations, hosting collaborative programs in astrophysics, condensed matter, quantum gravity, and statistical physics."
+      "summary": "Founded by Niels Bohr and Torsten Gustafson for the five Nordic nations, hosting collaborative programs in astrophysics, condensed matter, quantum gravity, and statistical physics.",
+      "stages": {
+        "highschool": "Watch Nordita public lectures on black holes, quantum gravity, and astrobiology hosted in Stockholm.",
+        "undergrad": "Nordic Summer School in Physics and undergraduate thesis projects via KTH and Stockholm University.",
+        "masters": "Nordita Master's research projects and Nordic graduate summer schools in theoretical physics and astrophysics.",
+        "phd": "Visiting PhD Fellow program (1–3 months funded stays) and Nordita Doctoral Winter/Summer Schools.",
+        "postdoc": "3-year Nordita Postdoctoral Fellowships in astrophysics, condensed matter, quantum gravity, and statistical physics.",
+        "assoc_prof": "Co-organize month-long Nordita Scientific Programs bringing 50+ international theorists to AlbaNova.",
+        "prof": "Nordita Professor chairs, Board representation across the five Nordic nations, and Visiting Professor sabbaticals."
+      }
     },
     {
       "id": "dt_max_planck",
@@ -974,7 +1424,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.mpg.de/en",
-      "summary": "Germany's non-university fundamental research network of 84 independent institutes (including MPQ, AEI, IPP, MPA, MPE, MPI-FKF, and MPI-PKS) with 31 Nobel laureates."
+      "summary": "Germany's non-university fundamental research network of 84 independent institutes (including MPQ, AEI, IPP, MPA, MPE, MPI-FKF, and MPI-PKS) with 31 Nobel laureates.",
+      "stages": {
+        "highschool": "Attend Max Planck Open Days, Schülerlabore hands-on physics labs, and Jugend forscht mentorships.",
+        "undergrad": "Paid summer research internships across 84 Max Planck Institutes (e.g., MPQ, AEI, IPP, MPA, MPE, MPI-FKF).",
+        "masters": "Master's thesis placements & International Max Planck Research Schools (IMPRS) fast-track graduate entry.",
+        "phd": "Salaried 3–4 year IMPRS PhD positions (TVöD E13, zero tuition, English working language) across all physics branches.",
+        "postdoc": "Max Planck Postdoctoral Fellowships & Humboldt Research Fellowships across Germany's premier fundamental institutes.",
+        "assoc_prof": "Max Planck Research Group Leader (MPRGL) 5-year independent W2-equivalent fellowships with dedicated lab budget.",
+        "prof": "Max Planck Director appointments (lifetime autonomous department funding) and External Scientific Member honors."
+      }
     },
     {
       "id": "dt_fraunhofer",
@@ -993,7 +1452,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.fraunhofer.de/en.html",
-      "summary": "Europe's largest applied research organization operating specialized physics institutes in laser technology (ILT), applied optics (IOF), solid-state quantum sensors (IAF), and solar energy (ISE)."
+      "summary": "Europe's largest applied research organization operating specialized physics institutes in laser technology (ILT), applied optics (IOF), solid-state quantum sensors (IAF), and solar energy (ISE).",
+      "stages": {
+        "highschool": "Join Fraunhofer Talent School STEM workshops and hands-on optics/laser demonstrations across Germany.",
+        "undergrad": "Paid Hilfswissenschaftler (HiWi) student-assistant roles and Praxissemester at Fraunhofer ILT, IOF, IAF, and ISE.",
+        "masters": "Paid Master's thesis placements (Masterarbeit) in quantum sensors, applied photonics, and photovoltaics.",
+        "phd": "Salaried industrial/applied PhD tracks co-supervised with partner technical universities (RWTH, Jena, Freiburg).",
+        "postdoc": "Group Leader & Project Manager R&D roles bridging fundamental physics with European industrial transfer.",
+        "assoc_prof": "Joint Fraunhofer-University W2/W3 professorships leading applied-physics departments.",
+        "prof": "Fraunhofer Institute Directorships (paired with university chairs) and European Horizon flagship leadership."
+      }
     },
     {
       "id": "dt_solvay",
@@ -1012,7 +1480,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.solvayinstitutes.be/",
-      "summary": "Founded by Ernest Solvay to convene the historic Solvay Conferences on Physics and Chemistry and conduct ongoing research in quantum gravity, holography, and non-equilibrium physics."
+      "summary": "Founded by Ernest Solvay to convene the historic Solvay Conferences on Physics and Chemistry and conduct ongoing research in quantum gravity, holography, and non-equilibrium physics.",
+      "stages": {
+        "highschool": "Explore the digitized historical archives of the iconic 1911 and 1927 Solvay Conferences on Physics.",
+        "undergrad": "Attend annual Solvay Public Lectures in Brussels featuring Nobel laureates and leading theoretical physicists.",
+        "masters": "ULB / VUB Brussels Master's research seminars connected directly to the International Solvay Institutes.",
+        "phd": "International Solvay Doctoral Schools in theoretical physics, holography, and non-equilibrium statistical mechanics.",
+        "postdoc": "Solvay Postdoctoral Fellowships in Brussels working on quantum gravity, string theory, and complex systems.",
+        "assoc_prof": "Invited participation in Solvay Workshops and Belgian FNRS / ERC collaborative theory networks.",
+        "prof": "Invitation to the triennial Solvay Conferences on Physics and International Solvay Chairs in Physics."
+      }
     },
     {
       "id": "dt_ggi",
@@ -1031,7 +1508,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.ggi.infn.it/",
-      "summary": "Europe's first dedicated workshop institute for theoretical fundamental interactions, situated on Arcetri hill steps away from Galileo's Villa Il Gioiello."
+      "summary": "Europe's first dedicated workshop institute for theoretical fundamental interactions, situated on Arcetri hill steps away from Galileo's Villa Il Gioiello.",
+      "stages": {
+        "highschool": "Learn about Galileo's historic Arcetri hill observatory and modern theoretical physics workshops in Florence.",
+        "undergrad": "Follow recorded GGI lectures on Quantum Field Theory, lattice QCD, and gravitational-wave theory.",
+        "masters": "Attend GGI PhD/Master's Training Weeks (LACES, Galileo Galilei School) in theoretical fundamental interactions.",
+        "phd": "Highly regarded GGI Doctoral Training Programs (3–6 week intensive lecture series with INFN lodging support).",
+        "postdoc": "Funded 1–3 month visiting stays during thematic GGI Workshops in HEP theory, cosmology, and quantum gravity.",
+        "assoc_prof": "Propose and co-organize 8–12 week international GGI Scientific Programs on Arcetri hill.",
+        "prof": "GGI Scientific Committee leadership and multi-month sabbatical residencies hosted by INFN and University of Florence."
+      }
     },
     {
       "id": "dt_spacex",
@@ -1050,7 +1536,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.spacex.com/",
-      "summary": "Pioneered propulsively landed reusable orbital rockets (Falcon 9 / Heavy), full-flow staged-combustion methalox propulsion (Raptor / Starship), and laser-interlinked LEO constellations."
+      "summary": "Pioneered propulsively landed reusable orbital rockets (Falcon 9 / Heavy), full-flow staged-combustion methalox propulsion (Raptor / Starship), and laser-interlinked LEO constellations.",
+      "stages": {
+        "highschool": "Study rocket propulsion thermodynamics, orbital mechanics, and guidance-navigation-control (GNC) fundamentals.",
+        "undergrad": "Paid seasonal internships in Hawthorne, Redmond, Starbase, and Cape Canaveral in propulsion, RF, and avionics.",
+        "masters": "MSc/MEng engineering roles in staged-combustion fluid dynamics, laser inter-satellite optics (Starlink), and GNC.",
+        "phd": "PhD Specialist tracks in hypersonic aerothermodynamics, computational fluid dynamics, RF phased arrays, and lasers.",
+        "postdoc": "Principal Physicist / Materials & Propulsion Scientist roles for fluid-mechanics, plasma, and photonics postdocs.",
+        "assoc_prof": "University rideshare launch opportunities (Transporter) for CubeSat physics & quantum-communication payloads.",
+        "prof": "Strategic NASA/ESA/university science-mission launch partnerships (Europa Clipper, Roman, orbital testbeds)."
+      }
     },
     {
       "id": "dt_rocket_lab",
@@ -1069,7 +1564,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.rocketlabusa.com/",
-      "summary": "Operates the carbon-composite Electron launch vehicle (from Mahia, New Zealand and Wallops) and manufactures interplanetary spacecraft buses including NASA's CAPSTONE and ESCAPADE Mars probes."
+      "summary": "Operates the carbon-composite Electron launch vehicle (from Mahia, New Zealand and Wallops) and manufactures interplanetary spacecraft buses including NASA's CAPSTONE and ESCAPADE Mars probes.",
+      "stages": {
+        "highschool": "Explore orbital mechanics, composite rocket structures, and small-satellite physics missions.",
+        "undergrad": "Paid summer internships in Long Beach, Auckland, and Littleton in GNC, propulsion, solar cells, and avionics.",
+        "masters": "Graduate engineering roles in Rutherford/Archimedes propulsion, reaction wheels, star trackers, and spacecraft buses.",
+        "phd": "PhD R&D roles in space-grade photovoltaic physics (SolAero), interplanetary trajectory optimization, and thermal design.",
+        "postdoc": "Senior Space Systems Physicist roles for aerospace, plasma-propulsion, and space-instrumentation postdocs.",
+        "assoc_prof": "Dedicated university small-sat launch partnerships and planetary-science payload integration (e.g., ESCAPADE).",
+        "prof": "Co-PI leadership on rapid-turnaround interplanetary physics missions (Venus, Mars, lunar orbiters)."
+      }
     },
     {
       "id": "dt_spire",
@@ -1088,7 +1592,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://spire.com/",
-      "summary": "Operates a fleet of over 100 nanosatellites measuring GPS radio occultation atmospheric temperature/pressure profiles and ionospheric electron density for numerical weather and space-weather physics."
+      "summary": "Operates a fleet of over 100 nanosatellites measuring GPS radio occultation atmospheric temperature/pressure profiles and ionospheric electron density for numerical weather and space-weather physics.",
+      "stages": {
+        "highschool": "Learn how GPS radio occultation bends radio waves through Earth's atmosphere to measure temperature and weather.",
+        "undergrad": "Paid internships in Vienna (VA), Glasgow, and Luxembourg in satellite RF physics, data science, and orbital ops.",
+        "masters": "MSc roles in GNSS-RO atmospheric retrieval algorithms, ionospheric space-weather modeling, and nanosatellite RF.",
+        "phd": "PhD Scientist tracks in numerical weather prediction data assimilation, ionospheric plasma physics, and RF sensing.",
+        "postdoc": "Senior Atmospheric & Space-Weather Physicist roles for geophysics, meteorology, and remote-sensing postdocs.",
+        "assoc_prof": "NOAA / ESA / NASA commercial small-sat data-buy research grants using Spire GNSS-RO atmospheric datasets.",
+        "prof": "International meteorological & space-weather modeling consortia integrating commercial LEO constellation telemetry."
+      }
     },
     {
       "id": "dt_planet_labs",
@@ -1107,7 +1620,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.planet.com/",
-      "summary": "Founded by former NASA physicists to operate Earth's largest optical and hyperspectral remote-sensing satellite constellation (Dove, SkySat, Tanager) imaging the entire landmass daily."
+      "summary": "Founded by former NASA physicists to operate Earth's largest optical and hyperspectral remote-sensing satellite constellation (Dove, SkySat, Tanager) imaging the entire landmass daily.",
+      "stages": {
+        "highschool": "Explore daily satellite Earth-observation imagery through Planet's Education & Research outreach resources.",
+        "undergrad": "Summer internships in San Francisco and Berlin in optical calibration, hyperspectral imaging, and orbital dynamics.",
+        "masters": "MSc/MEng roles in radiometric calibration, spaceborne optical telescopes, and Earth-system spectral physics.",
+        "phd": "PhD Research Scientist tracks in hyperspectral methane/CO₂ spectroscopy (Tanager), radiative transfer, and optics.",
+        "postdoc": "Staff Remote-Sensing & Optical Physicist roles for astrophysics-imaging and Earth-observation postdocs.",
+        "assoc_prof": "Planet Education & Research Program free academic data access for climate, cryosphere, and geophysical research.",
+        "prof": "Co-PI partnerships on NASA/Carbon Mapper hyperspectral missions and global geophysical monitoring consortia."
+      }
     },
     {
       "id": "dt_bae_ball_space",
@@ -1126,7 +1648,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.baesystems.com/en-us/our-company/inc-businesses/space-and-mission-systems",
-      "summary": "Built the precision optical mirror system for the James Webb Space Telescope, Hubble corrective optics (COSTAR), Kepler, Spitzer, and the Nancy Grace Roman Wide Field Instrument."
+      "summary": "Built the precision optical mirror system for the James Webb Space Telescope, Hubble corrective optics (COSTAR), Kepler, Spitzer, and the Nancy Grace Roman Wide Field Instrument.",
+      "stages": {
+        "highschool": "Discover how cryogenic beryllium mirrors and precision wavefront sensing enabled JWST and Hubble COSTAR.",
+        "undergrad": "Paid summer internships in Boulder and Westminster, CO in optical metrology, cryogenics, and aerospace physics.",
+        "masters": "MSc/MEng engineering roles in space-telescope optics, focal-plane detectors, and cryogenic thermal control.",
+        "phd": "PhD Principal Physicist tracks in coronagraphic exoplanet optics (Roman/HWO), lidar, and cryogenic mirror testing.",
+        "postdoc": "Senior Space Optics & Instrumentation Scientist roles for experimental astrophysics and optics postdocs.",
+        "assoc_prof": "Joint NASA / university instrument teams co-developing Habitable Worlds Observatory and Earth-science payloads.",
+        "prof": "Flagship space-observatory prime-contractor partnerships (JWST, Roman, HWO) and national decadal-survey studies."
+      }
     },
     {
       "id": "dt_ohb",
@@ -1145,7 +1676,16 @@
       "pinned": false,
       "sourceApi": "Curated Deep-Tech",
       "url": "https://www.ohb.de/en/",
-      "summary": "European space prime contractor leading the ESA PLATO exoplanet telescope, Hera asteroid mission, Galileo atomic-clock navigation satellites, and LISA optical-bench subsystems."
+      "summary": "European space prime contractor leading the ESA PLATO exoplanet telescope, Hera asteroid mission, Galileo atomic-clock navigation satellites, and LISA optical-bench subsystems.",
+      "stages": {
+        "highschool": "Explore European space physics missions including ESA PLATO exoplanet telescopes and LISA gravitational-wave optics.",
+        "undergrad": "Paid German Praktika & Werkstudent roles in Bremen and Oberpfaffenhofen in space optics and satellite systems.",
+        "masters": "Master's thesis placements (Masterarbeit) in optical-bench metrology, atomic-clock navigation (Galileo), and GNC.",
+        "phd": "Industrial PhD collaborations with DLR and German universities on LISA space-interferometry and planetary probes.",
+        "postdoc": "Space Systems & Optical Physicist roles for gravitational-wave, exoplanet-instrumentation, and aerospace postdocs.",
+        "assoc_prof": "Joint ESA / Horizon Europe / university instrument consortia for PLATO, Hera, Ariel, and LISA.",
+        "prof": "Prime-contractor scientific leadership on ESA Cosmic Vision and Voyage 2050 flagship physics missions."
+      }
     }
   ]
 }

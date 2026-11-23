@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-23T20:46:10.381Z",
+  "generatedAt": "2026-11-23T22:21:01.497Z",
   "mode": "standard",
-  "durationSec": 135.5,
+  "durationSec": 139.8,
   "summary": {
     "totalDatasets": 6,
     "presentDatasets": 6,
     "missingDatasets": 0,
-    "totalEntities": 5764,
-    "totalCountries": 167,
+    "totalEntities": 5300,
+    "totalCountries": 165,
     "linksChecked": 715,
-    "linksOk": 580,
-    "linksBotProtected": 52,
-    "linksBroken": 83,
-    "passRatePct": 88.39,
-    "strictOkRatePct": 81.12,
+    "linksOk": 582,
+    "linksBotProtected": 53,
+    "linksBroken": 80,
+    "passRatePct": 88.81,
+    "strictOkRatePct": 81.4,
     "schemaErrorsCount": 0
   },
   "datasets": {
@@ -23,9 +23,9 @@
       "schemaErrors": 0,
       "linksScheduled": 151,
       "linksChecked": 151,
-      "linksOk": 130,
+      "linksOk": 131,
       "linksBotProtected": 16,
-      "linksBroken": 5,
+      "linksBroken": 4,
       "sampling": "100%"
     },
     "history_timeline.json": {
@@ -34,9 +34,9 @@
       "schemaErrors": 0,
       "linksScheduled": 130,
       "linksChecked": 130,
-      "linksOk": 91,
+      "linksOk": 88,
       "linksBotProtected": 7,
-      "linksBroken": 32,
+      "linksBroken": 35,
       "sampling": "100%"
     },
     "space_frontier.json": {
@@ -74,13 +74,13 @@
     },
     "physics_hubs.json": {
       "status": "ok",
-      "entities": 5525,
+      "entities": 5061,
       "schemaErrors": 0,
       "linksScheduled": 150,
       "linksChecked": 150,
-      "linksOk": 110,
-      "linksBotProtected": 12,
-      "linksBroken": 28,
+      "linksOk": 114,
+      "linksBotProtected": 13,
+      "linksBroken": 23,
       "sampling": "stratified-150"
     }
   },
@@ -88,11 +88,11 @@
   "brokenLinks": [
     {
       "file": "curated_flagships.json",
-      "id": "parissaclay",
-      "name": "Paris-Saclay Physics",
-      "url": "https://www.universite-paris-saclay.fr/en/research",
-      "status": 404,
-      "reason": "HTTP 404"
+      "id": "utokyo",
+      "name": "University of Tokyo Physics",
+      "url": "https://www.u-tokyo.ac.jp/en/prospective-students/mext_scholarship.html",
+      "status": 0,
+      "reason": "ECONNRESET: read ECONNRESET"
     },
     {
       "file": "curated_flagships.json",
@@ -101,14 +101,6 @@
       "url": "https://gwcenter.icrr.u-tokyo.ac.jp/en/",
       "status": 0,
       "reason": "EHOSTUNREACH: connect EHOSTUNREACH 157.82.231.108:443"
-    },
-    {
-      "file": "curated_flagships.json",
-      "id": "kaist",
-      "name": "KAIST Physics",
-      "url": "https://www.ibs.re.kr/eng/",
-      "status": 404,
-      "reason": "HTTP 404"
     },
     {
       "file": "curated_flagships.json",
@@ -128,17 +120,33 @@
     },
     {
       "file": "history_timeline.json",
-      "id": "ulugh_beg_1420",
-      "name": "Ulugh Beg Observatory & Zij-i-Sultani Star Catalogue",
-      "url": "https://en.wikipedia.org/wiki/Ulugh_Beg_Observatory",
+      "id": "shen_kuo_1088",
+      "name": "Dream Pool Essays: Magnetic Declination & Focal Optics",
+      "url": "https://en.wikipedia.org/wiki/Shen_Kuo",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "history_timeline.json",
-      "id": "kepler_1609",
-      "name": "Astronomia Nova & Laws of Planetary Motion",
-      "url": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion",
+      "id": "maragheh_1259",
+      "name": "Maragheh Observatory & the Tusi Couple",
+      "url": "https://en.wikipedia.org/wiki/Maragheh_observatory",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "boltzmann_1877",
+      "name": "Statistical Entropy & Kinetic Theory of Matter",
+      "url": "https://en.wikipedia.org/wiki/Ludwig_Boltzmann",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "curie_1898",
+      "name": "Discovery of Polonium, Radium & Nuclear Radioactivity",
+      "url": "https://en.wikipedia.org/wiki/Marie_Curie",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -147,14 +155,6 @@
       "id": "noether_1918",
       "name": "Noether's Theorem: Symmetries & Conservation Laws",
       "url": "https://en.wikipedia.org/wiki/Noether%27s_theorem",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "history_timeline.json",
-      "id": "solvay_1927",
-      "name": "Fifth Solvay Congress: Electrons and Photons",
-      "url": "https://en.wikipedia.org/wiki/Solvay_Conference",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -211,6 +211,22 @@
       "id": "bell_theorem_1964",
       "name": "Bell's Theorem & Experimental Test of Quantum Nonlocality",
       "url": "https://en.wikipedia.org/wiki/Bell%27s_theorem",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "standard_model_1964_1974",
+      "name": "Quarks, Electroweak Unification & the Standard Model",
+      "url": "https://en.wikipedia.org/wiki/Standard_Model",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "wz_bosons_1983",
+      "name": "Discovery of the W and Z Bosons at CERN",
+      "url": "https://en.wikipedia.org/wiki/W_and_Z_bosons",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -400,14 +416,6 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "fermi_glast",
-      "name": "Fermi Gamma-ray Space Telescope",
-      "url": "https://en.wikipedia.org/wiki/Fermi_Gamma-ray_Space_Telescope",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "space_frontier.json",
       "id": "ixpe",
       "name": "Imaging X-ray Polarimetry Explorer (IXPE)",
       "url": "https://en.wikipedia.org/wiki/Imaging_X-ray_Polarimetry_Explorer",
@@ -440,17 +448,17 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "chandrayaan3",
-      "name": "Chandrayaan-3 (Vikram & Pragyan)",
-      "url": "https://en.wikipedia.org/wiki/Chandrayaan-3",
+      "id": "change4",
+      "name": "Chang'e-4 & Yutu-2",
+      "url": "https://en.wikipedia.org/wiki/Chang%27e_4",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "space_frontier.json",
-      "id": "change4",
-      "name": "Chang'e-4 & Yutu-2",
-      "url": "https://en.wikipedia.org/wiki/Chang%27e_4",
+      "id": "artemis_gateway",
+      "name": "Artemis Program & Lunar Gateway",
+      "url": "https://en.wikipedia.org/wiki/Lunar_Gateway",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -472,14 +480,6 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "gaia",
-      "name": "Gaia Astrometry Observatory",
-      "url": "https://en.wikipedia.org/wiki/Gaia_(spacecraft)",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "space_frontier.json",
       "id": "jwst",
       "name": "James Webb Space Telescope (JWST)",
       "url": "https://en.wikipedia.org/wiki/James_Webb_Space_Telescope",
@@ -488,9 +488,9 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "roman",
-      "name": "Nancy Grace Roman Space Telescope",
-      "url": "https://en.wikipedia.org/wiki/Nancy_Grace_Roman_Space_Telescope",
+      "id": "euclid",
+      "name": "Euclid Dark Universe Telescope",
+      "url": "https://en.wikipedia.org/wiki/Euclid_(spacecraft)",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -504,17 +504,33 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "europa_clipper",
-      "name": "Europa Clipper",
-      "url": "https://en.wikipedia.org/wiki/Europa_Clipper",
+      "id": "parker_solar_probe",
+      "name": "Parker Solar Probe",
+      "url": "https://en.wikipedia.org/wiki/Parker_Solar_Probe",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "space_frontier.json",
-      "id": "dragonfly",
-      "name": "Dragonfly Titan Rotorcraft",
-      "url": "https://en.wikipedia.org/wiki/Dragonfly_(Titan_space_probe)",
+      "id": "osiris_rex",
+      "name": "OSIRIS-REx / OSIRIS-APEX",
+      "url": "https://en.wikipedia.org/wiki/OSIRIS-REx",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "curiosity",
+      "name": "Mars Science Laboratory (Curiosity)",
+      "url": "https://en.wikipedia.org/wiki/Curiosity_(rover)",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "voyager2",
+      "name": "Voyager 2",
+      "url": "https://en.wikipedia.org/wiki/Voyager_2",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -528,227 +544,187 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I3123046734",
-      "name": "Lorestan University",
-      "url": "https://www.lu.ac.ir",
+      "id": "oa-I197425175",
+      "name": "Shonan Institute of Technology",
+      "url": "http://www.shonan-it.ac.jp/contents/",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I165998391",
+      "name": "Indian Association for the Cultivation of Science",
+      "url": "http://www.iacs.res.in",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I38452253",
-      "name": "Chung Chou University of Science and Technology",
-      "url": "http://en.ccut.edu.tw",
-      "status": 0,
-      "reason": "EAI_AGAIN: getaddrinfo EAI_AGAIN en.ccut.edu.tw"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I32246829",
-      "name": "Guangdong University of Education",
-      "url": "http://www.gdei.edu.cn",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I27367753",
-      "name": "El Shorouk Academy",
-      "url": "http://www.sha.edu.eg/DefaultEnglish.aspx",
+      "id": "oa-I76777374",
+      "name": "Central University of Rajasthan",
+      "url": "https://www.curaj.ac.in",
       "status": 0,
       "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I41147446",
-      "name": "Anshan Normal University",
-      "url": "http://www.asnc.edu.cn",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-05hhc1155",
-      "name": "Bronberg Observatory",
-      "url": "http://www.mstring.co.za/bronbergobservatory/",
-      "status": 404,
-      "reason": "HTTP 404"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-01fdnyw87",
-      "name": "M. Nodia Institute of Geophysics",
-      "url": "http://www.ig-geophysics.ge/index_eng.html",
-      "status": 404,
-      "reason": "HTTP 404"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210158687",
-      "name": "Instituto de Estructura de la Materia",
-      "url": "https://www.iem.csic.es",
-      "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-04wnheq77",
-      "name": "Institute for Physics",
-      "url": "http://www.iphys.org",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.iphys.org"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-01rg40y89",
-      "name": "Institute of Condensed Matter Chemistry and Technologies for Energy",
-      "url": "http://www.icmate.cnr.it/en/",
-      "status": 404,
-      "reason": "HTTP 404"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I1337719021",
-      "name": "Australian Research Council",
-      "url": "https://www.arc.gov.au",
-      "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4387154762",
-      "name": "Institut de Physique Nucléaire d’Orsay",
-      "url": "http://ipnwww.in2p3.fr",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND ipnwww.in2p3.fr"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I70284922",
-      "name": "MTS Systems (United States)",
-      "url": "http://www.mts.com/en/",
-      "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210114561",
-      "name": "Mitsui Mining & Smelting (Japan)",
-      "url": "https://www.mitsui-kinzoku.co.jp/en/",
-      "status": 404,
-      "reason": "HTTP 404"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210100855",
-      "name": "Large Synoptic Survey Telescope Corporation",
-      "url": "https://www.lsstcorporation.org",
-      "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-029yt9178",
-      "name": "Physics of Life",
-      "url": "https://physics-of-life.tu-dresden.de",
+      "id": "oa-I148751991",
+      "name": "Sogang University",
+      "url": "https://www.sogang.ac.kr",
       "status": 0,
       "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-00ern2s92",
-      "name": "Département de Physique Nucléaire",
-      "url": "http://irfu.cea.fr/sphn/index.php",
+      "id": "oa-I101072179",
+      "name": "Tomsk State Pedagogical University",
+      "url": "http://www.tspu.edu.ru",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.tspu.edu.ru"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I265627732",
+      "name": "National Institute of Technology Manipur",
+      "url": "http://www.nitmanipur.ac.in",
       "status": 404,
       "reason": "HTTP 404"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-00fzxtk71",
-      "name": "Joint Laboratory for Extreme Conditions Matter Properties",
-      "url": "http://www.jd.swust.edu.cn",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
+      "id": "oa-I4210109007",
+      "name": "Laboratoire de Physique Subatomique et des Technologies Associées",
+      "url": "http://www-subatech.in2p3.fr/fr/laboratoire/nos-activites/presentation",
+      "status": 404,
+      "reason": "HTTP 404"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-01xwshp02",
-      "name": "Institute for Magnetospheric Physics",
-      "url": "http://www.i-mp.org",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.i-mp.org"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-00aac7f28",
-      "name": "Ion Physics (United States)",
-      "url": "https://ionphysics.com",
-      "status": 0,
-      "reason": "ERR_SSL_TLSV1_UNRECOGNIZED_NAME: C06C179D5E7F0000:error:0A000458:SSL routines:ssl3_read_bytes:tlsv1 unrecognized name:../deps/openssl/openssl/ssl/record/"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-04e25k642",
-      "name": "Metal Plasma (Brazil)",
-      "url": "http://www.metalplasma.com.br",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.metalplasma.com.br"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "ror-01r6jny18",
-      "name": "Intrepid Geophysics (Australia)",
-      "url": "https://www.intrepid-geophysics.com",
+      "id": "oa-I4210086837",
+      "name": "iThemba Laboratory",
+      "url": "http://tlabs.ac.za",
       "status": 0,
       "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-01p09d785",
-      "name": "Arnold Regge Center",
-      "url": "https://www.arnoldreggecenter.com",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.arnoldreggecenter.com"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I96823368",
-      "name": "German University in Cairo",
-      "url": "http://www.guc.edu.eg",
+      "id": "oa-I40752897",
+      "name": "National Institute for Nanotechnology",
+      "url": "http://www.nint-innt.ca/institute/",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210110082",
-      "name": "École Nationale Polytechnique d'Oran",
-      "url": "https://www.enp-oran.dz",
+      "id": "oa-I4387153050",
+      "name": "Rowland Institute at Harvard",
+      "url": "http://www2.rowland.harvard.edu",
       "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.enp-oran.dz"
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www2.rowland.harvard.edu"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210106946",
-      "name": "Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique",
-      "url": "http://www.cerfacs.fr",
+      "id": "oa-I1340206300",
+      "name": "Defence Research and Development Organisation",
+      "url": "https://www.drdo.gov.in",
+      "status": 0,
+      "reason": "ECONNREFUSED: connect ECONNREFUSED 164.100.77.87:443"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210095385",
+      "name": "Instituto de Física Fundamental",
+      "url": "https://www.iff.csic.es",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210113364",
+      "name": "John von Neumann Institute for Computing",
+      "url": "http://www.john-von-neumann-institut.de/nic/EN/Home/home_node.html",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210090246",
+      "name": "Synchrotron Light Research Institute",
+      "url": "https://www.slri.or.th/en/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I192454743",
+      "name": "Sandia National Laboratories California",
+      "url": "http://www.sandia.gov/locations/livermore_california.html",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I2800863004",
+      "name": "Culham Centre for Fusion Energy",
+      "url": "http://www.ccfe.ac.uk",
       "status": 0,
       "reason": "ECONNRESET: read ECONNRESET"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210089367",
-      "name": "Valongo Observatory",
-      "url": "https://ov.ufrj.br/en/home-2/",
+      "id": "oa-I8901234",
+      "name": "Foundation for Research and Technology Hellas",
+      "url": "http://www.forth.gr",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210110501",
+      "name": "Institute of Basic Biological Problems",
+      "url": "http://www.ibbp.psn.ru",
+      "status": 503,
+      "reason": "HTTP 503"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-03r547v08",
+      "name": "COMPASS – Tokamak for Thermonuclear Fusion Research",
+      "url": "https://www.ipp.cas.cz/vedecka_struktura_ufp/tokamak/tokamak_compass/",
       "status": 404,
       "reason": "HTTP 404"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210111036",
-      "name": "Phenikaa (Vietnam)",
-      "url": "http://phenikaa.com/en",
+      "id": "oa-I4210127379",
+      "name": "Asahi Glass (Japan)",
+      "url": "http://www.agc.com/english",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210165043",
+      "name": "ABB (Norway)",
+      "url": "http://new.abb.com/no",
       "status": 0,
-      "reason": "ERR_TLS_CERT_ALTNAME_INVALID: Hostname/IP does not match certificate's altnames: Host: phenikaa.com. is not in the cert's altnames: DNS:www.phenikaa.c"
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210098942",
+      "name": "Milli Savunma Üniversitesi",
+      "url": "https://www.msu.edu.tr",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I76806421",
+      "name": "SELEX Sistemi Integrati",
+      "url": "http://www.selex-es.com",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     }
   ]
 }

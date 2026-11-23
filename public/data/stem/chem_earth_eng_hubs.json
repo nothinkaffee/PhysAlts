@@ -1,0 +1,1611 @@
+{
+  "meta": {
+    "name": "PhysAlts STEM Atlas — Chemistry, Materials, Earth/Climate & Engineering Hubs",
+    "version": "1.0",
+    "updatedAt": "2026-11-23",
+    "disciplines": ["chem_materials", "earth_climate", "engineering"],
+    "description": "42 verified global flagship laboratories, universities, and industrial research centers across chemistry & materials science (11), earth/ocean/climate sciences (11), and semiconductors, robotics & aerospace engineering (20)."
+  },
+  "hubs": [
+    {
+      "id": "fritz_haber",
+      "name": "Fritz Haber Institute of the Max Planck Society",
+      "city": "Berlin, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 52.4486,
+      "lng": 13.2817,
+      "zoom": 16.3,
+      "foundedYear": 1911,
+      "status": "active",
+      "url": "https://www.fhi.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Fritz_Haber_Institute_of_the_Max_Planck_Society",
+      "wikiSlug": "Fritz_Haber_Institute_of_the_Max_Planck_Society",
+      "summary": "Historic physical chemistry institute in Berlin-Dahlem leading heterogeneous catalysis, ultrafast surface physics, ab-initio electronic structure theory (FHI-aims), and cold-molecule spectroscopy.",
+      "nobel": "Nobel laureates include Gerhard Ertl (2007 Chemistry, surface catalysis), Ernst Ruska (1986 Physics, electron microscope), Max von Laue, and Fritz Haber.",
+      "stages": {
+        "highschool": "Explore Berlin-Dahlem's historic chemistry trail and Long Night of the Sciences open labs.",
+        "undergrad": "Student research assistantships in surface science, electrocatalysis, and computational chemistry.",
+        "masters": "MSc thesis placements affiliated with FU Berlin, HU Berlin, and TU Berlin.",
+        "phd": "IMPRS for Elementary Processes in Physical Chemistry fully funded doctoral fellowships.",
+        "postdoc": "Max Planck and Alexander von Humboldt Postdoctoral Fellowships in green catalysis and ultrafast lasers.",
+        "assoc_prof": "Independent Research Group Leader awards advancing CO2-to-fuel electrochemistry.",
+        "prof": "Max Planck Director chairs uniting physical chemistry with FAIRMAT open materials data."
+      },
+      "next": ["mpi_kofo", "mpi_polymer", "basf_rd", "desy"],
+      "rabbitLinks": [
+        { "id": "desy", "reason": "Operates ultrafast X-ray spectroscopy experiments at DESY's PETRA III and European XFEL to film chemical reactions live." },
+        { "id": "basf_rd", "reason": "Surface catalysis discoveries by Gerhard Ertl solved the atomic mechanism of the industrial Haber-Bosch ammonia process." }
+      ],
+      "projects": [
+        { "name": "NOMAD / FAIRMAT Open Materials Data & FHI-aims", "status": "ongoing", "url": "https://nomad-lab.eu/" }
+      ]
+    },
+    {
+      "id": "mpi_kofo",
+      "name": "Max-Planck-Institut für Kohlenforschung",
+      "city": "Mülheim an der Ruhr, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 51.4176,
+      "lng": 6.8856,
+      "zoom": 16.3,
+      "foundedYear": 1912,
+      "status": "active",
+      "url": "https://www.kofo.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Coal_Research",
+      "wikiSlug": "Max_Planck_Institute_for_Coal_Research",
+      "summary": "Despite its historic 1912 name ('Coal Research'), today one of the world's premier pure catalysis institutes—birthplace of Fischer-Tropsch chemistry, Ziegler-Natta polymerization, and Nobel-winning asymmetric organocatalysis.",
+      "nobel": "Karl Ziegler (1963 Chemistry Nobel, polyethylene catalysis) and Benjamin List (2021 Chemistry Nobel, asymmetric organocatalysis).",
+      "stages": {
+        "highschool": "Learn how tiny metal-free organic catalysts replace toxic heavy metals in drug synthesis.",
+        "undergrad": "Summer research placements in organic synthesis, homogeneous catalysis, and ORCA quantum chemistry.",
+        "masters": "MSc theses with Ruhr University Bochum, University of Duisburg-Essen, and RWTH Aachen.",
+        "phd": "IMPRS for Sustainable Catalysis (SusCat) fully funded PhD fellowships.",
+        "postdoc": "Postdoctoral fellowships in organocatalysis, mechanochemistry, and quantum chemistry (ORCA).",
+        "assoc_prof": "Independent Group Leaders developing sustainable catalytic pathways for green chemistry.",
+        "prof": "Max Planck Directors advancing metal-free catalysis and zero-carbon synthetic chemistry."
+      },
+      "next": ["fritz_haber", "meta_fair", "scripps_research", "basf_rd"],
+      "rabbitLinks": [
+        { "id": "meta_fair", "reason": "Combines quantum-chemical catalysis benchmarks with Meta FAIR's Open Catalyst graph neural networks." },
+        { "id": "scripps_research", "reason": "Shared mission in elegant, green molecular synthesis alongside click chemistry." }
+      ],
+      "projects": [
+        { "name": "Asymmetric Organocatalysis & ORCA Quantum Chemistry Suite", "status": "ongoing", "url": "https://www.kofo.mpg.de/en/research" }
+      ]
+    },
+    {
+      "id": "mpi_polymer",
+      "name": "Max Planck Institute for Polymer Research",
+      "city": "Mainz, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": false,
+      "lat": 49.9880,
+      "lng": 8.2310,
+      "zoom": 16.2,
+      "foundedYear": 1983,
+      "status": "active",
+      "url": "https://www.mpip-mainz.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Polymer_Research",
+      "wikiSlug": "Max_Planck_Institute_for_Polymer_Research",
+      "summary": "Global center for soft-matter physics and synthetic macromolecules—pioneering bottom-up graphene nanoribbons, organic electronics, multiscale molecular simulations, and bio-inspired smart polymers.",
+      "nobel": "World leader in molecularly precise nanographenes, organic photovoltaics, and coarse-grained polymer physics.",
+      "stages": {
+        "highschool": "Explore Mainz science outreach on biodegradable smart polymers and flexible solar films.",
+        "undergrad": "Summer internships in macromolecular chemistry, laser spectroscopy, and soft-matter simulation.",
+        "masters": "MSc projects with Johannes Gutenberg University Mainz and TU Darmstadt.",
+        "phd": "Max Planck Graduate Center (MPGC) interdisciplinary PhDs bridging physics and chemistry.",
+        "postdoc": "Postdoctoral fellowships in quantum nanocarbons, water interfaces, and neuromorphic polymers.",
+        "assoc_prof": "Independent Research Group Leader roles in sustainable circular plastics.",
+        "prof": "Max Planck Director chairs uniting precision synthesis with statistical mechanics."
+      },
+      "next": ["fritz_haber", "basf_rd", "kyoto_icems", "lbl_foundry"],
+      "rabbitLinks": [
+        { "id": "basf_rd", "reason": "45 minutes along the Rhine; collaborates on circular polymer recycling and organic semiconductors." },
+        { "id": "lbl_foundry", "reason": "Co-advances atomically precise graphene nanoribbons for future quantum and nanoelectronic circuits." }
+      ],
+      "projects": [
+        { "name": "Precision Nanographenes & Sustainable Soft Matter", "status": "ongoing", "url": "https://www.mpip-mainz.mpg.de/en/research" }
+      ]
+    },
+    {
+      "id": "caltech_beckman",
+      "name": "Beckman Institute at Caltech",
+      "city": "Pasadena, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 34.1394,
+      "lng": -118.1268,
+      "zoom": 16.4,
+      "foundedYear": 1989,
+      "status": "active",
+      "url": "https://beckmaninstitute.caltech.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Beckman_Institute_at_Caltech",
+      "wikiSlug": "Beckman_Institute_at_Caltech",
+      "summary": "Caltech's interdisciplinary chemistry and biological-instrumentation powerhouse—home to femtochemistry, directed evolution of enzymes, automated DNA sequencing invention, and artificial photosynthesis.",
+      "nobel": "Caltech Chemistry & Chemical Engineering boasts Frances Arnold (2018), Robert Grubbs (2005), Ahmed Zewail (1999), Rudolph Marcus (1992), and Linus Pauling.",
+      "stages": {
+        "highschool": "Learn how Frances Arnold uses artificial evolution to engineer novel enzymes for green chemistry.",
+        "undergrad": "Caltech SURF (Summer Undergraduate Research Fellowships) open to Caltech and external students.",
+        "masters": "Direct-entry PhD focus across Chemistry, Chemical Engineering, and Materials Science.",
+        "phd": "Caltech CCE PhD working inside ultra-compact, high-impact experimental and theoretical groups.",
+        "postdoc": "Beckman Institute Postdoctoral Fellows Program (3-year independent research awards).",
+        "assoc_prof": "Resnick Sustainability Institute collaborations on solar fuels and CO2 electroreduction.",
+        "prof": "Endowed chairs bridging physical chemistry, robotics, and synthetic biology."
+      },
+      "next": ["caltech", "nasa_jpl", "scripps_research", "mit_chem_dmse"],
+      "rabbitLinks": [
+        { "id": "caltech", "reason": "At the center of Caltech's Pasadena campus alongside LIGO, quantum information, and planetary science." },
+        { "id": "nasa_jpl", "reason": "Caltech manages NASA JPL just up the Arroyo Seco—co-developing mass spectrometers for Mars and Europa." }
+      ],
+      "projects": [
+        { "name": "Liquid Sunlight Alliance (Solar Fuels) & Directed Enzyme Evolution", "status": "ongoing", "url": "https://beckmaninstitute.caltech.edu/research" }
+      ]
+    },
+    {
+      "id": "mit_chem_dmse",
+      "name": "MIT Chemistry & Materials Science (DMSE)",
+      "city": "Cambridge, MA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 42.3596,
+      "lng": -71.0910,
+      "zoom": 16.4,
+      "foundedYear": 1865,
+      "status": "active",
+      "url": "https://chemistry.mit.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Massachusetts_Institute_of_Technology",
+      "wikiSlug": "Massachusetts_Institute_of_Technology",
+      "summary": "Unites MIT Chemistry and Materials Science & Engineering—birthplace of colloidal quantum dots, next-generation lithium and solid-state batteries, high-temperature superconducting magnets, and AI-guided autonomous synthesis.",
+      "nobel": "Moungi Bawendi won the 2023 Nobel Prize in Chemistry for quantum dots; Richard Schrock won the 2005 Nobel in Chemistry.",
+      "stages": {
+        "highschool": "Take MIT OpenCourseWare 3.091 (Solid-State Chemistry) and 5.111 (Principles of Chemical Science).",
+        "undergrad": "MIT UROP and MSRP (MIT Summer Research Program) in quantum dots, batteries, and nanomaterials.",
+        "masters": "SM / PhD research tracks in Materials Science, Chemistry, and MIT Energy Initiative (MITEI).",
+        "phd": "Fully funded PhD driving clean-energy metallurgy, quantum materials, and AI chemical discovery.",
+        "postdoc": "Postdoctoral fellowships bridging MIT.nano cleanrooms with industrial clean-tech spinouts.",
+        "assoc_prof": "Collaborative grants with Commonwealth Fusion Systems (CFS) on REBCO superconducting tapes.",
+        "prof": "Institute chairs pioneering zero-carbon steel, grid batteries, and precision chemical biology."
+      },
+      "next": ["mit", "cfs", "broad_institute", "cambridge_chem"],
+      "rabbitLinks": [
+        { "id": "cfs", "reason": "MIT materials and magnet science enabled the high-temperature REBCO superconducting magnets behind SPARC fusion." },
+        { "id": "mit_csail", "reason": "Jointly builds autonomous closed-loop AI labs that predict, synthesize, and test new molecules and batteries." }
+      ],
+      "projects": [
+        { "name": "MIT.nano & Materials Project / Clean Energy Storage", "status": "ongoing", "url": "https://dmse.mit.edu/research/" }
+      ]
+    },
+    {
+      "id": "cambridge_chem",
+      "name": "Yusuf Hamied Department of Chemistry, University of Cambridge",
+      "city": "Cambridge, United Kingdom",
+      "country": "United Kingdom",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 52.1983,
+      "lng": 0.1257,
+      "zoom": 16.3,
+      "foundedYear": 1702,
+      "status": "active",
+      "url": "https://www.ch.cam.ac.uk/",
+      "wiki": "https://en.wikipedia.org/wiki/Yusuf_Hamied_Department_of_Chemistry,_University_of_Cambridge",
+      "wikiSlug": "Yusuf_Hamied_Department_of_Chemistry,_University_of_Cambridge",
+      "summary": "Three-century-old chemistry powerhouse on Lensfield Road—where Shankar Balasubramanian & David Klenerman invented Solexa/Illumina next-generation DNA sequencing and Clare Grey revolutionized solid-state battery NMR.",
+      "nobel": "Associated with 7 Chemistry Nobel Prizes (incl. Lord Todd, John Pople, Gregory Winter, Venki Ramakrishnan) plus the 2020 Millennium Technology Prize for NGS DNA sequencing.",
+      "stages": {
+        "highschool": "Compete in the Cambridge Chemistry Challenge (C3L6) run directly by the department.",
+        "undergrad": "Cambridge Natural Sciences Tripos (Chemistry track) with lab synthesis and quantum chemistry.",
+        "masters": "MPhil in Chemistry and Part III Chemistry intensive research year.",
+        "phd": "Fully funded PhD tracks in battery materials (Faraday Institution), atmospheric chemistry, and AI force fields.",
+        "postdoc": "Herchel Smith and Royal Society University Research Fellowships in Cambridge.",
+        "assoc_prof": "Principal Investigator groups pioneering machine-learned interatomic potentials (MACE).",
+        "prof": "Historic 1702 Professorship of Chemistry and interdisciplinary Maxwell Centre leadership."
+      },
+      "next": ["cambridge", "mrc_lmb", "wellcome_sanger", "mit_chem_dmse"],
+      "rabbitLinks": [
+        { "id": "wellcome_sanger", "reason": "Solexa/Illumina sequencing-by-synthesis invented right here on Lensfield Road slashed human genome costs from $100M to under $200." },
+        { "id": "mrc_lmb", "reason": "Shares Cambridge's biomedical ecosystem uniting nucleic-acid chemistry with structural molecular biology." }
+      ],
+      "projects": [
+        { "name": "Faraday Institution Battery NMR & Next-Gen Sequencing", "status": "ongoing", "url": "https://www.ch.cam.ac.uk/research" }
+      ]
+    },
+    {
+      "id": "kyoto_icems",
+      "name": "Kyoto University iCeMS (Cell-Material Sciences)",
+      "city": "Kyoto, Japan",
+      "country": "Japan",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 35.0258,
+      "lng": 135.7789,
+      "zoom": 16.2,
+      "foundedYear": 2007,
+      "status": "active",
+      "url": "https://www.icems.kyoto-u.ac.jp/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Integrated_Cell-Material_Sciences",
+      "wikiSlug": "Institute_for_Integrated_Cell-Material_Sciences",
+      "summary": "Japan's flagship WPI institute fusing porous materials chemistry with living cell biology—led by MOF pioneer Susumu Kitagawa (2025 Chemistry Nobel laureate) and closely linked to Shinya Yamanaka's iPS cell institute.",
+      "nobel": "Distinguished Professor Susumu Kitagawa won the 2025 Nobel Prize in Chemistry (with Richard Robson & Omar Yaghi) for metal-organic frameworks (MOFs); co-founded with 2012 Medicine laureate Shinya Yamanaka.",
+      "stages": {
+        "highschool": "Explore how microscopic porous molecular sponges (MOFs) harvest water from desert air and trap CO2.",
+        "undergrad": "Kyoto University international undergraduate summer research exchanges.",
+        "masters": "MSc research in porous coordination polymers, membrane biophysics, and biomaterials.",
+        "phd": "Fully supported doctoral tracks in English inside Kyoto's WPI iCeMS labs.",
+        "postdoc": "JSPS and iCeMS International Postdoctoral Fellowships.",
+        "assoc_prof": "Principal Investigator tracks with global on-site labs across Thailand, Taiwan, and Europe.",
+        "prof": "Global leadership in porous crystalline materials for carbon capture and energy gases."
+      },
+      "next": ["rims_kyoto", "yukawa", "riken_bdr", "dicp_dalian"],
+      "rabbitLinks": [
+        { "id": "riken_bdr", "reason": "Kansai bio-materials corridor connecting iCeMS cellular interfaces with Kobe's organoid research." },
+        { "id": "lbl_foundry", "reason": "Partners globally on metal-organic frameworks (MOFs) for atmospheric water harvesting and direct air carbon capture." }
+      ],
+      "projects": [
+        { "name": "Porous Coordination Polymers (MOFs) for CO2 & Water Capture", "status": "ongoing", "url": "https://www.icems.kyoto-u.ac.jp/en/research/" }
+      ]
+    },
+    {
+      "id": "dicp_dalian",
+      "name": "Dalian Institute of Chemical Physics (CAS DICP)",
+      "city": "Dalian, China",
+      "country": "China",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": false,
+      "lat": 38.8856,
+      "lng": 121.5637,
+      "zoom": 16.0,
+      "foundedYear": 1949,
+      "status": "active",
+      "url": "https://english.dicp.cas.cn/",
+      "wiki": "https://en.wikipedia.org/wiki/Dalian_Institute_of_Chemical_Physics",
+      "wikiSlug": "Dalian_Institute_of_Chemical_Physics",
+      "summary": "China's premier institute for catalytic chemistry, solar hydrogen, vanadium flow batteries, and extreme-ultraviolet molecular dynamics (operating the Dalian Coherent Light Source free-electron laser).",
+      "nobel": "Pioneered single-atom catalysis (Tao Zhang), industrial methanol-to-olefins (DMTO), and megawatt-scale grid flow batteries.",
+      "stages": {
+        "highschool": "Explore how single-atom catalysts maximize chemical efficiency for clean hydrogen fuel.",
+        "undergrad": "Summer research camps in chemical physics, energy storage, and analytical chemistry.",
+        "masters": "University of Chinese Academy of Sciences (UCAS) MSc fellowships at DICP.",
+        "phd": "ANSO / CAS-TWAS fully funded international PhD scholarships in catalysis and photochemistry.",
+        "postdoc": "DICP International Postdoctoral Fellowships with access to the Dalian Coherent Light Source.",
+        "assoc_prof": "Principal Investigator groups linking molecular beam physics to industrial clean energy.",
+        "prof": "State Key Laboratory of Catalysis leadership driving global solar-fuel collaborations."
+      },
+      "next": ["fritz_haber", "kyoto_icems", "nrel_golden", "mpi_kofo"],
+      "rabbitLinks": [
+        { "id": "fritz_haber", "reason": "Twin global centers of heterogeneous catalysis and molecular beam reaction dynamics." },
+        { "id": "nrel_golden", "reason": "Shared scientific focus on solar-to-hydrogen photocatalysis and grid-scale energy storage." }
+      ],
+      "projects": [
+        { "name": "Dalian Coherent Light Source (VUV FEL) & Single-Atom Catalysis", "status": "ongoing", "url": "https://english.dicp.cas.cn/rh/" }
+      ]
+    },
+    {
+      "id": "basf_rd",
+      "name": "BASF Global Research & Verbund Site",
+      "city": "Ludwigshafen, Germany",
+      "country": "Germany",
+      "group": "company",
+      "entityType": "company",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": false,
+      "lat": 49.4981,
+      "lng": 8.4311,
+      "zoom": 15.2,
+      "foundedYear": 1865,
+      "status": "active",
+      "url": "https://www.basf.com/global/en/who-we-are/innovation",
+      "wiki": "https://en.wikipedia.org/wiki/BASF",
+      "wikiSlug": "BASF",
+      "summary": "The world's largest integrated chemical research complex (~10 sq km along the Rhine), where Carl Bosch scaled ammonia synthesis to feed half the planet and modern R&D pioneers electrified furnaces, battery cathodes, and chemical recycling.",
+      "nobel": "Carl Bosch won the 1931 Nobel Prize in Chemistry for high-pressure industrial chemical methods (Haber-Bosch process).",
+      "stages": {
+        "highschool": "Visit BASF Kids' Lab and explore circular chemistry and electrochemistry demonstrations.",
+        "undergrad": "Industrial chemistry and chemical engineering internships in Ludwigshafen.",
+        "masters": "MSc theses in process engineering, polymer science, and AI molecular formulation.",
+        "phd": "BASF PhD collaborations (including Joint Research Network on Advanced Materials with KIT/Heidelberg).",
+        "postdoc": "Direct entry as Research Scientist across 10,000+ global R&D staff.",
+        "assoc_prof": "Academic research partnerships via BASF's Joint Research Network (JONAS / CARA).",
+        "prof": "Strategic collaborations decarbonizing global chemical manufacturing (e-Furnace / methane pyrolysis)."
+      },
+      "next": ["fritz_haber", "mpi_polymer", "mpi_kofo", "corning_sullivan"],
+      "rabbitLinks": [
+        { "id": "fritz_haber", "reason": "Historical partnership with Fritz Haber scaled catalytic nitrogen fixation into the modern fertilizer industry." },
+        { "id": "embl_heidelberg", "reason": "Just 20 km across the Rhine from Heidelberg—uniting industrial chemistry with molecular life sciences." }
+      ],
+      "projects": [
+        { "name": "World's First Electrically Heated Steam Cracker (e-Furnace) & Battery Cathodes", "status": "ongoing", "url": "https://www.basf.com/global/en/who-we-are/innovation" }
+      ]
+    },
+    {
+      "id": "corning_sullivan",
+      "name": "Corning Sullivan Park Research Center",
+      "city": "Corning, NY, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": false,
+      "lat": 42.1424,
+      "lng": -77.1292,
+      "zoom": 15.8,
+      "foundedYear": 1908,
+      "status": "active",
+      "url": "https://www.corning.com/worldwide/en/innovation.html",
+      "wiki": "https://en.wikipedia.org/wiki/Corning_Inc.",
+      "wikiSlug": "Corning_Inc.",
+      "summary": "One of America's oldest industrial materials laboratories—inventor of low-loss optical fiber (1970, enabling the global fiber-optic internet), Pyrex borosilicate glass, catalytic converter ceramics, Gorilla Glass, and telescope mirror blanks.",
+      "nobel": "Robert Maurer, Donald Keck, and Peter Schultz invented low-loss optical fiber here in 1970 (National Medal of Technology & Innovation).",
+      "stages": {
+        "highschool": "Visit the Corning Museum of Glass Innovation Center to explore fiber optics and glass physics.",
+        "undergrad": "Corning Research & Development summer internships in glass science, ceramics, and photonics.",
+        "masters": "Optical physics and materials process engineering roles in Upstate New York.",
+        "phd": "Corning Graduate Research Fellowship and Science & Technology research scientist positions.",
+        "postdoc": "Materials Scientist roles in fusion-drawn ultrathin glass, hollow-core fiber, and EUV optics.",
+        "assoc_prof": "Academic collaborations with Alfred University, Cornell University, and Penn State.",
+        "prof": "Joint glass-physics and optical-communications consortia for AI data center interconnects."
+      },
+      "next": ["cornell_cs", "asml", "mit_chem_dmse", "ibm_research_ai"],
+      "rabbitLinks": [
+        { "id": "cornell_cs", "reason": "Located 45 miles from Ithaca; Corning's low-loss optical fibers carry the global internet's data between AI clusters." },
+        { "id": "asml", "reason": "Corning's ultra-low-expansion glass substrates and optical materials are critical to precision semiconductor lithography and space telescopes." }
+      ],
+      "projects": [
+        { "name": "Next-Generation High-Density Optical Fiber & Ultra-Thin Glass", "status": "ongoing", "url": "https://www.corning.com/worldwide/en/innovation.html" }
+      ]
+    },
+    {
+      "id": "lbl_foundry",
+      "name": "The Molecular Foundry (Lawrence Berkeley National Lab)",
+      "city": "Berkeley, CA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "chem_materials",
+      "branch": "chem_materials",
+      "pinned": true,
+      "lat": 37.8768,
+      "lng": -122.2485,
+      "zoom": 16.3,
+      "foundedYear": 2006,
+      "status": "active",
+      "url": "https://foundry.lbl.gov/",
+      "wiki": "https://en.wikipedia.org/wiki/Molecular_Foundry",
+      "wikiSlug": "Molecular_Foundry",
+      "summary": "US Department of Energy open nanoscience user facility high in the Berkeley hills—providing free peer-reviewed access to atomic-resolution electron microscopes (NCEM), automated robotic synthesis, and LBNL's Materials Project.",
+      "nobel": "Adjacent to LBNL's 16 Nobel Prizes; home to the Materials Project open crystal database powering global AI materials discovery (GNoME, MatterGen).",
+      "stages": {
+        "highschool": "Explore the open Materials Project web app to inspect 150,000+ computed crystal structures.",
+        "undergrad": "DOE SULI (Science Undergraduate Laboratory Internships) at Berkeley Lab.",
+        "masters": "Research placements in nanoscale fabrication, 2D quantum materials, and robotic chemistry.",
+        "phd": "Submit a free User Proposal to perform atomic-scale microscopy or nanofabrication on-site.",
+        "postdoc": "Molecular Foundry & Alvarez Postdoctoral Fellowships uniting nanoscience with NERSC supercomputing.",
+        "assoc_prof": "User Executive Committee collaborations across all 7 nanoscale research facilities.",
+        "prof": "Multi-institution DOE Energy Frontier Research Centers in solid-state batteries and quantum optics."
+      },
+      "next": ["berkeley", "slmath_msri", "msr_redmond", "mit_chem_dmse"],
+      "rabbitLinks": [
+        { "id": "berkeley", "reason": "Operated by UC Berkeley at LBNL right above the Advanced Light Source (ALS) synchrotron." },
+        { "id": "msr_redmond", "reason": "LBNL's open Materials Project database trained both DeepMind's GNoME and Microsoft's MatterGen crystal-discovery AIs." }
+      ],
+      "projects": [
+        { "name": "Materials Project & A-Lab Autonomous Materials Synthesis", "status": "ongoing", "url": "https://next-gen.materialsproject.org/" }
+      ]
+    },
+    {
+      "id": "whoi",
+      "name": "Woods Hole Oceanographic Institution (WHOI)",
+      "city": "Woods Hole, MA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 41.5246,
+      "lng": -70.6710,
+      "zoom": 16.0,
+      "foundedYear": 1930,
+      "status": "active",
+      "url": "https://www.whoi.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Woods_Hole_Oceanographic_Institution",
+      "wikiSlug": "Woods_Hole_Oceanographic_Institution",
+      "summary": "The world's largest independent ocean research organization—operator of the deep-diving submersible HOV Alvin (6,500 m), discoverer of deep-sea hydrothermal vents and RMS Titanic, and pioneer of autonomous underwater robotics.",
+      "nobel": "Discovered chemosynthetic deep-sea hydrothermal vent ecosystems (1977), reshaping our search for life on icy ocean worlds like Europa and Enceladus.",
+      "stages": {
+        "highschool": "Explore WHOI's Dive and Discover virtual deep-sea expeditions and Ocean Twilight Zone portal.",
+        "undergrad": "WHOI Summer Student Fellowship (10–12 week paid Cape Cod oceanography & marine robotics fellowship).",
+        "masters": "MIT-WHOI Joint Program in Oceanography / Applied Ocean Science & Engineering.",
+        "phd": "MIT-WHOI Joint PhD Program — world's flagship oceanography & marine engineering doctorate.",
+        "postdoc": "WHOI Postdoctoral Scholar Fellowship (18-month independent awards).",
+        "assoc_prof": "Chief Scientist leadership aboard research vessels R/V Atlantis and R/V Neil Armstrong.",
+        "prof": "Global leadership in Ocean Observatories Initiative, Atlantic overturning (AMOC), and ocean-world astrobiology."
+      },
+      "next": ["mit", "scripps_ocean", "lamont_doherty", "nasa_jpl"],
+      "rabbitLinks": [
+        { "id": "mit", "reason": "Co-runs the legendary MIT-WHOI Joint Program uniting Boston engineering with Cape Cod ocean ships." },
+        { "id": "nasa_jpl", "reason": "WHOI deep-sea hydrothermal vent discoveries directly inform NASA JPL's Europa Clipper search for extraterrestrial ocean life." }
+      ],
+      "projects": [
+        { "name": "HOV Alvin (6,500m) & Ocean Twilight Zone Exploration", "status": "ongoing", "url": "https://www.whoi.edu/what-we-do/explore/underwater-vehicles/hov-alvin/" }
+      ]
+    },
+    {
+      "id": "scripps_ocean",
+      "name": "Scripps Institution of Oceanography (UC San Diego)",
+      "city": "La Jolla, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 32.8663,
+      "lng": -117.2546,
+      "zoom": 16.0,
+      "foundedYear": 1903,
+      "status": "active",
+      "url": "https://scripps.ucsd.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Scripps_Institution_of_Oceanography",
+      "wikiSlug": "Scripps_Institution_of_Oceanography",
+      "summary": "Pacific coast powerhouse of ocean, atmospheric, and planetary science—home of the iconic Keeling Curve (continuous Mauna Loa CO2 monitoring since 1958), Argo global ocean-float network, and atmospheric-river forecasting.",
+      "nobel": "Charles David Keeling established the modern atmospheric CO2 record here; Mario Molina (1995 Chemistry Nobel) and Walter Munk shaped climate & ocean physics.",
+      "stages": {
+        "highschool": "Track live daily atmospheric CO2 readings via the Scripps Keeling Curve portal.",
+        "undergrad": "Scripps Undergraduate Research Fellowship (SURF) — 9-week paid La Jolla research program.",
+        "masters": "MS in Marine Biology, Climate Science and Policy, or Oceanography at UC San Diego.",
+        "phd": "Fully funded PhD spanning physical oceanography, geophysics, polar glaciology, and marine chemistry.",
+        "postdoc": "Scripps Institutional Postdoctoral Fellowships sailing aboard R/V Roger Revelle and R/V Sally Ride.",
+        "assoc_prof": "Principal Investigator tracks in the global 4,000-float Argo Ocean Observing Array.",
+        "prof": "Leadership across IPCC assessments, Pacific climate dynamics, and marine robotics."
+      },
+      "next": ["salk_institute", "whoi", "nsf_ncar", "jamstec"],
+      "rabbitLinks": [
+        { "id": "salk_institute", "reason": "Just up the La Jolla cliffs; connects global CO2 atmospheric monitoring with plant-genetics carbon drawdown." },
+        { "id": "jamstec", "reason": "Trans-Pacific partners operating the global Argo autonomous ocean profiling float network." }
+      ],
+      "projects": [
+        { "name": "The Keeling Curve & Global Argo Ocean Observing Array", "status": "ongoing", "url": "https://keelingcurve.ucsd.edu/" }
+      ]
+    },
+    {
+      "id": "nsf_ncar",
+      "name": "NSF National Center for Atmospheric Research (NCAR)",
+      "city": "Boulder, CO, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 39.9784,
+      "lng": -105.2749,
+      "zoom": 16.0,
+      "foundedYear": 1960,
+      "status": "active",
+      "url": "https://ncar.ucar.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/National_Center_for_Atmospheric_Research",
+      "wikiSlug": "National_Center_for_Atmospheric_Research",
+      "summary": "Housed in I.M. Pei's iconic Mesa Lab against the Colorado Flatirons, stewarding the Community Earth System Model (CESM), WRF weather prediction model, solar-terrestrial physics, and the Derecho climate supercomputer.",
+      "nobel": "NCAR scientists contributed core climate projections honored in the 2007 Nobel Peace Prize awarded to the IPCC.",
+      "stages": {
+        "highschool": "Visit the free Mesa Lab Weather & Climate Museum and explore UCAR Center for Science Education.",
+        "undergrad": "SOARS (Significant Opportunities in Atmospheric Research and Science) and SIParCS supercomputing internships.",
+        "masters": "Graduate Visitor Program placements working with CESM, WRF, and research aircraft.",
+        "phd": "NSF NCAR Graduate Fellowship and Advanced Study Program (ASP) doctoral visits.",
+        "postdoc": "ASP Postdoctoral Fellowship (2-year independent awards) — gold standard in atmospheric science.",
+        "assoc_prof": "Community working-group co-chairs steering CESM ocean, ice, and atmosphere modules.",
+        "prof": "UCAR university consortium leadership coordinating global Earth-system modeling."
+      },
+      "next": ["nrel_golden", "ecmwf", "jila", "ai2_allen"],
+      "rabbitLinks": [
+        { "id": "jila", "reason": "Minutes away in Boulder, Colorado—connecting atmospheric spectroscopy and solar physics with precision atomic science." },
+        { "id": "ai2_allen", "reason": "Open NCAR physics simulations serve as ground-truth training data for next-generation AI climate emulators." }
+      ],
+      "projects": [
+        { "name": "Community Earth System Model (CESM) & WRF Weather Model", "status": "ongoing", "url": "https://www.cesm.ucar.edu/" }
+      ]
+    },
+    {
+      "id": "ecmwf",
+      "name": "ECMWF (European Centre for Medium-Range Weather Forecasts)",
+      "city": "Reading, United Kingdom",
+      "country": "United Kingdom",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 51.4193,
+      "lng": -0.9506,
+      "zoom": 16.0,
+      "foundedYear": 1975,
+      "status": "active",
+      "url": "https://www.ecmwf.int/",
+      "wiki": "https://en.wikipedia.org/wiki/European_Centre_for_Medium-Range_Weather_Forecasts",
+      "wikiSlug": "European_Centre_for_Medium-Range_Weather_Forecasts",
+      "summary": "Intergovernmental benchmark for global numerical weather prediction across Reading, Bologna (HPC supercomputer), and Bonn—producer of the ERA5 climate reanalysis, Copernicus Climate Service, Destination Earth, and AIFS AI weather model.",
+      "nobel": "ERA5 reanalysis is the single most important open dataset behind the entire AI weather forecasting revolution (GraphCast, GenCast, FourCastNet, AIFS).",
+      "stages": {
+        "highschool": "Explore live Copernicus Climate Pulse global temperature and ocean heat dashboards.",
+        "undergrad": "ECMWF Summer of Weather Code (ESoWC) open-source mentorships for students and developers.",
+        "masters": "MSc thesis collaborations on data assimilation, satellite radiances, and AI weather models.",
+        "phd": "Visiting Doctoral Scientist placements across Reading, Bonn, and Bologna.",
+        "postdoc": "ECMWF Fellowship Programme and Research Scientist positions in physics-AI hybrid forecasting.",
+        "assoc_prof": "Co-developing Destination Earth (DestinE) kilometer-scale climate digital twins.",
+        "prof": "Scientific Advisory Committee leadership across 35 European member and cooperating states."
+      },
+      "next": ["deepmind", "nvidia_research", "nsf_ncar", "eth_iac"],
+      "rabbitLinks": [
+        { "id": "deepmind", "reason": "ERA5 atmospheric reanalysis enabled DeepMind's GraphCast and GenCast models to outperform traditional physics forecasts in minutes." },
+        { "id": "nvidia_research", "reason": "Collaborates on Destination Earth and GPU-accelerated kilometer-scale weather digital twins." }
+      ],
+      "projects": [
+        { "name": "ERA5 Reanalysis, AIFS AI Forecasting & Destination Earth", "status": "ongoing", "url": "https://www.ecmwf.int/en/forecasts" }
+      ]
+    },
+    {
+      "id": "bas_antarctic",
+      "name": "British Antarctic Survey (BAS)",
+      "city": "Cambridge, United Kingdom",
+      "country": "United Kingdom",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 52.2124,
+      "lng": 0.0811,
+      "zoom": 16.0,
+      "foundedYear": 1962,
+      "status": "active",
+      "url": "https://www.bas.ac.uk/",
+      "wiki": "https://en.wikipedia.org/wiki/British_Antarctic_Survey",
+      "wikiSlug": "British_Antarctic_Survey",
+      "summary": "The UK's national polar research institute—famous for discovering the Antarctic Ozone Hole in 1985 (catalyzing the Montreal Protocol) and today leading Thwaites Glacier ice-sheet physics, polar ice cores, and the RRS Sir David Attenborough.",
+      "nobel": "Joe Farman, Brian Gardiner, and Jonathan Shanklin's 1985 ozone-hole discovery at Halley Station saved the global stratosphere.",
+      "stages": {
+        "highschool": "Explore Discovering Antarctica open educational modules and live Antarctic webcams.",
+        "undergrad": "NERC Research Experience Placements and Cambridge polar internships.",
+        "masters": "MPhil in Polar Studies (Scott Polar Research Institute / BAS Cambridge).",
+        "phd": "Fully funded UKRI Doctoral Training Partnerships with potential Antarctic field seasons.",
+        "postdoc": "BAS Polar Fellowships studying 1.5-million-year Beyond EPICA ice cores and ice-shelf instability.",
+        "assoc_prof": "Principal Investigator expeditions aboard RRS Sir David Attenborough and Rothera Research Station.",
+        "prof": "International Thwaites Glacier Collaboration and SCAR Antarctic treaty science leadership."
+      },
+      "next": ["awi_bremerhaven", "alan_turing_inst", "cambridge", "icecube"],
+      "rabbitLinks": [
+        { "id": "alan_turing_inst", "reason": "Co-built IceNet deep learning sea-ice forecasting and autonomous polar route planning." },
+        { "id": "icecube", "reason": "Shares Antarctica's extreme-environment logistics—studying ancient ice transparency that doubles as a neutrino detector." }
+      ],
+      "projects": [
+        { "name": "International Thwaites Glacier Collaboration & Beyond EPICA Ice Core", "status": "ongoing", "url": "https://www.bas.ac.uk/science/" }
+      ]
+    },
+    {
+      "id": "awi_bremerhaven",
+      "name": "Alfred Wegener Institute (AWI)",
+      "city": "Bremerhaven, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": false,
+      "lat": 53.5326,
+      "lng": 8.5800,
+      "zoom": 15.8,
+      "foundedYear": 1980,
+      "status": "active",
+      "url": "https://www.awi.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Alfred_Wegener_Institute_for_Polar_and_Marine_Research",
+      "wikiSlug": "Alfred_Wegener_Institute_for_Polar_and_Marine_Research",
+      "summary": "Germany's Helmholtz polar and marine flagship named after continental-drift pioneer Alfred Wegener—operator of icebreaker RV Polarstern, Neumayer Station III in Antarctica, and leader of the historic year-long MOSAiC Arctic drift expedition.",
+      "nobel": "Coordinated the largest Arctic expedition in history (MOSAiC, 2019–2020), freezing RV Polarstern into sea ice for a full polar year.",
+      "stages": {
+        "highschool": "Explore the open Meereisportal (Sea Ice Portal) and MOSAiC expedition documentaries.",
+        "undergrad": "Student internships in marine biology, glaciology, and polar oceanography in Bremerhaven and Potsdam.",
+        "masters": "MSc theses with University of Bremen (MARUM) and University of Potsdam.",
+        "phd": "POLMAR Graduate School fully funded PhDs including sea-going Polarstern research cruises.",
+        "postdoc": "Helmholtz and AWI Postdoctoral Fellowships in sea-ice modeling, permafrost, and deep-sea ecology.",
+        "assoc_prof": "Overwintering station scientist leadership at Neumayer III or Svalbard AWIPEV.",
+        "prof": "Helmholtz Professorial Chairs guiding European polar fleet and Arctic climate forecasting."
+      },
+      "next": ["bas_antarctic", "pik_potsdam", "dfki", "whoi"],
+      "rabbitLinks": [
+        { "id": "pik_potsdam", "reason": "AWI's Potsdam permafrost research unit sits directly on Telegrafenberg alongside PIK's climate tipping-points scientists." },
+        { "id": "dfki", "reason": "Collaborates in nearby Bremen on under-ice autonomous underwater robots." }
+      ],
+      "projects": [
+        { "name": "RV Polarstern Expeditions, MOSAiC & Deep-Sea FRAM Observatory", "status": "ongoing", "url": "https://www.awi.de/en/science.html" }
+      ]
+    },
+    {
+      "id": "pik_potsdam",
+      "name": "Potsdam Institute for Climate Impact Research (PIK)",
+      "city": "Potsdam, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 52.3806,
+      "lng": 13.0644,
+      "zoom": 16.0,
+      "foundedYear": 1992,
+      "status": "active",
+      "url": "https://www.pik-potsdam.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Potsdam_Institute_for_Climate_Impact_Research",
+      "wikiSlug": "Potsdam_Institute_for_Climate_Impact_Research",
+      "summary": "Occupying Potsdam's historic Telegrafenberg science hill beside the Einstein Tower—global pioneer of Earth-system tipping points, Planetary Boundaries (Johan Rockström), integrated energy-economy models (REMIND), and complex-network climate physics.",
+      "nobel": "Shaped the 1.5°C/2°C Paris Agreement scientific guardrail and the Planetary Boundaries framework guiding global sustainability.",
+      "stages": {
+        "highschool": "Explore PIK's interactive Planetary Health Check and Climate Tipping Points explainers.",
+        "undergrad": "Student assistantships in complex systems, climate econometrics, and Earth-system modeling.",
+        "masters": "MSc theses with University of Potsdam, TU Berlin, and Humboldt University.",
+        "phd": "Structured PhD fellowships in Earth-system resilience, AI weather attribution, and sustainable land use.",
+        "postdoc": "Postdoctoral positions in the Earth Commission and ISIMIP global impact-model intercomparison.",
+        "assoc_prof": "Research Department leadership bridging physics, economics, and global climate policy.",
+        "prof": "Joint professorships advising the UN, European Commission, and IPCC Working Groups."
+      },
+      "next": ["eth_iac", "awi_bremerhaven", "fritz_haber", "mila_quebec"],
+      "rabbitLinks": [
+        { "id": "aei", "reason": "Located right in Potsdam—while AEI probes gravitational waves, PIK probes nonlinear tipping dynamics of Earth's biosphere on the Einstein Tower hill." },
+        { "id": "eth_iac", "reason": "Core European collaborators on IPCC climate extremes and Earth-system carbon budgets." }
+      ],
+      "projects": [
+        { "name": "Planetary Boundaries Health Check & Climate Tipping Points (TipMIP)", "status": "ongoing", "url": "https://www.pik-potsdam.de/en/output/projects" }
+      ]
+    },
+    {
+      "id": "eth_iac",
+      "name": "ETH Zurich Institute for Atmospheric and Climate Science (IAC)",
+      "city": "Zurich, Switzerland",
+      "country": "Switzerland",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": false,
+      "lat": 47.3788,
+      "lng": 8.5480,
+      "zoom": 16.2,
+      "foundedYear": 2001,
+      "status": "active",
+      "url": "https://iac.ethz.ch/",
+      "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
+      "wikiSlug": "ETH_Zurich",
+      "summary": "Continental Europe's premier university climate-physics institute, leading global extreme-weather attribution, Alpine glacier monitoring, cloud-aerosol physics, and kilometer-scale storm-resolving simulations.",
+      "nobel": "Faculty (including Sonia Seneviratne & Reto Knutti) serve as key IPCC Assessment Report coordinating lead authors.",
+      "stages": {
+        "highschool": "Explore Swiss glacier retreat monitoring (GLAMOS) and Alpine weather balloon launches.",
+        "undergrad": "ETH Zurich BSc in Earth & Climate Sciences or Environmental Sciences.",
+        "masters": "ETH MSc in Atmospheric and Climate Science (taught in English, combining fieldwork & HPC).",
+        "phd": "Fully salaried Swiss PhD tracks in land-climate extremes, cloud microphysics, and climate AI.",
+        "postdoc": "Center for Climate Systems Modeling (C2SM) postdoctoral fellowships with CSCS supercomputers.",
+        "assoc_prof": "Tenure-track chairs collaborating with MeteoSwiss and ECMWF.",
+        "prof": "IPCC Bureau leadership and pan-European high-resolution climate model governance."
+      },
+      "next": ["eth", "ecmwf", "pik_potsdam", "eth_ai_center"],
+      "rabbitLinks": [
+        { "id": "eth_ai_center", "reason": "Applies physics-informed neural networks to improve extreme heatwave and precipitation projections." },
+        { "id": "ecmwf", "reason": "Key scientific partner in Europe's nextGEMS and Destination Earth storm-resolving climate simulations." }
+      ],
+      "projects": [
+        { "name": "Center for Climate Systems Modeling (C2SM) & Extreme Attribution", "status": "ongoing", "url": "https://c2sm.ethz.ch/" }
+      ]
+    },
+    {
+      "id": "jamstec",
+      "name": "JAMSTEC (Japan Agency for Marine-Earth Science and Technology)",
+      "city": "Yokosuka, Japan",
+      "country": "Japan",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 35.3193,
+      "lng": 139.6507,
+      "zoom": 15.8,
+      "foundedYear": 1971,
+      "status": "active",
+      "url": "https://www.jamstec.go.jp/",
+      "wiki": "https://en.wikipedia.org/wiki/Japan_Agency_for_Marine-Earth_Science_and_Technology",
+      "wikiSlug": "Japan_Agency_for_Marine-Earth_Science_and_Technology",
+      "summary": "Japan's marine, seismic, and planetary-interior powerhouse—operating the deep-mantle drilling ship D/V Chikyu, the Shinkai 6500 manned submersible, the Earth Simulator supercomputer, and real-time seafloor tsunami cables.",
+      "nobel": "Built the iconic Earth Simulator supercomputer (world's fastest 2002–2004) and drilled deeper beneath the seafloor into active subduction zones than ever before.",
+      "stages": {
+        "highschool": "Explore JAMSTEC's open deep-sea video archive (J-EDI) showcasing hadal trench life.",
+        "undergrad": "Student trainee programs in Yokosuka and Yokohama in oceanography and seismology.",
+        "masters": "Joint MSc research with University of Tokyo AORI and Yokohama City University.",
+        "phd": "JAMSTEC Young Research Fellow (YRF) and International Ocean Discovery Program (IODP) fellowships.",
+        "postdoc": "Postdoctoral fellowships sailing aboard D/V Chikyu, R/V Mirai, and R/V Kaimei.",
+        "assoc_prof": "Senior Scientist roles in deep-biosphere microbiology and subduction-zone earthquake physics.",
+        "prof": "Global leadership in IODP scientific ocean drilling and trans-Pacific climate prediction."
+      },
+      "next": ["utokyo", "scripps_ocean", "whoi", "riken"],
+      "rabbitLinks": [
+        { "id": "scripps_ocean", "reason": "Co-anchors Pacific deep-sea drilling, seismic observatories, and Argo ocean monitoring." },
+        { "id": "utokyo", "reason": "Collaborates closely with University of Tokyo geophysicists on Nankai Trough earthquake early warning." }
+      ],
+      "projects": [
+        { "name": "D/V Chikyu Deep-Earth Drilling & Shinkai 6500 Exploration", "status": "ongoing", "url": "https://www.jamstec.go.jp/e/about/equipment/ships/" }
+      ]
+    },
+    {
+      "id": "lamont_doherty",
+      "name": "Lamont-Doherty Earth Observatory (Columbia University)",
+      "city": "Palisades, NY, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 41.0042,
+      "lng": -73.9092,
+      "zoom": 16.0,
+      "foundedYear": 1949,
+      "status": "active",
+      "url": "https://lamont.columbia.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Lamont%E2%80%93Doherty_Earth_Observatory",
+      "wikiSlug": "Lamont%E2%80%93Doherty_Earth_Observatory",
+      "summary": "Perched on the Hudson Palisades north of New York City—where Marie Tharp and Bruce Heezen mapped the 40,000-mile global mid-ocean ridge proving plate tectonics, and Wallace Broecker discovered the global ocean thermohaline conveyor belt.",
+      "nobel": "Home to the world's largest deep-sea sediment core repository (20,000+ cores) and foundational discoveries of plate tectonics and El Niño prediction.",
+      "stages": {
+        "highschool": "Attend Lamont Open House (free annual Hudson Valley Earth-science festival) and High School Internships.",
+        "undergrad": "Lamont Summer Intern Program (paid 10-week NSF REU in seismology, paleoclimate, and polar ice).",
+        "masters": "Columbia Climate School MA in Climate and Society or Earth & Environmental Sciences MS.",
+        "phd": "Columbia DEES PhD conducting fieldwork from Greenland ice sheets to deep-sea volcano cruises.",
+        "postdoc": "Lamont-Doherty Postdoctoral Fellowship — one of Earth science's most prestigious 2-year awards.",
+        "assoc_prof": "Lamont Research Professors sailing aboard Columbia's seismic vessel R/V Marcus G. Langseth.",
+        "prof": "Leadership across carbon mineralization, paleoclimate ice-core records, and global hazard science."
+      },
+      "next": ["whoi", "courant_nyu", "scripps_ocean", "nsf_ncar"],
+      "rabbitLinks": [
+        { "id": "courant_nyu", "reason": "Collaborates across the Hudson River to blend paleoclimate data with mathematical fluid-dynamics PDEs." },
+        { "id": "whoi", "reason": "East Coast oceanographic partners sharing deep-sea drilling, marine seismology, and Atlantic overturning research." }
+      ],
+      "projects": [
+        { "name": "Deep-Sea Core Repository & R/V Marcus G. Langseth Seismic Imaging", "status": "ongoing", "url": "https://lamont.columbia.edu/research" }
+      ]
+    },
+    {
+      "id": "nrel_golden",
+      "name": "National Renewable Energy Laboratory (NREL)",
+      "city": "Golden, CO, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "earth_climate",
+      "branch": "earth_climate",
+      "pinned": true,
+      "lat": 39.7406,
+      "lng": -105.1686,
+      "zoom": 15.8,
+      "foundedYear": 1977,
+      "status": "active",
+      "url": "https://www.nrel.gov/",
+      "wiki": "https://en.wikipedia.org/wiki/National_Renewable_Energy_Laboratory",
+      "wikiSlug": "National_Renewable_Energy_Laboratory",
+      "summary": "The US Department of Energy's flagship renewable energy and energy-efficiency laboratory—maintaining the world-standard Best Research-Cell Solar Efficiency Chart alongside breakthroughs in perovskite-silicon tandems, wind aerodynamics, and grid-scale storage.",
+      "nobel": "Certified record-breaking multijunction solar cells (>47% efficiency) and engineered plastic-eating PETase enzymes for circular recycling.",
+      "stages": {
+        "highschool": "Explore NREL's interactive Best Research-Cell Efficiency Chart and Solar Decathlon competitions.",
+        "undergrad": "DOE SULI paid internships in solar photovoltaics, wind engineering, and power-grid modeling.",
+        "masters": "Graduate internships across Golden's Flatirons wind campus and Energy Systems Integration Facility (ESIF).",
+        "phd": "Joint doctoral research with Colorado School of Mines, CU Boulder, and national universities.",
+        "postdoc": "NREL Director's Postdoctoral Fellowship in perovskites, green hydrogen, and autonomous grid AI.",
+        "assoc_prof": "Joint University-NREL Faculty Appointments tackling 100% renewable grid stability.",
+        "prof": "National Consortium leadership in decarbonized aviation fuels and next-gen photovoltaics."
+      },
+      "next": ["nsf_ncar", "mit_chem_dmse", "dicp_dalian", "lbl_foundry"],
+      "rabbitLinks": [
+        { "id": "nsf_ncar", "reason": "25 minutes along Colorado's Front Range—combining atmospheric wind/solar forecasting with renewable grid physics." },
+        { "id": "mit_chem_dmse", "reason": "Co-develops durable perovskite-silicon tandem solar cells and next-generation grid batteries." }
+      ],
+      "projects": [
+        { "name": "Best Research-Cell Solar Efficiency Chart & Perovskite Tandems", "status": "ongoing", "url": "https://www.nrel.gov/pv/cell-efficiency.html" }
+      ]
+    },
+    {
+      "id": "tsmc_rd",
+      "name": "TSMC Global R&D Center",
+      "city": "Hsinchu, Taiwan",
+      "country": "Taiwan",
+      "group": "company",
+      "entityType": "company",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 24.7736,
+      "lng": 121.0110,
+      "zoom": 15.8,
+      "foundedYear": 1987,
+      "status": "active",
+      "url": "https://www.tsmc.com/",
+      "wiki": "https://en.wikipedia.org/wiki/TSMC",
+      "wikiSlug": "TSMC",
+      "summary": "The semiconductor foundry powerhouse founded by Morris Chang—home to the 'Taiwan Bell Labs' Global R&D Center in Hsinchu driving 2 nm nanosheet (N2), A16 backside-power transistors, and CoWoS 3D packaging behind the world's frontier AI GPUs.",
+      "nobel": "Fabricates the vast majority of the planet's most advanced <5 nm logic chips powering modern AI, mobile, and scientific supercomputing.",
+      "stages": {
+        "highschool": "Learn how photolithography etches 100+ billion atomic-scale transistors onto a single silicon wafer.",
+        "undergrad": "TSMC Semiconductor Programs partnered with NTHU, NYCU, and NTU in Taiwan and global campuses.",
+        "masters": "Process integration, EUV lithography, and 3D IC packaging engineering roles in Hsinchu.",
+        "phd": "TSMC Corporate Research Scientist roles exploring 1 nm / angstrom-era 2D channel materials (MoS2/WS2).",
+        "postdoc": "Pathfinding research in silicon photonics co-packaged optics and gate-all-around nanosheets.",
+        "assoc_prof": "TSMC University Shuttle Program fabricating academic experimental silicon designs.",
+        "prof": "Joint TSMC-University Research Centers (including MIT, Stanford, Berkeley, and Taiwan universities)."
+      },
+      "next": ["asml", "imec", "nvidia_research", "samsung_sait"],
+      "rabbitLinks": [
+        { "id": "asml", "reason": "ASML's extreme ultraviolet (EUV) lithography machines are the precision light engines inside TSMC's leading-edge fabs." },
+        { "id": "nvidia_research", "reason": "Every frontier NVIDIA AI supercomputer GPU is etched on TSMC's 4 nm/3 nm/2 nm silicon and stitched via CoWoS packaging." },
+        { "id": "imec", "reason": "Pre-competitive roadmap partner exploring CFET 3D-stacked transistors and sub-nanometer physics." }
+      ],
+      "projects": [
+        { "name": "N2 Nanosheet, A16 Backside Power & CoWoS Advanced 3D Packaging", "status": "ongoing", "url": "https://www.tsmc.com/english/dedicatedFoundry/technology/logic" }
+      ]
+    },
+    {
+      "id": "imec",
+      "name": "imec (Interuniversity Microelectronics Centre)",
+      "city": "Leuven, Belgium",
+      "country": "Belgium",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 50.8639,
+      "lng": 4.6808,
+      "zoom": 16.2,
+      "foundedYear": 1984,
+      "status": "active",
+      "url": "https://www.imec-int.com/",
+      "wiki": "https://en.wikipedia.org/wiki/IMEC",
+      "wikiSlug": "IMEC",
+      "summary": "The world's leading independent nanoelectronics and digital-technology R&D hub—operating 300 mm pilot cleanrooms with ASML High-NA EUV lithography, defining the global sub-1 nm CMOS roadmap, silicon photonics, and Neuropixels neural probes.",
+      "nobel": "Neutral global bridge uniting TSMC, Intel, Samsung, ASML, and Apple on future transistor physics, while also building the Neuropixels silicon probes revolutionizing neuroscience.",
+      "stages": {
+        "highschool": "Explore imec's explainer guides on how sub-nanometer transistors and photonic chips work.",
+        "undergrad": "imec Summer Internships in Leuven across nanoelectronics, photonics, and bio-chips.",
+        "masters": "MSc theses with KU Leuven, UGent, and VUB inside world-class 300 mm cleanrooms.",
+        "phd": "Fully funded imec PhD fellowships (400+ international doctoral researchers on-site).",
+        "postdoc": "Postdoctoral and Principal Member of Technical Staff tracks in High-NA EUV, CFETs, and spin qubits.",
+        "assoc_prof": "Joint industrial-academic programs via the EU Chips Act NanoIC pilot line.",
+        "prof": "Global semiconductor roadmap co-leadership at the annual ITF World symposium."
+      },
+      "next": ["asml", "tsmc_rd", "janelia_hhmi", "cea_leti"],
+      "rabbitLinks": [
+        { "id": "asml", "reason": "Operates the joint imec-ASML High-NA EUV Lithography Lab just 90 km south of Eindhoven." },
+        { "id": "janelia_hhmi", "reason": "Fabricated the revolutionary Neuropixels silicon probes allowing neuroscientists to record 1,000+ brain neurons simultaneously." },
+        { "id": "vib_ghent", "reason": "Partners across Belgium on silicon-chip DNA sequencing and single-cell microfluidic diagnostics." }
+      ],
+      "projects": [
+        { "name": "NanoIC High-NA EUV Pilot Line & Sub-Nanometer CFET Roadmap", "status": "ongoing", "url": "https://www.imec-int.com/en/expertise/cmos-advanced" },
+        { "name": "Neuropixels Silicon Neural Probes", "status": "ongoing", "url": "https://www.neuropixels.org/" }
+      ]
+    },
+    {
+      "id": "nasa_jpl",
+      "name": "NASA Jet Propulsion Laboratory (JPL)",
+      "city": "Pasadena, CA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 34.2013,
+      "lng": -118.1714,
+      "zoom": 15.8,
+      "foundedYear": 1936,
+      "status": "active",
+      "url": "https://www.jpl.nasa.gov/",
+      "wiki": "https://en.wikipedia.org/wiki/Jet_Propulsion_Laboratory",
+      "wikiSlug": "Jet_Propulsion_Laboratory",
+      "summary": "Managed by Caltech for NASA—humanity's flagship center for robotic deep-space exploration, operating the Deep Space Network and architect of Explorer 1, Voyager 1 & 2, Curiosity, Perseverance, Ingenuity Mars Helicopter, and Europa Clipper.",
+      "nobel": "First spacecraft to enter interstellar space (Voyager), first powered flight on another planet (Ingenuity on Mars, 72 flights), and continuous planetary robotics mastery.",
+      "stages": {
+        "highschool": "Explore NASA Eyes on the Solar System 3D live simulator and JPL Space Place engineering challenges.",
+        "undergrad": "JPL Summer Internship Program (SIP) and NASA USRP placements in robotics, GNC, and planetary science.",
+        "masters": "Systems engineering, flight software, and autonomous navigation roles in Pasadena.",
+        "phd": "NASA Postdoctoral Program (NPP) preparation and JPL Visiting Student Researchers Program (JVSRP).",
+        "postdoc": "NASA Postdoctoral Program (NPP) fellowships in exoplanet coronagraphs, ocean worlds, and Earth radar.",
+        "assoc_prof": "Principal Investigator instrument partnerships on Discovery, New Frontiers, and NISAR Earth missions.",
+        "prof": "Mission Science Team leadership shaping Mars Sample Return and Habitable Worlds Observatory."
+      },
+      "next": ["caltech", "esa_estec", "whoi", "cmu_scs"],
+      "rabbitLinks": [
+        { "id": "caltech", "reason": "Operated directly by Caltech—connecting Pasadena's theoretical astrophysics and optics labs to interplanetary spacecraft." },
+        { "id": "whoi", "reason": "Europa Clipper's search for a subsurface saltwater ocean mirrors WHOI's deep-sea hydrothermal vent exploration." },
+        { "id": "esa_estec", "reason": "Transatlantic space partners co-building Earth observation satellites, Mars missions, and space gravitational-wave detectors." }
+      ],
+      "projects": [
+        { "name": "Europa Clipper, Mars Perseverance & Deep Space Network", "status": "ongoing", "url": "https://www.jpl.nasa.gov/missions/" }
+      ]
+    },
+    {
+      "id": "esa_estec",
+      "name": "ESA ESTEC (European Space Research & Technology Centre)",
+      "city": "Noordwijk, Netherlands",
+      "country": "Netherlands",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 52.2179,
+      "lng": 4.4198,
+      "zoom": 16.0,
+      "foundedYear": 1968,
+      "status": "active",
+      "url": "https://www.esa.int/About_Us/ESTEC",
+      "wiki": "https://en.wikipedia.org/wiki/European_Space_Research_and_Technology_Centre",
+      "wikiSlug": "European_Space_Research_and_Technology_Centre",
+      "summary": "The European Space Agency's technical heart and largest establishment—housing the Large Space Simulator thermal-vacuum chamber and Concurrent Design Facility where Rosetta, Gaia, Euclid, Juice, and LISA are engineered and tested.",
+      "nobel": "Engineered Europe's landmark space missions including the first comet landing (Rosetta/Philae), 2-billion-star Gaia map, and upcoming LISA space gravitational-wave observatory.",
+      "stages": {
+        "highschool": "Visit Space Expo Noordwijk and compete in ESA CanSat and Astro Pi coding challenges.",
+        "undergrad": "ESA Academy Training Sessions and student CubeSat (Fly Your Satellite!) engineering tracks.",
+        "masters": "ESA Student Internships (3–6 months) and Young Graduate Trainee (YGT) 1–2 year program.",
+        "phd": "ESA Co-Sponsored PhD Research (OSIP) in electric propulsion, space optics, and orbital AI.",
+        "postdoc": "ESA Research Fellowships in Space Science (2–3 years) at ESTEC or ESAC Madrid.",
+        "assoc_prof": "Science Working Team roles defining upcoming ESA Voyage 2050 missions.",
+        "prof": "Lead European instrument consortia for LISA, Plato, Ariel, and Rosalind Franklin Mars rover."
+      },
+      "next": ["tudelft_aero", "nasa_jpl", "ligo", "dfki"],
+      "rabbitLinks": [
+        { "id": "tudelft_aero", "reason": "Just 25 km down the Dutch coast—TU Delft is ESTEC's closest academic partner for CubeSats and planetary entry." },
+        { "id": "ligo", "reason": "ESTEC is engineering LISA (2.5-million-km laser interferometer in space) to extend LIGO's gravitational-wave window to supermassive black holes." }
+      ],
+      "projects": [
+        { "name": "LISA Space Gravitational-Wave Observatory, Euclid & Juice", "status": "ongoing", "url": "https://www.esa.int/Science_Exploration/Space_Science" }
+      ]
+    },
+    {
+      "id": "boston_dynamics",
+      "name": "Boston Dynamics",
+      "city": "Waltham, MA, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "company",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 42.3982,
+      "lng": -71.2582,
+      "zoom": 16.0,
+      "foundedYear": 1992,
+      "status": "active",
+      "url": "https://bostondynamics.com/",
+      "wiki": "https://en.wikipedia.org/wiki/Boston_Dynamics",
+      "wikiSlug": "Boston_Dynamics",
+      "summary": "Spun out of Marc Raibert's MIT Leg Laboratory—the global icon of dynamic legged locomotion and mobile manipulation, engineering the Spot quadruped, Stretch warehouse robot, and all-electric Atlas humanoid.",
+      "nobel": "Transformed mobile robotics from slow static walking to parkour-grade whole-body dynamic control and autonomous industrial inspection.",
+      "stages": {
+        "highschool": "Study rigid-body dynamics, inverted pendulums, and C++/Python control loops.",
+        "undergrad": "Robotics software, actuator design, and perception internships in Waltham, MA.",
+        "masters": "Control theory, whole-body trajectory optimization, and RL locomotion engineering.",
+        "phd": "Research Scientist roles (including sister RAI Institute in Cambridge, MA) in athletic AI and dexterous hands.",
+        "postdoc": "Lead research in combining foundation-model vision-language planning with dynamic whole-body control.",
+        "assoc_prof": "Academic collaborations using the Spot SDK across university robotics labs worldwide.",
+        "prof": "Joint embodied-AI benchmarks with the Robotics & AI Institute (RAI) and Toyota Research Institute."
+      },
+      "next": ["mit_csail", "physical_intelligence", "eth_asl_rsl", "agility_robotics"],
+      "rabbitLinks": [
+        { "id": "mit_csail", "reason": "Born directly out of MIT's Leg Lab; remains anchored in Greater Boston's dense robotics corridor." },
+        { "id": "eth_asl_rsl", "reason": "Friendly transatlantic rival and collaborator pushing RL-trained legged robots into real mines, factories, and rough terrain." }
+      ],
+      "projects": [
+        { "name": "All-Electric Atlas Humanoid & Spot Autonomous Quadruped", "status": "ongoing", "url": "https://bostondynamics.com/atlas/" }
+      ]
+    },
+    {
+      "id": "eth_asl_rsl",
+      "name": "ETH Zurich Autonomous Systems & Robotic Systems Labs",
+      "city": "Zurich, Switzerland",
+      "country": "Switzerland",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 47.3782,
+      "lng": 8.5477,
+      "zoom": 16.3,
+      "foundedYear": 2006,
+      "status": "active",
+      "url": "https://rsl.ethz.ch/",
+      "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
+      "wikiSlug": "ETH_Zurich",
+      "summary": "World-leading European robotics powerhouse (Marco Hutter's RSL & Roland Siegwart's ASL)—creators of ANYmal quadrupeds, winners of the $2M DARPA Subterranean Challenge, and pioneers of massively parallel GPU reinforcement learning for real-world robots.",
+      "nobel": "Winner of the DARPA Subterranean Challenge (Team CERBERUS) and birthplace of Isaac Gym/Orbit sim-to-real legged locomotion.",
+      "stages": {
+        "highschool": "Watch ETH robotics demos showing quadrupeds hiking Swiss mountains and autonomously excavating stone walls.",
+        "undergrad": "ETH Mechanical Engineering / Robotics Focus Projects (building full solar cars, drones, or walking robots in 1 year).",
+        "masters": "ETH Zurich MSc in Robotics, Systems and Control (one of the world's top robotics master's degrees).",
+        "phd": "Fully salaried Swiss PhD positions in sim-to-real RL, autonomous construction, and planetary hopping robots.",
+        "postdoc": "ETH RobotX Center postdoctoral fellowships bridging Zurich AI with hardware spinouts (ANYbotics).",
+        "assoc_prof": "NCCR Robotics and European Horizon autonomous field-robotics consortia.",
+        "prof": "Global leadership in safe, agile field robotics for disaster response and space exploration."
+      },
+      "next": ["eth_ai_center", "boston_dynamics", "nvidia_research", "unitree_robotics"],
+      "rabbitLinks": [
+        { "id": "nvidia_research", "reason": "Pioneered training legged robot policies in minutes on a single GPU via massively parallel simulation (Isaac Lab)." },
+        { "id": "eth_ai_center", "reason": "Seamless fusion of reinforcement learning, 3D vision, and Swiss mechatronic engineering." }
+      ],
+      "projects": [
+        { "name": "ANYmal Field Locomotion & Lunar Legged Exploration Robots", "status": "ongoing", "url": "https://rsl.ethz.ch/robots-media.html" }
+      ]
+    },
+    {
+      "id": "tudelft_aero",
+      "name": "TU Delft Faculty of Aerospace Engineering",
+      "city": "Delft, Netherlands",
+      "country": "Netherlands",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 51.9901,
+      "lng": 4.3755,
+      "zoom": 16.0,
+      "foundedYear": 1940,
+      "status": "active",
+      "url": "https://www.tudelft.nl/en/ae",
+      "wiki": "https://en.wikipedia.org/wiki/Delft_University_of_Technology",
+      "wikiSlug": "Delft_University_of_Technology",
+      "summary": "Western Europe's largest aerospace faculty—driving sustainable blended-wing aircraft (Flying-V), liquid-hydrogen propulsion, wind-energy aerodynamics, ultra-lightweight flapping drones (MAVLab), and student-built CubeSats.",
+      "nobel": "Houses the SIMONA flight simulator, Open Jet Wind Tunnel, and Delft's world-champion autonomous drone racing and solar-car teams.",
+      "stages": {
+        "highschool": "Take TU Delft's free edX Introduction to Aeronautical Engineering MOOC.",
+        "undergrad": "English-taught BSc in Aerospace Engineering (attracting global talent to Delft).",
+        "masters": "MSc in Aerospace Engineering with tracks in Spaceflight, Aerodynamics, and Control & Simulation.",
+        "phd": "Fully salaried 4-year Dutch PhDs in zero-emission aviation, neuromorphic drone vision, and astrodynamics.",
+        "postdoc": "Postdoctoral fellowships partnering with ESA ESTEC, Airbus, and KLM.",
+        "assoc_prof": "Tenure-track faculty leading Europe's Clean Aviation hydrogen-aircraft consortia.",
+        "prof": "Chair leadership in sustainable air transport and planetary mission design."
+      },
+      "next": ["esa_estec", "qutech", "mit_aeroastro", "polimi_eng"],
+      "rabbitLinks": [
+        { "id": "esa_estec", "reason": "25 km from ESA's technical headquarters—Delft students and faculty design and test CubeSats and planetary landers directly with ESA." },
+        { "id": "qutech", "reason": "Shares the TU Delft campus, linking aerospace communications with future satellite quantum key distribution." }
+      ],
+      "projects": [
+        { "name": "Flying-V Blended Wing, Hydrogen Aviation & MAVLab Neuromorphic Drones", "status": "ongoing", "url": "https://www.tudelft.nl/en/ae/research" }
+      ]
+    },
+    {
+      "id": "rwth_aachen_eng",
+      "name": "RWTH Aachen University Engineering & Production Cluster",
+      "city": "Aachen, Germany",
+      "country": "Germany",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 50.7780,
+      "lng": 6.0784,
+      "zoom": 15.8,
+      "foundedYear": 1870,
+      "status": "active",
+      "url": "https://www.rwth-aachen.de/",
+      "wiki": "https://en.wikipedia.org/wiki/RWTH_Aachen_University",
+      "wikiSlug": "RWTH_Aachen_University",
+      "summary": "Germany's premier technical university and industrial-engineering ecosystem—pioneering the 'Internet of Production' Cluster of Excellence, laser additive manufacturing (Fraunhofer ILT), battery production, and next-gen electric powertrains.",
+      "nobel": "Home to Nobel laureate Peter Debye (former chair) and Europe's largest university-industry campus ecosystem (RWTH Aachen Campus).",
+      "stages": {
+        "highschool": "Explore RWTH's Schülerlabor engineering workshops in robotics, lasers, and e-mobility.",
+        "undergrad": "BSc in Mechanical, Electrical, or Computational Engineering Science with hands-on HiWi lab jobs.",
+        "masters": "MSc in Robotic Systems Engineering, Simulation Sciences, or Production Engineering.",
+        "phd": "Salaried doctoral engineer (Wissenschaftlicher Mitarbeiter) positions inside WZL and Fraunhofer institutes.",
+        "postdoc": "Postdoctoral leadership inside the Cluster of Excellence 'Internet of Production'.",
+        "assoc_prof": "Joint RWTH-Forschungszentrum Jülich appointments spanning exascale computing and energy.",
+        "prof": "Institute Directors partnering with 400+ industrial R&D firms on RWTH Campus."
+      },
+      "next": ["fraunhofer_ipa", "imec", "dfki", "asml"],
+      "rabbitLinks": [
+        { "id": "asml", "reason": "Less than 100 km from Eindhoven; RWTH laser physics (Fraunhofer ILT) and precision optics feed directly into European EUV lithography." },
+        { "id": "fraunhofer_ipa", "reason": "Co-anchors Germany's world-leading cyber-physical automation and battery-cell manufacturing research." }
+      ],
+      "projects": [
+        { "name": "Cluster of Excellence: Internet of Production & Battery Cell Manufacturing", "status": "ongoing", "url": "https://www.iop.rwth-aachen.de/" }
+      ]
+    },
+    {
+      "id": "fraunhofer_ipa",
+      "name": "Fraunhofer IPA (Manufacturing Engineering & Automation)",
+      "city": "Stuttgart, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 48.7426,
+      "lng": 9.1011,
+      "zoom": 16.0,
+      "foundedYear": 1959,
+      "status": "active",
+      "url": "https://www.ipa.fraunhofer.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Fraunhofer_Institute_for_Manufacturing_Engineering_and_Automation",
+      "wikiSlug": "Fraunhofer_Institute_for_Manufacturing_Engineering_and_Automation",
+      "summary": "One of the largest institutes of Germany's Fraunhofer-Gesellschaft—anchoring European industrial robotics, ROS-Industrial, Care-O-bot service humanoids, AI bin-picking, and cleanroom battery/biomanufacturing automation.",
+      "nobel": "Over 1,200 researchers translating cutting-edge robotics, AI vision, and quantum-inspired optimization into real European factories.",
+      "stages": {
+        "highschool": "Attend Stuttgart's open robotics showcases featuring Care-O-bot and collaborative factory arms.",
+        "undergrad": "Student Research Assistant (HiWi) and compulsory engineering internships.",
+        "masters": "MSc thesis collaborations with the University of Stuttgart in robotics and AI manufacturing.",
+        "phd": "Salaried doctoral research positions directly tied to industrial and EU Horizon robotics deployments.",
+        "postdoc": "Group Manager positions leading applied AI robotics and bio-automation teams.",
+        "assoc_prof": "Cross-appointments with University of Stuttgart's IFF and Cyber Valley Stuttgart.",
+        "prof": "Institute leadership bridging basic AI research with real-world manufacturing resilience."
+      },
+      "next": ["mpi_is", "rwth_aachen_eng", "dfki", "eth_asl_rsl"],
+      "rabbitLinks": [
+        { "id": "mpi_is", "reason": "Shares Stuttgart's Pfaffenwaldring campus—connecting Max Planck's basic physical intelligence with Fraunhofer factory automation." },
+        { "id": "rwth_aachen_eng", "reason": "Core pillars of Germany's Industry 4.0 and automated gigafactory research network." }
+      ],
+      "projects": [
+        { "name": "AI-Driven Robotics, Care-O-bot & ROS-Industrial Europe", "status": "ongoing", "url": "https://www.ipa.fraunhofer.de/en/expertise/robot-and-assistive-systems.html" }
+      ]
+    },
+    {
+      "id": "cea_leti",
+      "name": "CEA-Leti (Microelectronics & Nanotechnologies)",
+      "city": "Grenoble, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 45.1950,
+      "lng": 5.7026,
+      "zoom": 16.0,
+      "foundedYear": 1967,
+      "status": "active",
+      "url": "https://www.leti-cea.com/",
+      "wiki": "https://en.wikipedia.org/wiki/CEA-Leti",
+      "wikiSlug": "CEA-Leti",
+      "summary": "France's flagship microelectronics and nanotechnology institute on Grenoble's Polygone Scientifique—pioneering FD-SOI ultra-low-power chips, MEMS inertial sensors, silicon photonics, and CMOS-fabricated silicon spin qubits.",
+      "nobel": "Over 3,200 patents and 75+ deep-tech spinouts (including Soitec, Lynred, and Siquance quantum chips) anchored in the French Alps.",
+      "stages": {
+        "highschool": "Explore Grenoble's MINATEC micro- and nanotechnology campus public science days.",
+        "undergrad": "Engineering internships with Grenoble INP – UGA inside 200 mm and 300 mm cleanrooms.",
+        "masters": "M2 research placements in silicon photonics, neuromorphic edge AI, and quantum electronics.",
+        "phd": "Fully funded 3-year French CEA PhDs in quantum CMOS, GaN power electronics, and medical micro-sensors.",
+        "postdoc": "Postdoctoral fellowships on European Chips Act FD-SOI and cryogenic quantum control chips.",
+        "assoc_prof": "Joint CNRS / CEA-Leti / UGA collaborative laboratories.",
+        "prof": "Strategic European semiconductor sovereignty and photonic-interconnect program leadership."
+      },
+      "next": ["esrf", "imec", "inria_saclay", "cern"],
+      "rabbitLinks": [
+        { "id": "esrf", "reason": "Literally next door on Grenoble's Presqu'île—using ESRF's brilliant X-ray beams to inspect atomic defects inside 3D silicon chips." },
+        { "id": "imec", "reason": "Co-leads Europe's EU Chips Act pilot lines alongside imec Leuven and Fraunhofer." }
+      ],
+      "projects": [
+        { "name": "Silicon Spin Qubits in CMOS & FD-SOI Edge AI Pilot Line", "status": "ongoing", "url": "https://www.leti-cea.com/cea-tech/leti/english/Pages/What-We-Do.aspx" }
+      ]
+    },
+    {
+      "id": "samsung_sait",
+      "name": "Samsung Advanced Institute of Technology (SAIT)",
+      "city": "Suwon, South Korea",
+      "country": "South Korea",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 37.2546,
+      "lng": 127.0537,
+      "zoom": 15.8,
+      "foundedYear": 1987,
+      "status": "active",
+      "url": "https://www.sait.samsung.co.kr/",
+      "wiki": "https://en.wikipedia.org/wiki/Samsung_Advanced_Institute_of_Technology",
+      "wikiSlug": "Samsung_Advanced_Institute_of_Technology",
+      "summary": "Samsung's central long-horizon 'seed technology' R&D hub in Suwon—pioneering gate-all-around (GAA) MBCFET transistors, ultra-high-density High-Bandwidth Memory (HBM), cadmium-free quantum-dot displays, and 900 Wh/L all-solid-state batteries.",
+      "nobel": "Published breakthrough Nature Energy solid-state silver-carbon anode batteries and pioneered mass-produced 3 nm GAA silicon nanosheets.",
+      "stages": {
+        "highschool": "Explore how High-Bandwidth Memory (HBM) stacks 12+ DRAM dies vertically to feed AI GPUs.",
+        "undergrad": "Samsung Global Research Outreach (GRO) student projects and Korean university internships.",
+        "masters": "Semiconductor device physics, battery electrochemistry, and AI compiler engineering.",
+        "phd": "SAIT Research Staff recruiting top PhDs globally in 2D semiconductors, solid-state batteries, and neuromorphic memory.",
+        "postdoc": "Staff Researcher roles publishing in Nature, Science, and IEDM.",
+        "assoc_prof": "Samsung Global Research Outreach (GRO) competitive annual academic funding grants.",
+        "prof": "Joint industry-university roadmaps with KAIST, Seoul National University, and global fabs."
+      },
+      "next": ["kaist_ai", "tsmc_rd", "imec", "nvidia_research"],
+      "rabbitLinks": [
+        { "id": "kaist_ai", "reason": "Co-develops Processing-in-Memory (PIM) and next-gen HBM memory architectures to shatter the AI memory wall." },
+        { "id": "tsmc_rd", "reason": "Global counterpart pushing the physics frontier of 2 nm/1.4 nm Gate-All-Around nanosheet transistors." }
+      ],
+      "projects": [
+        { "name": "All-Solid-State Batteries, GAA Nanosheets & Processing-in-Memory", "status": "ongoing", "url": "https://www.sait.samsung.co.kr/saithome/research/research.do" }
+      ]
+    },
+    {
+      "id": "intel_hillsboro",
+      "name": "Intel Ronler Acres & Components Research",
+      "city": "Hillsboro, OR, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 45.5428,
+      "lng": -122.9154,
+      "zoom": 15.5,
+      "foundedYear": 1996,
+      "status": "active",
+      "url": "https://www.intel.com/content/www/us/en/research/overview.html",
+      "wiki": "https://en.wikipedia.org/wiki/Intel",
+      "wikiSlug": "Intel",
+      "summary": "Intel's global silicon process-development heartland ('Silicon Forest')—first fab in the world to assemble ASML's High-NA EUV lithography scanner, pioneering PowerVia backside power delivery, RibbonFET GAA transistors, and Loihi neuromorphic processors.",
+      "nobel": "Carries forward Gordon Moore's law with breakthrough packaging (Foveros Direct), High-NA EUV adoption, and silicon-spin quantum test chips (Tunnel Falls).",
+      "stages": {
+        "highschool": "Explore Intel's open neuromorphic computing community (INRC) and semiconductor fabrication tours.",
+        "undergrad": "Semiconductor process, verification, and silicon photonics internships in Hillsboro, Oregon.",
+        "masters": "Lithography, plasma etching, and computer architecture engineering roles.",
+        "phd": "Components Research & Intel Labs Scientist roles in glass substrates, 2D transistors, and quantum dots.",
+        "postdoc": "Research fellowships via the Semiconductor Research Corporation (SRC) and Intel Labs.",
+        "assoc_prof": "Intel Neuromorphic Research Community (INRC) free cloud access to Loihi 2 spiking neural chips.",
+        "prof": "Joint US CHIPS Act university partnerships with MIT, Stanford, UC Berkeley, and Oregon State."
+      },
+      "next": ["asml", "tsmc_rd", "imec", "agility_robotics"],
+      "rabbitLinks": [
+        { "id": "asml", "reason": "First facility on Earth to install and qualify ASML's 150-ton High-NA EUV lithography machine for sub-2 nm chips." },
+        { "id": "qutech", "reason": "Longtime partner with Delft's QuTech fabricating silicon-spin quantum chips on commercial 300 mm CMOS wafer lines." }
+      ],
+      "projects": [
+        { "name": "High-NA EUV 18A/14A Process, PowerVia & Loihi 2 Neuromorphic Chips", "status": "ongoing", "url": "https://www.intel.com/content/www/us/en/research/overview.html" }
+      ]
+    },
+    {
+      "id": "arm_research",
+      "name": "Arm Research",
+      "city": "Cambridge, United Kingdom",
+      "country": "United Kingdom",
+      "group": "company",
+      "entityType": "company",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 52.1823,
+      "lng": 0.1815,
+      "zoom": 16.0,
+      "foundedYear": 1990,
+      "status": "active",
+      "url": "https://www.arm.com/research",
+      "wiki": "https://en.wikipedia.org/wiki/Arm_(company)",
+      "wikiSlug": "Arm_(company)",
+      "summary": "Born out of Cambridge's Acorn Computers—architect of the power-efficient RISC instruction set shipped in over 300 billion chips spanning smartphones, Apple Silicon, Raspberry Pi, NVIDIA Grace AI supercomputers, and Japan's Fugaku supercomputer.",
+      "nobel": "Sophie Wilson and Steve Furber's original ARM1 architecture (1985) sparked the mobile and energy-efficient computing revolution.",
+      "stages": {
+        "highschool": "Program bare-metal microcontrollers and Raspberry Pi boards powered by Arm Cortex cores.",
+        "undergrad": "Arm Cambridge, Austin, and Bengaluru summer internships in CPU microarchitecture and ML compilers.",
+        "masters": "Arm Education academic kits and hardware verification engineering roles.",
+        "phd": "Arm Research PhD internships in CHERI hardware security, flexible plastic electronics, and confidential AI.",
+        "postdoc": "Principal Research Engineer tracks in scalable vector extensions (SVE2) for HPC and AI.",
+        "assoc_prof": "Arm Academic Access providing free commercial RTL IP to universities worldwide.",
+        "prof": "Joint UKRI Morello / CHERI hardware-security architecture leadership with Cambridge Computer Lab."
+      },
+      "next": ["cambridge_cst", "apple_ml", "nvidia_research", "riken"],
+      "rabbitLinks": [
+        { "id": "cambridge_cst", "reason": "Co-built the Morello prototype processor implementing Cambridge's CHERI memory-safe hardware capabilities." },
+        { "id": "riken", "reason": "Japan's RIKEN Fugaku exascale-class supercomputer proved Arm architecture can dominate scientific HPC." }
+      ],
+      "projects": [
+        { "name": "Morello CHERI Hardware Security & Armv9 AI/HPC Architectures", "status": "ongoing", "url": "https://www.arm.com/research" }
+      ]
+    },
+    {
+      "id": "agility_robotics",
+      "name": "Agility Robotics",
+      "city": "Corvallis, OR, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "startup",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 44.5646,
+      "lng": -123.2620,
+      "zoom": 15.8,
+      "foundedYear": 2015,
+      "status": "active",
+      "url": "https://agilityrobotics.com/",
+      "wiki": "https://en.wikipedia.org/wiki/Agility_Robotics",
+      "wikiSlug": "Agility_Robotics",
+      "summary": "Spun out of Jonathan Hurst's Dynamic Robotics Lab at Oregon State University—creator of the spring-mass Cassie biped (Guinness World Record 100 m bipedal run) and Digit, one of the first humanoid robots commercially deployed in logistics.",
+      "nobel": "Pioneered bio-inspired spring-loaded inverted pendulum (SLIP) bipedal running and RoboFab, the world's first dedicated humanoid factory in Salem, Oregon.",
+      "stages": {
+        "highschool": "Explore bio-inspired biomechanics showing how ostriches and humans reuse elastic leg energy.",
+        "undergrad": "Oregon State University robotics research and Agility summer internships.",
+        "masters": "Mechatronics, locomotion control, and safety-certified humanoid systems engineering.",
+        "phd": "Reinforcement learning and whole-body mobile manipulation scientist positions.",
+        "postdoc": "Lead controls and fleet-autonomy research scaling multi-humanoid warehouse operations.",
+        "assoc_prof": "Academic collaborations on human-robot safety standards and sim-to-real bipedal locomotion.",
+        "prof": "Advisory work bridging university biomechanics with real-world embodied AI deployment."
+      },
+      "next": ["boston_dynamics", "physical_intelligence", "intel_hillsboro", "gatech_irim"],
+      "rabbitLinks": [
+        { "id": "boston_dynamics", "reason": "Together represent America's pioneering wave of real-world dynamic bipedal humanoids." },
+        { "id": "physical_intelligence", "reason": "Pairing commercial humanoid bodies like Digit with Vision-Language-Action policies unlocks general tasks." }
+      ],
+      "projects": [
+        { "name": "Digit Bipedal Humanoid & RoboFab Commercial Deployment", "status": "ongoing", "url": "https://agilityrobotics.com/products/digit" }
+      ]
+    },
+    {
+      "id": "mit_aeroastro",
+      "name": "MIT Department of Aeronautics and Astronautics (AeroAstro)",
+      "city": "Cambridge, MA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": true,
+      "lat": 42.3607,
+      "lng": -71.0933,
+      "zoom": 16.4,
+      "foundedYear": 1914,
+      "status": "active",
+      "url": "https://aeroastro.mit.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/MIT_Department_of_Aeronautics_and_Astronautics",
+      "wikiSlug": "MIT_Department_of_Aeronautics_and_Astronautics",
+      "summary": "America's oldest aerospace engineering department—birthplace of the Apollo Guidance Computer (Margaret Hamilton & Draper Lab), electric electrospray thrusters, solid-state ionic-wind flight, and the MOXIE oxygen generator on Mars.",
+      "nobel": "Built MOXIE aboard NASA Perseverance—proving oxygen can be synthesized directly from the Martian CO2 atmosphere—and trained over 30 NASA astronauts.",
+      "stages": {
+        "highschool": "Take MIT OCW 16.00x Introduction to Aerospace Engineering and Beaver Works autonomous drone courses.",
+        "undergrad": "Course 16 BSc with MIT UROP hands-on satellite, rocket, and autonomous UAV builds.",
+        "masters": "SM in Aeronautics and Astronautics across propulsion, autonomy, and space systems.",
+        "phd": "Fully funded PhD in astrodynamics, hybrid-electric aviation, and human-spaceflight bioastronautics.",
+        "postdoc": "Postdoctoral fellowships in MIT Space Propulsion Lab and Aerospace Controls Lab.",
+        "assoc_prof": "Principal Investigator collaborations with NASA JPL, MIT Lincoln Lab, and Draper.",
+        "prof": "Leadership shaping sustainable electric aviation and lunar/Martian in-situ resource utilization."
+      },
+      "next": ["mit", "nasa_jpl", "tudelft_aero", "mit_csail"],
+      "rabbitLinks": [
+        { "id": "nasa_jpl", "reason": "MIT AeroAstro's MOXIE instrument flew aboard JPL's Perseverance rover to manufacture breathable oxygen on Mars." },
+        { "id": "mit_csail", "reason": "Jointly pioneers safe autonomous aerial swarms, formal verification for flight software, and space robotics." }
+      ],
+      "projects": [
+        { "name": "MOXIE Mars Oxygen ISRU, Electrospray Thrusters & Hybrid Aviation", "status": "ongoing", "url": "https://aeroastro.mit.edu/research/" }
+      ]
+    },
+    {
+      "id": "gatech_irim",
+      "name": "Georgia Tech Institute for Robotics and Intelligent Machines (IRIM)",
+      "city": "Atlanta, GA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 33.7773,
+      "lng": -84.3973,
+      "zoom": 16.2,
+      "foundedYear": 2013,
+      "status": "active",
+      "url": "https://research.gatech.edu/robotics",
+      "wiki": "https://en.wikipedia.org/wiki/Georgia_Tech",
+      "wikiSlug": "Georgia_Tech",
+      "summary": "One of the largest interdisciplinary university robotics hubs in the United States, uniting 100+ faculty across mechanical, aerospace, and CS to advance powered robotic exoskeletons, autonomous racing, soft bio-robots, and lunar rovers.",
+      "nobel": "Home to the first interdisciplinary Robotics PhD program in the US and pioneering AI-driven wearable prosthetics (EPIC Lab).",
+      "stages": {
+        "highschool": "Explore Georgia Tech's Robotarium—a free remotely accessible swarm-robotics arena open to students globally.",
+        "undergrad": "NSF REU and VIP (Vertically Integrated Projects) building underwater, aerial, and legged robots.",
+        "masters": "MS in Robotics (cross-listed across CS, ECE, ME, AE, and BME) plus Georgia Tech OMSCS.",
+        "phd": "Dedicated Interdisciplinary PhD in Robotics spanning perception, control, and human-robot interaction.",
+        "postdoc": "Postdoctoral fellowships in exoskeleton biomechanics, autonomous off-road driving, and swarm control.",
+        "assoc_prof": "NSF AI Institute for Advances in Optimization (AI4OPT) and NASA Lunar Robotics grants.",
+        "prof": "Leadership shaping accessible robotic healthcare and real-time multi-robot autonomy."
+      },
+      "next": ["cmu_scs", "agility_robotics", "mit_csail", "utokyo_jsk"],
+      "rabbitLinks": [
+        { "id": "cmu_scs", "reason": "Co-anchors US university robotics education with the nation's flagship dedicated Robotics PhD tracks." },
+        { "id": "agility_robotics", "reason": "Georgia Tech controls labs extensively benchmark nonlinear bipedal walking on Cassie and Digit hardware." }
+      ],
+      "projects": [
+        { "name": "The Robotarium Open Swarm Testbed & AI Wearable Exoskeletons", "status": "ongoing", "url": "https://www.robotarium.gatech.edu/" }
+      ]
+    },
+    {
+      "id": "utokyo_jsk",
+      "name": "University of Tokyo JSK Robotics Laboratory",
+      "city": "Tokyo, Japan",
+      "country": "Japan",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 35.7138,
+      "lng": 139.7610,
+      "zoom": 16.3,
+      "foundedYear": 1982,
+      "status": "active",
+      "url": "https://www.jsk.t.u-tokyo.ac.jp/",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_Tokyo",
+      "wikiSlug": "University_of_Tokyo",
+      "summary": "Founded by Hirochika Inoue and led by Masayuki Inaba & Kei Okada—legendary Tokyo robotics lab famed for musculoskeletal tendon-driven humanoids (Kengoro & Musashi that sweat to cool motors), real-world household manipulation, and disaster-response humanoids.",
+      "nobel": "Pioneered whole-body musculoskeletal humanoids mimicking human bone-muscle geometry and open-source ROS integration in Asia.",
+      "stages": {
+        "highschool": "Watch JSK demos of musculoskeletal humanoid Kengoro doing push-ups and driving real cars.",
+        "undergrad": "University of Tokyo Mechano-Informatics undergraduate lab rotations on Hongo Campus.",
+        "masters": "MSc in Mechano-Informatics building full-scale humanoid, aerial, and dexterous hand systems.",
+        "phd": "MEXT and UTokyo PhD fellowships fusing bio-inspired hardware with multimodal LLM planning.",
+        "postdoc": "JSPS Postdoctoral Fellowships in tendon-driven robotics and embodied AI.",
+        "assoc_prof": "Cross-lab collaborations with RIKEN AIP and Japanese industrial robotics leaders.",
+        "prof": "Global leadership in safe human-centered robotics for aging societies."
+      },
+      "next": ["utokyo", "riken_aip", "boston_dynamics", "unitree_robotics"],
+      "rabbitLinks": [
+        { "id": "utokyo", "reason": "Embedded inside the University of Tokyo's historic Hongo Campus alongside Nobel-winning physics groups." },
+        { "id": "riken_aip", "reason": "Collaborates across Tokyo to pair musculoskeletal robot bodies with vision-language foundation models." }
+      ],
+      "projects": [
+        { "name": "Musculoskeletal Humanoids (Kengoro / Musashi) & Household Embodied AI", "status": "ongoing", "url": "https://www.jsk.t.u-tokyo.ac.jp/research/" }
+      ]
+    },
+    {
+      "id": "iit_bombay_eng",
+      "name": "IIT Bombay Engineering & Nanofabrication Centre",
+      "city": "Mumbai, India",
+      "country": "India",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 19.1334,
+      "lng": 72.9133,
+      "zoom": 16.0,
+      "foundedYear": 1958,
+      "status": "active",
+      "url": "https://www.iitb.ac.in/",
+      "wiki": "https://en.wikipedia.org/wiki/IIT_Bombay",
+      "wikiSlug": "IIT_Bombay",
+      "summary": "India's premier engineering and nanofabrication campus beside Powai Lake—anchoring the IITBNF cleanroom (India's national semiconductor user facility), open-source RISC-V processors, solar photovoltaics (NCPRE), and student microsatellites.",
+      "nobel": "Trained generations of global tech and science leaders while leading India's indigenous semiconductor, clean-energy, and space-engineering initiatives.",
+      "stages": {
+        "highschool": "Compete in JEE Advanced and explore IIT Bombay's free e-Yantra robotics and FOSSEE open-source portals.",
+        "undergrad": "BTech in Electrical, Aerospace, Mechanical, or Engineering Physics with IITB Racing / Student Satellite teams.",
+        "masters": "MTech in Microelectronics, Robotics, and Energy Science with hands-on IITBNF cleanroom fabrication.",
+        "phd": "Prime Minister's Research Fellowship (PMRF) and IITB-Monash Joint PhD Program.",
+        "postdoc": "Institute Postdoctoral Fellowships in GaN semiconductors, silicon photonics, and grid solar.",
+        "assoc_prof": "Principal Investigators steering India's Semiconductor Mission academic chip tape-outs.",
+        "prof": "National chairs uniting Powai's engineering labs with TIFR and ISRO space missions."
+      },
+      "next": ["tifr", "iitm_rbcdsai", "iisc", "imec"],
+      "rabbitLinks": [
+        { "id": "tifr", "reason": "Mumbai's twin science-and-engineering pillars—linking fundamental physics & math in Colaba with nanofabrication in Powai." },
+        { "id": "imec", "reason": "Collaborates internationally on India's emerging semiconductor fabrication and academic cleanroom training." }
+      ],
+      "projects": [
+        { "name": "IITB Nanofabrication Facility (IITBNF) & National Centre for Photovoltaic R&E", "status": "ongoing", "url": "https://www.ee.iitb.ac.in/~nano/" }
+      ]
+    },
+    {
+      "id": "polimi_eng",
+      "name": "Politecnico di Milano Engineering & Aerospace",
+      "city": "Milan, Italy",
+      "country": "Italy",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 45.4781,
+      "lng": 9.2273,
+      "zoom": 16.0,
+      "foundedYear": 1863,
+      "status": "active",
+      "url": "https://www.polimi.it/",
+      "wiki": "https://en.wikipedia.org/wiki/Politecnico_di_Milano",
+      "wikiSlug": "Politecnico_di_Milano",
+      "summary": "Italy's largest technical university—where Giulio Natta won the 1963 Chemistry Nobel for isotactic polypropylene—today excelling in deep-space CubeSat astrodynamics (DART/LICIACube & Milani), autonomous racecars (Indy Autonomous Challenge champions), and quantum photonics.",
+      "nobel": "Giulio Natta won the 1963 Nobel Prize in Chemistry here; PoliMOVE won consecutive Indy Autonomous Challenge world championships.",
+      "stages": {
+        "highschool": "Explore Politecnico di Milano's PoliCollege online STEM courses for high schoolers.",
+        "undergrad": "BSc in Aerospace, Automation, Materials, or Mathematical Engineering.",
+        "masters": "English-taught MSc in Space Engineering, Robotics, and Photonics attracting global cohorts.",
+        "phd": "Fully funded Italian PhD scholarships in autonomous planetary guidance, metamaterials, and wind energy.",
+        "postdoc": "Marie Skłodowska-Curie and ERC-funded postdoctoral fellowships in Milan.",
+        "assoc_prof": "Principal Investigators on ESA Hera/Milani asteroid-deflection CubeSat missions.",
+        "prof": "European leadership across quantum integrated optics, sustainable transport, and deep-space GNC."
+      },
+      "next": ["esa_estec", "tudelft_aero", "eth_asl_rsl", "icfo"],
+      "rabbitLinks": [
+        { "id": "esa_estec", "reason": "PoliMi's DART Lab designs autonomous optical navigation for ESA's Hera/Milani asteroid-defense CubeSats." },
+        { "id": "icfo", "reason": "Collaborates across Southern Europe on femtosecond-laser written photonic chips for quantum computing." }
+      ],
+      "projects": [
+        { "name": "Deep-Space CubeSat Astrodynamics (Milani / LUMIO) & PoliMOVE Autonomy", "status": "ongoing", "url": "https://www.aero.polimi.it/en/" }
+      ]
+    },
+    {
+      "id": "unitree_robotics",
+      "name": "Unitree Robotics",
+      "city": "Hangzhou, China",
+      "country": "China",
+      "group": "company",
+      "entityType": "startup",
+      "discipline": "engineering",
+      "branch": "engineering",
+      "pinned": false,
+      "lat": 30.2084,
+      "lng": 120.2120,
+      "zoom": 15.8,
+      "foundedYear": 2016,
+      "status": "active",
+      "url": "https://www.unitree.com/",
+      "wiki": "https://en.wikipedia.org/wiki/Unitree_Robotics",
+      "wikiSlug": "Unitree_Robotics",
+      "summary": "Hangzhou-based legged-robotics pioneer founded by Wang Xingxing—democratizing high-torque, agile quadruped (Go2, B2) and full-size humanoid (H1, G1) hardware with open SDKs used by hundreds of university embodied-AI labs worldwide.",
+      "nobel": "Broke the cost barrier for dynamic legged hardware, enabling global RL labs (Berkeley, Stanford, CMU, ETH) to train real-world humanoid policies at scale.",
+      "stages": {
+        "highschool": "Simulate Unitree Go2 and G1 robots for free in MuJoCo or Isaac Lab to learn reinforcement learning control.",
+        "undergrad": "Open-source RL locomotion projects using Unitree SDKs and ROS 2 in university labs.",
+        "masters": "Embedded motor-control, quasi-direct-drive actuator design, and sim-to-real robotics engineering.",
+        "phd": "Embodied AI and whole-body dexterous control scientist roles in Hangzhou and Shanghai.",
+        "postdoc": "Lead research integrating Vision-Language-Action foundation models onto mass-produced humanoid bodies.",
+        "assoc_prof": "Deploy affordable Go2/G1 fleets as standardized academic research benchmarks.",
+        "prof": "Global open-benchmark collaborations advancing safe physical AI and dynamic balance."
+      },
+      "next": ["deepseek", "eth_asl_rsl", "boston_dynamics", "berkeley_bair"],
+      "rabbitLinks": [
+        { "id": "deepseek", "reason": "Fellow Hangzhou 'Six Little Dragons' deep-tech pioneer uniting open AI reasoning with accessible physical robot hardware." },
+        { "id": "berkeley_bair", "reason": "Unitree G1 and Go2 serve as the de facto hardware testbeds for sim-to-real humanoid papers at Berkeley, Stanford, and CMU." }
+      ],
+      "projects": [
+        { "name": "Unitree G1/H1 Open-SDK Humanoids & Go2/B2 Agile Quadrupeds", "status": "ongoing", "url": "https://www.unitree.com/g1/" }
+      ]
+    }
+  ]
+}

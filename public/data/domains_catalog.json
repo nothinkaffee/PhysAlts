@@ -199,7 +199,7 @@
             "What physical limits govern sub-nanometer optical lithography?"
           ],
           "materials": [
-            { "title": "Photonic Crystals: Molding the Flow of Light (Open Textbook)", "type": "book", "provider": "MIT Photonic Crystals Group", "url": "https://meep.readthedocs.io/en/latest/" },
+            { "title": "MEEP Open-Source FDTD Photonics & Photonic Crystals Documentation", "type": "reference", "provider": "MIT Photonic Crystals Group", "url": "https://meep.readthedocs.io/en/latest/" },
             { "title": "arXiv Optics (physics.optics)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/physics.optics/recent" }
           ],
           "projects": [
@@ -238,7 +238,7 @@
             "Does dark energy evolve dynamically rather than remaining Einstein's cosmological constant?"
           ],
           "materials": [
-            { "title": "Cosmology Lecture Notes", "type": "book", "provider": "Daniel Baumann (University of Amsterdam / Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/cosmo.html" },
+            { "title": "Cosmology Lecture Notes", "type": "book", "provider": "David Tong (University of Cambridge)", "url": "https://www.damtp.cam.ac.uk/user/tong/cosmo.html" },
             { "title": "Sloan Digital Sky Survey (SDSS) Open Data", "type": "dataset", "provider": "SDSS Collaboration", "url": "https://www.sdss.org/" },
             { "title": "MIT 8.902 Astrophysics II", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/8-902-astrophysics-ii-fall-2004/" }
           ],

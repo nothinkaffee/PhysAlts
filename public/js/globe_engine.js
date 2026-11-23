@@ -14,6 +14,54 @@ const FONT_STACK = "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif";
 const TILE_CACHE_NAME = "world-physics-tiles-v1";
 const ESRI_SAT_TEMPLATE = "https://services.arcgisonline.com/arcgis/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}";
 
+const RESTING_GLOBE_CENTER = [12, 20];
+const TOP_UI_SAFE_PX = 88;
+const BOTTOM_UI_SAFE_PX = 96;
+const SIDE_UI_SAFE_PX = 16;
+const GLOBE_MIN_ZOOM = 0.55;
+const GLOBE_MAX_RESTING_ZOOM = 2.15;
+
+/**
+ * Exact silhouette radius (CSS px) of the 3D Earth sphere in MapLibre GL JS v5 globe projection
+ * at pitch = 0 (default vertical FOV ~36.87 deg => tan(fov/2) = 1/3 => cameraToCenterDistance = 1.5 * H).
+ */
+function getGlobeRadiusPx(viewportHeight, zoom, latDeg = RESTING_GLOBE_CENTER[1]) {
+  const h = Math.max(240, viewportHeight || 800);
+  const dc = 1.5 * h;
+  const cosLat = Math.max(0.15, Math.cos((latDeg * Math.PI) / 180));
+  const sphereR = (256 * Math.pow(2, zoom)) / (Math.PI * cosLat);
+  return sphereR / Math.sqrt(1 + (2 * sphereR) / dc);
+}
+
+/**
+ * Compute responsive resting zoom so the entire 3D Earth sphere + orbital rim halo
+ * fits cleanly inside the visible viewport between the top island (~88px) and bottom dock (~96px).
+ */
+export function getRestingGlobeZoom(container = null, latDeg = RESTING_GLOBE_CENTER[1]) {
+  const el = container || (typeof document !== "undefined" ? document.getElementById("map") : null);
+  const w = el?.clientWidth || el?.width || (typeof window !== "undefined" ? window.innerWidth : 1280);
+  const h = el?.clientHeight || el?.height || (typeof window !== "undefined" ? window.innerHeight : 800);
+
+  const safeW = Math.max(220, w - SIDE_UI_SAFE_PX * 2);
+  const safeH = Math.max(220, h - TOP_UI_SAFE_PX - BOTTOM_UI_SAFE_PX);
+  // Sphere is centered vertically at h/2; ensure clearance above bottom dock & below top island
+  const symSafeH = Math.max(220, Math.min(safeH, (h / 2 - Math.max(TOP_UI_SAFE_PX, BOTTOM_UI_SAFE_PX)) * 2));
+
+  const targetRadiusPx = Math.min(safeW * 0.38, symSafeH * 0.36);
+  const dc = 1.5 * Math.max(240, h);
+  const k = targetRadiusPx / dc;
+  const sphereR = targetRadiusPx * (k + Math.sqrt(1 + k * k));
+  const cosLat = Math.max(0.15, Math.cos((latDeg * Math.PI) / 180));
+  const rawZoom = Math.log2((sphereR * Math.PI * cosLat) / 256);
+
+  return Math.round(Math.max(GLOBE_MIN_ZOOM, Math.min(GLOBE_MAX_RESTING_ZOOM, rawZoom)) * 100) / 100;
+}
+
+function getMinGlobeZoom(container = null) {
+  const resting = getRestingGlobeZoom(container);
+  return Math.round(Math.min(GLOBE_MIN_ZOOM, Math.max(0.45, resting - 0.15)) * 100) / 100;
+}
+
 // Clean Inter country/region labels toggled by the "Labels" pill (replaces pixelated Esri raster text)
 const WORLD_REGION_LABELS = [
   { name: "United States", lng: -98.5, lat: 39.8, minZ: 1.2 },
@@ -200,7 +248,7 @@ function nodePriority(n) {
 }
 
 function getAnchoredClusters(zoom) {
-  const zb = Math.max(1, Math.min(9.5, Math.floor(zoom * 2) / 2));
+  const zb = Math.max(0.5, Math.min(9.5, Math.floor(zoom * 2) / 2));
   const key = `${geoClusterVersion}:${zb}:${store.state.selectedId || ""}`;
   if (geoClusterCache.has(key)) return geoClusterCache.get(key);
 
@@ -629,10 +677,10 @@ function initGlobeHudOverlay() {
     let clusterHint = null;
 
     // Safe UI exclusion margins & live fixed-panel masks
-    const safeTop = 82;
-    const safeBottom = h - 84;
-    const safeLeft = 16;
-    const safeRight = w - 16;
+    const safeTop = TOP_UI_SAFE_PX;
+    const safeBottom = h - BOTTOM_UI_SAFE_PX;
+    const safeLeft = SIDE_UI_SAFE_PX;
+    const safeRight = w - SIDE_UI_SAFE_PX;
 
     const uiZones = getUiZones(forceUiMeasure);
     const underUi = (x, y, r) => uiZones.some(z => x + r > z.left - 6 && x - r < z.right + 6 && y + r > z.top - 6 && y - r < z.bottom + 6);
@@ -951,7 +999,7 @@ function initGlobeHudOverlay() {
     }
 
     interactiveHits = hits;
-    if (QA_HOOKS) window.__qaGlobe = { hits, zoom: map.getZoom() };
+    if (QA_HOOKS) window.__qaGlobe = { hits, zoom: map.getZoom(), restingZoom: getRestingGlobeZoom(container) };
   };
 
   drawHudFn = () => {
@@ -1157,11 +1205,15 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
     }
   } catch {}
 
+  const mapContainer = document.getElementById("map");
+  const initialZoom = getRestingGlobeZoom(mapContainer, RESTING_GLOBE_CENTER[1]);
+  const initialMinZoom = getMinGlobeZoom(mapContainer);
+
   map = new window.maplibregl.Map({
     container: "map",
-    center: [12, 30],
-    zoom: 1.95,
-    minZoom: 1.2,
+    center: RESTING_GLOBE_CENTER,
+    zoom: initialZoom,
+    minZoom: initialMinZoom,
     maxZoom: 17.0,
     pitch: 0,
     bearing: 0,
@@ -1255,17 +1307,17 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
     const draw = (now) => {
       if (store.state.viewMode === "earth") {
         bctx.clearRect(0, 0, w, h);
-        const c = map?.getCenter?.() || { lng: 12, lat: 30 };
-        const z = map?.getZoom?.() ?? 1.95;
+        const c = map?.getCenter?.() || { lng: RESTING_GLOBE_CENTER[0], lat: RESTING_GLOBE_CENTER[1] };
+        const z = map?.getZoom?.() ?? initialZoom;
         const px = (-c.lng / 360) * 0.22;
         const py = (c.lat / 180) * 0.12;
         const t = now * 0.001;
 
         // Subtle monochrome orbital rim halo behind the 3D Earth sphere (fades out cleanly as you zoom in)
         if (z < 4.4) {
-          const haloStrength = Math.max(0, 1 - (z - 1.2) / 3.2);
-          const globeR = Math.min(w, h) * 0.34 * Math.pow(2, (z - 1.95) * 0.62);
-          const grad = bctx.createRadialGradient(w * 0.5, h * 0.5, globeR * 0.82, w * 0.5, h * 0.5, globeR * 1.42);
+          const haloStrength = Math.max(0, Math.min(1, 1 - (z - 1.0) / 3.4));
+          const globeR = getGlobeRadiusPx(h, z, c.lat);
+          const grad = bctx.createRadialGradient(w * 0.5, h * 0.5, globeR * 0.88, w * 0.5, h * 0.5, globeR * 1.32);
           grad.addColorStop(0, `rgba(244, 244, 245, ${(0.10 * haloStrength).toFixed(3)})`);
           grad.addColorStop(0.55, `rgba(212, 212, 216, ${(0.04 * haloStrength).toFixed(3)})`);
           grad.addColorStop(1, "rgba(0, 0, 0, 0)");
@@ -1288,15 +1340,24 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
     requestAnimationFrame(draw);
   })();
 
+  const syncViewportBounds = () => {
+    if (!map) return;
+    const mapEl = document.getElementById("map");
+    const nextMin = getMinGlobeZoom(mapEl);
+    if (typeof map.setMinZoom === "function" && Math.abs(map.getMinZoom() - nextMin) > 0.01) {
+      map.setMinZoom(nextMin);
+    }
+    map.resize();
+  };
+
   if (typeof ResizeObserver !== "undefined") {
     const mapEl = document.getElementById("map");
     if (mapEl) {
-      const ro = new ResizeObserver(() => {
-        if (map) map.resize();
-      });
+      const ro = new ResizeObserver(syncViewportBounds);
       ro.observe(mapEl);
     }
   }
+  window.addEventListener("resize", syncViewportBounds, { passive: true });
 
   map.on("style.load", () => {
     if (!useMainThreadOverlay) {
@@ -1393,11 +1454,15 @@ export function flyToHub(node, zoomOverride = null) {
   });
 }
 
-export function resetGlobeToSpace(center = [15, 26], zoom = 1.95) {
+export function resetGlobeToSpace(center = RESTING_GLOBE_CENTER, zoom = null) {
   if (!map) return;
+  const targetCenter = Array.isArray(center) && center.length === 2 ? center : RESTING_GLOBE_CENTER;
+  const targetZoom = Number.isFinite(zoom)
+    ? zoom
+    : getRestingGlobeZoom(map.getContainer?.(), targetCenter[1]);
   map.easeTo({
-    center,
-    zoom,
+    center: targetCenter,
+    zoom: targetZoom,
     pitch: 0,
     bearing: 0,
     duration: 750,
@@ -1405,6 +1470,8 @@ export function resetGlobeToSpace(center = [15, 26], zoom = 1.95) {
     essential: true
   });
 }
+
+export const resetGlobeToRest = resetGlobeToSpace;
 
 export function setGlobeLabels(visible) {
   store.state.labels = Boolean(visible);

@@ -15,8 +15,8 @@ export function proxyUrl(url) {
 
 export const SUBJECT_CONFIG = {
   id: "physalts",
-  appName: "World of Physics",
-  tagline: "World of Physics",
+  appName: "World of Science",
+  tagline: "World of Physics, AI & STEM",
   storagePrefix: "physalts_v2_",
   dataFiles: {
     flagships: "./data/curated_flagships.json",
@@ -26,20 +26,44 @@ export const SUBJECT_CONFIG = {
     spaceFrontier: "./data/space_frontier.json",
     domainsCatalog: "./data/domains_catalog.json",
     verificationReport: "./data/verification_report.json",
-    provenanceLedger: "./data/provenance_ledger.json"
+    provenanceLedger: "./data/provenance_ledger.json",
+    stemAiCs: "./data/stem/ai_cs_hubs.json",
+    stemMath: "./data/stem/math_hubs.json",
+    stemBioMed: "./data/stem/bio_med_hubs.json",
+    stemChemEarthEng: "./data/stem/chem_earth_eng_hubs.json",
+    stemTimeline: "./data/stem/stem_timeline.json",
+    stemDomains: "./data/stem/stem_domains.json",
+    rabbitTrails: "./data/stem/rabbit_trails.json"
   }
 };
 
+export const STEM_DISCIPLINES = [
+  { id: "all",            label: "All STEM",        short: "All STEM",    desc: "Physics, AI, Math, Biology, Chemistry, Earth & Engineering" },
+  { id: "physics",        label: "Physics & Space", short: "Physics",     desc: "Colliders, quantum, cosmology, fusion & condensed matter" },
+  { id: "ai_cs",          label: "AI & Computing",  short: "AI & CS",     desc: "Frontier AI labs, deep learning, robotics & CS theory" },
+  { id: "math",           label: "Mathematics",     short: "Math",        desc: "Pure & applied math institutes, geometry & foundations" },
+  { id: "bio_med",        label: "Biology & Bio",   short: "Biology",     desc: "Genomics, CRISPR, neuroscience & structural biology" },
+  { id: "chem_materials", label: "Chemistry",       short: "Chemistry",   desc: "Catalysis, polymers, battery & materials chemistry" },
+  { id: "earth_climate",  label: "Earth & Climate", short: "Climate",     desc: "Oceanography, polar research, atmospheric & energy science" },
+  { id: "engineering",    label: "Engineering",     short: "Engineering", desc: "Semiconductors, aerospace, autonomous robotics & chips" }
+];
+
 export const PHYSICS_BRANCHES = [
-  { id: "all",       label: "All Branches of Physics",       desc: "Complete global map across every subfield" },
-  { id: "particle",  label: "Particle & High-Energy",        desc: "Colliders, neutrinos, dark matter, QCD" },
-  { id: "quantum",   label: "Quantum & Photonics",           desc: "Qubits, attosecond lasers, quantum optics, EUV" },
-  { id: "astro",     label: "Astrophysics & Cosmology",      desc: "Optical/radio telescopes, black holes, CMB" },
-  { id: "gravity",   label: "Gravitational Waves & Theory",  desc: "LIGO, general relativity, quantum gravity" },
-  { id: "fusion",    label: "Fusion & Plasma Physics",       desc: "Tokamaks, stellarators, HTS magnets, burning plasma" },
-  { id: "condensed", label: "Condensed Matter & Materials",  desc: "Synchrotrons, neutrons, 2D materials, superconductors" },
-  { id: "applied",   label: "Applied, Space & Biophysics",   desc: "Space instrumentation, biophysics, fluid dynamics, metrology" },
-  { id: "history",   label: "History & Nobel Origins",       desc: "From Anaximander & 1200 CE Optics to Modern Physics" }
+  { id: "all",            label: "All Subfields",               desc: "Complete global map across every discipline" },
+  { id: "particle",       label: "Particle & High-Energy",      desc: "Colliders, neutrinos, dark matter, QCD" },
+  { id: "quantum",        label: "Quantum & Photonics",         desc: "Qubits, attosecond lasers, quantum optics, EUV" },
+  { id: "astro",          label: "Astrophysics & Cosmology",    desc: "Optical/radio telescopes, black holes, CMB" },
+  { id: "gravity",        label: "Gravitational Waves & Theory",desc: "LIGO, general relativity, quantum gravity" },
+  { id: "fusion",         label: "Fusion & Plasma Physics",     desc: "Tokamaks, stellarators, HTS magnets, burning plasma" },
+  { id: "condensed",      label: "Condensed Matter & Materials",desc: "Synchrotrons, neutrons, 2D materials, superconductors" },
+  { id: "applied",        label: "Applied, Space & Biophysics", desc: "Space instrumentation, biophysics, fluid dynamics, metrology" },
+  { id: "ai_cs",          label: "AI & Computer Science",       desc: "Foundation models, ML systems, theory & autonomous agents" },
+  { id: "math",           label: "Mathematics",                 desc: "Number theory, geometry, analysis, probability & proof" },
+  { id: "bio_med",        label: "Biology & Genomics",          desc: "Molecular biology, gene editing, neuroscience & AlphaFold" },
+  { id: "chem_materials", label: "Chemistry & Materials",       desc: "Molecular synthesis, catalysis, batteries & nanomaterials" },
+  { id: "earth_climate",  label: "Earth, Ocean & Climate",      desc: "Climate modeling, oceanography, polar & clean energy" },
+  { id: "engineering",    label: "Robotics, Chips & Aerospace", desc: "Semiconductor fabs, robotics, propulsion & spacecraft" },
+  { id: "history",        label: "History & Origins",           desc: "From 1800 BCE & Euclid to Modern Frontier Science" }
 ];
 
 export const ENTITY_FILTERS = [
@@ -123,12 +147,12 @@ export const TIME_PRESETS = [
 ];
 
 export const COLLABORATION_ARCS = [
-  ["cern", "fermilab"], ["cern", "desy"], ["cern", "eth-zurich"], ["cern", "mit"],
-  ["cern", "paris-saclay"], ["cern", "kek"], ["cern", "triumf"], ["cern", "gran-sasso"],
-  ["ligo-hanford", "mit"], ["ligo-hanford", "caltech"], ["ligo-hanford", "aei-potsdam"],
-  ["iter", "cfs-boston"], ["iter", "mpq-garching"], ["iter", "paris-saclay"],
-  ["icecube", "desy"], ["icecube", "super-k"], ["alma", "eso-paranal"], ["eso-paranal", "meerkat"],
-  ["perimeter", "ias-princeton"], ["asml", "qutech-delft"], ["tokyo", "riken"], ["cern", "sesame-jordan"]
+  ["cern", "fermilab"], ["cern", "desy"], ["cern", "eth"], ["cern", "mit"],
+  ["cern", "parissaclay"], ["cern", "kek"], ["cern", "triumf"], ["cern", "gransasso"],
+  ["ligo", "mit"], ["ligo", "caltech"], ["ligo", "aei"],
+  ["iter", "cfs"], ["iter", "mpq"], ["iter", "parissaclay"],
+  ["icecube", "desy"], ["icecube", "superk"], ["alma", "paranal"], ["paranal", "meerkat"],
+  ["perimeter", "princeton"], ["asml", "qutech"], ["utokyo", "riken"], ["cern", "sesame"]
 ];
 
 export function formatYear(y) {
@@ -139,16 +163,35 @@ export function formatYear(y) {
   return String(n);
 }
 
+export const BRANCH_SHORT_LABELS = {
+  all: "All Subfields",
+  particle: "Particle & HEP",
+  quantum: "Quantum & Photonics",
+  astro: "Astrophysics",
+  gravity: "Gravity & Theory",
+  fusion: "Fusion & Plasma",
+  condensed: "Condensed Matter",
+  applied: "Applied & Space",
+  ai_cs: "AI & Computing",
+  math: "Mathematics",
+  bio_med: "Biology & Genomics",
+  chem_materials: "Chemistry & Materials",
+  earth_climate: "Earth & Climate",
+  engineering: "Robotics & Chips",
+  history: "History of Science",
+  multi: "Multi-Branch STEM"
+};
+
 export function classifyPhysicsBranch(text) {
   const t = (text || "").toLowerCase();
-  if (/cern|fermi|collider|hadron|neutrino|particle|nuclear|cyclotron|accelerator|desy|kek|triumf|high energy/.test(t)) return "particle";
-  if (/quantum|photon|laser|optic|euv|attosecond|qubit|nanophoton/.test(t)) return "quantum";
-  if (/astro|observator|telescope|cosmo|space|radio|astron|planetar/.test(t)) return "astro";
-  if (/fusion|plasma|tokamak|stellarator|iter|magnet/.test(t)) return "fusion";
-  if (/gravit|relativ|ligo|virgo|kagra|theoretical|perimeter|ias|string/.test(t)) return "gravity";
-  if (/synchrotron|neutron|spallation|condensed|material|superconduct|solid state|graphene|magnetism/.test(t)) return "condensed";
-  if (/biophys|geophys|metrolog|aerospace|propulsion|fluid|acoustic/.test(t)) return "applied";
-  return "condensed";
+  if (/\b(cern|fermi|collider|hadron|neutrino|particle|nuclear|cyclotron|accelerator|desy|kek|triumf|high energy|gran sasso|snolab)\b/.test(t)) return "particle";
+  if (/\b(fusion|plasma|tokamak|stellarator|iter|culham|ukaea|pppl)\b/.test(t)) return "fusion";
+  if (/\b(gravit|relativ|ligo|virgo|kagra|theoretical physics|perimeter|ias|string)\b/.test(t)) return "gravity";
+  if (/\b(astro|observator|telescope|cosmo|astron|planetar|extraterrestrial)\b/.test(t)) return "astro";
+  if (/\b(quantum|photon|laser|optic|euv|attosecond|qubit|nanophoton|spectroscop)\b/.test(t)) return "quantum";
+  if (/\b(synchrotron|neutron|spallation|condensed|material|superconduct|solid state|graphene|magnetism|cryo|semiconduct)\b/.test(t)) return "condensed";
+  if (/\b(biophys|geophys|metrolog|aerospace|space|propulsion|fluid|acoustic|climate|seism|medical physics|hadrontherapy)\b/.test(t)) return "applied";
+  return "multi";
 }
 
 export function buildDefaultStages(overrides = {}) {

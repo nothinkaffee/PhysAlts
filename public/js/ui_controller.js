@@ -6,15 +6,18 @@
  */
 
 import {
-  PHYSICS_BRANCHES, STAGE_META, proxyUrl, formatYear, buildDefaultStages, classifyPhysicsBranch
+  STEM_DISCIPLINES, PHYSICS_BRANCHES, STAGE_META, STAGE_PORTALS, BRANCH_SHORT_LABELS,
+  proxyUrl, formatYear, buildDefaultStages, classifyPhysicsBranch
 } from "./config.js";
 import {
-  store, getNodeById, getVisibleGlobeNodes, universalSearch, mergeHubs
+  store, getNodeById, getVisibleGlobeNodes, getFilteredHubs, universalSearch,
+  mergeHubs, mergeOfflinePackPayload
 } from "./data_store.js";
 import {
   syncGlobeMarkers, flyToHub, resetGlobeToSpace,
   setGlobeLabels, setGlobeTilt, zoomInGlobe, zoomOutGlobe
 } from "./globe_engine.js";
+import * as spaceView from "./space_view.js";
 import {
   setSpaceZone, getSpaceZone, setSelectedSpaceMission, startSpaceLoop, stopSpaceLoop
 } from "./space_view.js";
@@ -26,8 +29,15 @@ import {
   renderAccountWorkspaceModal, renderSubmitInstitutionModal, renderKeyboardShortcutsModal
 } from "./account_ui.js";
 import { isCloudReady, exportUserData, eraseAllUserData } from "./cloud_sync.js";
+import { computeImpactScore, scoreHubForYear } from "./impact_ranking.js";
+import { curateRabbitHoleNodes } from "./rabbit_agent.js";
+import {
+  fetchPackManifest, getDownloadedPackIds, getDownloadedPackMeta,
+  downloadPack, deletePack, exportPackToFile, getOfflineStorageStats, formatBytes
+} from "./offline_packs.js";
 
 let activeWikiReq = 0;
+let activeAgentReq = 0;
 let toastTimer = null;
 let timeTourTimer = null;
 let activeTimelineIdx = 0;
@@ -82,6 +92,76 @@ export function refreshDbBadge() {
   if (lbl) {
     lbl.textContent = isCloudReady() ? "Cloud Synced" : "Verified Index";
   }
+  if (isFilterPopoverOpen()) renderFilterPopover();
+  updateActiveFiltersPill();
+}
+
+function isStagePopoverOpen() {
+  const el = document.getElementById("stage-popover");
+  return Boolean(el && !el.classList.contains("hidden"));
+}
+
+function isFilterPopoverOpen() {
+  const el = document.getElementById("filter-popover");
+  return Boolean(el && !el.classList.contains("hidden"));
+}
+
+function closeStagePopover() {
+  const pop = document.getElementById("stage-popover");
+  const btn = document.getElementById("btn-stage-picker");
+  if (!pop || pop.classList.contains("hidden")) return;
+  pop.classList.add("hidden");
+  btn?.classList.remove("island-btn-open");
+  btn?.setAttribute("aria-expanded", "false");
+  updateActiveFiltersPill();
+}
+
+function openStagePopover(keepCard = true) {
+  closeAllSurfaces(keepCard ? ["stage", "card"] : "stage");
+  renderStageMenu();
+  const pop = document.getElementById("stage-popover");
+  const btn = document.getElementById("btn-stage-picker");
+  if (!pop) return;
+  pop.classList.remove("hidden");
+  btn?.classList.add("island-btn-open");
+  btn?.setAttribute("aria-expanded", "true");
+  updateActiveFiltersPill();
+}
+
+function toggleStagePopover() {
+  if (isStagePopoverOpen()) closeStagePopover();
+  else openStagePopover(true);
+}
+
+function closeFilterPopover() {
+  const pop = document.getElementById("filter-popover");
+  const btn = document.getElementById("btn-open-filters");
+  const mobBtn = document.getElementById("btn-mobile-filters");
+  if (!pop || pop.classList.contains("hidden")) return;
+  pop.classList.add("hidden");
+  btn?.classList.remove("island-btn-open");
+  btn?.setAttribute("aria-expanded", "false");
+  mobBtn?.classList.remove("glass-btn-active");
+  updateActiveFiltersPill();
+}
+
+function openFilterPopover() {
+  closeAllSurfaces(["filter", "card"]);
+  renderFilterPopover();
+  const pop = document.getElementById("filter-popover");
+  const btn = document.getElementById("btn-open-filters");
+  const mobBtn = document.getElementById("btn-mobile-filters");
+  if (!pop) return;
+  pop.classList.remove("hidden");
+  btn?.classList.add("island-btn-open");
+  btn?.setAttribute("aria-expanded", "true");
+  mobBtn?.classList.add("glass-btn-active");
+  updateActiveFiltersPill();
+}
+
+function toggleFilterPopover() {
+  if (isFilterPopoverOpen()) closeFilterPopover();
+  else openFilterPopover();
 }
 
 function closeSpotlight() {
@@ -103,7 +183,8 @@ export function openSpotlight() {
 
 export function closeDropdown() {
   closeSpotlight();
-  document.getElementById("stage-dropdown-menu")?.classList.add("hidden");
+  closeStagePopover();
+  closeFilterPopover();
 }
 
 function closePlaceCard() {
@@ -115,19 +196,45 @@ function closePlaceCard() {
   if (store.state.viewMode === "space") renderSpaceMissionRail();
 }
 
+function clearExploreDockActive() {
+  ["btn-open-domains", "btn-open-countries", "btn-open-pathways"].forEach(id => {
+    document.getElementById(id)?.classList.remove("glass-btn-active");
+  });
+}
+
 function closeModal() {
   document.getElementById("drawer-backdrop")?.classList.add("hidden");
+  clearExploreDockActive();
 }
 
 /**
  * Single-Surface Mutual Exclusion State Machine:
- * Guarantees only ONE overlay surface is open at any time — zero stacked overlaps ever.
+ * Guarantees overlay surfaces never stack awkwardly — accepts a single key or array of keys to keep open.
  */
 function closeAllSurfaces(except = null) {
-  if (except !== "spotlight") closeSpotlight();
-  if (except !== "modal") closeModal();
-  if (except !== "auth") closeAuthModal();
-  if (except !== "card") closePlaceCard();
+  const keep = new Set(Array.isArray(except) ? except : (except ? [except] : []));
+  if (!keep.has("spotlight")) closeSpotlight();
+  if (!keep.has("modal")) closeModal();
+  if (!keep.has("auth")) closeAuthModal();
+  if (!keep.has("card")) closePlaceCard();
+  if (!keep.has("stage")) closeStagePopover();
+  if (!keep.has("filter")) closeFilterPopover();
+}
+
+export function resetCurrentView() {
+  closeAllSurfaces();
+  if (store.state.viewMode === "space") {
+    if (typeof spaceView.resetSpaceView === "function") {
+      spaceView.resetSpaceView();
+    } else {
+      setSpaceZone("all");
+    }
+    renderSpaceZoneBar();
+    renderSpaceMissionRail();
+  } else {
+    resetGlobeToSpace();
+  }
+  showToast("View reset");
 }
 
 function updateBookmarkButtonUI(id) {
@@ -153,7 +260,6 @@ export function setViewMode(mode) {
   const btnEarth = document.getElementById("btn-mode-earth");
   const btnSpace = document.getElementById("btn-mode-space");
   const earthControls = document.getElementById("earth-only-controls");
-  const zoomControls = document.getElementById("zoom-controls");
   const timeBar = document.getElementById("time-bar");
 
   closeAllSurfaces();
@@ -162,9 +268,12 @@ export function setViewMode(mode) {
     spaceOverlay?.classList.remove("space-hidden");
     document.body.classList.add("space-mode");
     btnSpace?.classList.add("glass-btn-active");
+    btnSpace?.classList.remove("glass-btn");
+    btnSpace?.setAttribute("aria-selected", "true");
     btnEarth?.classList.remove("glass-btn-active");
+    btnEarth?.classList.add("glass-btn");
+    btnEarth?.setAttribute("aria-selected", "false");
     if (earthControls) earthControls.style.display = "none";
-    if (zoomControls) zoomControls.style.display = "none";
     timeBar?.classList.add("hidden");
     document.body.classList.remove("time-open");
     stopTimeTour();
@@ -175,9 +284,12 @@ export function setViewMode(mode) {
     spaceOverlay?.classList.add("space-hidden");
     document.body.classList.remove("space-mode");
     btnEarth?.classList.add("glass-btn-active");
+    btnEarth?.classList.remove("glass-btn");
+    btnEarth?.setAttribute("aria-selected", "true");
     btnSpace?.classList.remove("glass-btn-active");
+    btnSpace?.classList.add("glass-btn");
+    btnSpace?.setAttribute("aria-selected", "false");
     if (earthControls) earthControls.style.display = "";
-    if (zoomControls) zoomControls.style.display = "";
     if (store.state.timeMode) {
       timeBar?.classList.remove("hidden");
       document.body.classList.add("time-open");
@@ -259,11 +371,13 @@ export function selectSpaceMission(missionId) {
   if (scrollBody) scrollBody.scrollTop = 0;
 
   document.getElementById("card-badge").textContent = `${m.body} · ${m.lightTimeLabel}`;
+  document.getElementById("card-impact-pill")?.classList.add("hidden");
   document.getElementById("card-title").textContent = m.name;
   document.getElementById("card-sub").textContent = `${m.agency} (${m.country}) · Launched ${m.launchYear} · ${m.distanceAU} AU`;
-  document.getElementById("card-summary").textContent = m.summary;
-  document.getElementById("card-pathway-label").textContent = "Key Physics Discoveries";
-  document.getElementById("card-pathway").textContent = m.physicsDiscoveries || m.summary;
+  document.getElementById("card-summary").textContent = m.physicsDiscoveries && m.physicsDiscoveries !== m.summary
+    ? `${m.summary} ${m.physicsDiscoveries}`
+    : m.summary;
+  document.getElementById("card-stage-box")?.classList.add("hidden");
 
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
@@ -281,8 +395,15 @@ export function selectSpaceMission(missionId) {
   document.getElementById("card-deeper-wrap")?.classList.add("hidden");
   document.getElementById("btn-deeper-toggle")?.classList.add("hidden");
   document.getElementById("btn-save-shortlist")?.classList.remove("hidden");
-  document.getElementById("card-photo-wrap")?.classList.add("hidden");
   updateBookmarkButtonUI(fullId);
+
+  // Load IceCube-style hero image + Wikipedia brief excerpt for this space mission (zero 404s)
+  loadWikipediaCardBrief({
+    name: m.name,
+    wiki: m.wikiUrl || "",
+    wikiSlug: "",
+    summary: m.summary
+  });
 
   // Connected Space Missions (Keep Exploring revolving door)
   const rWrap = document.getElementById("card-rabbit-wrap");
@@ -297,8 +418,12 @@ export function selectSpaceMission(missionId) {
     if (nearby.length) {
       rWrap.classList.remove("hidden");
       rLinks.innerHTML = nearby.slice(0, 3).map(nb => `
-        <button type="button" data-jump-space="${esc(nb.id)}" class="glass-btn rounded-full px-3 py-1 text-[14px] truncate max-w-[175px]">
-          ${esc(nb.name.split(" (")[0])} →
+        <button type="button" data-jump-space="${esc(nb.id)}" class="rabbit-bridge-btn flex items-center justify-between gap-2">
+          <div class="min-w-0">
+            <div class="text-[13.5px] font-medium text-white truncate">${esc(nb.name.split(" (")[0])}</div>
+            <div class="text-[12px] text-neutral-400 truncate">${esc(nb.body)} · ${esc(nb.lightTimeLabel.split(" (")[0])}</div>
+          </div>
+          <span class="accent-text text-[13px] shrink-0">→</span>
         </button>
       `).join("");
       rLinks.querySelectorAll("[data-jump-space]").forEach(btn => {
@@ -522,6 +647,160 @@ export function setTimeMode(enabled, jumpYear = null) {
 }
 
 // =========================================================================
+// FLOATING RABBIT HOLE TRAIL BREADCRUMB BAR & WIKIPEDIA BRIEF HELPER
+// =========================================================================
+
+function renderRabbitTrailBar() {
+  const bar = document.getElementById("rabbit-trail-bar");
+  const trail = store.state.activeTrail;
+  if (!bar) return;
+  if (!trail || !Array.isArray(trail.stops) || !trail.stops.length) {
+    bar.classList.add("hidden");
+    return;
+  }
+  const idx = Math.max(0, Math.min(trail.stops.length - 1, trail.index || 0));
+  const stop = trail.stops[idx];
+  const stepEl = document.getElementById("trail-bar-step");
+  const titleEl = document.getElementById("trail-bar-title");
+  const bridgeEl = document.getElementById("trail-bar-bridge");
+  const prevBtn = document.getElementById("btn-trail-prev");
+  const nextBtn = document.getElementById("btn-trail-next");
+
+  if (stepEl) stepEl.textContent = `${idx + 1} / ${trail.stops.length}`;
+  if (titleEl) titleEl.textContent = `${trail.title} · ${stop.title || ""}`;
+  if (bridgeEl) bridgeEl.textContent = stop.bridge || trail.tagline || "Curated cross-disciplinary research trail";
+  if (prevBtn) prevBtn.disabled = idx === 0;
+  if (nextBtn) nextBtn.textContent = idx >= trail.stops.length - 1 ? "Finish Trail" : "Next Hop →";
+  bar.classList.remove("hidden");
+}
+
+export function startRabbitTrail(trail, startIdx = 0) {
+  if (!trail || !Array.isArray(trail.stops) || !trail.stops.length) return;
+  store.state.activeTrail = {
+    id: trail.id || `trail-${Date.now()}`,
+    title: trail.title || "Rabbit Hole Trail",
+    tagline: trail.tagline || "",
+    stops: trail.stops,
+    index: Math.max(0, Math.min(trail.stops.length - 1, startIdx))
+  };
+  if (store.state.timeMode) setTimeMode(false);
+  if (store.state.viewMode === "space") setViewMode("earth");
+  const stop = store.state.activeTrail.stops[store.state.activeTrail.index];
+  renderRabbitTrailBar();
+  if (stop?.hubId) {
+    selectHubNode(stop.hubId, true);
+  }
+  showToast(`Trail started: ${trail.title}`);
+}
+
+function stepRabbitTrail(delta) {
+  const trail = store.state.activeTrail;
+  if (!trail || !trail.stops?.length) return;
+  const nextIdx = trail.index + delta;
+  if (nextIdx < 0) return;
+  if (nextIdx >= trail.stops.length) {
+    exitRabbitTrail();
+    showToast(`Completed trail: ${trail.title}`);
+    return;
+  }
+  trail.index = nextIdx;
+  const stop = trail.stops[nextIdx];
+  renderRabbitTrailBar();
+  if (stop?.hubId) {
+    selectHubNode(stop.hubId, true);
+  }
+}
+
+function exitRabbitTrail() {
+  store.state.activeTrail = null;
+  renderRabbitTrailBar();
+}
+
+/**
+ * Loads fair-use Wikimedia hero photo AND a crisp 2–3 line Wikipedia brief excerpt (IceCube-style card).
+ * Uses direct REST summary when wikiSlug/wiki URL is known, or a safe HTTP-200-only MediaWiki
+ * search fallback when absent (guaranteed ZERO 404s).
+ */
+function loadWikipediaCardBrief(node) {
+  const photoWrap = document.getElementById("card-photo-wrap");
+  const imgEl = document.getElementById("card-photo");
+  const fallbackEl = document.getElementById("card-photo-fallback");
+  const briefWrap = document.getElementById("card-wiki-brief-wrap");
+  const briefText = document.getElementById("card-wiki-brief");
+  const briefLink = document.getElementById("card-wiki-brief-link");
+
+  photoWrap?.classList.add("hidden");
+  imgEl?.classList.add("opacity-0");
+  fallbackEl?.classList.remove("hidden");
+  briefWrap?.classList.add("hidden");
+
+  const reqId = ++activeWikiReq;
+  let slug = node.wikiSlug || "";
+  if (!slug && node.wiki && node.wiki.includes("/wiki/")) {
+    try {
+      slug = decodeURIComponent(node.wiki.split("/wiki/")[1].split(/[?#]/)[0]);
+    } catch {
+      slug = node.wiki.split("/wiki/")[1].split(/[?#]/)[0];
+    }
+  }
+
+  const applyWikiData = (data) => {
+    if (reqId !== activeWikiReq || !data || data.type === "disambiguation") return;
+    const pic = data.originalimage?.source || data.thumbnail?.source;
+    if (pic && imgEl && !/\.svg(\.png)?(\?|$)/i.test(pic)) {
+      imgEl.onload = () => {
+        if (reqId !== activeWikiReq) return;
+        photoWrap?.classList.remove("hidden");
+        imgEl.classList.remove("opacity-0");
+        fallbackEl?.classList.add("hidden");
+      };
+      imgEl.onerror = () => {
+        if (reqId !== activeWikiReq) return;
+        photoWrap?.classList.add("hidden");
+      };
+      imgEl.src = proxyUrl(pic);
+      imgEl.alt = node.name || "";
+    }
+
+    const extract = String(data.extract || "").replace(/\s+/g, " ").trim();
+    const normSummary = String(node.summary || "").toLowerCase().slice(0, 60);
+    if (extract && briefWrap && briefText && !extract.toLowerCase().startsWith(normSummary || "___")) {
+      briefText.textContent = extract.length > 260 ? extract.slice(0, 256).replace(/\s+\S*$/, "") + "…" : extract;
+      if (briefLink) {
+        briefLink.href = data.content_urls?.desktop?.page || node.wiki || `https://en.wikipedia.org/wiki/${encodeURIComponent(data.title || slug)}`;
+      }
+      briefWrap.classList.remove("hidden");
+    }
+  };
+
+  if (slug) {
+    fetch(proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`))
+      .then(r => r.ok ? r.json() : null)
+      .then(applyWikiData)
+      .catch(() => {});
+  } else if (node.name) {
+    // 200-only MediaWiki search fallback so scraped hubs also get photo + Wikipedia brief with ZERO 404s
+    const cleanName = String(node.name).replace(/\s*\([^)]*\)\s*/g, " ").trim();
+    fetch(proxyUrl(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName)}&srlimit=1&format=json&origin=*`))
+      .then(r => r.ok ? r.json() : null)
+      .then(sData => {
+        if (reqId !== activeWikiReq) return null;
+        const hit = sData?.query?.search?.[0];
+        if (!hit?.title) return null;
+        // Require at least one significant word overlap to avoid unrelated matches
+        const words = cleanName.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
+        const titleLow = hit.title.toLowerCase();
+        if (words.length && !words.some(w => titleLow.includes(w))) return null;
+        return fetch(proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(hit.title.replace(/ /g, "_"))}`))
+          .then(r => r.ok ? r.json() : null);
+      })
+      .then(applyWikiData)
+      .catch(() => {});
+  }
+  return reqId;
+}
+
+// =========================================================================
 // PLACE / MILESTONE DETAIL CARD
 // =========================================================================
 
@@ -532,6 +811,12 @@ export function selectHubNode(id, fly = true) {
 
   closeAllSurfaces("card");
   store.state.selectedId = node.id;
+
+  // Keep breadcrumb history updated
+  if (store.state.trailHistory[store.state.trailHistory.length - 1] !== node.id) {
+    store.state.trailHistory.push(node.id);
+    if (store.state.trailHistory.length > 24) store.state.trailHistory.shift();
+  }
 
   const card = document.getElementById("place-card");
   if (!card) return;
@@ -550,16 +835,16 @@ export function selectHubNode(id, fly = true) {
     if (sp) sp.textContent = "More";
   }
   document.getElementById("btn-save-shortlist")?.classList.remove("hidden");
-  document.getElementById("card-photo-wrap")?.classList.add("hidden");
 
+  const discLabel = STEM_DISCIPLINES.find(d => d.id === node.discipline)?.short;
   const typeLabel = node.sector || (
     node.entityType === "startup" ? "Deep-Tech Startup"
-    : node.entityType === "company" ? "Private Deep-Tech"
+    : node.entityType === "company" ? "Frontier Tech Lab"
     : node.entityType === "institute" ? "Research Institute"
     : node.entityType === "lab" ? "National Lab & Facility"
     : node.entityType === "history" ? "Historical Milestone"
     : node.entityType === "project" ? "Mega-Project"
-    : "University Physics"
+    : discLabel && node.discipline !== "physics" ? `${discLabel} University` : "Research University"
   );
   const yearPart = node.foundedYear != null ? ` · ${formatYear(node.foundedYear)}` : "";
   document.getElementById("card-badge").textContent = `${typeLabel}${yearPart}`;
@@ -567,55 +852,124 @@ export function selectHubNode(id, fly = true) {
   document.getElementById("card-sub").textContent = node.city;
   document.getElementById("card-summary").textContent = node.summary;
 
+  // ARWU-Inspired Research Impact Pill + Transparent 5-Pillar Breakdown inside More
+  const impactPill = document.getElementById("card-impact-pill");
+  const deeperImpactWrap = document.getElementById("deeper-impact-wrap");
+  const deeperImpactEl = document.getElementById("deeper-impact");
+  if (node.tier !== "timeline") {
+    const imp = node._impact || computeImpactScore(node);
+    const eraScore = store.state.timeMode ? scoreHubForYear(node, store.state.timeYear) : imp.total;
+    if (impactPill) {
+      impactPill.textContent = `Impact ${eraScore} · ${imp.tierLabel}`;
+      impactPill.title = "ShanghaiRanking (ARWU/GRAS)-inspired composite score (Awards, Citations, CNCI, Mega-Facility, Collaboration)";
+      impactPill.classList.remove("hidden");
+    }
+    if (deeperImpactWrap && deeperImpactEl) {
+      const b = imp.breakdown || {};
+      const pillars = [
+        { label: "Laureates & Major Awards", val: b.awards || 0, max: 30 },
+        { label: "Verified Citation Volume", val: b.output || 0, max: 25 },
+        { label: "Impact per Work (CNCI)", val: b.cnci || 0, max: 20 },
+        { label: "Frontier Infrastructure", val: b.infra || 0, max: 15 },
+        { label: "Global Collaboration", val: b.collab || 0, max: 10 }
+      ];
+      deeperImpactEl.innerHTML = `
+        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between text-[13.5px]">
+            <span class="font-medium text-white">${esc(imp.tierLabel)}${store.state.timeMode ? ` (${formatYear(store.state.timeYear)} Era)` : ""}</span>
+            <span class="accent-text font-semibold tabular-nums">${eraScore} / 100</span>
+          </div>
+          ${pillars.map(p => `
+            <div class="space-y-1">
+              <div class="flex items-center justify-between text-[12px] text-neutral-400">
+                <span>${p.label}</span>
+                <span class="tabular-nums text-neutral-300">${p.val} / ${p.max}</span>
+              </div>
+              <div class="impact-bar-track"><div class="impact-bar-fill" style="width:${Math.round((p.val / p.max) * 100)}%"></div></div>
+            </div>
+          `).join("")}
+          ${node.nobel ? `<div class="text-[12.5px] text-neutral-300 pt-1 border-t border-white/10">${esc(node.nobel)}</div>` : ""}
+        </div>
+      `;
+      deeperImpactWrap.classList.remove("hidden");
+    }
+  } else {
+    impactPill?.classList.add("hidden");
+    deeperImpactWrap?.classList.add("hidden");
+  }
+
+  document.getElementById("card-stage-box")?.classList.remove("hidden");
   const st = store.state.stage;
   const stages = node.stages || buildDefaultStages();
   const stageText = st === "all" ? stages.undergrad : (stages[st] || stages.undergrad);
-  document.getElementById("card-pathway-label").textContent = node.tier === "timeline"
-    ? "Historical & Scientific Impact"
-    : `${STAGE_META[st]?.label || "Academic"} Pathway`;
-  document.getElementById("card-pathway").textContent = node.tier === "timeline" ? (node.nobel || node.summary) : stageText;
+  const branchLabel = BRANCH_SHORT_LABELS[node.branch] || discLabel || "STEM";
+  const stageLabel = STAGE_META[st]?.label || "Academic";
+  const changeStageBtn = document.getElementById("btn-card-change-stage");
+  if (node.tier === "timeline") {
+    document.getElementById("card-pathway-label").textContent = "Historical & Scientific Impact";
+    document.getElementById("card-pathway").textContent = node.nobel || node.summary;
+    changeStageBtn?.classList.add("hidden");
+  } else {
+    document.getElementById("card-pathway-label").textContent = `${stageLabel} Pathway · ${branchLabel}`;
+    document.getElementById("card-pathway").textContent = stageText;
+    changeStageBtn?.classList.remove("hidden");
+  }
 
   updateBookmarkButtonUI(node.id);
 
-  // Connected Rabbit Hole Portals (3 one-click revolving-door jumps to related hubs worldwide)
+  // Connected Rabbit Hole Portals (prefers rich rabbitLinks with 1-line "why connected" bridges!)
   const rWrap = document.getElementById("card-rabbit-wrap");
   const rLinks = document.getElementById("card-rabbit-links");
   if (rWrap && rLinks) {
-    const picks = [];
+    const hops = [];
     const seen = new Set([node.id]);
-    for (const nextId of node.next || []) {
-      const target = getNodeById(nextId);
+
+    for (const rl of node.rabbitLinks || []) {
+      const targetId = typeof rl === "string" ? rl : rl?.id;
+      const target = getNodeById(targetId);
       if (target && !seen.has(target.id)) {
-        picks.push(target);
+        hops.push({ node: target, reason: typeof rl === "object" ? rl.reason : "" });
         seen.add(target.id);
       }
     }
-    if (picks.length < 3) {
+    for (const nextId of node.next || []) {
+      if (hops.length >= 3) break;
+      const target = getNodeById(nextId);
+      if (target && !seen.has(target.id)) {
+        hops.push({ node: target, reason: `${BRANCH_SHORT_LABELS[target.branch] || "STEM"} · ${target.city}` });
+        seen.add(target.id);
+      }
+    }
+    if (hops.length < 3) {
       const pool = store.hubs.filter(h =>
-        !seen.has(h.id) && (h.tier === "flagship" || h.tier === "deeptech") &&
-        (h.branch === node.branch || h.country !== node.country)
+        !seen.has(h.id) && (h.tier === "flagship" || h.tier === "stem" || h.tier === "deeptech") &&
+        (h.branch === node.branch || h.discipline === node.discipline || h.country !== node.country)
       );
-      // Deterministic-feeling spread with light shuffle so each hop explores a new nation
       for (const cand of pool) {
-        if (picks.length >= 3) break;
-        if (cand.branch === node.branch && cand.country !== node.country) {
-          picks.push(cand);
+        if (hops.length >= 3) break;
+        if ((cand.branch === node.branch || cand.discipline === node.discipline) && cand.country !== node.country) {
+          hops.push({ node: cand, reason: `Peer leader in ${BRANCH_SHORT_LABELS[cand.branch] || "STEM"} · ${cand.country}` });
           seen.add(cand.id);
         }
       }
       for (const cand of pool) {
-        if (picks.length >= 3) break;
+        if (hops.length >= 3) break;
         if (!seen.has(cand.id)) {
-          picks.push(cand);
+          hops.push({ node: cand, reason: `${BRANCH_SHORT_LABELS[cand.branch] || "STEM"} · ${cand.city}` });
           seen.add(cand.id);
         }
       }
     }
-    if (picks.length) {
+
+    if (hops.length) {
       rWrap.classList.remove("hidden");
-      rLinks.innerHTML = picks.slice(0, 3).map(p => `
-        <button type="button" data-jump-hub="${esc(p.id)}" class="glass-btn rounded-full px-3 py-1 text-[14px] truncate max-w-full">
-          ${esc(p.name.split(" (")[0])} →
+      rLinks.innerHTML = hops.slice(0, 3).map(({ node: p, reason }) => `
+        <button type="button" data-jump-hub="${esc(p.id)}" class="rabbit-bridge-btn flex items-center justify-between gap-2.5">
+          <div class="min-w-0">
+            <div class="text-[13.5px] font-medium text-white truncate">${esc(p.name.split(" (")[0])}</div>
+            ${reason ? `<div class="text-[12px] text-neutral-400 truncate mt-0.5">${esc(reason)}</div>` : ""}
+          </div>
+          <span class="accent-text text-[13px] shrink-0">→</span>
         </button>
       `).join("");
       rLinks.querySelectorAll("[data-jump-hub]").forEach(btn => {
@@ -626,12 +980,12 @@ export function selectHubNode(id, fly = true) {
     }
   }
 
-  // Concise project links (max 2 so action bar stays above the fold — full details inside More)
+  // Concise project links (max 2 so action bar stays above the fold)
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     const chips = [];
     for (const p of (node.projects || []).slice(0, 2)) {
-      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[14px] transition truncate max-w-full inline-block">${esc(p.name)} ↗</a>`);
+      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[13.5px] transition truncate max-w-full inline-block">${esc(p.name)} ↗</a>`);
     }
     extra.innerHTML = chips.join("");
   }
@@ -660,45 +1014,22 @@ export function selectHubNode(id, fly = true) {
     `).join("");
   }
 
-  // Fair-use live Wikimedia photo (only when we have a verified wikiSlug or wiki URL — zero blind 404s)
-  const photoWrap = document.getElementById("card-photo-wrap");
-  const imgEl = document.getElementById("card-photo");
-  const fallbackEl = document.getElementById("card-photo-fallback");
-  imgEl?.classList.add("opacity-0");
-  fallbackEl?.classList.remove("hidden");
-  const reqId = ++activeWikiReq;
-  let slug = node.wikiSlug || "";
-  if (!slug && node.wiki && node.wiki.includes("/wiki/")) {
-    try {
-      slug = decodeURIComponent(node.wiki.split("/wiki/")[1].split(/[?#]/)[0]);
-    } catch {
-      slug = node.wiki.split("/wiki/")[1].split(/[?#]/)[0];
-    }
-  }
+  // Load IceCube-style Wikimedia Hero Photo + Wikipedia Brief Excerpt (200-only fallback, zero 404s)
+  const reqId = loadWikipediaCardBrief(node);
 
-  if (slug) {
-    fetch(proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(slug)}`))
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (reqId !== activeWikiReq || !data || !imgEl) return;
-        const pic = data.originalimage?.source || data.thumbnail?.source;
-        if (pic && !/\.svg(\.png)?(\?|$)/i.test(pic)) {
-          imgEl.onload = () => {
-            if (reqId !== activeWikiReq) return;
-            photoWrap?.classList.remove("hidden");
-            imgEl.classList.remove("opacity-0");
-            fallbackEl?.classList.add("hidden");
-          };
-          imgEl.src = proxyUrl(pic);
-          imgEl.alt = node.name;
-        }
-      }).catch(() => {});
-  }
+  // Discipline-aware live OpenAlex papers & researchers
+  const topicTerm = node.discipline === "ai_cs" ? "artificial intelligence"
+    : node.discipline === "math" ? "mathematics"
+    : node.discipline === "bio_med" ? "biology"
+    : node.discipline === "chem_materials" ? "chemistry"
+    : node.discipline === "earth_climate" ? "climate"
+    : node.discipline === "engineering" ? "engineering"
+    : "physics";
 
   const papersEl = document.getElementById("deeper-papers");
   if (papersEl) {
     papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Loading recent papers…</div>`;
-    fetch(proxyUrl(`https://api.openalex.org/works?search=${encodeURIComponent(node.name + " physics")}&sort=publication_date:desc&per-page=3`))
+    fetch(proxyUrl(`https://api.openalex.org/works?search=${encodeURIComponent(node.name + " " + topicTerm)}&sort=publication_date:desc&per-page=3`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (reqId !== activeWikiReq) return;
@@ -708,7 +1039,7 @@ export function selectHubNode(id, fly = true) {
         }
         papersEl.innerHTML = data.results.map(w => `
           <a href="${esc(w.doi || w.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 p-3.5 transition">
-            <div class="text-[14px] text-white leading-snug line-clamp-2">${esc(w.title || "Physics Publication")}</div>
+            <div class="text-[14px] text-white leading-snug line-clamp-2">${esc(w.title || "Research Publication")}</div>
             <div class="text-[14px] accent-text mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
           </a>
         `).join("");
@@ -720,7 +1051,7 @@ export function selectHubNode(id, fly = true) {
   const authorsEl = document.getElementById("deeper-authors");
   if (authorsEl) {
     authorsEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Loading researchers…</div>`;
-    fetch(proxyUrl(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " physics")}&sort=cited_by_count:desc&per-page=3`))
+    fetch(proxyUrl(`https://api.openalex.org/authors?search=${encodeURIComponent(node.name + " " + topicTerm)}&sort=cited_by_count:desc&per-page=3`))
       .then(r => r.ok ? r.json() : null)
       .then(data => {
         if (reqId !== activeWikiReq) return;
@@ -762,6 +1093,133 @@ function updateSpotlightSelection() {
   });
 }
 
+async function runAgentRabbitHole(rawQuery) {
+  const box = document.getElementById("search-dropdown");
+  const inp = document.getElementById("search-input");
+  const q = String(rawQuery || inp?.value || "").trim() || "AlphaFold";
+  if (inp && !inp.value.trim()) inp.value = q;
+  if (!box) return;
+
+  const reqId = ++activeAgentReq;
+  box.innerHTML = `
+    <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-5 space-y-2.5">
+      <div class="flex items-center justify-between gap-2">
+        <span class="text-[14px] font-semibold text-white">Curating Official Rabbit Hole…</span>
+        <span class="text-[12.5px] accent-text">Official sources only</span>
+      </div>
+      <p class="text-[13.5px] text-neutral-400">Gathering verified STEM labs, origin milestones, open textbooks, Wikipedia primary facts, and top-cited OpenAlex papers for <strong class="text-white">${esc(q)}</strong>…</p>
+    </div>
+  `;
+
+  try {
+    const result = await curateRabbitHoleNodes(q);
+    if (reqId !== activeAgentReq) return;
+
+    const nodes = result.nodes || [];
+    const stops = result.trailStops || [];
+    const matchedTrails = result.matchedTrails || [];
+
+    const headerHtml = `
+      <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 flex flex-wrap items-center justify-between gap-3">
+        <div class="min-w-0">
+          <div class="text-[12.5px] accent-text font-medium">Deep Rabbit Hole · Official Reference Nodes</div>
+          <div class="text-[16px] font-semibold text-white truncate mt-0.5">${esc(q)} (${nodes.length} verified nodes)</div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          ${stops.length ? `<button type="button" id="btn-agent-start-trail" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px] cursor-pointer">Start Trail on Globe →</button>` : ""}
+          <button type="button" id="btn-agent-back" class="glass-btn rounded-full px-3 py-1.5 text-[13px] cursor-pointer">Back</button>
+        </div>
+      </div>
+    `;
+
+    const nodesHtml = nodes.length ? nodes.map((n, i) => `
+      <article class="agent-node-card space-y-2">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-[12px] font-medium accent-text">${i + 1}. ${esc(n.badge)}</div>
+            <div class="text-[15px] font-semibold text-white leading-snug mt-0.5">${esc(n.title)}</div>
+            ${n.subtitle ? `<div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(n.subtitle)}</div>` : ""}
+          </div>
+          ${n.image ? `<img src="${esc(proxyUrl(n.image))}" alt="" class="w-12 h-12 rounded-xl object-cover shrink-0 border border-white/10" />` : ""}
+        </div>
+        ${n.funFact ? `<p class="text-[13.5px] text-neutral-300 leading-relaxed">${esc(n.funFact)}</p>` : ""}
+        <div class="flex flex-wrap items-center gap-2.5 pt-0.5">
+          ${n.kind === "hub" ? `<button type="button" data-agent-hub="${esc(n.hubId)}" class="glass-btn rounded-full px-3 py-1 text-[12.5px]">Fly on Globe →</button>` : ""}
+          ${n.kind === "timeline" ? `<button type="button" data-agent-ev="${esc(n.eventId)}" data-agent-year="${esc(n.year)}" class="glass-btn rounded-full px-3 py-1 text-[12.5px]">Open on Timeline →</button>` : ""}
+          ${n.kind === "space" ? `<button type="button" data-agent-space="${esc(n.missionId)}" class="glass-btn rounded-full px-3 py-1 text-[12.5px]">Open in 1 Light-Day →</button>` : ""}
+          ${n.officialUrl ? `<a href="${esc(n.officialUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link text-[13px]">Official Source ↗</a>` : ""}
+          ${n.wikiUrl && n.wikiUrl !== n.officialUrl ? `<a href="${esc(n.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link text-[13px]">Wikipedia ↗</a>` : ""}
+        </div>
+      </article>
+    `).join("") : `
+      <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-5 text-center text-[14px] text-neutral-400">
+        No official nodes found for "${esc(q)}". Try a broader topic such as <strong class="text-white">CRISPR</strong>, <strong class="text-white">Quantum Error Correction</strong>, or <strong class="text-white">Langlands</strong>.
+      </div>
+    `;
+
+    const trailsHtml = matchedTrails.length ? `
+      <div class="pt-2 space-y-2">
+        <div class="section-label px-1">Matching Curated Journeys</div>
+        ${matchedTrails.map(tr => `
+          <button type="button" data-agent-curated-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
+            <div class="min-w-0">
+              <div class="text-[14px] font-semibold text-white truncate">${esc(tr.title)}</div>
+              <div class="text-[12.5px] text-neutral-400 truncate mt-0.5">${esc(tr.tagline)} · ${(tr.stops || []).length} stops</div>
+            </div>
+            <span class="accent-text text-[13px] shrink-0">Start Trail →</span>
+          </button>
+        `).join("")}
+      </div>
+    ` : "";
+
+    box.innerHTML = `<div class="space-y-2.5">${headerHtml}${nodesHtml}${trailsHtml}</div>`;
+
+    box.querySelector("#btn-agent-back")?.addEventListener("click", () => renderSearchDropdown(q));
+    box.querySelector("#btn-agent-start-trail")?.addEventListener("click", () => {
+      closeSpotlight();
+      startRabbitTrail({
+        id: `agent-${Date.now()}`,
+        title: `Rabbit Hole: ${q}`,
+        tagline: `Curated official STEM trail for ${q}`,
+        stops
+      }, 0);
+    });
+    box.querySelectorAll("[data-agent-hub]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        closeSpotlight();
+        selectHubNode(btn.dataset.agentHub, true);
+      });
+    });
+    box.querySelectorAll("[data-agent-ev]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        closeSpotlight();
+        setTimeMode(true, Number(btn.dataset.agentYear));
+        selectHubNode(`tl-${btn.dataset.agentEv}`, true);
+      });
+    });
+    box.querySelectorAll("[data-agent-space]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        closeSpotlight();
+        setViewMode("space");
+        selectSpaceMission(btn.dataset.agentSpace);
+      });
+    });
+    box.querySelectorAll("[data-agent-curated-trail]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const tr = store.rabbitTrails.find(t => t.id === btn.dataset.agentCuratedTrail);
+        if (tr) {
+          closeSpotlight();
+          startRabbitTrail(tr, 0);
+        }
+      });
+    });
+  } catch {
+    if (reqId === activeAgentReq) {
+      box.innerHTML = `<div class="px-4 py-6 text-center text-[14px] accent-text">Could not complete deep rabbit-hole curation right now.</div>`;
+    }
+  }
+}
+
 function renderSearchDropdown(query) {
   const box = document.getElementById("search-dropdown");
   if (!box) return;
@@ -773,36 +1231,66 @@ function renderSearchDropdown(query) {
     parts.push(`
       <div class="px-2 pb-2 space-y-2.5">
         <div class="section-label">Jump straight to</div>
-        <div class="flex flex-wrap gap-2">
-          ${["CERN", "Voyager 1", "Anaximander", "IceCube", "PsiQuantum", "SESAME", "JWST", "ITER"].map(tag => `
-            <button type="button" data-spot-chip="${esc(tag)}" class="glass-btn rounded-full px-3.5 py-1.5 text-[14px]">${esc(tag)}</button>
+        <div class="flex flex-wrap gap-1.5">
+          ${["CERN", "DeepMind", "Broad Institute", "IHÉS", "IceCube", "Voyager 1", "AlphaFold", "ITER"].map(tag => `
+            <button type="button" data-spot-chip="${esc(tag)}" class="glass-btn rounded-full px-3 py-1.5 text-[13.5px]">${esc(tag)}</button>
           `).join("")}
         </div>
       </div>
     `);
+  } else {
+    parts.push(`
+      <button type="button" id="btn-spot-curate-inline" class="w-full text-left rounded-2xl px-4 py-3 bg-[rgba(160,70,70,0.14)] hover:bg-[rgba(160,70,70,0.22)] border border-[rgba(160,70,70,0.42)] transition flex items-center justify-between gap-3 cursor-pointer">
+        <div class="min-w-0">
+          <div class="text-[14px] font-semibold text-white truncate">Curate Rabbit Hole for “${esc(q)}”</div>
+          <div class="text-[12.5px] text-neutral-300 truncate mt-0.5">Official STEM nodes, landmark papers, Wikipedia facts &amp; trail hops — no filler report</div>
+        </div>
+        <span class="accent-text text-[13px] font-semibold shrink-0">Curate →</span>
+      </button>
+    `);
   }
 
-  const { hubs, events, missions, subdomains } = universalSearch(q, 8);
+  const { hubs, events, missions, subdomains, trails } = universalSearch(q, 8);
 
-  const formatEntityBadge = (t) => ({
-    lab: "Lab",
-    uni: "University",
-    startup: "Startup",
-    company: "Company",
-    institute: "Institute",
-    project: "Project",
-    history: "History"
-  }[t] || "Hub");
+  if (trails?.length) {
+    parts.push(`<div class="section-label px-2 pt-2 pb-1">Curated STEM Rabbit Hole Journeys</div>`);
+    parts.push(trails.map(t => `
+      <button type="button" data-pick-trail="${esc(t.id)}" class="spot-row pick-trail w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
+        <div class="min-w-0">
+          <div class="text-[14.5px] font-medium text-white truncate">${esc(t.title)}</div>
+          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(t.tagline)} · ${(t.stops || []).length} stops</div>
+        </div>
+        <span class="text-[13px] accent-text font-medium shrink-0">Start Trail →</span>
+      </button>
+    `).join(""));
+  }
+
+  const formatEntityBadge = (h) => {
+    const disc = STEM_DISCIPLINES.find(d => d.id === h.discipline)?.short;
+    if (disc && h.discipline !== "physics") return disc;
+    return ({
+      lab: "Lab",
+      uni: "University",
+      startup: "Startup",
+      company: "Company",
+      institute: "Institute",
+      project: "Project",
+      history: "History"
+    }[h.entityType] || "Hub");
+  };
 
   if (hubs.length) {
-    parts.push(`<div class="section-label px-2 pt-2 pb-1">Institutions &amp; Labs</div>`);
+    parts.push(`<div class="section-label px-2 pt-2 pb-1">Institutions &amp; Labs (Ranked by Impact)</div>`);
     parts.push(hubs.map(h => `
       <button type="button" data-pick-hub="${esc(h.id)}" class="spot-row pick-hub w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
           <div class="text-[15px] font-medium text-white truncate">${esc(h.name)}</div>
-          <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(h.city)}${h.sector ? " · " + esc(h.sector) : ""}</div>
+          <div class="text-[13.5px] text-neutral-400 truncate mt-0.5">${esc(h.city)}${h.sector ? " · " + esc(h.sector) : ""}</div>
         </div>
-        <span class="text-[14px] px-2.5 py-0.5 rounded-full bg-white/[0.08] text-neutral-300 shrink-0">${esc(formatEntityBadge(h.entityType))}</span>
+        <div class="flex items-center gap-1.5 shrink-0">
+          ${h.impactScore ? `<span class="text-[12px] px-2 py-0.5 rounded-full bg-white/[0.06] text-neutral-300 tabular-nums">${h.impactScore}</span>` : ""}
+          <span class="text-[13px] px-2.5 py-0.5 rounded-full bg-white/[0.08] text-neutral-300">${esc(formatEntityBadge(h))}</span>
+        </div>
       </button>
     `).join(""));
   }
@@ -813,9 +1301,9 @@ function renderSearchDropdown(query) {
       <button type="button" data-pick-ev="${esc(ev.id)}" data-ev-year="${ev.year}" class="spot-row pick-ev w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
           <div class="text-[15px] font-medium text-white truncate">${esc(ev.title)}</div>
-          <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(ev.figure)} · ${esc(ev.location)}</div>
+          <div class="text-[13.5px] text-neutral-400 truncate mt-0.5">${esc(ev.figure)} · ${esc(ev.location)}</div>
         </div>
-        <span class="text-[14px] accent-text font-medium shrink-0">${formatYear(ev.year)}</span>
+        <span class="text-[13.5px] accent-text font-medium shrink-0">${formatYear(ev.year)}</span>
       </button>
     `).join(""));
   }
@@ -826,25 +1314,25 @@ function renderSearchDropdown(query) {
       <button type="button" data-pick-mission="${esc(m.id)}" class="spot-row pick-mission w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
         <div class="min-w-0">
           <div class="text-[15px] font-medium text-white truncate">${esc(m.name)}</div>
-          <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(m.body)} · ${esc(m.agency)}</div>
+          <div class="text-[13.5px] text-neutral-400 truncate mt-0.5">${esc(m.body)} · ${esc(m.agency)}</div>
         </div>
-        <span class="text-[14px] accent-text shrink-0">${esc(m.lightTimeLabel.split(" (")[0])}</span>
+        <span class="text-[13.5px] accent-text shrink-0">${esc(m.lightTimeLabel.split(" (")[0])}</span>
       </button>
     `).join(""));
   }
 
   if (subdomains.length) {
-    parts.push(`<div class="section-label px-2 pt-3 pb-1">Domains &amp; Courses</div>`);
+    parts.push(`<div class="section-label px-2 pt-3 pb-1">Domains &amp; Open Materials</div>`);
     parts.push(subdomains.map(s => `
       <button type="button" data-pick-sub="${esc(s.domainId)}" class="spot-row pick-sub w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition cursor-pointer">
         <div class="text-[15px] font-medium text-white truncate">${esc(s.name)}</div>
-        <div class="text-[14px] text-neutral-400 truncate mt-0.5">${esc(s.domainName)}</div>
+        <div class="text-[13.5px] text-neutral-400 truncate mt-0.5">${esc(s.domainName)}</div>
       </button>
     `).join(""));
   }
 
-  if (q && !hubs.length && !events.length && !missions.length && !subdomains.length) {
-    parts.push(`<div class="px-4 py-6 text-center text-[15px] text-neutral-400">No local matches. Click <strong class="text-white">Live Search</strong> above to query global registries.</div>`);
+  if (q && !hubs.length && !events.length && !missions.length && !subdomains.length && !trails?.length) {
+    parts.push(`<div class="px-4 py-5 text-center text-[14.5px] text-neutral-400">No local matches. Click <strong class="text-white">Curate Trail</strong> or <strong class="text-white">Live Registry</strong> above to search official global sources.</div>`);
   }
 
   box.innerHTML = parts.join("");
@@ -857,11 +1345,22 @@ function renderSearchDropdown(query) {
     }
   }
 
+  box.querySelector("#btn-spot-curate-inline")?.addEventListener("click", () => runAgentRabbitHole(q));
+
   box.querySelectorAll("[data-spot-chip]").forEach(btn => {
     btn.addEventListener("click", () => {
       const inp = document.getElementById("search-input");
       if (inp) { inp.value = btn.dataset.spotChip; inp.focus(); }
       renderSearchDropdown(btn.dataset.spotChip);
+    });
+  });
+  box.querySelectorAll(".pick-trail").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tr = store.rabbitTrails.find(t => t.id === btn.dataset.pickTrail);
+      if (tr) {
+        closeSpotlight();
+        startRabbitTrail(tr, 0);
+      }
     });
   });
   box.querySelectorAll(".pick-hub").forEach(btn => {
@@ -904,10 +1403,17 @@ export function openModal(mode, focusId = null) {
   if (!backdrop || !titleEl || !bodyEl) return;
 
   backdrop.classList.remove("hidden");
+  clearExploreDockActive();
+  if (mode === "domains") document.getElementById("btn-open-domains")?.classList.add("glass-btn-active");
+  if (mode === "countries") document.getElementById("btn-open-countries")?.classList.add("glass-btn-active");
+  if (mode === "pathways" || mode === "account" || mode === "offline") {
+    document.getElementById("btn-open-pathways")?.classList.add("glass-btn-active");
+  }
   const titles = {
-    domains: "Domains & Vetted Materials",
+    domains: "STEM Domains, Trails & Open Materials",
     countries: "Countries & Continents",
-    live: "Live Open-Science Search",
+    live: "Live Open-Science Registry Search",
+    offline: "Offline Packages (Organic Maps Style)",
     pathways: "Bookmarks & Account",
     account: "Bookmarks & Account",
     submit: "Submit Missing Institution",
@@ -919,6 +1425,7 @@ export function openModal(mode, focusId = null) {
   if (mode === "domains") renderDomainsModal(bodyEl, focusId);
   if (mode === "countries") renderCountriesModal(bodyEl);
   if (mode === "live") renderLiveSearchModal(bodyEl);
+  if (mode === "offline") renderOfflinePacksModal(bodyEl);
   if (mode === "pathways" || mode === "account") {
     renderAccountWorkspaceModal(bodyEl, {
       initialTab: focusId || "bookmarks",
@@ -952,6 +1459,7 @@ export function openModal(mode, focusId = null) {
           selectHubNode(store.state.selectedId, false);
         }
       },
+      onOpenOffline: () => openModal("offline"),
       onOpenSubmit: () => openModal("submit"),
       onOpenAudit: () => openModal("audit"),
       onOpenShortcuts: () => openModal("shortcuts"),
@@ -972,6 +1480,162 @@ export function openModal(mode, focusId = null) {
   }
   if (mode === "shortcuts") renderKeyboardShortcutsModal(bodyEl);
   if (mode === "audit") renderAuditAndPrivacyModal(bodyEl);
+}
+
+// =========================================================================
+// ORGANIC-MAPS-STYLE OFFLINE PACKS MANAGER (IndexedDB + Cache Storage)
+// =========================================================================
+
+function refreshOfflinePackBadge() {
+  const badge = document.getElementById("offline-pack-count");
+  if (!badge) return;
+  const stats = getOfflineStorageStats();
+  if (stats.packCount > 0) {
+    badge.textContent = String(stats.packCount);
+    badge.classList.remove("hidden");
+  } else {
+    badge.classList.add("hidden");
+  }
+}
+
+async function renderOfflinePacksModal(bodyEl) {
+  bodyEl.innerHTML = `<div class="py-8 text-center text-[14px] text-neutral-400">Loading offline package catalog…</div>`;
+  const manifest = await fetchPackManifest();
+  const packs = manifest?.packs || [];
+  const activeDownloads = new Map(); // packId -> pct
+
+  const render = () => {
+    const installedIds = getDownloadedPackIds();
+    const installedMeta = getDownloadedPackMeta();
+    const stats = getOfflineStorageStats();
+    refreshOfflinePackBadge();
+
+    const groups = [
+      { key: "tiles", title: "Base Offline Earth Map", desc: "Bundled NASA Blue Marble globe tiles (z0–z2) cached for 100% airplane-mode globe rendering." },
+      { key: "discipline", title: "STEM Discipline Packages", desc: "Download individual sciences with curated hubs, timelines, domains, and rabbit-hole trails." },
+      { key: "region", title: "Continent & Region Packages", desc: "Download regional hub indexes by continent for fast offline travel and research." }
+    ];
+
+    const renderPackRow = (p) => {
+      const installed = installedIds.has(p.id);
+      const meta = installedMeta[p.id];
+      const pct = activeDownloads.get(p.id);
+      const isDownloading = pct !== undefined;
+      const counts = p.counts || {};
+      const statParts = [];
+      if (counts.hubs) statParts.push(`${counts.hubs.toLocaleString()} hubs`);
+      if (counts.events) statParts.push(`${counts.events} milestones`);
+      if (counts.missions) statParts.push(`${counts.missions} space missions`);
+      if (counts.trails) statParts.push(`${counts.trails} trails`);
+      if (counts.tiles) statParts.push(`${counts.tiles} Earth tiles`);
+
+      return `
+        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 space-y-2">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0">
+              <div class="flex items-center flex-wrap gap-2">
+                <span class="text-[15px] font-semibold text-white">${esc(p.name)}</span>
+                <span class="text-[12px] px-2 py-0.5 rounded-full bg-white/[0.07] text-neutral-300 tabular-nums">${esc(p.sizeLabel || formatBytes(p.sizeBytes))}</span>
+                ${installed ? `<span class="text-[12px] accent-text font-medium">✓ Installed</span>` : ""}
+              </div>
+              <div class="text-[13px] text-neutral-400 mt-0.5">${esc(p.description || "")}</div>
+              ${statParts.length ? `<div class="text-[12px] text-neutral-500 mt-1">${esc(statParts.join(" · "))}${meta?.downloadedAt ? ` · Saved ${new Date(meta.downloadedAt).toLocaleDateString()}` : ""}</div>` : ""}
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              ${isDownloading ? `
+                <span class="text-[13px] accent-text font-medium tabular-nums px-2">${pct}%</span>
+              ` : installed ? `
+                <button type="button" data-pack-export="${esc(p.id)}" class="glass-btn rounded-full px-3 py-1.5 text-[12.5px]" title="Export portable .json bundle">Export</button>
+                <button type="button" data-pack-delete="${esc(p.id)}" class="accent-chip rounded-full px-3 py-1.5 text-[12.5px]">Delete</button>
+              ` : `
+                <button type="button" data-pack-download="${esc(p.id)}" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px]">Download</button>
+              `}
+            </div>
+          </div>
+          ${isDownloading ? `
+            <div class="offline-progress-track"><div class="offline-progress-fill" style="width:${Math.max(4, pct)}%"></div></div>
+          ` : ""}
+        </div>
+      `;
+    };
+
+    bodyEl.innerHTML = `
+      <div class="space-y-5">
+        <div class="rounded-2xl bg-white/[0.045] border border-white/10 p-4 flex flex-wrap items-center justify-between gap-3">
+          <div class="space-y-0.5">
+            <div class="text-[15px] font-semibold text-white">Local Offline Storage</div>
+            <div class="text-[13.5px] text-neutral-400">
+              <strong class="text-white">${stats.packCount}</strong> of ${packs.length} packages installed · <strong class="text-white">${esc(stats.totalLabel)}</strong> on device · SHA-256 verified
+            </div>
+          </div>
+          <span class="text-[12.5px] px-3 py-1 rounded-full bg-white/[0.07] text-neutral-200">${navigator.onLine ? "Online · Ready to sync" : "Offline Mode Active"}</span>
+        </div>
+        ${groups.map(g => {
+          const items = packs.filter(p => p.category === g.key);
+          if (!items.length) return "";
+          return `
+            <div class="space-y-2.5">
+              <div>
+                <div class="section-label">${esc(g.title)}</div>
+                <div class="text-[12.5px] text-neutral-500 mt-0.5">${esc(g.desc)}</div>
+              </div>
+              <div class="space-y-2">${items.map(renderPackRow).join("")}</div>
+            </div>
+          `;
+        }).join("") || `<div class="text-center py-6 text-[14px] text-neutral-400">No offline package manifest available.</div>`}
+      </div>
+    `;
+
+    bodyEl.querySelectorAll("[data-pack-download]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const packId = btn.dataset.packDownload;
+        const packMeta = packs.find(x => x.id === packId);
+        if (!packMeta) return;
+        activeDownloads.set(packId, 5);
+        render();
+        try {
+          const payload = await downloadPack(packMeta, (pct) => {
+            activeDownloads.set(packId, pct);
+            render();
+          });
+          activeDownloads.delete(packId);
+          if (payload && packMeta.category !== "tiles") {
+            mergeOfflinePackPayload(payload);
+            syncGlobeMarkers();
+            if (isFilterPopoverOpen()) renderFilterPopover();
+          }
+          render();
+          showToast(`Installed offline: ${packMeta.name}`);
+        } catch (err) {
+          activeDownloads.delete(packId);
+          render();
+          showToast(err?.message || `Download failed for ${packMeta.name}`);
+        }
+      });
+    });
+
+    bodyEl.querySelectorAll("[data-pack-delete]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const packId = btn.dataset.packDelete;
+        await deletePack(packId);
+        render();
+        showToast("Removed offline package");
+      });
+    });
+
+    bodyEl.querySelectorAll("[data-pack-export]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        try {
+          await exportPackToFile(btn.dataset.packExport);
+          showToast(`Exported world-stem-${btn.dataset.packExport}.json`);
+        } catch (err) {
+          showToast(err?.message || "Export failed");
+        }
+      });
+    });
+  };
+
+  render();
 }
 
 function renderDomainsModal(bodyEl, focusDomainId = null) {
@@ -1040,19 +1704,47 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
     </details>
   `).join("");
 
+  const trailsHtml = store.rabbitTrails?.length ? `
+    <div class="space-y-2.5">
+      <div class="section-label">Curated Cross-STEM Rabbit Hole Journeys</div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+        ${store.rabbitTrails.map(tr => `
+          <button type="button" data-dom-trail="${esc(tr.id)}" class="glass-row text-left rounded-2xl p-3.5 space-y-1 transition">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[14px] font-semibold text-white truncate">${esc(tr.title)}</span>
+              <span class="text-[12px] accent-text shrink-0">${(tr.stops || []).length} stops →</span>
+            </div>
+            <div class="text-[12.5px] text-neutral-400 line-clamp-2">${esc(tr.tagline)}</div>
+          </button>
+        `).join("")}
+      </div>
+    </div>
+  ` : "";
+
   bodyEl.innerHTML = `
     <div class="space-y-5">
-      <div class="space-y-2.5">
-        <div class="section-label">Filter Globe by Branch</div>
+      ${trailsHtml}
+      <div class="${trailsHtml ? "border-t border-white/10 pt-4 " : ""}space-y-2.5">
+        <div class="section-label">Filter Globe by Subfield</div>
         <div class="flex flex-wrap gap-2">${branchPills}</div>
       </div>
       <div class="border-t border-white/10 pt-4 space-y-3.5">
-        <div class="section-label">Browse Domain Materials</div>
+        <div class="section-label">Browse STEM Domain Materials</div>
         <div class="flex flex-wrap gap-2">${domainTabs}</div>
         <div class="space-y-3">${subCards || '<div class="text-neutral-400 text-[14px]">Loading domains…</div>'}</div>
       </div>
     </div>
   `;
+
+  bodyEl.querySelectorAll("[data-dom-trail]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tr = store.rabbitTrails.find(t => t.id === btn.dataset.domTrail);
+      if (tr) {
+        closeModal();
+        startRabbitTrail(tr, 0);
+      }
+    });
+  });
 
   bodyEl.querySelectorAll(".branch-pill").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -1461,32 +2153,256 @@ function downloadBlob(content, filename, type) {
 }
 
 // =========================================================================
-// STAGE MENU, GROUP FILTERS & ACTIVE FILTER PILL
+// STAGE SELECTOR POPOVER, PRECISION FILTER POPOVER & ACTIVE FILTER PILL
 // =========================================================================
 
+const FILTER_BRANCHES = [
+  { id: "all",            label: "All",               disc: "all" },
+  { id: "particle",       label: "Particle & HEP",    disc: "physics" },
+  { id: "quantum",        label: "Quantum & Optics",  disc: "physics" },
+  { id: "astro",          label: "Astrophysics",      disc: "physics" },
+  { id: "gravity",        label: "Gravity & Theory",  disc: "physics" },
+  { id: "fusion",         label: "Fusion & Plasma",   disc: "physics" },
+  { id: "condensed",      label: "Condensed Matter",  disc: "physics" },
+  { id: "applied",        label: "Applied & Space",   disc: "physics" },
+  { id: "ai_cs",          label: "AI & Computing",    disc: "ai_cs" },
+  { id: "math",           label: "Mathematics",       disc: "math" },
+  { id: "bio_med",        label: "Biology & Bio",     disc: "bio_med" },
+  { id: "chem_materials", label: "Chemistry",         disc: "chem_materials" },
+  { id: "earth_climate",  label: "Earth & Climate",   disc: "earth_climate" },
+  { id: "engineering",    label: "Engineering",       disc: "engineering" },
+  { id: "history",        label: "History",           disc: "all" },
+  { id: "multi",          label: "Multi-Branch",      disc: "physics" }
+];
+
+const FILTER_TYPES = [
+  { id: "all",       label: "All" },
+  { id: "lab",       label: "Labs & Facilities" },
+  { id: "institute", label: "Research Institutes" },
+  { id: "uni",       label: "Universities" },
+  { id: "company",   label: "Companies & Startups" },
+  { id: "history",   label: "Historical" }
+];
+
+const GROUP_SHORT_LABELS = {
+  lab: "Labs",
+  institute: "Institutes",
+  uni: "Universities",
+  company: "Startups",
+  history: "Historical"
+};
+
+function refreshOpenCardStage() {
+  const id = store.state.selectedId;
+  if (!id || String(id).startsWith("sp-")) return;
+  const node = getNodeById(id);
+  if (!node || node.tier === "timeline") return;
+  const st = store.state.stage;
+  const stages = node.stages || buildDefaultStages();
+  const stageText = st === "all" ? stages.undergrad : (stages[st] || stages.undergrad);
+  const branchLabel = BRANCH_SHORT_LABELS[node.branch] || "STEM";
+  const stageLabel = STAGE_META[st]?.label || "Academic";
+  const lblEl = document.getElementById("card-pathway-label");
+  const txtEl = document.getElementById("card-pathway");
+  if (lblEl) lblEl.textContent = `${stageLabel} Pathway · ${branchLabel}`;
+  if (txtEl) txtEl.textContent = stageText;
+
+  const stagesEl = document.getElementById("deeper-stages");
+  if (stagesEl) {
+    stagesEl.innerHTML = Object.keys(STAGE_META).filter(k => k !== "all").map(k => `
+      <div class="rounded-2xl px-3.5 py-2.5 ${k === st ? "bg-white/12 border border-white/22" : "bg-white/[0.04] border border-white/10"}">
+        <div class="text-[14px] font-semibold text-white">${STAGE_META[k].label}</div>
+        <div class="text-[14px] text-neutral-300 mt-1 leading-snug">${esc(stages[k] || "—")}</div>
+      </div>
+    `).join("");
+  }
+}
+
 export function renderStageMenu() {
+  const st = store.state.stage || "undergrad";
   const lbl = document.getElementById("stage-current-label");
-  if (lbl) lbl.textContent = STAGE_META[store.state.stage]?.short || "Undergrad";
+  if (lbl) lbl.textContent = STAGE_META[st]?.short || "Undergrad";
+
   const menu = document.getElementById("stage-dropdown-menu");
-  if (!menu) return;
-  menu.innerHTML = Object.entries(STAGE_META).map(([key, meta]) => {
-    const active = store.state.stage === key;
-    return `
-      <button type="button" data-stage-opt="${key}" class="w-full text-left px-3.5 py-2.5 rounded-[14px] text-[14px] flex items-center justify-between cursor-pointer ${active ? "stage-opt-active" : "stage-opt"}">
-        <span>${meta.label}</span>
-        ${active ? "<span>✓</span>" : ""}
-      </button>
-    `;
-  }).join("");
-  menu.querySelectorAll("[data-stage-opt]").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      await updateAccountProfile({ stage: btn.dataset.stageOpt });
-      renderStageMenu();
-      menu.classList.add("hidden");
-      if (store.state.selectedId && !store.state.selectedId.startsWith("sp-")) selectHubNode(store.state.selectedId, false);
-      showToast(`Stage: ${STAGE_META[store.state.stage].label}`);
+  if (menu) {
+    menu.innerHTML = Object.entries(STAGE_META).map(([key, meta]) => {
+      const active = st === key;
+      return `
+        <button type="button" role="option" aria-selected="${active ? "true" : "false"}" data-stage-opt="${key}" class="${active ? "stage-opt stage-opt-active" : "stage-opt"}">
+          <span class="truncate">${esc(meta.label)}</span>
+          ${active ? '<span class="stage-opt-check">✓</span>' : ""}
+        </button>
+      `;
+    }).join("");
+    menu.querySelectorAll("[data-stage-opt]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        await updateAccountProfile({ stage: btn.dataset.stageOpt });
+        renderStageMenu();
+        refreshOpenCardStage();
+        if (store.state.stageOnly) syncGlobeMarkers();
+        if (isFilterPopoverOpen()) renderFilterPopover();
+        updateActiveFiltersPill();
+        showToast(`Level: ${STAGE_META[store.state.stage]?.label || store.state.stage}`);
+      });
     });
+  }
+
+  const stageToggle = document.getElementById("toggle-stage-only");
+  if (stageToggle) stageToggle.checked = Boolean(store.state.stageOnly);
+  const stageHint = document.getElementById("stage-only-hint");
+  if (stageHint) {
+    stageHint.textContent = st === "all"
+      ? "Pick a specific level above to filter verified stage hubs"
+      : `Show hubs with curated ${STAGE_META[st]?.short || ""} pathways`;
+  }
+
+  const portalsTitle = document.getElementById("stage-portals-title");
+  if (portalsTitle) {
+    portalsTitle.textContent = `Direct Official Portals · ${STAGE_META[st]?.short || "All"}`;
+  }
+  const portalsList = document.getElementById("stage-portals-list");
+  if (portalsList) {
+    const portals = STAGE_PORTALS[st] || STAGE_PORTALS.all || [];
+    portalsList.innerHTML = portals.map(p => `
+      <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1">
+        <span>${esc(p.name)}</span>
+        <span aria-hidden="true">↗</span>
+      </a>
+    `).join("");
+  }
+}
+
+export function renderFilterPopover() {
+  const matchedCount = getFilteredHubs({ skipSort: true }).length;
+  const totalCount = store.hubs.length;
+
+  const liveEl = document.getElementById("filter-live-count");
+  if (liveEl) {
+    liveEl.textContent = `Showing ${matchedCount.toLocaleString()} of ${totalCount.toLocaleString()} STEM institutions`;
+  }
+
+  refreshOfflinePackBadge();
+
+  const discBox = document.getElementById("filter-discipline-chips");
+  if (discBox) {
+    discBox.innerHTML = STEM_DISCIPLINES.map(d => {
+      const count = getFilteredHubs({ discipline: d.id, branch: "all", skipSort: true }).length;
+      const active = store.state.discipline === d.id;
+      return `
+        <button type="button" data-fdisc="${esc(d.id)}" class="filter-chip ${active ? "filter-chip-active" : ""}" title="${esc(d.desc)}">
+          <span>${esc(d.short)}</span>
+          <span class="filter-chip-count">${count.toLocaleString()}</span>
+        </button>
+      `;
+    }).join("");
+    discBox.querySelectorAll("[data-fdisc]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        store.state.discipline = btn.dataset.fdisc;
+        store.state.branch = "all";
+        if (store.state.viewMode === "space") setViewMode("earth");
+        syncGlobeMarkers();
+        renderFilterPopover();
+        updateActiveFiltersPill();
+      });
+    });
+  }
+
+  const branchBox = document.getElementById("filter-branch-chips");
+  if (branchBox) {
+    const curDisc = store.state.discipline || "all";
+    const visibleBranches = FILTER_BRANCHES.filter(b =>
+      b.id === "all" || curDisc === "all" || b.disc === curDisc || b.disc === "all"
+    );
+    branchBox.innerHTML = visibleBranches.map(b => {
+      const count = getFilteredHubs({ branch: b.id, skipSort: true }).length;
+      if (b.id !== "all" && count === 0 && store.state.branch !== b.id) return "";
+      const active = store.state.branch === b.id;
+      return `
+        <button type="button" data-fbranch="${esc(b.id)}" class="filter-chip ${active ? "filter-chip-active" : ""}">
+          <span>${esc(b.label)}</span>
+          <span class="filter-chip-count">${count.toLocaleString()}</span>
+        </button>
+      `;
+    }).join("");
+    branchBox.querySelectorAll("[data-fbranch]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        store.state.branch = btn.dataset.fbranch;
+        if (store.state.viewMode === "space") setViewMode("earth");
+        syncGlobeMarkers();
+        renderFilterPopover();
+        updateActiveFiltersPill();
+      });
+    });
+  }
+
+  const typeBox = document.getElementById("filter-type-chips");
+  if (typeBox) {
+    typeBox.innerHTML = FILTER_TYPES.map(t => {
+      const count = getFilteredHubs({ groupFilter: t.id, skipSort: true }).length;
+      const active = store.state.groupFilter === t.id;
+      return `
+        <button type="button" data-ftype="${esc(t.id)}" class="filter-chip ${active ? "filter-chip-active" : ""}">
+          <span>${esc(t.label)}</span>
+          <span class="filter-chip-count">${count.toLocaleString()}</span>
+        </button>
+      `;
+    }).join("");
+    typeBox.querySelectorAll("[data-ftype]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (store.state.viewMode === "space") setViewMode("earth");
+        setGroupFilter(btn.dataset.ftype);
+        renderFilterPopover();
+      });
+    });
+  }
+
+  const countrySel = document.getElementById("filter-country-select");
+  if (countrySel) {
+    const allCountryCount = getFilteredHubs({ countryFilter: "all", skipSort: true }).length;
+    const sortedCountries = [...store.countries.keys()].sort((a, b) => a.localeCompare(b));
+    const opts = [
+      `<option value="all">All Countries (${allCountryCount.toLocaleString()})</option>`,
+      ...sortedCountries.map(c => {
+        const cnt = getFilteredHubs({ countryFilter: c, skipSort: true }).length;
+        return `<option value="${esc(c)}">${esc(c)} (${cnt.toLocaleString()})</option>`;
+      })
+    ];
+    countrySel.innerHTML = opts.join("");
+    countrySel.value = store.state.countryFilter || "all";
+  }
+
+  const sortSel = document.getElementById("filter-sort-select");
+  if (sortSel) sortSel.value = store.state.sortBy || "impact";
+
+  const curatedToggle = document.getElementById("toggle-curated-only");
+  if (curatedToggle) curatedToggle.checked = Boolean(store.state.curatedOnly);
+}
+
+function resetAllFilters() {
+  store.state.discipline = "all";
+  store.state.branch = "all";
+  store.state.groupFilter = "all";
+  store.state.countryFilter = "all";
+  store.state.sortBy = "impact";
+  store.state.curatedOnly = false;
+  store.state.stageOnly = false;
+
+  document.querySelectorAll("[data-group-tab]").forEach(btn => {
+    const act = btn.dataset.groupTab === "all";
+    btn.classList.toggle("glass-btn-active", act);
+    if (!act) btn.classList.add("glass-btn");
   });
+  const stageToggle = document.getElementById("toggle-stage-only");
+  if (stageToggle) stageToggle.checked = false;
+  const curatedToggle = document.getElementById("toggle-curated-only");
+  if (curatedToggle) curatedToggle.checked = false;
+  const sortSel = document.getElementById("filter-sort-select");
+  if (sortSel) sortSel.value = "impact";
+
+  syncGlobeMarkers();
+  if (isFilterPopoverOpen()) renderFilterPopover();
+  updateActiveFiltersPill();
+  showToast("All filters cleared");
 }
 
 function setGroupFilter(group) {
@@ -1498,23 +2414,70 @@ function setGroupFilter(group) {
     if (!act) btn.classList.add("glass-btn");
   });
   syncGlobeMarkers();
+  updateActiveFiltersPill();
+}
+
+function getActiveFilterCount() {
+  let n = 0;
+  if (store.state.discipline !== "all") n++;
+  if (store.state.branch !== "all") n++;
+  if (store.state.groupFilter !== "all") n++;
+  if (store.state.countryFilter !== "all") n++;
+  if (store.state.curatedOnly) n++;
+  if (store.state.stageOnly) n++;
+  return n;
 }
 
 function updateActiveFiltersPill() {
+  const count = getActiveFilterCount();
+  const badge = document.getElementById("filter-count-badge");
+  if (badge) {
+    if (count > 0) {
+      badge.textContent = String(count);
+      badge.classList.remove("hidden");
+    } else {
+      badge.classList.add("hidden");
+    }
+  }
+  const mobDot = document.getElementById("mobile-filter-dot");
+  if (mobDot) {
+    mobDot.classList.toggle("hidden", count === 0);
+  }
+
   const pill = document.getElementById("active-filter-pill");
   const txt = document.getElementById("active-filter-text");
   if (!pill || !txt) return;
-  const labels = [];
-  if (store.state.branch !== "all") labels.push(PHYSICS_BRANCHES.find(b => b.id === store.state.branch)?.label.split(/[\s,]+/)[0] || store.state.branch);
-  if (store.state.countryFilter !== "all") labels.push(store.state.countryFilter);
-  if (labels.length) {
-    txt.textContent = labels.join(" · ");
-    pill.classList.remove("hidden");
-    pill.classList.add("inline-flex");
-  } else {
+
+  // Never overlap open Stage or Filter popovers
+  if (count === 0 || isStagePopoverOpen() || isFilterPopoverOpen()) {
     pill.classList.add("hidden");
     pill.classList.remove("inline-flex");
+    return;
   }
+
+  const labels = [];
+  if (store.state.discipline !== "all") {
+    labels.push(STEM_DISCIPLINES.find(d => d.id === store.state.discipline)?.short || store.state.discipline);
+  }
+  if (store.state.branch !== "all") {
+    labels.push(BRANCH_SHORT_LABELS[store.state.branch] || store.state.branch);
+  }
+  if (store.state.groupFilter !== "all") {
+    labels.push(GROUP_SHORT_LABELS[store.state.groupFilter] || store.state.groupFilter);
+  }
+  if (store.state.countryFilter !== "all") {
+    labels.push(store.state.countryFilter);
+  }
+  if (store.state.curatedOnly) {
+    labels.push("Curated");
+  }
+  if (store.state.stageOnly) {
+    labels.push(`${STAGE_META[store.state.stage]?.short || "Stage"} Verified`);
+  }
+
+  txt.textContent = labels.join(" · ");
+  pill.classList.remove("hidden");
+  pill.classList.add("inline-flex");
 }
 
 // =========================================================================
@@ -1530,6 +2493,9 @@ export function applyDeepLinkFromUrl() {
       selectSpaceMission(params.get("space"));
     } else if (params.get("hub")) {
       selectHubNode(params.get("hub"), true);
+    } else if (params.get("trail")) {
+      const tr = store.rabbitTrails.find(t => t.id === params.get("trail"));
+      if (tr) startRabbitTrail(tr, 0);
     } else if (params.get("year")) {
       const y = Number(params.get("year"));
       if (Number.isFinite(y)) setTimeMode(true, y);
@@ -1558,7 +2524,7 @@ function copyCurrentShareLink() {
   if (id.startsWith("sp-")) query = `?space=${encodeURIComponent(id.slice(3))}`;
   else query = `?hub=${encodeURIComponent(id)}`;
 
-  const base = location.protocol === "blob:" ? "https://physalts.org/" : `${location.origin}${location.pathname}`;
+  const base = location.protocol === "blob:" ? "https://nothinkaffee.github.io/PhysAlts/" : `${location.origin}${location.pathname}`;
   const fullUrl = `${base}${query}`;
   if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(fullUrl).then(() => showToast("Share link copied")).catch(() => showToast(fullUrl));
@@ -1581,8 +2547,10 @@ function jumpRabbitHole() {
     return;
   }
 
-  // Curated curiosity pool: flagships, small-nation labs, deep-tech startups, and rich hubs
-  const curatedPool = store.hubs.filter(h => (h.tier === "flagship" || h.tier === "deeptech") && !recentRabbitIds.includes(h.id));
+  // Curated curiosity pool across ALL STEM: Physics flagships, AI/Math/Bio/Climate/Eng leaders & deep-tech startups
+  const curatedPool = store.hubs.filter(h =>
+    (h.tier === "flagship" || h.tier === "stem" || h.tier === "deeptech") && !recentRabbitIds.includes(h.id)
+  );
   const fallbackPool = store.hubs.filter(h => !recentRabbitIds.includes(h.id));
   const pool = curatedPool.length ? curatedPool : (fallbackPool.length ? fallbackPool : store.hubs);
   if (!pool.length) return;
@@ -1603,16 +2571,26 @@ export function initUI() {
   renderStageMenu();
   refreshDbBadge();
   refreshAccountHeader();
+  refreshOfflinePackBadge();
   bindTimelineRuler();
 
   document.getElementById("btn-rabbit-hole")?.addEventListener("click", jumpRabbitHole);
   document.getElementById("btn-card-rabbit")?.addEventListener("click", jumpRabbitHole);
 
-  // Centered Spotlight Command Palette
+  // Floating Rabbit Hole Trail Breadcrumb Bar controls
+  document.getElementById("btn-trail-prev")?.addEventListener("click", () => stepRabbitTrail(-1));
+  document.getElementById("btn-trail-next")?.addEventListener("click", () => stepRabbitTrail(1));
+  document.getElementById("btn-trail-exit")?.addEventListener("click", exitRabbitTrail);
+
+  // Centered Spotlight Command Palette + Deep Rabbit-Hole Research Agent
   document.getElementById("btn-open-spotlight")?.addEventListener("click", openSpotlight);
   document.getElementById("btn-close-spotlight")?.addEventListener("click", closeSpotlight);
   document.getElementById("spotlight-backdrop")?.addEventListener("click", (e) => {
     if (e.target.id === "spotlight-backdrop") closeSpotlight();
+  });
+  document.getElementById("btn-spotlight-agent")?.addEventListener("click", () => {
+    const q = document.getElementById("search-input")?.value || "";
+    runAgentRabbitHole(q);
   });
   document.getElementById("btn-spotlight-live")?.addEventListener("click", () => {
     closeSpotlight();
@@ -1665,17 +2643,70 @@ export function initUI() {
     if (e.target.id === "drawer-backdrop") closeModal();
   });
 
-  document.getElementById("btn-clear-filters")?.addEventListener("click", () => {
-    store.state.branch = "all";
-    store.state.countryFilter = "all";
-    updateActiveFiltersPill();
+  // Level Selector Popover (#stage-popover) & Precision Filter Popover (#filter-popover)
+  document.getElementById("btn-stage-picker")?.addEventListener("click", toggleStagePopover);
+  document.getElementById("btn-close-stage-popover")?.addEventListener("click", closeStagePopover);
+  document.getElementById("btn-card-change-stage")?.addEventListener("click", () => openStagePopover(true));
+  document.getElementById("toggle-stage-only")?.addEventListener("change", (e) => {
+    store.state.stageOnly = Boolean(e.target.checked);
     syncGlobeMarkers();
+    if (isFilterPopoverOpen()) renderFilterPopover();
+    updateActiveFiltersPill();
+    showToast(store.state.stageOnly ? "Showing verified stage pathways only" : "Showing all institutions");
   });
+
+  document.getElementById("btn-open-filters")?.addEventListener("click", toggleFilterPopover);
+  document.getElementById("btn-mobile-filters")?.addEventListener("click", toggleFilterPopover);
+  document.getElementById("btn-close-filter-popover")?.addEventListener("click", closeFilterPopover);
+  document.getElementById("btn-filter-offline")?.addEventListener("click", () => openModal("offline"));
+  document.getElementById("btn-filter-reset")?.addEventListener("click", resetAllFilters);
+  document.getElementById("filter-country-select")?.addEventListener("change", (e) => {
+    const val = e.target.value || "all";
+    store.state.countryFilter = val;
+    if (store.state.viewMode === "space") setViewMode("earth");
+    syncGlobeMarkers();
+    renderFilterPopover();
+    updateActiveFiltersPill();
+    if (val !== "all") {
+      const target = getFilteredHubs()[0] || store.hubs.find(h => h.country === val);
+      if (target) flyToHub(target, 5.0);
+    }
+  });
+  document.getElementById("filter-sort-select")?.addEventListener("change", (e) => {
+    store.state.sortBy = e.target.value || "impact";
+    syncGlobeMarkers();
+    showToast(`Ranked by: ${e.target.options[e.target.selectedIndex]?.text || store.state.sortBy}`);
+  });
+  document.getElementById("toggle-curated-only")?.addEventListener("change", (e) => {
+    store.state.curatedOnly = Boolean(e.target.checked);
+    syncGlobeMarkers();
+    renderFilterPopover();
+    updateActiveFiltersPill();
+  });
+
+  // Dismiss Stage / Filter popovers on outside click
+  document.addEventListener("pointerdown", (e) => {
+    const target = e.target;
+    if (!(target instanceof Element)) return;
+    if (isStagePopoverOpen()) {
+      const pop = document.getElementById("stage-popover");
+      if (pop && !pop.contains(target) && !target.closest("#btn-stage-picker") && !target.closest("#btn-card-change-stage")) {
+        closeStagePopover();
+      }
+    }
+    if (isFilterPopoverOpen()) {
+      const pop = document.getElementById("filter-popover");
+      if (pop && !pop.contains(target) && !target.closest("#btn-open-filters") && !target.closest("#btn-mobile-filters")) {
+        closeFilterPopover();
+      }
+    }
+  });
+
+  document.getElementById("btn-clear-filters")?.addEventListener("click", resetAllFilters);
 
   document.getElementById("btn-mode-earth")?.addEventListener("click", () => {
     if (store.state.viewMode === "earth") {
-      closeAllSurfaces();
-      resetGlobeToSpace();
+      resetCurrentView();
     } else {
       setViewMode("earth");
     }
@@ -1700,6 +2731,7 @@ export function initUI() {
 
   document.getElementById("btn-zoom-in")?.addEventListener("click", zoomInGlobe);
   document.getElementById("btn-zoom-out")?.addEventListener("click", zoomOutGlobe);
+  document.getElementById("btn-reset-view")?.addEventListener("click", resetCurrentView);
 
   document.querySelectorAll("[data-group-tab]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -1799,6 +2831,15 @@ export function initUI() {
     if (e.key === "/") {
       e.preventDefault();
       openSpotlight();
+    } else if (e.key === "0") {
+      e.preventDefault();
+      resetCurrentView();
+    } else if (e.key.toLowerCase() === "f") {
+      e.preventDefault();
+      toggleFilterPopover();
+    } else if (e.key.toLowerCase() === "o") {
+      e.preventDefault();
+      openModal("offline");
     } else if (e.key.toLowerCase() === "r") {
       jumpRabbitHole();
     } else if (e.key === "1") {

@@ -5,7 +5,7 @@
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v7";
+const APP_CACHE = "world-physics-app-v8";
 const TILE_CACHE = "world-physics-tiles-v1";
 
 const PRECACHE_APP = [
@@ -27,7 +27,15 @@ const PRECACHE_APP = [
   "./data/private_startups.json",
   "./data/history_timeline.json",
   "./data/space_frontier.json",
-  "./data/domains_catalog.json"
+  "./data/domains_catalog.json",
+  "./data/stem/ai_cs_hubs.json",
+  "./data/stem/math_hubs.json",
+  "./data/stem/bio_med_hubs.json",
+  "./data/stem/chem_earth_eng_hubs.json",
+  "./data/stem/stem_timeline.json",
+  "./data/stem/stem_domains.json",
+  "./data/stem/rabbit_trails.json",
+  "./data/packs/manifest.json"
 ];
 
 function isGlobeTileRequest(url) {

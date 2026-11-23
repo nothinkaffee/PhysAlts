@@ -1,0 +1,329 @@
+{
+  "meta": {
+    "name": "PhysAlts Cross-Disciplinary Rabbit Hole Trails",
+    "version": "1.0",
+    "updatedAt": "2026-11-23",
+    "description": "8 curated multi-stop cross-STEM journeys linking Physics, AI, Mathematics, Biology, Chemistry, Earth/Climate, Engineering, and Space via real intellectual and technological causal bridges."
+  },
+  "trails": [
+    {
+      "id": "silicon_to_superintelligence",
+      "title": "From Laser-Vaporized Tin to Frontier AI",
+      "tagline": "How extreme ultraviolet plasma physics in Europe carves atomic-scale chips in Taiwan that power modern reasoning AI.",
+      "disciplines": ["physics", "engineering", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "asml",
+          "title": "ASML (EUV Lithography)",
+          "bridge": "Firing CO2 lasers 50,000 times per second at falling tin droplets creates 13.5 nm ultraviolet light—tested first inside imec's High-NA cleanrooms."
+        },
+        {
+          "hubId": "imec",
+          "title": "imec Leuven (Sub-Nanometer R&D)",
+          "bridge": "imec defines the pre-competitive sub-2 nm nanosheet and CFET transistor blueprints that foundry giant TSMC scales to billions of chips."
+        },
+        {
+          "hubId": "tsmc_rd",
+          "title": "TSMC Global R&D Center",
+          "bridge": "TSMC etches 100-billion-transistor silicon dies and stitches them via CoWoS 3D packaging to manufacture NVIDIA's flagship AI GPUs."
+        },
+        {
+          "hubId": "nvidia_research",
+          "title": "NVIDIA Research",
+          "bridge": "Massive coherent clusters of NVIDIA Hopper and Blackwell GPUs supply the petaflops of matrix multiplication that train OpenAI's frontier models."
+        },
+        {
+          "hubId": "openai",
+          "title": "OpenAI",
+          "bridge": "Scaling transformer pre-training and test-time reasoning raised urgent questions about how neural networks think—spurring former researchers to found Anthropic."
+        },
+        {
+          "hubId": "anthropic",
+          "title": "Anthropic (Mechanistic Interpretability)",
+          "bridge": "Closes the loop by peering back inside silicon-hosted transformers with sparse autoencoders to map the hidden circuits of machine cognition."
+        }
+      ]
+    },
+    {
+      "id": "xray_to_alphafold_drugs",
+      "title": "From X-Ray Diffraction to AI-Designed Medicines",
+      "tagline": "Follow a 70-year chain connecting Cavendish crystal physics, Nobel molecular biology, open databases, and AlphaFold.",
+      "disciplines": ["physics", "bio_med", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "cambridge",
+          "title": "University of Cambridge (Cavendish Lab)",
+          "bridge": "Lawrence Bragg's X-ray crystallography physics at the Cavendish spawned a dedicated unit to decode the 3D atomic shapes of hemoglobin and DNA."
+        },
+        {
+          "hubId": "mrc_lmb",
+          "title": "MRC Laboratory of Molecular Biology",
+          "bridge": "Decades of X-ray crystallography and cryo-EM breakthroughs at MRC LMB—earning 12 Nobel Prizes—populated the world's experimental protein archives."
+        },
+        {
+          "hubId": "embl_ebi",
+          "title": "EMBL-EBI Bioinformatics Hub",
+          "bridge": "Curated global protein sequences and experimental PDB structures into clean open datasets—giving Google DeepMind the ground truth to crack protein folding."
+        },
+        {
+          "hubId": "deepmind",
+          "title": "Google DeepMind",
+          "bridge": "AlphaFold 2 solved the 50-year protein folding grand challenge (2024 Chemistry Nobel), motivating a dedicated sister company to turn predictions into drugs."
+        },
+        {
+          "hubId": "isomorphic_labs",
+          "title": "Isomorphic Labs",
+          "bridge": "Co-built AlphaFold 3 to model drug-protein-DNA complexes in silico, converging with high-throughput genomic medicine and CRISPR labs."
+        },
+        {
+          "hubId": "broad_institute",
+          "title": "Broad Institute of MIT & Harvard",
+          "bridge": "Unites AI molecular models with single-cell human genetics and base/prime CRISPR editing to bring programmable medicines to patients."
+        }
+      ]
+    },
+    {
+      "id": "collider_to_web_to_open_ai",
+      "title": "How Particle Physics Accidentally Built Open AI",
+      "tagline": "Trace the open-science lineage from CERN's Web invention and silica glass fibers to arXiv and Hugging Face.",
+      "disciplines": ["physics", "chem_materials", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "cern",
+          "title": "CERN",
+          "bridge": "To stop particle physicists from losing documentation across global universities, Tim Berners-Lee invented the World Wide Web in 1989 and released it royalty-free."
+        },
+        {
+          "hubId": "mit_csail",
+          "title": "MIT CSAIL",
+          "bridge": "Berners-Lee moved from Geneva to MIT to found the World Wide Web Consortium (W3C), standardizing open protocols carried globally by glass optical fibers."
+        },
+        {
+          "hubId": "corning_sullivan",
+          "title": "Corning Sullivan Park Research",
+          "bridge": "Corning's 1970 invention of low-loss fused-silica optical fiber built the transoceanic laser highways enabling instant global scientific preprint sharing."
+        },
+        {
+          "hubId": "cornell_cs",
+          "title": "Cornell Bowers CIS & arXiv",
+          "bridge": "Physicist Paul Ginsparg's arXiv server (stewarded at Cornell) turned instant open preprints into the heartbeat of physics, mathematics, and machine learning."
+        },
+        {
+          "hubId": "huggingface",
+          "title": "Hugging Face",
+          "bridge": "Extended arXiv's open-paper culture to open model weights, code, and datasets—empowering labs worldwide to inspect and reproduce frontier AI."
+        },
+        {
+          "hubId": "ai2_allen",
+          "title": "Allen Institute for AI (Ai2)",
+          "bridge": "Completes the open-science stack by publishing Semantic Scholar's literature graph alongside fully open OLMo models, training corpora, and evaluation code."
+        }
+      ]
+    },
+    {
+      "id": "geometry_to_spacetime_to_proof",
+      "title": "Curved Space, Millennium Problems & Machine Proof",
+      "tagline": "How pure non-Euclidean geometry shaped General Relativity, solved 3D topology, and entered AI-verified Lean proofs.",
+      "disciplines": ["math", "physics", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "gottingen",
+          "title": "University of Göttingen",
+          "bridge": "Bernhard Riemann invented curved n-dimensional manifolds here in 1854—pure mathematics that sat waiting 60 years for Albert Einstein in Zurich."
+        },
+        {
+          "hubId": "eth_math",
+          "title": "ETH Zurich Mathematics",
+          "bridge": "ETH mathematician Marcel Grossmann taught his former classmate Einstein Riemannian tensor calculus, unlocking the field equations of General Relativity."
+        },
+        {
+          "hubId": "princeton_math",
+          "title": "Princeton Mathematics & IAS",
+          "bridge": "Einstein, Gödel, and von Neumann forged Princeton's golden age of spacetime, logic, and topology—directly inspiring France's sister institute IHÉS."
+        },
+        {
+          "hubId": "ihes",
+          "title": "IHÉS (Bures-sur-Yvette)",
+          "bridge": "Modeled on IAS, Grothendieck and 8 Fields Medalists revolutionized algebraic geometry and geometric flows linked to 3-manifold topology."
+        },
+        {
+          "hubId": "steklov_math",
+          "title": "Steklov Mathematical Institute",
+          "bridge": "At Steklov's St. Petersburg branch, Grigori Perelman mastered Ricci flow to prove the 1904 Poincaré Conjecture—solving the first Millennium Problem."
+        },
+        {
+          "hubId": "clay_math",
+          "title": "Clay Mathematics Institute",
+          "bridge": "Steward of the seven Millennium Prize Problems whose complexity now motivates mathematicians to formalize frontier proofs inside software verifiers."
+        },
+        {
+          "hubId": "msr_redmond",
+          "title": "Microsoft Research",
+          "bridge": "Leonardo de Moura created the Lean theorem prover at Microsoft Research, now enabling humans and AI agents to formally verify cutting-edge math line by line."
+        }
+      ]
+    },
+    {
+      "id": "deep_ocean_to_icy_moons",
+      "title": "From Abyssal Seafloor Vents to Alien Ocean Worlds",
+      "tagline": "Discover how mapping Earth's hidden ocean floor transformed our search for extraterrestrial life and cosmic waves.",
+      "disciplines": ["earth_climate", "engineering", "physics"],
+      "stops": [
+        {
+          "hubId": "lamont_doherty",
+          "title": "Lamont-Doherty Earth Observatory",
+          "bridge": "Marie Tharp and Bruce Heezen drew the first global ocean-floor maps here, exposing the 40,000-mile mid-ocean volcanic ridge that proved plate tectonics."
+        },
+        {
+          "hubId": "whoi",
+          "title": "Woods Hole Oceanographic Institution",
+          "bridge": "Diving down to those volcanic ridges in submersible Alvin in 1977, WHOI discovered sunless chemosynthetic life thriving on hydrothermal vents."
+        },
+        {
+          "hubId": "scripps_ocean",
+          "title": "Scripps Institution of Oceanography",
+          "bridge": "Expanded global ocean-atmosphere sensing via the Keeling Curve and 4,000 autonomous Argo floats—honing remote sensing for icy planetary oceans."
+        },
+        {
+          "hubId": "nasa_jpl",
+          "title": "NASA Jet Propulsion Laboratory",
+          "bridge": "Directly inspired by Earth's hydrothermal vents, JPL engineered Europa Clipper to probe Jupiter's moon for a warm, life-supporting subsurface saltwater ocean."
+        },
+        {
+          "hubId": "esa_estec",
+          "title": "ESA ESTEC",
+          "bridge": "Europe's technical space hub launched Juice toward Jupiter's icy moons and is now engineering the 2.5-million-km LISA laser interferometer in space."
+        },
+        {
+          "hubId": "ligo",
+          "title": "LIGO Observatory",
+          "bridge": "Proved gravitational-wave interferometry on Earth—paving the way for ESA/NASA's space-borne LISA to hear supermassive black holes collide across cosmic time."
+        }
+      ]
+    },
+    {
+      "id": "brains_to_silicon_to_robots",
+      "title": "From Living Brain Circuits to Agile Humanoid Machines",
+      "tagline": "Trace the feedback loop from silicon neural probes and biological connectomes to Vision-Language-Action robots.",
+      "disciplines": ["bio_med", "ai_cs", "engineering"],
+      "stops": [
+        {
+          "hubId": "janelia_hhmi",
+          "title": "HHMI Janelia Research Campus",
+          "bridge": "Mapped the complete fruit-fly brain connectome and co-engineered Neuropixels silicon probes (with imec) to record thousands of living neurons at once."
+        },
+        {
+          "hubId": "allen_brain",
+          "title": "Allen Institute for Brain Science",
+          "bridge": "Scaled open brain mapping to 5,300+ mammalian cell types and cortical connectomes, fueling computational theories of biological learning."
+        },
+        {
+          "hubId": "vector_institute",
+          "title": "Vector Institute (Toronto)",
+          "bridge": "Geoffrey Hinton turned brain-inspired artificial neural networks and backpropagation into AlexNet (2012), igniting modern deep learning."
+        },
+        {
+          "hubId": "berkeley_bair",
+          "title": "UC Berkeley BAIR",
+          "bridge": "Extended deep neural networks from pixels to physical action via deep reinforcement learning and open cross-embodiment robot manipulation datasets."
+        },
+        {
+          "hubId": "physical_intelligence",
+          "title": "Physical Intelligence (π)",
+          "bridge": "Co-founded by Berkeley and Stanford roboticists to train generalist Vision-Language-Action policies capable of folding laundry and manipulating tools."
+        },
+        {
+          "hubId": "boston_dynamics",
+          "title": "Boston Dynamics",
+          "bridge": "Pairs emerging AI dexterity with decades of dynamic whole-body hardware mastery culminating in the all-electric Atlas humanoid."
+        },
+        {
+          "hubId": "eth_asl_rsl",
+          "title": "ETH Zurich Robotic Systems Lab",
+          "bridge": "Demonstrates how massively parallel GPU reinforcement learning trains rugged legged robots in minutes to hike Alpine mountains and lunar craters."
+        }
+      ]
+    },
+    {
+      "id": "quantum_matter_to_clean_planet",
+      "title": "Catalysts, Fusion Magnets & AI Weather Twins for Earth",
+      "tagline": "How atomic materials discovery, burning-plasma magnets, and AI climate models unite to safeguard a habitable planet.",
+      "disciplines": ["chem_materials", "physics", "earth_climate", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "fritz_haber",
+          "title": "Fritz Haber Institute (Berlin)",
+          "bridge": "Decoded the atomic surface physics of catalysis and built NOMAD open materials repositories to accelerate zero-carbon chemical reactions."
+        },
+        {
+          "hubId": "lbl_foundry",
+          "title": "Molecular Foundry & Materials Project (LBNL)",
+          "bridge": "Published 150,000+ computed crystal structures openly online, powering AI crystal-discovery engines and autonomous robotic synthesis labs."
+        },
+        {
+          "hubId": "mit_chem_dmse",
+          "title": "MIT Chemistry & Materials Science",
+          "bridge": "Advanced high-temperature REBCO superconducting tapes and solid-state batteries—unlocking compact, ultra-high-field magnets for clean fusion."
+        },
+        {
+          "hubId": "cfs",
+          "title": "Commonwealth Fusion Systems (CFS)",
+          "bridge": "Spun out of MIT to assemble the SPARC compact net-energy tokamak using 20-tesla REBCO magnets aimed at commercial zero-carbon baseload energy."
+        },
+        {
+          "hubId": "ecmwf",
+          "title": "ECMWF (Weather & Climate AI)",
+          "bridge": "While fusion tackles future emissions, ECMWF's ERA5 reanalysis and AIFS/GraphCast AI models sharpen extreme-weather warnings days further ahead."
+        },
+        {
+          "hubId": "bas_antarctic",
+          "title": "British Antarctic Survey",
+          "bridge": "Having discovered the 1985 Ozone Hole, BAS now tracks West Antarctica's Thwaites Glacier to bound future global sea-level rise."
+        },
+        {
+          "hubId": "pik_potsdam",
+          "title": "Potsdam Institute for Climate Impact Research",
+          "bridge": "Synthesizes polar ice, ocean circulation, and energy models into Earth's Planetary Boundaries and climate tipping-point guardrails."
+        }
+      ]
+    },
+    {
+      "id": "genomes_to_virtual_cells",
+      "title": "Decoding Life: From Heredity to Genomic AI",
+      "tagline": "Follow DNA from its discovery as genetic code through million-fold sequencing drops, CRISPR, and 40B-parameter genome models.",
+      "disciplines": ["bio_med", "chem_materials", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "rockefeller_uni",
+          "title": "The Rockefeller University",
+          "bridge": "In 1944, Avery, MacLeod, and McCarty proved here that DNA—not protein—is the molecule carrying genetic heredity."
+        },
+        {
+          "hubId": "wellcome_sanger",
+          "title": "Wellcome Sanger Institute",
+          "bridge": "Using Frederick Sanger's chain-termination sequencing, decoded one-third of the Human Genome Project and established open global genomic data."
+        },
+        {
+          "hubId": "cambridge_chem",
+          "title": "Cambridge Dept. of Chemistry",
+          "bridge": "Just up the road, Balasubramanian and Klenerman invented Solexa/Illumina sequencing-by-synthesis—slashing whole-genome costs from $100M to under $200."
+        },
+        {
+          "hubId": "igi_berkeley",
+          "title": "Innovative Genomics Institute (CRISPR)",
+          "bridge": "Once biology could read genomes cheaply, Jennifer Doudna's CRISPR-Cas9 gave humanity the molecular word processor to edit DNA precisely."
+        },
+        {
+          "hubId": "arc_institute",
+          "title": "Arc Institute (Palo Alto)",
+          "bridge": "Now trains 40B-parameter genomic foundation models (Evo 2) across 9.3 trillion DNA bases to design novel genetic circuits and Virtual Cells."
+        },
+        {
+          "hubId": "ahri_krisp",
+          "title": "AHRI & KRISP (Durban)",
+          "bridge": "Brings high-speed genomics to global public health—tracking emerging viral variants in real time across Africa to protect the entire world."
+        }
+      ]
+    }
+  ]
+}

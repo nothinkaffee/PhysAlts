@@ -1,0 +1,292 @@
+{
+  "schemaVersion": "1.0.0",
+  "version": "2026-11-23",
+  "generatedAt": "2026-11-23T22:05:20.626Z",
+  "stemDatasetsDetected": true,
+  "summary": {
+    "totalPacks": 13,
+    "disciplinePacks": 6,
+    "regionPacks": 6,
+    "tilePacks": 1,
+    "totalBytes": 7805502,
+    "totalLabel": "7.44 MB",
+    "indexedHubs": 5329,
+    "indexedEvents": 109,
+    "indexedMissions": 36,
+    "indexedDomains": 14,
+    "indexedTrails": 8
+  },
+  "packs": [
+    {
+      "id": "pack_physics",
+      "name": "Physics & Astronomy",
+      "category": "discipline",
+      "description": "Flagship particle labs, quantum & fusion hubs, global university physics index, historical milestones (1800 BCE–2045+), Space Frontier missions, and physics domain taxonomy.",
+      "version": "2026-11-23",
+      "file": "pack_physics.json",
+      "url": "./data/packs/pack_physics.json",
+      "sizeBytes": 3400479,
+      "sizeLabel": "3.24 MB",
+      "sha256": "897a27fcb9050483c10254b1c4ebcd06036ab5525c4edb3bab23fa3f29662347",
+      "counts": {
+        "hubs": 5184,
+        "events": 69,
+        "missions": 36,
+        "domains": 8,
+        "trails": 6
+      }
+    },
+    {
+      "id": "pack_ai_cs",
+      "name": "AI & Computer Science",
+      "category": "discipline",
+      "description": "Frontier AI labs, systems & theory departments, open-source compute centers, AI/CS historical timeline, taxonomy, and guided curiosity trails.",
+      "version": "2026-11-23",
+      "file": "pack_ai_cs.json",
+      "url": "./data/packs/pack_ai_cs.json",
+      "sizeBytes": 125859,
+      "sizeLabel": "122.9 KB",
+      "sha256": "f7a784f146c9646f35a74ce74a62512289cc0a90b2e58e916cefc39115fd0053",
+      "counts": {
+        "hubs": 46,
+        "events": 13,
+        "missions": 0,
+        "domains": 1,
+        "trails": 7
+      }
+    },
+    {
+      "id": "pack_math",
+      "name": "Mathematics",
+      "category": "discipline",
+      "description": "Pure and applied mathematics institutes, Fields Medal centers, foundational theorems timeline, mathematical taxonomy, and rabbit trails.",
+      "version": "2026-11-23",
+      "file": "pack_math.json",
+      "url": "./data/packs/pack_math.json",
+      "sizeBytes": 68957,
+      "sizeLabel": "67.3 KB",
+      "sha256": "b4b9ab92316ada691d8b645bb8989bccc38946c20ff4a3ea467c36f439ef067c",
+      "counts": {
+        "hubs": 26,
+        "events": 6,
+        "missions": 0,
+        "domains": 1,
+        "trails": 1
+      }
+    },
+    {
+      "id": "pack_bio_med",
+      "name": "Biology, Genomics & Neuroscience",
+      "category": "discipline",
+      "description": "Molecular biology, CRISPR genomics, structural biology, neuroscience & biomedical hubs, life-science milestones, and domain guides.",
+      "version": "2026-11-23",
+      "file": "pack_bio_med.json",
+      "url": "./data/packs/pack_bio_med.json",
+      "sizeBytes": 88736,
+      "sizeLabel": "86.7 KB",
+      "sha256": "b1d472a015a5c55e588e2403683356312f2d19c9db345ceb0ce25c1943729342",
+      "counts": {
+        "hubs": 31,
+        "events": 13,
+        "missions": 0,
+        "domains": 1,
+        "trails": 3
+      }
+    },
+    {
+      "id": "pack_chem_earth",
+      "name": "Chemistry, Materials & Earth",
+      "category": "discipline",
+      "description": "Chemistry institutes, advanced materials centers, climate & atmospheric observatories, oceanography hubs, milestones, and taxonomy.",
+      "version": "2026-11-23",
+      "file": "pack_chem_earth.json",
+      "url": "./data/packs/pack_chem_earth.json",
+      "sizeBytes": 64430,
+      "sizeLabel": "62.9 KB",
+      "sha256": "ad84cf6402d151ca162549173d69f3d1b85808ee5110869e1b23dfdca10b8068",
+      "counts": {
+        "hubs": 22,
+        "events": 4,
+        "missions": 0,
+        "domains": 1,
+        "trails": 4
+      }
+    },
+    {
+      "id": "pack_engineering",
+      "name": "Engineering, Robotics & Aerospace",
+      "category": "discipline",
+      "description": "Robotics labs, semiconductor lithography & fab centers, aerospace propulsion hubs, engineering milestones, and domain guides.",
+      "version": "2026-11-23",
+      "file": "pack_engineering.json",
+      "url": "./data/packs/pack_engineering.json",
+      "sizeBytes": 66167,
+      "sizeLabel": "64.6 KB",
+      "sha256": "6826d5ac2002df5cf8570c5f2e27906cb4edc829f80a4b64fead1b08d9f893bf",
+      "counts": {
+        "hubs": 20,
+        "events": 4,
+        "missions": 0,
+        "domains": 2,
+        "trails": 3
+      }
+    },
+    {
+      "id": "region_europe",
+      "name": "Europe",
+      "category": "region",
+      "description": "All European STEM & Physics research hubs, universities, deep-tech startups, and regional historical milestones for offline exploration.",
+      "version": "2026-11-23",
+      "file": "region_europe.json",
+      "url": "./data/packs/region_europe.json",
+      "sizeBytes": 1383558,
+      "sizeLabel": "1.32 MB",
+      "sha256": "41ff5880399fff24a606df18c1d7b8e19d01efcce6d7102be8c5f3cc23c3f222",
+      "counts": {
+        "hubs": 1932,
+        "events": 53,
+        "missions": 9,
+        "domains": 0,
+        "trails": 8
+      }
+    },
+    {
+      "id": "region_north_america",
+      "name": "North America",
+      "category": "region",
+      "description": "All North & Central American and Caribbean STEM & Physics hubs, national labs, deep-tech clusters, and historical milestones.",
+      "version": "2026-11-23",
+      "file": "region_north_america.json",
+      "url": "./data/packs/region_north_america.json",
+      "sizeBytes": 911084,
+      "sizeLabel": "889.7 KB",
+      "sha256": "6657cd93853730d9c7cf70800e69a79151b19167b69e78b520926c4a0b0cf5cb",
+      "counts": {
+        "hubs": 1196,
+        "events": 31,
+        "missions": 22,
+        "domains": 0,
+        "trails": 8
+      }
+    },
+    {
+      "id": "region_asia",
+      "name": "Asia & Middle East",
+      "category": "region",
+      "description": "All Asian and Middle Eastern STEM & Physics universities, megascience labs, semiconductor & deep-tech hubs, and regional milestones.",
+      "version": "2026-11-23",
+      "file": "region_asia.json",
+      "url": "./data/packs/region_asia.json",
+      "sizeBytes": 1162030,
+      "sizeLabel": "1.11 MB",
+      "sha256": "7df2a6728dfc2e5d539fbb138af59ec670eebe5054c17f0e492e8a133383d3df",
+      "counts": {
+        "hubs": 1810,
+        "events": 15,
+        "missions": 3,
+        "domains": 0,
+        "trails": 1
+      }
+    },
+    {
+      "id": "region_south_america",
+      "name": "South America",
+      "category": "region",
+      "description": "All South American STEM & Physics institutions, Andean astronomical observatories, national labs, and regional milestones.",
+      "version": "2026-11-23",
+      "file": "region_south_america.json",
+      "url": "./data/packs/region_south_america.json",
+      "sizeBytes": 104440,
+      "sizeLabel": "102.0 KB",
+      "sha256": "f812c45e9ec77db6f73767a7e4144b4a74ddeb87f927611d5b6d42f86f654e96",
+      "counts": {
+        "hubs": 154,
+        "events": 4,
+        "missions": 0,
+        "domains": 0,
+        "trails": 0
+      }
+    },
+    {
+      "id": "region_africa",
+      "name": "Africa",
+      "category": "region",
+      "description": "All African STEM & Physics universities, radio astronomy arrays (MeerKAT/SKA), biomedical & climate centers, and historical milestones.",
+      "version": "2026-11-23",
+      "file": "region_africa.json",
+      "url": "./data/packs/region_africa.json",
+      "sizeBytes": 106463,
+      "sizeLabel": "104.0 KB",
+      "sha256": "493a1377abac113f34d5e57669151443ee07791f484174a81ecaaf0dca48cbd5",
+      "counts": {
+        "hubs": 159,
+        "events": 5,
+        "missions": 0,
+        "domains": 0,
+        "trails": 1
+      }
+    },
+    {
+      "id": "region_oceania_antarctica",
+      "name": "Oceania & Antarctica",
+      "category": "region",
+      "description": "All Australian, New Zealand, Pacific Island, and Antarctic (IceCube, South Pole) STEM & Physics hubs and regional milestones.",
+      "version": "2026-11-23",
+      "file": "region_oceania_antarctica.json",
+      "url": "./data/packs/region_oceania_antarctica.json",
+      "sizeBytes": 51641,
+      "sizeLabel": "50.4 KB",
+      "sha256": "75edff13736a66654fa8c238cbdecdecd577c39ba0d6e9d47249061a56fb3ba9",
+      "counts": {
+        "hubs": 78,
+        "events": 1,
+        "missions": 0,
+        "domains": 0,
+        "trails": 0
+      }
+    },
+    {
+      "id": "tiles_earth_base",
+      "name": "Earth Base Globe Tiles (z0–z2)",
+      "category": "tiles",
+      "description": "All 21 local NASA Blue Marble satellite tiles (zoom levels 0–2) cached into Cache Storage for 100% offline 3D globe rendering.",
+      "version": "2026-11-23",
+      "file": null,
+      "url": null,
+      "sizeBytes": 271658,
+      "sizeLabel": "265.3 KB",
+      "sha256": "f3b063dc69ca8361a7fd471b0654feb2c78f1894f2e16b73308d6c2c57eb5d43",
+      "counts": {
+        "hubs": 0,
+        "events": 0,
+        "missions": 0,
+        "domains": 0,
+        "trails": 0,
+        "tiles": 21
+      },
+      "tiles": [
+        "./tiles/bluemarble/0/0/0.jpg",
+        "./tiles/bluemarble/1/0/0.jpg",
+        "./tiles/bluemarble/1/0/1.jpg",
+        "./tiles/bluemarble/1/1/0.jpg",
+        "./tiles/bluemarble/1/1/1.jpg",
+        "./tiles/bluemarble/2/0/0.jpg",
+        "./tiles/bluemarble/2/0/1.jpg",
+        "./tiles/bluemarble/2/0/2.jpg",
+        "./tiles/bluemarble/2/0/3.jpg",
+        "./tiles/bluemarble/2/1/0.jpg",
+        "./tiles/bluemarble/2/1/1.jpg",
+        "./tiles/bluemarble/2/1/2.jpg",
+        "./tiles/bluemarble/2/1/3.jpg",
+        "./tiles/bluemarble/2/2/0.jpg",
+        "./tiles/bluemarble/2/2/1.jpg",
+        "./tiles/bluemarble/2/2/2.jpg",
+        "./tiles/bluemarble/2/2/3.jpg",
+        "./tiles/bluemarble/2/3/0.jpg",
+        "./tiles/bluemarble/2/3/1.jpg",
+        "./tiles/bluemarble/2/3/2.jpg",
+        "./tiles/bluemarble/2/3/3.jpg"
+      ]
+    }
+  ]
+}

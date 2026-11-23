@@ -1,0 +1,585 @@
+{
+  "meta": {
+    "name": "PhysAlts Multidisciplinary STEM Domains, Subdomains & Open Materials",
+    "version": "1.0",
+    "updatedAt": "2026-11-23",
+    "description": "Structured taxonomy of 6 major STEM & AI domains and 30 subdomains paired with vetted open courses, textbooks, datasets, archives, and global flagship initiatives."
+  },
+  "domains": [
+    {
+      "id": "ai_cs",
+      "name": "Artificial Intelligence & Computer Science",
+      "desc": "Foundation models, reinforcement learning, mechanistic interpretability, computer vision, systems architecture, cryptography, and theoretical computability.",
+      "subdomains": [
+        {
+          "id": "foundation_models_nlp",
+          "name": "Foundation Models, Transformers & Reasoning",
+          "summary": "Large-scale pre-trained neural architectures, sparse Mixture-of-Experts, RLHF/RLVR post-training, and test-time reasoning search.",
+          "keyQuestions": [
+            "How far can inference-time search and verifiable reinforcement learning push general mathematical and scientific reasoning?",
+            "What fundamental scaling laws govern data efficiency, architectural sparsity, and sample complexity?"
+          ],
+          "materials": [
+            { "title": "Stanford CS224N: Natural Language Processing with Deep Learning", "type": "course", "provider": "Stanford University", "url": "https://web.stanford.edu/class/cs224n/" },
+            { "title": "Hugging Face Open NLP & LLM Course", "type": "course", "provider": "Hugging Face", "url": "https://huggingface.co/learn/nlp-course/" },
+            { "title": "arXiv Computation and Language (cs.CL) & Machine Learning (cs.LG)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/cs.LG/recent" }
+          ],
+          "projects": [
+            { "name": "OLMo & Dolma Fully Open Language Modeling (Ai2)", "status": "ongoing", "location": "Seattle, WA, USA", "url": "https://allenai.org/olmo" },
+            { "name": "DeepSeek Open Reasoning Models", "status": "ongoing", "location": "Hangzhou, China", "url": "https://github.com/deepseek-ai" }
+          ]
+        },
+        {
+          "id": "rl_embodied_agents",
+          "name": "Reinforcement Learning & Embodied AI",
+          "summary": "Sequential decision-making, self-play tree search, sim-to-real motor control, and Vision-Language-Action (VLA) foundation policies for physical robots.",
+          "keyQuestions": [
+            "How can a single generalist policy adapt zero-shot across unseen robot morphologies and messy real-world physics?",
+            "How do world models unify long-horizon planning with reactive low-level control?"
+          ],
+          "materials": [
+            { "title": "Reinforcement Learning: An Introduction (2nd Ed.)", "type": "book", "provider": "Richard S. Sutton & Andrew G. Barto (MIT Press)", "url": "https://mitpress.mit.edu/9780262039246/reinforcement-learning/" },
+            { "title": "UC Berkeley CS 285: Deep Reinforcement Learning", "type": "course", "provider": "Sergey Levine (UC Berkeley)", "url": "https://rail.eecs.berkeley.edu/deeprlcourse/" },
+            { "title": "Spinning Up in Deep RL", "type": "course", "provider": "OpenAI", "url": "https://spinningup.openai.com/" }
+          ],
+          "projects": [
+            { "name": "LeRobot Open-Source Embodied AI Platform", "status": "ongoing", "location": "Global / New York & Paris", "url": "https://github.com/huggingface/lerobot" },
+            { "name": "π0 Generalist Robot Foundation Policies", "status": "ongoing", "location": "San Francisco, CA, USA", "url": "https://www.physicalintelligence.company/" }
+          ]
+        },
+        {
+          "id": "computer_vision_world_models",
+          "name": "Computer Vision, Diffusion & World Models",
+          "summary": "Self-supervised visual representation learning, latent diffusion, 3D Gaussian splatting, and physically consistent video world simulation.",
+          "keyQuestions": [
+            "Can self-supervised video models learn intuitive 3D Newtonian physics purely from visual observation?",
+            "How do we guarantee geometric and causal consistency over minute-long generative simulations?"
+          ],
+          "materials": [
+            { "title": "Stanford CS231n: Deep Learning for Computer Vision", "type": "course", "provider": "Stanford University", "url": "https://cs231n.stanford.edu/" },
+            { "title": "Practical Deep Learning for Coders", "type": "course", "provider": "fast.ai", "url": "https://course.fast.ai/" },
+            { "title": "Papers With Code — Computer Vision Benchmarks", "type": "dataset", "provider": "Meta AI / Community", "url": "https://paperswithcode.com/area/computer-vision" }
+          ],
+          "projects": [
+            { "name": "DINOv2 & Segment Anything Open Vision Models", "status": "ongoing", "location": "Paris & Menlo Park", "url": "https://ai.meta.com/research/" },
+            { "name": "Open-Source Diffusers Library", "status": "ongoing", "location": "Global", "url": "https://huggingface.co/docs/diffusers" }
+          ]
+        },
+        {
+          "id": "ai_safety_interpretability",
+          "name": "AI Safety, Alignment & Mechanistic Interpretability",
+          "summary": "Reverse-engineering internal neural circuits via sparse autoencoders, scalable oversight, formal verification, and governance of frontier autonomous systems.",
+          "keyQuestions": [
+            "Can we decompose superposition inside frontier neural networks into faithful, human-auditable computational graphs?",
+            "How do we reliably supervise and align AI systems that surpass human expertise in complex scientific domains?"
+          ],
+          "materials": [
+            { "title": "Transformer Circuits Thread (Mechanistic Interpretability)", "type": "archive", "provider": "Anthropic Interpretability Team", "url": "https://transformer-circuits.pub/" },
+            { "title": "Stanford CS229: Machine Learning Course Notes", "type": "course", "provider": "Stanford University", "url": "https://cs229.stanford.edu/" },
+            { "title": "HELM: Holistic Evaluation of Language Models", "type": "dataset", "provider": "Stanford CRFM", "url": "https://crfm.stanford.edu/helm/" }
+          ],
+          "projects": [
+            { "name": "International Scientific Report on Advanced AI Safety", "status": "ongoing", "location": "Global / Montreal & London", "url": "https://mila.quebec/en/" },
+            { "name": "Transformer Circuits & Sparse Feature Atlases", "status": "ongoing", "location": "San Francisco, CA, USA", "url": "https://transformer-circuits.pub/" }
+          ]
+        },
+        {
+          "id": "theory_systems_crypto",
+          "name": "Theoretical CS, Cryptography & Distributed Systems",
+          "summary": "Computational complexity (P vs NP), zero-knowledge proofs, post-quantum cryptography, compilers, GPU kernel systems, and fault-tolerant distributed computing.",
+          "keyQuestions": [
+            "Does P = NP, and how do fine-grained complexity and quantum complexity classes (BQP) separate tractable problems?",
+            "How do we build mathematically verified, hardware-enforced memory-safe systems at exascale?"
+          ],
+          "materials": [
+            { "title": "MIT 6.006 Introduction to Algorithms & 6.824 Distributed Systems", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/" },
+            { "title": "Mathematics and Computation (Free Book)", "type": "book", "provider": "Avi Wigderson (IAS Princeton)", "url": "https://www.math.ias.edu/avi/book" },
+            { "title": "NIST Post-Quantum Cryptography Standardization", "type": "reference", "provider": "NIST", "url": "https://csrc.nist.gov/projects/post-quantum-cryptography" }
+          ],
+          "projects": [
+            { "name": "CHERI Hardware Capability Security (Cambridge & Arm)", "status": "ongoing", "location": "Cambridge, United Kingdom", "url": "https://www.cl.cam.ac.uk/research/security/ctsrd/cheri/" },
+            { "name": "PyTorch & Triton Open GPU Compiler Stack", "status": "ongoing", "location": "Global", "url": "https://pytorch.org/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "math",
+      "name": "Mathematics & Theoretical Foundations",
+      "desc": "Number theory, algebraic and differential geometry, topology, partial differential equations, probability, combinatorics, and formal machine-verified proof.",
+      "subdomains": [
+        {
+          "id": "number_theory_langlands",
+          "name": "Number Theory, Primes & the Langlands Program",
+          "summary": "Distribution of prime numbers, zeta functions, elliptic curves, modular forms, perfectoid spaces, and the grand unifying Langlands correspondence.",
+          "keyQuestions": [
+            "Do all non-trivial zeros of the Riemann zeta function lie on the critical line Re(s) = 1/2?",
+            "How does the geometric and arithmetic Langlands correspondence unify Galois representations with automorphic forms?"
+          ],
+          "materials": [
+            { "title": "L-functions and Modular Forms Database (LMFDB)", "type": "dataset", "provider": "International LMFDB Collaboration", "url": "https://www.lmfdb.org/" },
+            { "title": "3Blue1Brown: Essence of Linear Algebra, Calculus & Visual Number Theory", "type": "course", "provider": "Grant Sanderson (3Blue1Brown)", "url": "https://www.3blue1brown.com/" },
+            { "title": "arXiv Number Theory (math.NT)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/math.NT/recent" }
+          ],
+          "projects": [
+            { "name": "Clay Millennium Prize Problems (Riemann & BSD)", "status": "ongoing", "location": "Oxford, United Kingdom", "url": "https://www.claymath.org/millennium-problems/" },
+            { "name": "IMPRS Moduli Spaces & Perfectoid Geometry", "status": "ongoing", "location": "Bonn, Germany", "url": "https://www.mpim-bonn.mpg.de/" }
+          ]
+        },
+        {
+          "id": "geometry_topology",
+          "name": "Algebraic & Differential Geometry and Topology",
+          "summary": "Manifolds, curvature flows (Ricci flow), schemes and cohomology, knot invariants, symplectic topology, and mirror symmetry.",
+          "keyQuestions": [
+            "How do smooth structures behave on 4-dimensional manifolds (smooth 4D Poincaré conjecture)?",
+            "How does homological mirror symmetry link algebraic geometry with symplectic geometry and string theory?"
+          ],
+          "materials": [
+            { "title": "The Stacks Project (Open-Source Algebraic Geometry Encyclopedia)", "type": "book", "provider": "Aise Johan de Jong & Contributors", "url": "https://stacks.math.columbia.edu/" },
+            { "title": "Algebraic Topology (Free Textbook)", "type": "book", "provider": "Allen Hatcher (Cornell University)", "url": "https://pi.math.cornell.edu/~hatcher/AT/ATpage.html" },
+            { "title": "IMAGINARY Open Interactive Geometry Gallery", "type": "reference", "provider": "MFO Oberwolfach", "url": "https://www.imaginary.org/" }
+          ],
+          "projects": [
+            { "name": "IHÉS Geometry & Mathematical Physics Programs", "status": "ongoing", "location": "Bures-sur-Yvette, France", "url": "https://www.ihes.fr/" },
+            { "name": "Simons Center for Geometry and Physics", "status": "ongoing", "location": "Stony Brook, NY, USA", "url": "https://scgp.stonybrook.edu/" }
+          ]
+        },
+        {
+          "id": "analysis_pdes_dynamics",
+          "name": "Analysis, PDEs & Dynamical Systems",
+          "summary": "Nonlinear partial differential equations, fluid turbulence (Navier-Stokes), optimal transport, chaos, ergodic theory, and Einstein field equations.",
+          "keyQuestions": [
+            "Do smooth, globally regular solutions always exist for the 3D incompressible Navier-Stokes equations, or can finite-time singularities form?",
+            "How does mathematical stability hold for rotating Kerr black holes in general relativity?"
+          ],
+          "materials": [
+            { "title": "MIT 18.06 Linear Algebra & 18.085 Computational Science", "type": "course", "provider": "Gilbert Strang (MIT OCW)", "url": "https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/" },
+            { "title": "Terence Tao's Open Analysis & PDE Lecture Notes", "type": "book", "provider": "Terence Tao (UCLA)", "url": "https://terrytao.wordpress.com/books/" },
+            { "title": "arXiv Analysis of PDEs (math.AP)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/math.AP/recent" }
+          ],
+          "projects": [
+            { "name": "Courant Applied Math & Fluid PDE Research", "status": "ongoing", "location": "New York, NY, USA", "url": "https://cims.nyu.edu/" },
+            { "name": "IMPA Dynamical Systems & Ergodic Theory", "status": "ongoing", "location": "Rio de Janeiro, Brazil", "url": "https://impa.br/" }
+          ]
+        },
+        {
+          "id": "probability_combinatorics_optimization",
+          "name": "Probability, Combinatorics & Optimization",
+          "summary": "Random matrices, percolation and SLE phase transitions, additive combinatorics, convex/non-convex optimization, and high-dimensional statistical theory.",
+          "keyQuestions": [
+            "Why do overparameterized non-convex neural networks converge reliably to generalizable minima?",
+            "What universality laws govern random graphs, percolation, and statistical mechanics in three dimensions?"
+          ],
+          "materials": [
+            { "title": "Convex Optimization (Free Textbook & Lectures)", "type": "book", "provider": "Stephen Boyd & Lieven Vandenberghe (Stanford)", "url": "https://web.stanford.edu/~boyd/cvxbook/" },
+            { "title": "High-Dimensional Probability (Free Textbook)", "type": "book", "provider": "Roman Vershynin (UC Irvine)", "url": "https://www.math.uci.edu/~rvershyn/papers/HDP-book/HDP-book.html" },
+            { "title": "Online Encyclopedia of Integer Sequences (OEIS)", "type": "dataset", "provider": "OEIS Foundation", "url": "https://oeis.org/" }
+          ],
+          "projects": [
+            { "name": "SLMath Thematic Programs in Probability & Optimization", "status": "ongoing", "location": "Berkeley, CA, USA", "url": "https://www.slmath.org/" },
+            { "name": "ETH Zurich Optimal Transport & Stochastics", "status": "ongoing", "location": "Zurich, Switzerland", "url": "https://math.ethz.ch/" }
+          ]
+        },
+        {
+          "id": "logic_formal_proof",
+          "name": "Mathematical Logic & AI-Assisted Formal Proof",
+          "summary": "Dependent type theory, homotopy type theory, interactive proof assistants (Lean 4, Rocq/Coq), and neural theorem proving for formalizing frontier mathematics.",
+          "keyQuestions": [
+            "Will machine-checked formalization (Mathlib/Lean) enable collaborative proofs of unprecedented scale and zero human oversight gaps?",
+            "How can neuro-symbolic AI agents conjecture and formally verify genuinely new mathematical theorems?"
+          ],
+          "materials": [
+            { "title": "The Natural Number Game (Interactive Lean 4 Proof Tutorial)", "type": "course", "provider": "Kevin Buzzard & Imperial College London", "url": "https://adam.math.hhu.de/" },
+            { "title": "Mathematics in Lean (Open Interactive Textbook)", "type": "book", "provider": "Jeremy Avigad & Lean Community", "url": "https://leanprover-community.github.io/mathematics_in_lean/" },
+            { "title": "Mathlib4 Unified Formal Mathematics Library", "type": "dataset", "provider": "Lean Prover Community", "url": "https://leanprover-community.github.io/" }
+          ],
+          "projects": [
+            { "name": "Liquid Tensor Experiment & Fermat's Last Theorem in Lean 4", "status": "ongoing", "location": "Global / London & Bonn", "url": "https://leanprover-community.github.io/" },
+            { "name": "Rocq (Coq) Interactive Theorem Prover (Inria)", "status": "ongoing", "location": "Paris-Saclay, France", "url": "https://rocq-prover.org/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bio_med",
+      "name": "Biology, Genomics & Neuroscience",
+      "desc": "Genomes and CRISPR engineering, atomic structural biology, single-cell atlases, evolutionary biology, immunology, and systems neuroscience.",
+      "subdomains": [
+        {
+          "id": "genomics_crispr",
+          "name": "Genomics, Epigenetics & CRISPR Gene Editing",
+          "summary": "Whole-genome sequencing, population genetics, chromatin regulation, base/prime editing, RNA-guided bridge recombinases, and clinical genetic therapies.",
+          "keyQuestions": [
+            "How do non-coding regulatory regions—representing 98% of the human genome—orchestrate development and disease?",
+            "How can in-vivo CRISPR and epigenetic editors be safely delivered to any target organ at accessible global cost?"
+          ],
+          "materials": [
+            { "title": "NCBI GenBank, PubMed & Genome Data Viewer", "type": "dataset", "provider": "National Library of Medicine (NIH)", "url": "https://www.ncbi.nlm.nih.gov/" },
+            { "title": "CRISPRpedia Open Interactive Textbook", "type": "book", "provider": "Innovative Genomics Institute (UC Berkeley)", "url": "https://innovativegenomics.org/crisprpedia/" },
+            { "title": "bioRxiv Open Preprint Server for Biology", "type": "archive", "provider": "Cold Spring Harbor Laboratory", "url": "https://www.biorxiv.org/" }
+          ],
+          "projects": [
+            { "name": "gnomAD & Human Pangenome Reference Consortium", "status": "ongoing", "location": "Cambridge, MA & Global", "url": "https://humanpangenome.org/" },
+            { "name": "Darwin Tree of Life / Earth BioGenome Project", "status": "ongoing", "location": "Hinxton, UK & Global", "url": "https://www.darwintreeoflife.org/" }
+          ]
+        },
+        {
+          "id": "structural_ai_protein",
+          "name": "Structural Biology, Cryo-EM & AI Protein Design",
+          "summary": "Atomic cryo-electron microscopy and tomography, X-ray crystallography, AlphaFold biomolecular prediction, and de novo generative design of enzymes and binders.",
+          "keyQuestions": [
+            "Can generative AI accurately predict conformational dynamics and allosteric motions inside crowded living cells, not just static structures?",
+            "How do we design synthetic enzymes from scratch to catalyze reactions never evolved by nature?"
+          ],
+          "materials": [
+            { "title": "RCSB Protein Data Bank (PDB) — 220,000+ Experimental Structures", "type": "dataset", "provider": "Worldwide PDB (wwPDB)", "url": "https://www.rcsb.org/" },
+            { "title": "AlphaFold Protein Structure Database (200M+ Structures)", "type": "dataset", "provider": "Google DeepMind & EMBL-EBI", "url": "https://alphafold.ebi.ac.uk/" },
+            { "title": "EMBL-EBI Open Structural Bioinformatics Training", "type": "course", "provider": "EMBL-EBI", "url": "https://www.ebi.ac.uk/training/" }
+          ],
+          "projects": [
+            { "name": "AlphaFold 3 & Isomorphic Labs Biomolecular Modeling", "status": "ongoing", "location": "London, United Kingdom", "url": "https://deepmind.google/technologies/alphafold/" },
+            { "name": "Cryo-Electron Tomography Visual Proteomics (MRC LMB / MPI)", "status": "ongoing", "location": "Cambridge & Munich", "url": "https://www2.mrc-lmb.cam.ac.uk/" }
+          ]
+        },
+        {
+          "id": "systems_neuroscience",
+          "name": "Systems Neuroscience, Connectomics & Brain Interfaces",
+          "summary": "Large-scale neural recording (Neuropixels), dense electron-microscopy synaptic connectomes, cortical cell taxonomies, and computational theories of perception and memory.",
+          "keyQuestions": [
+            "How do ~86 billion biological neurons learn rapidly from tiny data while consuming only 20 watts of power?",
+            "How does subjective conscious experience and flexible reasoning emerge from hierarchical cortical microcircuits?"
+          ],
+          "materials": [
+            { "title": "Allen Brain Map Open Atlases & Cell Types Database", "type": "dataset", "provider": "Allen Institute for Brain Science", "url": "https://portal.brain-map.org/" },
+            { "title": "Neuromatch Academy: Open Computational Neuroscience Course", "type": "course", "provider": "Neuromatch Global Community", "url": "https://compneuro.neuromatch.io/" },
+            { "title": "MIT 9.01 Introduction to Neuroscience", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/9-01-introduction-to-neuroscience-fall-2007/" }
+          ],
+          "projects": [
+            { "name": "MICrONS & FlyWire Whole-Brain Connectomics", "status": "ongoing", "location": "Seattle, Ashburn & Princeton", "url": "https://www.microns-explorer.org/" },
+            { "name": "International Brain Laboratory (IBL)", "status": "ongoing", "location": "Global / Lisbon, London, US", "url": "https://www.internationalbrainlab.com/" }
+          ]
+        },
+        {
+          "id": "cell_synthetic_biology",
+          "name": "Single-Cell Atlases, Organoids & Synthetic Biology",
+          "summary": "Spatial multi-omics, self-organizing 3D human organoids, programmable living gene circuits, synthetic genomes, and AI-powered Virtual Cell simulators.",
+          "keyQuestions": [
+            "Can we build a predictive AI Virtual Cell simulator that accurately forecasts how any human cell responds to any genetic or chemical perturbation?",
+            "How do stem cells self-organize spatially into complex functional organs?"
+          ],
+          "materials": [
+            { "title": "Human Cell Atlas & CELLxGENE Single-Cell Explorer", "type": "dataset", "provider": "CZI / Broad / Sanger", "url": "https://cellxgene.cziscience.com/" },
+            { "title": "MIT 7.016 Introductory Biology", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/7-016-introductory-biology-fall-2018/" },
+            { "title": "iGEM Registry of Standard Biological Parts", "type": "reference", "provider": "iGEM Foundation", "url": "https://parts.igem.org/" }
+          ],
+          "projects": [
+            { "name": "Human Cell Atlas & Tabula Sapiens", "status": "ongoing", "location": "Global / Cambridge, SF, Hinxton", "url": "https://www.humancellatlas.org/" },
+            { "name": "Arc Institute Virtual Cell & Evo Genomic Models", "status": "ongoing", "location": "Palo Alto, CA, USA", "url": "https://arcinstitute.org/" }
+          ]
+        },
+        {
+          "id": "immunology_evolution",
+          "name": "Immunology, mRNA Therapeutics & Paleogenomics",
+          "summary": "Adaptive immune repertoires, mRNA vaccine platforms, real-time pathogen genomic surveillance, cancer immunotherapy, and ancient hominin DNA.",
+          "keyQuestions": [
+            "Can programmable mRNA and computational epitope design deliver universal vaccines against influenza, HIV, and personalized cancers?",
+            "How did genetic adaptations inherited from Neanderthals and Denisovans shape modern human immunity?"
+          ],
+          "materials": [
+            { "title": "Nextstrain Real-Time Pathogen Evolution Tracker", "type": "dataset", "provider": "Fred Hutch / University of Basel", "url": "https://nextstrain.org/" },
+            { "title": "Institut Pasteur Open Immunology & Virology MOOCs", "type": "course", "provider": "Institut Pasteur", "url": "https://www.pasteur.fr/en/education/moocs" },
+            { "title": "medRxiv Health Sciences Preprint Archive", "type": "archive", "provider": "CSHL / Yale / BMJ", "url": "https://www.medrxiv.org/" }
+          ],
+          "projects": [
+            { "name": "African Pathogen Genomic Surveillance (AHRI / KRISP)", "status": "ongoing", "location": "Durban, South Africa", "url": "https://www.krisp.org.za/" },
+            { "name": "Neanderthal & Ancient Human Paleogenomics (MPI-EVA)", "status": "ongoing", "location": "Leipzig, Germany", "url": "https://www.eva.mpg.de/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chem_materials",
+      "name": "Chemistry & Materials Science",
+      "desc": "Catalysis, porous frameworks, quantum chemistry, clean-energy batteries, solid-state electronics, polymers, and autonomous robotic synthesis.",
+      "subdomains": [
+        {
+          "id": "catalysis_green_chem",
+          "name": "Catalysis, Electrocatalysis & Green Synthesis",
+          "summary": "Heterogeneous surface catalysis, asymmetric organocatalysis, single-atom catalysts, click chemistry, and electrochemical CO2-to-fuel conversion.",
+          "keyQuestions": [
+            "Can ambient-temperature electrochemical catalysts replace the high-carbon Haber-Bosch process for green ammonia?",
+            "How do we selectively reduce CO2 into multi-carbon fuels and plastics using only renewable electricity and water?"
+          ],
+          "materials": [
+            { "title": "Open Catalyst Project Datasets & Equivariant Models", "type": "dataset", "provider": "Meta FAIR & Carnegie Mellon", "url": "https://fair-chem.github.io/" },
+            { "title": "MIT 5.111SC Principles of Chemical Science", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/5-111sc-principles-of-chemical-science-fall-2014/" },
+            { "title": "ChemRxiv Open Chemistry Preprint Archive", "type": "archive", "provider": "ACS / RSC / GDCh / CCS / CSJ", "url": "https://chemrxiv.org/" }
+          ],
+          "projects": [
+            { "name": "Asymmetric Organocatalysis & Sustainable Catalysis (MPI KoFo)", "status": "ongoing", "location": "Mülheim, Germany", "url": "https://www.kofo.mpg.de/" },
+            { "name": "Liquid Sunlight Alliance Solar Fuels (Caltech / LBNL)", "status": "ongoing", "location": "Pasadena & Berkeley, CA", "url": "https://www.liquidsunlightalliance.org/" }
+          ]
+        },
+        {
+          "id": "batteries_energy_materials",
+          "name": "Batteries, Photovoltaics & Clean Energy Materials",
+          "summary": "All-solid-state lithium and sodium-ion batteries, perovskite-silicon tandem solar cells, green hydrogen membranes, and cobalt-free grid storage.",
+          "keyQuestions": [
+            "Which solid electrolytes eliminate lithium dendrites to unlock safe >500 Wh/kg solid-state batteries?",
+            "How do we achieve 30-year outdoor durability for >33%-efficient perovskite-silicon tandem solar cells?"
+          ],
+          "materials": [
+            { "title": "NREL Best Research-Cell Solar Efficiency Chart", "type": "dataset", "provider": "NREL (US DOE)", "url": "https://www.nrel.gov/pv/cell-efficiency.html" },
+            { "title": "MIT 3.091 Introduction to Solid-State Chemistry", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/3-091-introduction-to-solid-state-chemistry-fall-2018/" },
+            { "title": "The Faraday Institution Open Battery Insights", "type": "reference", "provider": "Faraday Institution (UK)", "url": "https://www.faraday.ac.uk/" }
+          ],
+          "projects": [
+            { "name": "Faraday Institution Solid-State Battery NMR (Cambridge)", "status": "ongoing", "location": "Cambridge, United Kingdom", "url": "https://www.ch.cam.ac.uk/" },
+            { "name": "NREL Perovskite-Silicon Tandem Photovoltaics", "status": "ongoing", "location": "Golden, CO, USA", "url": "https://www.nrel.gov/pv/" }
+          ]
+        },
+        {
+          "id": "computational_ai_materials",
+          "name": "Quantum Chemistry & AI Materials Discovery",
+          "summary": "Density functional theory (DFT), machine-learned interatomic potentials (MACE), generative crystal diffusion (MatterGen), and robotic self-driving synthesis labs.",
+          "keyQuestions": [
+            "Can universal machine-learned force fields achieve coupled-cluster quantum accuracy across the entire periodic table at classical speed?",
+            "How do we bridge computational crystal stability with real-world synthesizability in autonomous wet labs?"
+          ],
+          "materials": [
+            { "title": "The Materials Project (150,000+ Computed Inorganic Crystals)", "type": "dataset", "provider": "Lawrence Berkeley National Lab", "url": "https://next-gen.materialsproject.org/" },
+            { "title": "NOMAD Open Materials Science Data Repository", "type": "dataset", "provider": "FAIRMAT / Fritz Haber Institute", "url": "https://nomad-lab.eu/" },
+            { "title": "Atomic Simulation Environment (ASE) Documentation", "type": "reference", "provider": "DTU / Open Community", "url": "https://wiki.fysik.dtu.dk/ase/" }
+          ],
+          "projects": [
+            { "name": "A-Lab Autonomous Robotic Materials Synthesis (LBNL)", "status": "ongoing", "location": "Berkeley, CA, USA", "url": "https://foundry.lbl.gov/" },
+            { "name": "MatterGen Generative Materials Design (Microsoft Research)", "status": "ongoing", "location": "Redmond & Cambridge", "url": "https://www.microsoft.com/en-us/research/lab/microsoft-research-ai-for-science/" }
+          ]
+        },
+        {
+          "id": "mofs_polymers_soft_matter",
+          "name": "Metal-Organic Frameworks (MOFs), Polymers & Soft Matter",
+          "summary": "Reticular chemistry, ultraporous molecular sponges for atmospheric water and CO2 capture, circular recyclable polymers, and precision nanographenes.",
+          "keyQuestions": [
+            "Can low-cost porous frameworks pull gigatons of CO2 directly from ambient air using low-grade waste heat?",
+            "How do we engineer closed-loop depolymerizable plastics matching petroleum durability with zero microplastic pollution?"
+          ],
+          "materials": [
+            { "title": "IUPAC Periodic Table & Gold Book Chemical Compendium", "type": "reference", "provider": "IUPAC", "url": "https://goldbook.iupac.org/" },
+            { "title": "PubChem Open Chemical Structure Database (115M+ Compounds)", "type": "dataset", "provider": "National Library of Medicine (NIH)", "url": "https://pubchem.ncbi.nlm.nih.gov/" }
+          ],
+          "projects": [
+            { "name": "Kyoto iCeMS Porous Coordination Polymers (MOFs)", "status": "ongoing", "location": "Kyoto, Japan", "url": "https://www.icems.kyoto-u.ac.jp/en/" },
+            { "name": "MPI Polymer Research Precision Nanographenes", "status": "ongoing", "location": "Mainz, Germany", "url": "https://www.mpip-mainz.mpg.de/" }
+          ]
+        },
+        {
+          "id": "nanomaterials_photonics",
+          "name": "Nanomaterials, Quantum Dots & Specialty Glass",
+          "summary": "Colloidal quantum dots, 2D layered semiconductors (graphene, MoS2), low-loss optical fibers, and high-temperature superconducting REBCO tapes.",
+          "keyQuestions": [
+            "Can atomically thin 2D transition-metal dichalcogenides extend transistor scaling beyond physical silicon limits?",
+            "How do hollow-core photonic-bandgap fibers push optical data-center latency near the vacuum speed of light?"
+          ],
+          "materials": [
+            { "title": "MIT 6.720J / 3.042 Materials & Nanofabrication Open Resources", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/search/?d=Materials+Science+and+Engineering" },
+            { "title": "arXiv Materials Science (cond-mat.mtrl-sci)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/cond-mat.mtrl-sci/recent" }
+          ],
+          "projects": [
+            { "name": "The Molecular Foundry Open Nanoscience User Facility", "status": "ongoing", "location": "Berkeley, CA, USA", "url": "https://foundry.lbl.gov/" },
+            { "name": "Corning Next-Gen Low-Loss Optical Fiber & Glass", "status": "ongoing", "location": "Corning, NY, USA", "url": "https://www.corning.com/worldwide/en/innovation.html" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "earth_climate",
+      "name": "Earth, Ocean & Climate Science",
+      "desc": "Atmospheric dynamics, AI weather digital twins, deep-sea oceanography, polar glaciology, plate tectonics, Earth-system tipping points, and renewable energy systems.",
+      "subdomains": [
+        {
+          "id": "climate_weather_ai",
+          "name": "Atmospheric Dynamics, Weather & AI Climate Digital Twins",
+          "summary": "Global numerical weather prediction, data assimilation, ERA5 reanalysis, storm-resolving simulations, and ML weather models (GraphCast, AIFS, FourCastNet).",
+          "keyQuestions": [
+            "How can physics-constrained AI models maintain physical conservation laws under out-of-distribution warming climates?",
+            "What governs low-cloud feedback—the single largest remaining uncertainty in equilibrium climate sensitivity?"
+          ],
+          "materials": [
+            { "title": "Copernicus Climate Data Store & ERA5 Global Reanalysis", "type": "dataset", "provider": "ECMWF / Copernicus", "url": "https://cds.climate.copernicus.eu/" },
+            { "title": "IPCC Sixth Assessment Report (AR6) Interactive Atlas", "type": "reference", "provider": "IPCC", "url": "https://interactive-atlas.ipcc.ch/" },
+            { "title": "MIT 12.003 Atmosphere, Ocean and Climate Dynamics", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/12-003-atmosphere-ocean-and-climate-dynamics-fall-2011/" }
+          ],
+          "projects": [
+            { "name": "Destination Earth (DestinE) & AIFS (ECMWF)", "status": "ongoing", "location": "Reading, UK & Bologna, Italy", "url": "https://www.ecmwf.int/" },
+            { "name": "Community Earth System Model (CESM) at NSF NCAR", "status": "ongoing", "location": "Boulder, CO, USA", "url": "https://www.cesm.ucar.edu/" }
+          ]
+        },
+        {
+          "id": "oceanography_deep_sea",
+          "name": "Physical Oceanography & Deep-Sea Exploration",
+          "summary": "Global thermohaline circulation (AMOC), autonomous Argo floats, ocean carbon absorption, abyssal hydrothermal vents, and hadal-trench ecosystems.",
+          "keyQuestions": [
+            "How close is the Atlantic Meridional Overturning Circulation (AMOC) to a nonlinear slowdown threshold?",
+            "What fraction of Earth's biodiversity and carbon cycle remains unmapped in the ocean twilight and abyssal zones?"
+          ],
+          "materials": [
+            { "title": "Argo Global Ocean Profiling Float Live Data", "type": "dataset", "provider": "International Argo Program (Scripps / WHOI / JAMSTEC)", "url": "https://argo.ucsd.edu/" },
+            { "title": "WHOI Know Your Ocean & Alvin Expedition Archives", "type": "reference", "provider": "Woods Hole Oceanographic Institution", "url": "https://www.whoi.edu/know-your-ocean/" }
+          ],
+          "projects": [
+            { "name": "HOV Alvin & Ocean Observatories Initiative (WHOI)", "status": "ongoing", "location": "Woods Hole, MA, USA", "url": "https://www.whoi.edu/" },
+            { "name": "JAMSTEC Shinkai 6500 & Deep-Sea Drilling (Chikyu)", "status": "ongoing", "location": "Yokosuka, Japan", "url": "https://www.jamstec.go.jp/" }
+          ]
+        },
+        {
+          "id": "cryosphere_polar",
+          "name": "Cryosphere, Ice Sheets & Polar Science",
+          "summary": "Antarctic and Greenland ice-sheet dynamics, marine ice-cliff instability, 1.5-million-year ice cores, Arctic sea-ice forecasting, and permafrost carbon release.",
+          "keyQuestions": [
+            "How rapidly could warm circumpolar deep water destabilize West Antarctica's Thwaites Glacier?",
+            "What do 1.5-million-year continuous Antarctic ice cores reveal about Earth's Mid-Pleistocene Transition?"
+          ],
+          "materials": [
+            { "title": "NSIDC Sea Ice Index & Cryosphere Data Portal", "type": "dataset", "provider": "National Snow and Ice Data Center", "url": "https://nsidc.org/data/seaice_index" },
+            { "title": "Discovering Antarctica Open Educational Portal", "type": "course", "provider": "British Antarctic Survey & RGS", "url": "https://discoveringantarctica.org.uk/" }
+          ],
+          "projects": [
+            { "name": "International Thwaites Glacier Collaboration (BAS / NSF)", "status": "ongoing", "location": "Cambridge, UK & West Antarctica", "url": "https://thwaitesglacier.org/" },
+            { "name": "Beyond EPICA Oldest Ice Core & RV Polarstern (AWI)", "status": "ongoing", "location": "Bremerhaven, Germany & Antarctica", "url": "https://www.awi.de/" }
+          ]
+        },
+        {
+          "id": "solid_earth_tectonics",
+          "name": "Solid Earth Geophysics, Seismology & Plate Tectonics",
+          "summary": "Deep-mantle imaging, subduction-zone megathrust earthquakes, volcanic magma dynamics, seafloor fiber-optic seismology, and paleomagnetism.",
+          "keyQuestions": [
+            "What physical mechanisms initiate megathrust rupture versus silent slow-slip earthquakes at subduction zones?",
+            "How do deep-mantle plumes and ancient subducted slabs drive Earth's geodynamo magnetic field?"
+          ],
+          "materials": [
+            { "title": "USGS Real-Time Global Earthquake Catalog & Hazards", "type": "dataset", "provider": "US Geological Survey", "url": "https://earthquake.usgs.gov/" },
+            { "title": "IRIS / EarthScope Open Seismic Waveform Archive", "type": "dataset", "provider": "EarthScope Consortium", "url": "https://www.earthscope.org/" }
+          ],
+          "projects": [
+            { "name": "Lamont-Doherty Global Core Repository & Seismic Imaging", "status": "ongoing", "location": "Palisades, NY, USA", "url": "https://lamont.columbia.edu/" },
+            { "name": "DONET Real-Time Seafloor Earthquake Observatory (JAMSTEC)", "status": "ongoing", "location": "Yokosuka, Japan", "url": "https://www.jamstec.go.jp/" }
+          ]
+        },
+        {
+          "id": "earth_systems_decarbonization",
+          "name": "Biogeochemistry, Tipping Points & Clean-Grid Systems",
+          "summary": "Global carbon budgets (Keeling Curve), Planetary Boundaries, extreme-event attribution, carbon mineralization, and 100% renewable power-grid integration.",
+          "keyQuestions": [
+            "How do interacting tipping elements (Amazon dieback, Greenland ice, permafrost) cascade across the Earth system?",
+            "How do we engineer resilient continental power grids balancing solar, wind, storage, and nuclear/fusion baseload?"
+          ],
+          "materials": [
+            { "title": "The Keeling Curve Live Mauna Loa CO2 Record", "type": "dataset", "provider": "Scripps Institution of Oceanography", "url": "https://keelingcurve.ucsd.edu/" },
+            { "title": "Global Carbon Budget Open Data", "type": "dataset", "provider": "Global Carbon Project", "url": "https://globalcarbonbudget.org/" },
+            { "title": "World Weather Attribution Scientific Rapid Analyses", "type": "reference", "provider": "WWA / ETH / Imperial", "url": "https://www.worldweatherattribution.org/" }
+          ],
+          "projects": [
+            { "name": "Planetary Health Check & TipMIP (PIK Potsdam)", "status": "ongoing", "location": "Potsdam, Germany", "url": "https://www.pik-potsdam.de/" },
+            { "name": "Energy Systems Integration Facility (NREL)", "status": "ongoing", "location": "Golden, CO, USA", "url": "https://www.nrel.gov/esif/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "engineering",
+      "name": "Robotics, Semiconductors & Aerospace",
+      "desc": "Extreme-ultraviolet nanolithography, sub-2 nm transistors, dynamic legged & humanoid robotics, autonomous swarms, deep-space probes, and sustainable aviation.",
+      "subdomains": [
+        {
+          "id": "semiconductors_euv",
+          "name": "Semiconductors, EUV Lithography & Chip Architecture",
+          "summary": "High-NA EUV photolithography, Gate-All-Around nanosheets, 3D CFET stacking, backside power delivery, High-Bandwidth Memory (HBM), and silicon photonics.",
+          "keyQuestions": [
+            "How do 3D chiplets, backside power, and optical interconnects sustain compute scaling after planar transistor shrinkage slows?",
+            "How can neuromorphic and processing-in-memory chips cut AI inference energy by 100×?"
+          ],
+          "materials": [
+            { "title": "IEEE International Roadmap for Devices and Systems (IRDS)", "type": "reference", "provider": "IEEE", "url": "https://irds.ieee.org/" },
+            { "title": "MIT 6.004 Computation Structures (Transistors to CPUs)", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/" },
+            { "title": "RISC-V Open Instruction Set Architecture Specifications", "type": "reference", "provider": "RISC-V International", "url": "https://riscv.org/technical/specifications/" }
+          ],
+          "projects": [
+            { "name": "NanoIC High-NA EUV Pilot Line (imec & ASML)", "status": "ongoing", "location": "Leuven, Belgium & Veldhoven, NL", "url": "https://www.imec-int.com/" },
+            { "name": "TSMC N2/A16 Nanosheet & CoWoS Packaging R&D", "status": "ongoing", "location": "Hsinchu, Taiwan", "url": "https://www.tsmc.com/" }
+          ]
+        },
+        {
+          "id": "legged_humanoid_robotics",
+          "name": "Legged Locomotion, Humanoids & Dexterous Manipulation",
+          "summary": "Whole-body model-predictive control, sim-to-real GPU reinforcement learning, quasi-direct-drive actuators, tactile skin, and general-purpose humanoid robotics.",
+          "keyQuestions": [
+            "What tactile sensing and force-control breakthroughs are needed for human-level dexterous in-hand manipulation?",
+            "How do we certify physical safety for agile humanoids operating alongside people in homes and factories?"
+          ],
+          "materials": [
+            { "title": "MIT 6.832 Underactuated Robotics (Open Textbook & Lectures)", "type": "course", "provider": "Russ Tedrake (MIT)", "url": "https://underactuated.mit.edu/" },
+            { "title": "Modern Robotics: Mechanics, Planning, and Control (Free Book)", "type": "book", "provider": "Kevin Lynch & Frank Park (Northwestern)", "url": "https://hades.mech.northwestern.edu/index.php/Modern_Robotics" },
+            { "title": "MuJoCo Open-Source Physics Engine for Robotics", "type": "reference", "provider": "Google DeepMind", "url": "https://mujoco.org/" }
+          ],
+          "projects": [
+            { "name": "All-Electric Atlas & ANYmal Field Robotics", "status": "ongoing", "location": "Waltham, USA & Zurich, CH", "url": "https://rsl.ethz.ch/" },
+            { "name": "Unitree Open-SDK Humanoids & Digit Commercial Deployment", "status": "ongoing", "location": "Hangzhou, China & Corvallis, USA", "url": "https://www.unitree.com/" }
+          ]
+        },
+        {
+          "id": "space_engineering_probes",
+          "name": "Deep-Space Systems, Planetary Robotics & Astrodynamics",
+          "summary": "Autonomous interplanetary navigation, entry-descent-landing, electric ion propulsion, deep-space optical communications, and ocean-world astrobiology probes.",
+          "keyQuestions": [
+            "How can autonomous onboard AI allow planetary landers and sub-ice cryobots to explore Europa and Enceladus with hour-long light-delay?",
+            "How do we scale in-situ resource utilization (ISRU)—like MIT's MOXIE oxygen generator—for sustainable lunar and Martian bases?"
+          ],
+          "materials": [
+            { "title": "NASA Eyes on the Solar System (Real-Time 3D Spacecraft Simulator)", "type": "dataset", "provider": "NASA Jet Propulsion Laboratory", "url": "https://eyes.nasa.gov/" },
+            { "title": "MIT 16.00x Introduction to Aerospace Engineering", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/16-00-introduction-to-aerospace-engineering-and-design-spring-2003/" },
+            { "title": "ESA Open Space Science Archives & Telemetry", "type": "dataset", "provider": "European Space Agency", "url": "https://www.cosmos.esa.int/" }
+          ],
+          "projects": [
+            { "name": "Europa Clipper & Mars Perseverance (NASA JPL)", "status": "ongoing", "location": "Pasadena, CA, USA", "url": "https://www.jpl.nasa.gov/missions/" },
+            { "name": "LISA Space Gravitational-Wave Observatory (ESA ESTEC)", "status": "upcoming", "location": "Noordwijk, Netherlands", "url": "https://www.esa.int/Science_Exploration/Space_Science/LISA" }
+          ]
+        },
+        {
+          "id": "autonomous_aviation_swarms",
+          "name": "Sustainable Aviation, Autonomy & Swarm Control",
+          "summary": "Blended-wing aerodynamics, liquid-hydrogen and hybrid-electric aircraft, neuromorphic vision drones, autonomous racing, and multi-robot swarm coordination.",
+          "keyQuestions": [
+            "Can cryogenic liquid-hydrogen propulsion and blended-wing airframes decarbonize long-haul commercial aviation?",
+            "How do neuromorphic event cameras enable agile drone flight at high speeds without GPS?"
+          ],
+          "materials": [
+            { "title": "Georgia Tech Robotarium (Free Remote Swarm Testbed)", "type": "dataset", "provider": "Georgia Tech IRIM", "url": "https://www.robotarium.gatech.edu/" },
+            { "title": "ROS 2 (Robot Operating System) Open Documentation", "type": "reference", "provider": "Open Robotics", "url": "https://docs.ros.org/" }
+          ],
+          "projects": [
+            { "name": "Flying-V & Hydrogen Aviation (TU Delft Aerospace)", "status": "ongoing", "location": "Delft, Netherlands", "url": "https://www.tudelft.nl/en/ae" },
+            { "name": "PoliMOVE Autonomous Racing & Drone Swarms", "status": "ongoing", "location": "Milan, Italy", "url": "https://www.polimi.it/" }
+          ]
+        },
+        {
+          "id": "cyber_physical_bio_eng",
+          "name": "Cyber-Physical Manufacturing, MEMS & Bio-Microsystems",
+          "summary": "AI-driven smart factories, additive laser manufacturing, MEMS sensors, silicon-chip DNA/neural interfaces, and automated gigafactory production.",
+          "keyQuestions": [
+            "How do digital twins and closed-loop sensor fusion achieve zero-defect automated battery and semiconductor manufacturing?",
+            "How can CMOS-fabricated microfluidic and neural bio-chips bridge silicon electronics seamlessly with living tissue?"
+          ],
+          "materials": [
+            { "title": "MIT 2.008 Design and Manufacturing II", "type": "course", "provider": "MIT OpenCourseWare", "url": "https://ocw.mit.edu/courses/2-008-design-and-manufacturing-ii-spring-2004/" },
+            { "title": "arXiv Robotics (cs.RO) & Systems and Control (eess.SY)", "type": "archive", "provider": "Cornell University / arXiv", "url": "https://arxiv.org/list/cs.RO/recent" }
+          ],
+          "projects": [
+            { "name": "Internet of Production & Battery Manufacturing (RWTH Aachen / Fraunhofer IPA)", "status": "ongoing", "location": "Aachen & Stuttgart, Germany", "url": "https://www.iop.rwth-aachen.de/" },
+            { "name": "Neuropixels & CMOS Silicon Qubits (imec / CEA-Leti)", "status": "ongoing", "location": "Leuven & Grenoble", "url": "https://www.leti-cea.com/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

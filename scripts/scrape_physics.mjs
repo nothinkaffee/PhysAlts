@@ -56,13 +56,16 @@ const KNOWN_HTTPS_HOSTS = new Set([
 ]);
 
 const NOISE_NAME_RE =
-  /\b(hospital|clinic|medical college|medical university|medical school|medical center|medical centre|medical institute|medical sciences|medical welfare|medical research institute|school of medicine|faculty of medicine|college of medicine|genomic medicine|digital medicine|occupational medicine|health science|health sciences|health system|health care|healthcare|health authority|health canada|health university|health protection|e-health|henry ford health|beaumont health|group health|environment and health|occupational safety|occupational health|cancer center|cancer centre|cancer institute|cancer research|cancer care|cancer trials|cancer society|cancer foundation|cancer agency|against cancer|treatment of cancer|german cancer|heart institute|eye institute|blood center|blood bank|child health|public health|tropical medicine|biomedical|clinical research|pathology|therapy|dental|dentistry|pharmacy|pharmaceuticals?|pharmacolog\w*|pharmacopeial|pharma|biopharma|allergopharma|pharmacyclics|nursing|midwifery|veterinar\w*|pediatric|surgical|surgery|rehabilitation|orthopedic\w*|cardiolog\w*|optometr\w*|podiatr\w*|chiropract\w*|dermatolog\w*|ophthalmolog\w*|psychiatr\w*|obstetric\w*|gynecolog\w*|maternity|sanatorium|hospice|wellness|cosmetic|agricultural|d'agriculture|agronomy|forestry|fisheries|law school|school of law|university of law|business school|management school|school of economics|university of finance|economics and business|economics and management|transport economics|theolog\w*|seminary|divinity|bible college|fine arts|academy of arts|music academy|art institute|school of the art|college of art|university of art|conservatory|culinary|hospitality|tourism|fashion|banking institute|university press|broadcasting corporation|consulting|insurance|real estate|law firm|accounting|restaurant|hotel|credit union|ministry of education|ministry of health|ministry of industry|department of commerce|brain, music)\b/i;
+  /\b(hospital|h[oô]pital|klinik|klinikum|krankenhaus|ospedale|clinic|cl[ií]nica|clinique|poliklinik|medical college|medical university|medical school|medical center|medical centre|medical institute|medical sciences|medical science|medical technology|medical welfare|medical research institute|medical-biological|school of medicine|faculty of medicine|college of medicine|university of medicine|genomic medicine|medicina xen[oó]mica|digital medicine|occupational medicine|umweltmedizin|health science|health sciences|health system|health care|healthcare|health authority|health canada|health university|health protection|hygi[eè]ne publique|sant[eé]|sanit[aà]|e-health|henry ford health|beaumont health|group health|environment and health|occupational safety|occupational health|cancer center|cancer centre|cancer institute|cancer research|cancer care|cancer trials|cancer society|cancer foundation|cancer agency|against cancer|treatment of cancer|german cancer|oncolog\w*|krebsforschung|tumori|canc[eé]rologie|gustave roussy|l[eé]on b[eé]rard|humanitas|heart institute|eye institute|vision institute|vision cooperative|prevent blindness|hearing research|speech and hearing|respiratory research|concussion|disease modeling|dietary supplements|blood center|blood bank|child health|public health|tropical medicine|biomedical|clinical research|pathology|therapy|radiotherap\w*|dental|dentistry|disgnacias|odontolog\w*|pharmacy|pharmaceuticals?|pharmacolog\w*|pharmacopeial|pharma|biopharma|allergopharma|pharmacyclics|therapeutics|nursing|nurses|infirmi[eè]res|midwifery|veterinar\w*|pediatric|surgical|surgery|rehabilitation|orthopedic\w*|cardiolog\w*|optometr\w*|podiatr\w*|chiropract\w*|dermatolog\w*|ophthalmolog\w*|psychiatr\w*|obstetric\w*|gynecolog\w*|maternity|sanatorium|hospice|wellness|cosmetic|agricultural|agrarian|d'agriculture|agronom\w*|forestry|fisheries|sugar institute|wildlife conservation|marine mammal|sea world|peregrine fund|plant and animal ecology|law school|school of law|university of law|business school|management school|administraci[oó]n de empresas|universidad de la empresa|school of economics|university of finance|economics and business|economics and management|transport economics|theolog\w*|teolog[ií]a|seminary|divinity|bible college|instituto superior crist[aã]o|fine arts|performing arts|academy of arts|music academy|art institute|school of the art|college of art|university of art|university of the arts|institute of culture|conservatory|culinary|hospitality|tourism|fashion|banking institute|university press|broadcasting corporation|consulting|insurance|real estate|law firm|accounting|restaurant|hotel|credit union|ministry of education|ministry of health|ministry of industry|department of commerce|public administration|ethnic affairs|social sciences?|sciences po|political observatory|observat[oó]rio de favelas|brain, music|stony brook school|fusion academy|high school|boarding school|heartmath|selfology|aetherdynamics|quantum gravity research|quantum genomics|fusion genomics|quantum spatial|quantum intelligence|data fusion|plasma clean|plasma display|spinal elements|civilisations matter|walt disney|goldman sachs|jpmorgan|wells fargo|capital one|two sigma|altria|reynolds american|shiseido|unilever|kimberly-clark|pirelli|michelin|heidelbergcement|chemins de fer|nederlandse spoorwegen|renfe operadora|boys town|orcid|faculty of 1000)\b/i;
 
 const COUNTRY_NAME_ALIASES = {
   "türkiye": "Turkey",
   "turkiye": "Turkey",
   "palestinian territory": "Palestine",
-  "occupied palestinian territory": "Palestine"
+  "occupied palestinian territory": "Palestine",
+  "the netherlands": "Netherlands",
+  "the gambia": "Gambia",
+  "congo republic": "Republic of the Congo"
 };
 
 function normalizeCountryName(raw) {
@@ -171,14 +174,29 @@ function isNoiseOrg(name, types = [], extraText = "") {
   return false;
 }
 
-function classifyBranch(text) {
-  const t = (text || "").toLowerCase();
-  if (/cern|fermi|collider|hadron|neutrino|particle|nuclear|cyclotron|accelerator|desy|kek|triumf|high energy|synchrotron/.test(t)) return "particle";
-  if (/quantum|photon|laser|optic|euv|attosecond|qubit|nanophoton|spectroscop/.test(t)) return "quantum";
-  if (/astro|observator|telescope|cosmo|space|radio|astron|planetar|geophys/.test(t)) return "astro";
-  if (/fusion|plasma|tokamak|stellarator|iter|magnet/.test(t)) return "fusion";
-  if (/gravit|relativ|ligo|virgo|kagra|theoretical|perimeter|ias|string/.test(t)) return "gravity";
-  return "condensed";
+const PHYSICS_TOPIC_RE =
+  /physic|quantum|optic|photon|laser|plasma|fusion|tokamak|nuclear|particle|hadron|neutrino|collider|accelerat|synchrotron|astron|astrophys|cosmo|galax|stellar|planet|exoplanet|black hole|gravit|relativ|superconduct|semiconduct|graphene|condensed|crystallograph|magnet|spintron|ferroelectr|piezoelectr|nanomat|nanotech|metamater|spectroscop|acoust|fluid|turbulen|thermodynam|cryogen|seism|geophys|atmospher|climate|meteorol|radiat|x-ray|neutron|atomic|molecular|ion|electron|electromagnet|microwave|terahertz|rf |antenna|wave|solid state|thin film|surface|vacuum|metrolog|detector|sensor|instrumentation|mechanics|dynamics|statistical|complex system|chaos|nonlinear|biophys|medical imaging|mri|hadron therapy/i;
+
+function classifyBranch(nameText, topicText = "") {
+  const n = (nameText || "").toLowerCase();
+  const t = `${n} ${(topicText || "").toLowerCase()}`;
+  if (/\b(cern|fermi|collider|hadron|neutrino|particle|nuclear|cyclotron|accelerator|desy|kek|triumf|high energy|gran sasso|snolab|dubna|jinr|ihep|subatomic|heavy ion)\b/.test(n)) return "particle";
+  if (/\b(fusion|plasma|tokamak|stellarator|iter|culham|ukaea|pppl)\b/.test(n)) return "fusion";
+  if (/\b(gravit|relativ|ligo|virgo|kagra|albert einstein institute|perimeter|theoretical physics|string)\b/.test(n)) return "gravity";
+  if (/\b(astro|observator|telescope|cosmo|astron|planetar|space telescope|radio astronomy|extraterrestrial|astrophys)\b/.test(n)) return "astro";
+  if (/\b(quantum|photon|laser|optic|euv|attosecond|qubit|nanophoton|light source|coherent|thorlabs|hamamatsu|zeiss|toptica|menlo|asml)\b/.test(n)) return "quantum";
+  if (/\b(synchrotron|neutron|spallation|condensed|solid state|superconduct|graphene|cryo|magnet|materials|nanotech|semiconduct|microelectron|high pressure|crystallograph|thin film)\b/.test(n)) return "condensed";
+  if (/\b(geophys|seism|meteorol|atmospher|ocean|climate|biophys|medical physics|hadrontherapy|radiolog|acoust|fluid|aerospace|space|satellite|propulsion|metrolog|standards|nist|ptb|bipm|npl|instrument|sensor|measurement|computational|supercomput)\b/.test(n)) return "applied";
+
+  if (/\b(particle physics|high energy physics|nuclear physics|hadron|neutrino|quark|collider|accelerator|standard model)\b/.test(t)) return "particle";
+  if (/\b(fusion|tokamak|stellarator|plasma physics|magnetohydrodynamic)\b/.test(t)) return "fusion";
+  if (/\b(gravitational wave|general relativity|black hole|quantum gravity|string theory)\b/.test(t)) return "gravity";
+  if (/\b(astrophys|astronomy|galax|stellar|exoplanet|pulsar|supernova|cosmolog|planetary)\b/.test(t)) return "astro";
+  if (/\b(quantum|photon|laser|optic|atomic physics|ultracold|entanglement|spectroscop)\b/.test(t)) return "quantum";
+  if (/\b(condensed matter|superconduct|semiconduct|graphene|magnetism|spintron|ferroelectr|crystallograph|solid state|nanomater|2d material)\b/.test(t)) return "condensed";
+  if (/\b(geophys|seism|atmospher|climate|fluid|acoust|biophys|metrolog|aerospace|medical imaging|radiation|computational)\b/.test(t)) return "applied";
+
+  return "multi";
 }
 
 function classifyEntityType(name, types = []) {
@@ -249,8 +267,13 @@ function normalizeOpenAlex(inst, hint = "") {
   const name = cleanText(inst.display_name);
   if (!name) return null;
   const type = String(inst.type || "").toLowerCase();
-  const topicNames = (inst.topics || []).slice(0, 4).map(t => cleanText(t.display_name)).filter(Boolean).join(", ");
-  if (isNoiseOrg(name, [type], `${topicNames} ${hint}`)) return null;
+  const physicsTopics = (inst.topics || [])
+    .filter(t => String(t.field?.id || "").endsWith("/31") || PHYSICS_TOPIC_RE.test(t.display_name || ""))
+    .slice(0, 4)
+    .map(t => cleanText(t.display_name))
+    .filter(Boolean)
+    .join(", ");
+  if (isNoiseOrg(name, [type], physicsTopics)) return null;
 
   const entityType = classifyEntityType(name, [type]);
   const group = groupForEntityType(entityType);
@@ -260,14 +283,14 @@ function normalizeOpenAlex(inst, hint = "") {
   const cites = Number(inst.cited_by_count || 0);
   const url = normalizeUrl(inst.homepage_url, inst.id);
 
-  const typeLabel =
+  const roleClean =
     entityType === "uni"
-      ? "university department"
+      ? "Research university with physics & astronomy output"
       : entityType === "company"
-        ? "deep-tech physics company"
+        ? "Deep-tech physics & engineering company"
         : entityType === "institute"
-          ? "research institute"
-          : "research facility";
+          ? "Physics research institute"
+          : "Physics research facility";
 
   return {
     id: `oa-${String(inst.id || name).split("/").pop()}`,
@@ -280,14 +303,14 @@ function normalizeOpenAlex(inst, hint = "") {
     zoom: 15.6,
     group,
     entityType,
-    branch: classifyBranch(`${name} ${topicNames} ${hint}`),
+    branch: classifyBranch(name, physicsTopics),
     foundedYear: null,
     status: "active",
     pinned: false,
     sourceApi: "OpenAlex",
     verifiedSource: "OpenAlex",
     url,
-    summary: `Global physics ${typeLabel} with ${works.toLocaleString("en-US")} indexed works and ${cites.toLocaleString("en-US")} citations.${topicNames ? " Active in " + topicNames + "." : ""}`
+    summary: `${roleClean} (${works.toLocaleString("en-US")} indexed OpenAlex works, ${cites.toLocaleString("en-US")} citations).${physicsTopics ? " Physics topics: " + physicsTopics + "." : ""}`
   };
 }
 
@@ -307,7 +330,7 @@ function normalizeRor(org, hint = "") {
   if (!name) return null;
 
   const types = (org.types || []).map(t => String(t || "").toLowerCase());
-  if (isNoiseOrg(name, types, hint)) return null;
+  if (isNoiseOrg(name, types, "")) return null;
 
   const entityType = classifyEntityType(name, types);
   const group = groupForEntityType(entityType);

@@ -330,6 +330,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
   onNavigateToBookmark,
   onOpenAuth,
   onStageUpdated,
+  onOpenOffline,
   onOpenSubmit,
   onOpenAudit,
   onOpenShortcuts,
@@ -351,6 +352,9 @@ export function renderAccountWorkspaceModal(bodyEl, {
       <div class="flex items-center gap-2 pb-4 border-b border-white/10 overflow-x-auto no-scrollbar">
         <button type="button" data-ws-tab="bookmarks" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "bookmarks" ? "glass-btn-active" : "glass-btn"}">
           Bookmarks (${snap.bookmarks.length})
+        </button>
+        <button type="button" id="ws-btn-offline" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition glass-btn">
+          Offline Packs
         </button>
         <button type="button" data-ws-tab="pathways" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "pathways" ? "glass-btn-active" : "glass-btn"}">
           Career Portals
@@ -577,9 +581,10 @@ export function renderAccountWorkspaceModal(bodyEl, {
       });
     });
 
-    // Wire sign-in/up triggers
+    // Wire sign-in/up & offline triggers
     bodyEl.querySelector("#ws-btn-signin")?.addEventListener("click", () => onOpenAuth?.("signin"));
     bodyEl.querySelector("#ws-btn-signup")?.addEventListener("click", () => onOpenAuth?.("signup"));
+    bodyEl.querySelector("#ws-btn-offline")?.addEventListener("click", () => onOpenOffline?.());
 
     // Wire tools triggers inside Privacy & Tools tab
     bodyEl.querySelector("#sec-btn-submit")?.addEventListener("click", () => onOpenSubmit?.());
