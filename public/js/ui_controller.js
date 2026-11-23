@@ -555,7 +555,7 @@ export function selectHubNode(id, fly = true) {
   const typeLabel = node.sector || (
     node.entityType === "startup" ? "Deep-Tech Startup"
     : node.entityType === "company" ? "Private Deep-Tech"
-    : node.entityType === "institute" ? "Private Institute"
+    : node.entityType === "institute" ? "Research Institute"
     : node.entityType === "lab" ? "National Lab & Facility"
     : node.entityType === "history" ? "Historical Milestone"
     : node.entityType === "project" ? "Mega-Project"
@@ -1094,7 +1094,7 @@ function renderCountriesModal(bodyEl) {
     .map(([name, count]) => ({ name, count, continent: inferContinent(name) }))
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  const companies = store.hubs.filter(h => h.group === "company" || h.entityType === "startup" || h.entityType === "institute");
+  const companies = store.hubs.filter(h => h.group === "company" || h.entityType === "company" || h.entityType === "startup");
 
   const render = () => {
     const headerTabs = `
@@ -1197,7 +1197,7 @@ function renderCountriesModal(bodyEl) {
         <div class="space-y-4">
           ${headerTabs}
           <div class="flex items-center gap-2.5">
-            <input id="comp-search-input" type="text" value="${esc(query)}" placeholder="Search startups, institutes, or sectors…" class="glass-input" />
+            <input id="comp-search-input" type="text" value="${esc(query)}" placeholder="Search companies, startups, or sectors…" class="glass-input" />
             <button type="button" id="btn-filter-companies" class="glass-btn rounded-full px-4 py-2.5 text-[14px] whitespace-nowrap shrink-0">Show on Globe</button>
           </div>
           <div class="space-y-2 max-h-[340px] scroll-clean pr-1">

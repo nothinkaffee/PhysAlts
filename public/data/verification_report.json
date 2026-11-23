@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-11-23T17:53:13.100Z",
+  "generatedAt": "2026-11-23T20:46:10.381Z",
   "mode": "standard",
-  "durationSec": 137.1,
+  "durationSec": 135.5,
   "summary": {
     "totalDatasets": 6,
     "presentDatasets": 6,
     "missingDatasets": 0,
-    "totalEntities": 5839,
-    "totalCountries": 170,
-    "linksChecked": 721,
-    "linksOk": 587,
-    "linksBotProtected": 54,
-    "linksBroken": 80,
-    "passRatePct": 88.9,
-    "strictOkRatePct": 81.41,
+    "totalEntities": 5764,
+    "totalCountries": 167,
+    "linksChecked": 715,
+    "linksOk": 580,
+    "linksBotProtected": 52,
+    "linksBroken": 83,
+    "passRatePct": 88.39,
+    "strictOkRatePct": 81.12,
     "schemaErrorsCount": 0
   },
   "datasets": {
@@ -34,9 +34,9 @@
       "schemaErrors": 0,
       "linksScheduled": 130,
       "linksChecked": 130,
-      "linksOk": 92,
+      "linksOk": 91,
       "linksBotProtected": 7,
-      "linksBroken": 31,
+      "linksBroken": 32,
       "sampling": "100%"
     },
     "space_frontier.json": {
@@ -45,9 +45,9 @@
       "schemaErrors": 0,
       "linksScheduled": 72,
       "linksChecked": 72,
-      "linksOk": 54,
+      "linksOk": 55,
       "linksBotProtected": 0,
-      "linksBroken": 18,
+      "linksBroken": 17,
       "sampling": "100%"
     },
     "domains_catalog.json": {
@@ -63,24 +63,24 @@
     },
     "private_startups.json": {
       "status": "ok",
-      "entities": 66,
+      "entities": 60,
       "schemaErrors": 0,
-      "linksScheduled": 66,
-      "linksChecked": 66,
-      "linksOk": 61,
-      "linksBotProtected": 5,
+      "linksScheduled": 60,
+      "linksChecked": 60,
+      "linksOk": 57,
+      "linksBotProtected": 3,
       "linksBroken": 0,
       "sampling": "100%"
     },
     "physics_hubs.json": {
       "status": "ok",
-      "entities": 5594,
+      "entities": 5525,
       "schemaErrors": 0,
       "linksScheduled": 150,
       "linksChecked": 150,
-      "linksOk": 113,
+      "linksOk": 110,
       "linksBotProtected": 12,
-      "linksBroken": 25,
+      "linksBroken": 28,
       "sampling": "stratified-150"
     }
   },
@@ -128,33 +128,41 @@
     },
     {
       "file": "history_timeline.json",
-      "id": "copernicus_1543",
-      "name": "De Revolutionibus: Heliocentric Solar System",
-      "url": "https://en.wikipedia.org/wiki/De_revolutionibus_orbium_coelestium",
+      "id": "ulugh_beg_1420",
+      "name": "Ulugh Beg Observatory & Zij-i-Sultani Star Catalogue",
+      "url": "https://en.wikipedia.org/wiki/Ulugh_Beg_Observatory",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "history_timeline.json",
-      "id": "faraday_1831",
-      "name": "Electromagnetic Induction & Field Concept",
-      "url": "https://en.wikipedia.org/wiki/Faraday%27s_law_of_induction",
+      "id": "kepler_1609",
+      "name": "Astronomia Nova & Laws of Planetary Motion",
+      "url": "https://en.wikipedia.org/wiki/Kepler%27s_laws_of_planetary_motion",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "history_timeline.json",
-      "id": "roentgen_1895",
-      "name": "Discovery of X-Rays",
-      "url": "https://en.wikipedia.org/wiki/Wilhelm_R%C3%B6ntgen",
+      "id": "noether_1918",
+      "name": "Noether's Theorem: Symmetries & Conservation Laws",
+      "url": "https://en.wikipedia.org/wiki/Noether%27s_theorem",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "history_timeline.json",
-      "id": "planck_1900",
-      "name": "Planck's Quantum Hypothesis (E = hν)",
-      "url": "https://en.wikipedia.org/wiki/Planck%27s_law",
+      "id": "solvay_1927",
+      "name": "Fifth Solvay Congress: Electrons and Photons",
+      "url": "https://en.wikipedia.org/wiki/Solvay_Conference",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "transistor_1947",
+      "name": "Invention of the Point-Contact Transistor",
+      "url": "https://en.wikipedia.org/wiki/History_of_the_transistor",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -184,6 +192,14 @@
     },
     {
       "file": "history_timeline.json",
+      "id": "laser_1960",
+      "name": "First Working Optical Laser",
+      "url": "https://en.wikipedia.org/wiki/Laser",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
       "id": "cmb_1964",
       "name": "Discovery of the Cosmic Microwave Background (CMB)",
       "url": "https://en.wikipedia.org/wiki/Discovery_of_cosmic_microwave_background_radiation",
@@ -195,22 +211,6 @@
       "id": "bell_theorem_1964",
       "name": "Bell's Theorem & Experimental Test of Quantum Nonlocality",
       "url": "https://en.wikipedia.org/wiki/Bell%27s_theorem",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "history_timeline.json",
-      "id": "standard_model_1964_1974",
-      "name": "Quarks, Electroweak Unification & the Standard Model",
-      "url": "https://en.wikipedia.org/wiki/Standard_Model",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "history_timeline.json",
-      "id": "wz_bosons_1983",
-      "name": "Discovery of the W and Z Bosons at CERN",
-      "url": "https://en.wikipedia.org/wiki/W_and_Z_bosons",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -251,6 +251,14 @@
       "id": "graphene_2004",
       "name": "Isolation of Two-Dimensional Graphene",
       "url": "https://en.wikipedia.org/wiki/Graphene",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "history_timeline.json",
+      "id": "higgs_boson_2012",
+      "name": "Discovery of the Higgs Boson (125 GeV)",
+      "url": "https://en.wikipedia.org/wiki/Higgs_boson",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -408,14 +416,6 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "xmm_newton",
-      "name": "XMM-Newton X-ray Observatory",
-      "url": "https://en.wikipedia.org/wiki/XMM-Newton",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "space_frontier.json",
       "id": "chandra",
       "name": "Chandra X-ray Observatory",
       "url": "https://en.wikipedia.org/wiki/Chandra_X-ray_Observatory",
@@ -440,6 +440,14 @@
     },
     {
       "file": "space_frontier.json",
+      "id": "chandrayaan3",
+      "name": "Chandrayaan-3 (Vikram & Pragyan)",
+      "url": "https://en.wikipedia.org/wiki/Chandrayaan-3",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
       "id": "change4",
       "name": "Chang'e-4 & Yutu-2",
       "url": "https://en.wikipedia.org/wiki/Chang%27e_4",
@@ -448,9 +456,17 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "artemis_gateway",
-      "name": "Artemis Program & Lunar Gateway",
-      "url": "https://en.wikipedia.org/wiki/Lunar_Gateway",
+      "id": "soho",
+      "name": "Solar and Heliospheric Observatory (SOHO)",
+      "url": "https://en.wikipedia.org/wiki/Solar_and_Heliospheric_Observatory",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "space_frontier.json",
+      "id": "planck_obs",
+      "name": "Planck Space Observatory",
+      "url": "https://en.wikipedia.org/wiki/Planck_(spacecraft)",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -472,9 +488,9 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "euclid",
-      "name": "Euclid Dark Universe Telescope",
-      "url": "https://en.wikipedia.org/wiki/Euclid_(spacecraft)",
+      "id": "roman",
+      "name": "Nancy Grace Roman Space Telescope",
+      "url": "https://en.wikipedia.org/wiki/Nancy_Grace_Roman_Space_Telescope",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -488,33 +504,17 @@
     },
     {
       "file": "space_frontier.json",
-      "id": "bepicolombo",
-      "name": "BepiColombo",
-      "url": "https://en.wikipedia.org/wiki/BepiColombo",
+      "id": "europa_clipper",
+      "name": "Europa Clipper",
+      "url": "https://en.wikipedia.org/wiki/Europa_Clipper",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "space_frontier.json",
-      "id": "parker_solar_probe",
-      "name": "Parker Solar Probe",
-      "url": "https://en.wikipedia.org/wiki/Parker_Solar_Probe",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "space_frontier.json",
-      "id": "osiris_rex",
-      "name": "OSIRIS-REx / OSIRIS-APEX",
-      "url": "https://en.wikipedia.org/wiki/OSIRIS-REx",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "space_frontier.json",
-      "id": "curiosity",
-      "name": "Mars Science Laboratory (Curiosity)",
-      "url": "https://en.wikipedia.org/wiki/Curiosity_(rover)",
+      "id": "dragonfly",
+      "name": "Dragonfly Titan Rotorcraft",
+      "url": "https://en.wikipedia.org/wiki/Dragonfly_(Titan_space_probe)",
       "status": 0,
       "reason": "ETIMEDOUT: fetch failed"
     },
@@ -528,81 +528,81 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210101969",
-      "name": "Dalat University",
-      "url": "https://dlu.edu.vn",
-      "status": 0,
-      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I1297991670",
-      "name": "Southwest University of Science and Technology",
-      "url": "https://www.swust.edu.cn",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210153654",
-      "name": "Consorzio Interuniversitario Fisica Spaziale",
-      "url": "http://www.cifs-spazio.it",
-      "status": 0,
-      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.cifs-spazio.it"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I41173762",
-      "name": "Mawlana Bhashani Science and Technology University",
-      "url": "https://www.mbstu.ac.bd",
-      "status": 0,
-      "reason": "ERR_SSL_TLSV1_ALERT_INTERNAL_ERROR: C05C32DE727F0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:../deps/openssl/openssl/ssl/reco"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210131125",
-      "name": "Huanghuai University",
-      "url": "https://www.huanghuai.edu.cn",
-      "status": 0,
-      "reason": "ETIMEDOUT: fetch failed"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I3133391162",
-      "name": "Maulana Azad National Urdu University",
-      "url": "http://www.manuu.ac.in",
+      "id": "oa-I3123046734",
+      "name": "Lorestan University",
+      "url": "https://www.lu.ac.ir",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-03v95xz18",
-      "name": "Institute of Geophysics, China Earthquake Administration",
-      "url": "https://www.cea-igp.ac.cn",
+      "id": "oa-I38452253",
+      "name": "Chung Chou University of Science and Technology",
+      "url": "http://en.ccut.edu.tw",
+      "status": 0,
+      "reason": "EAI_AGAIN: getaddrinfo EAI_AGAIN en.ccut.edu.tw"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I32246829",
+      "name": "Guangdong University of Education",
+      "url": "http://www.gdei.edu.cn",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I27367753",
+      "name": "El Shorouk Academy",
+      "url": "http://www.sha.edu.eg/DefaultEnglish.aspx",
       "status": 0,
       "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I41147446",
+      "name": "Anshan Normal University",
+      "url": "http://www.asnc.edu.cn",
+      "status": 0,
+      "reason": "ETIMEDOUT: fetch failed"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-05hhc1155",
+      "name": "Bronberg Observatory",
+      "url": "http://www.mstring.co.za/bronbergobservatory/",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-01fdnyw87",
+      "name": "M. Nodia Institute of Geophysics",
+      "url": "http://www.ig-geophysics.ge/index_eng.html",
+      "status": 404,
+      "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210158687",
+      "name": "Instituto de Estructura de la Materia",
+      "url": "https://www.iem.csic.es",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "ror-04wnheq77",
+      "name": "Institute for Physics",
+      "url": "http://www.iphys.org",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.iphys.org"
     },
     {
       "file": "physics_hubs.json",
       "id": "ror-01rg40y89",
       "name": "Institute of Condensed Matter Chemistry and Technologies for Energy",
       "url": "http://www.icmate.cnr.it/en/",
-      "status": 404,
-      "reason": "HTTP 404"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I4210100279",
-      "name": "Centre de Biologie Structurale",
-      "url": "https://www.cbs.cnrs.fr",
-      "status": 0,
-      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
-    },
-    {
-      "file": "physics_hubs.json",
-      "id": "oa-I2801659240",
-      "name": "Observatoire de Haute-Provence",
-      "url": "http://www.obs-hp.fr/welcome.shtml",
       "status": 404,
       "reason": "HTTP 404"
     },
@@ -616,25 +616,25 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I190517652",
-      "name": "Joint Institute for Nuclear Astrophysics",
-      "url": "http://www.jinaweb.org",
-      "status": 500,
-      "reason": "HTTP 500"
+      "id": "oa-I4387154762",
+      "name": "Institut de Physique Nucléaire d’Orsay",
+      "url": "http://ipnwww.in2p3.fr",
+      "status": 0,
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND ipnwww.in2p3.fr"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4210114434",
-      "name": "Delta Institute for Theoretical Physics",
-      "url": "http://www.d-itp.nl",
-      "status": 500,
-      "reason": "HTTP 500"
+      "id": "oa-I70284922",
+      "name": "MTS Systems (United States)",
+      "url": "http://www.mts.com/en/",
+      "status": 0,
+      "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I2802515739",
-      "name": "Studsvik (Sweden)",
-      "url": "http://www.studsvik.com/en/",
+      "id": "oa-I4210114561",
+      "name": "Mitsui Mining & Smelting (Japan)",
+      "url": "https://www.mitsui-kinzoku.co.jp/en/",
       "status": 404,
       "reason": "HTTP 404"
     },
@@ -648,6 +648,14 @@
     },
     {
       "file": "physics_hubs.json",
+      "id": "ror-029yt9178",
+      "name": "Physics of Life",
+      "url": "https://physics-of-life.tu-dresden.de",
+      "status": 0,
+      "reason": "UNABLE_TO_VERIFY_LEAF_SIGNATURE: unable to verify the first certificate"
+    },
+    {
+      "file": "physics_hubs.json",
       "id": "ror-00ern2s92",
       "name": "Département de Physique Nucléaire",
       "url": "http://irfu.cea.fr/sphn/index.php",
@@ -656,11 +664,11 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-02sjwx878",
-      "name": "Condensed Matter Physics Research Center",
-      "url": "http://cmprc.edu.np/condensed/index.html",
+      "id": "ror-00fzxtk71",
+      "name": "Joint Laboratory for Extreme Conditions Matter Properties",
+      "url": "http://www.jd.swust.edu.cn",
       "status": 0,
-      "reason": "23: The operation was aborted due to timeout"
+      "reason": "ETIMEDOUT: fetch failed"
     },
     {
       "file": "physics_hubs.json",
@@ -672,11 +680,11 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-038n50j48",
-      "name": "Altan Observatory",
-      "url": "http://pod.snezkou.cz/altan/?lang=en",
-      "status": 404,
-      "reason": "HTTP 404"
+      "id": "ror-00aac7f28",
+      "name": "Ion Physics (United States)",
+      "url": "https://ionphysics.com",
+      "status": 0,
+      "reason": "ERR_SSL_TLSV1_UNRECOGNIZED_NAME: C06C179D5E7F0000:error:0A000458:SSL routines:ssl3_read_bytes:tlsv1 unrecognized name:../deps/openssl/openssl/ssl/record/"
     },
     {
       "file": "physics_hubs.json",
@@ -704,27 +712,43 @@
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I144889574",
-      "name": "Université de Pau et des Pays de l'Adour",
-      "url": "https://www.univ-pau.fr",
+      "id": "oa-I96823368",
+      "name": "German University in Cairo",
+      "url": "http://www.guc.edu.eg",
       "status": 0,
       "reason": "23: The operation was aborted due to timeout"
     },
     {
       "file": "physics_hubs.json",
-      "id": "oa-I4387153818",
-      "name": "ADx NeuroSciences",
-      "url": "https://adxneurosciences.com",
+      "id": "oa-I4210110082",
+      "name": "École Nationale Polytechnique d'Oran",
+      "url": "https://www.enp-oran.dz",
       "status": 0,
-      "reason": "DEPTH_ZERO_SELF_SIGNED_CERT: self-signed certificate"
+      "reason": "ENOTFOUND: getaddrinfo ENOTFOUND www.enp-oran.dz"
     },
     {
       "file": "physics_hubs.json",
-      "id": "ror-04sqtxy36",
-      "name": "Research Institute \"Quantum\"",
-      "url": "http://www.rdi-kvant.ru/Page.aspx?id=171",
+      "id": "oa-I4210106946",
+      "name": "Centre Européen de Recherche et de Formation Avancée en Calcul Scientifique",
+      "url": "http://www.cerfacs.fr",
+      "status": 0,
+      "reason": "ECONNRESET: read ECONNRESET"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210089367",
+      "name": "Valongo Observatory",
+      "url": "https://ov.ufrj.br/en/home-2/",
       "status": 404,
       "reason": "HTTP 404"
+    },
+    {
+      "file": "physics_hubs.json",
+      "id": "oa-I4210111036",
+      "name": "Phenikaa (Vietnam)",
+      "url": "http://phenikaa.com/en",
+      "status": 0,
+      "reason": "ERR_TLS_CERT_ALTNAME_INVALID: Hostname/IP does not match certificate's altnames: Host: phenikaa.com. is not in the cert's altnames: DNS:www.phenikaa.c"
     }
   ]
 }

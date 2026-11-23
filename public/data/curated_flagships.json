@@ -116,7 +116,7 @@
       "url": "https://physics.mit.edu/",
       "wiki": "https://en.wikipedia.org/wiki/MIT_Department_of_Physics",
       "wikiSlug": "MIT_Department_of_Physics",
-      "summary": "Ranked #1 in the world for physics; co-built LIGO, leads compact fusion research, and pioneers ultracold quantum matter.",
+      "summary": "Consistently ranked among the world's foremost physics departments; co-built LIGO, leads compact fusion research, and pioneers ultracold quantum matter.",
       "nobel": "30+ physics laureates including Rainer Weiss (LIGO 2017) and Wolfgang Ketterle (2001).",
       "stages": {
         "highschool": "MIT RSI (Research Science Institute) summer program & MIT OpenCourseWare 8.01–8.04.",
@@ -262,7 +262,7 @@
       "url": "https://www.universite-paris-saclay.fr/en/node/79657",
       "wiki": "https://en.wikipedia.org/wiki/Paris-Saclay_University",
       "wikiSlug": "Paris-Saclay_University",
-      "summary": "Ranked #8 globally in physics, uniting CNRS, CEA Saclay, SOLEIL synchrotron, and Alain Aspect's quantum optics legacy.",
+      "summary": "Europe's top-ranked continental physics cluster, uniting CNRS, CEA Saclay, SOLEIL synchrotron, and Alain Aspect's quantum optics legacy.",
       "nobel": "Alain Aspect (2022 quantum entanglement), Albert Fert (2007), Pierre-Gilles de Gennes (1991).",
       "stages": {
         "highschool": "Fête de la Science open-lab days at Institut d'Optique and SOLEIL.",
@@ -292,7 +292,7 @@
         {
           "name": "Quantum Saclay Initiative",
           "status": "ongoing",
-          "url": "https://www.universite-paris-saclay.fr/en/research"
+          "url": "https://www.universite-paris-saclay.fr/en"
         }
       ]
     },
@@ -311,7 +311,7 @@
       "url": "https://www.physics.ox.ac.uk/",
       "wiki": "https://en.wikipedia.org/wiki/Department_of_Physics,_University_of_Oxford",
       "wikiSlug": "Department_of_Physics,_University_of_Oxford",
-      "summary": "Ranked #9 worldwide; a powerhouse in quantum computing, cosmology, atmospheric physics, and mathematical theory.",
+      "summary": "One of the world's leading physics departments—a powerhouse in quantum computing, cosmology, atmospheric physics, and mathematical theory.",
       "nobel": "Roger Penrose (2020 black hole theorems) and Anthony Leggett (2003).",
       "stages": {
         "highschool": "British Physics Olympiad (hosted at Oxford) & UNIQ summer school.",
@@ -409,7 +409,7 @@
       "url": "https://www.u-tokyo.ac.jp/en/prospective-students/mext_scholarship.html",
       "wiki": "https://en.wikipedia.org/wiki/University_of_Tokyo",
       "wikiSlug": "University_of_Tokyo",
-      "summary": "Ranked #6 globally in physics; operates Super-Kamiokande, KAGRA gravitational waves, and Kavli IPMU.",
+      "summary": "Asia's premier fundamental physics department—operating Super-Kamiokande, KAGRA gravitational waves, and Kavli IPMU.",
       "nobel": "Takaaki Kajita (2015), Masatoshi Koshiba (2002), Yoichiro Nambu (2008), Syukuro Manabe (2021).",
       "stages": {
         "highschool": "UTokyo Global Science Course outreach & Kavli IPMU public lectures.",
@@ -493,7 +493,7 @@
       "id": "perimeter",
       "name": "Perimeter Institute",
       "city": "Waterloo, Canada",
-      "group": "uni",
+      "group": "lab",
       "branch": "gravity",
       "lat": 43.4651,
       "lng": -80.5276,
@@ -591,7 +591,7 @@
       "id": "asml",
       "name": "ASML (EUV Physics)",
       "city": "Veldhoven, Netherlands",
-      "group": "lab",
+      "group": "company",
       "branch": "quantum",
       "lat": 51.4063,
       "lng": 5.4152,
@@ -630,7 +630,8 @@
           "status": "ongoing",
           "url": "https://arcnl.nl/"
         }
-      ]
+      ],
+      "sector": "Photonics & Semiconductors"
     },
     {
       "id": "iter",
@@ -682,7 +683,7 @@
       "id": "cfs",
       "name": "Commonwealth Fusion (SPARC)",
       "city": "Devens, MA, USA",
-      "group": "lab",
+      "group": "company",
       "branch": "fusion",
       "lat": 42.5372,
       "lng": -71.6156,
@@ -707,7 +708,7 @@
       ],
       "country": "United States",
       "foundedYear": 2018,
-      "entityType": "company",
+      "entityType": "startup",
       "status": "active",
       "projects": [
         {
@@ -720,7 +721,8 @@
           "status": "upcoming",
           "url": "https://cfs.energy/"
         }
-      ]
+      ],
+      "sector": "Fusion Energy"
     },
     {
       "id": "fermilab",
@@ -1168,7 +1170,7 @@
       "id": "iqm",
       "name": "IQM Quantum Computers",
       "city": "Espoo, Finland",
-      "group": "lab",
+      "group": "company",
       "branch": "quantum",
       "lat": 60.1793,
       "lng": 24.8364,
@@ -1194,7 +1196,7 @@
       ],
       "country": "Finland",
       "foundedYear": 2018,
-      "entityType": "company",
+      "entityType": "startup",
       "status": "active",
       "projects": [
         {
@@ -1207,7 +1209,8 @@
           "status": "ongoing",
           "url": "https://www.lrz.de/en"
         }
-      ]
+      ],
+      "sector": "Quantum Computing"
     },
     {
       "id": "triumf",
@@ -1383,7 +1386,7 @@
         {
           "name": "IBS Center for Axion and Precision Physics Research (CAPP)",
           "status": "ongoing",
-          "url": "https://www.ibs.re.kr/eng/"
+          "url": "https://www.ibs.re.kr/eng.do"
         }
       ]
     },
@@ -1656,7 +1659,7 @@
       "id": "miletus",
       "name": "Miletus (Anaximander)",
       "city": "Aydın, Ancient Ionia",
-      "group": "hist",
+      "group": "history",
       "branch": "history",
       "lat": 37.5302,
       "lng": 27.2784,
@@ -1664,7 +1667,7 @@
       "url": "https://en.wikipedia.org/wiki/Miletus",
       "wiki": "https://en.wikipedia.org/wiki/Anaximander",
       "wikiSlug": "Anaximander",
-      "summary": "Where physics began (c. 610 BCE): Anaximander proposed that Earth floats freely in space with no pillars holding it up.",
+      "summary": "Where naturalistic physics began (c. 580 BCE): Anaximander proposed that Earth floats freely in space by symmetry with no pillars holding it up.",
       "nobel": "Birthplace of naturalistic cosmology—explaining the universe through law instead of myth.",
       "stages": {
         "highschool": "Great starting point: read Carlo Rovelli's 'Anaximander' to see how scientific thinking began.",
@@ -1681,7 +1684,7 @@
         "bohr"
       ],
       "country": "Turkey",
-      "foundedYear": -600,
+      "foundedYear": -580,
       "entityType": "history",
       "status": "historic",
       "projects": [
@@ -1696,7 +1699,7 @@
       "id": "bern",
       "name": "Bern Patent Office (Einstein)",
       "city": "Bern, Switzerland",
-      "group": "hist",
+      "group": "history",
       "branch": "history",
       "lat": 46.948,
       "lng": 7.45,
@@ -1737,7 +1740,7 @@
       "id": "gottingen",
       "name": "Göttingen (Quantum Birth)",
       "city": "Göttingen, Germany",
-      "group": "hist",
+      "group": "history",
       "branch": "history",
       "lat": 51.5344,
       "lng": 9.9323,
@@ -1778,8 +1781,8 @@
       "id": "bohr",
       "name": "Niels Bohr Institute",
       "city": "Copenhagen, Denmark",
-      "group": "hist",
-      "branch": "history",
+      "group": "uni",
+      "branch": "quantum",
       "lat": 55.6966,
       "lng": 12.5714,
       "zoom": 16.8,
@@ -1823,7 +1826,7 @@
       "id": "princeton",
       "name": "Princeton & IAS",
       "city": "Princeton, NJ, USA",
-      "group": "hist",
+      "group": "uni",
       "branch": "gravity",
       "lat": 40.3316,
       "lng": -74.6677,
@@ -2828,7 +2831,7 @@
       "url": "https://fast.bao.ac.cn/",
       "wiki": "https://en.wikipedia.org/wiki/Five-hundred-meter_Aperture_Spherical_Telescope",
       "wikiSlug": "Five-hundred-meter_Aperture_Spherical_Telescope",
-      "summary": "The world's largest filled-aperture radio telescope (500 m diameter) cradled in a natural karst depression in Guizhou—having discovered over 900 pulsars and nanohertz gravitational-wave evidence.",
+      "summary": "The world's largest filled-aperture radio telescope (500 m diameter) cradled in a natural karst depression in Guizhou—having discovered over 1,000 pulsars and nanohertz gravitational-wave evidence.",
       "nobel": "World-leading sensitivity for fast radio bursts (FRBs), pulsars, and neutral hydrogen mapping.",
       "stages": {
         "highschool": "NAOC Astronomy Outreach & FAST science museum.",

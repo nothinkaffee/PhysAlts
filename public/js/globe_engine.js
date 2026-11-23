@@ -1167,7 +1167,7 @@ export async function initGlobe({ onSelectNode, onBackgroundClick }) {
     bearing: 0,
     antialias: true,
     clickTolerance: 10,
-    attributionControl: true,
+    attributionControl: { compact: true },
     canvasContextAttributes: { alpha: true, antialias: true },
     maxTileCacheSize: 1536,
     fadeDuration: 0,

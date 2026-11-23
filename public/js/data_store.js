@@ -210,7 +210,9 @@ export function getVisibleGlobeNodes() {
       .map(ev => ({
         id: `tl-${ev.id}`,
         name: `${ev.title} (${ev.year < 0 ? Math.abs(ev.year) + " BCE" : ev.year})`,
-        city: `${ev.location}${ev.country ? ", " + ev.country : ""}`,
+        city: ev.country && !String(ev.location || "").toLowerCase().includes(ev.country.toLowerCase())
+          ? `${ev.location}, ${ev.country}`
+          : (ev.location || ev.country || ""),
         country: ev.country || "",
         lat: ev.lat,
         lng: ev.lng,
@@ -256,10 +258,18 @@ export function getVisibleGlobeNodes() {
 function matchesGroup(h, groupFilter) {
   if (groupFilter === "all") return true;
   if (groupFilter === "company") {
-    return h.group === "company" || h.entityType === "company" || h.entityType === "startup" || h.entityType === "institute";
+    return h.group === "company" || h.entityType === "company" || h.entityType === "startup";
   }
   if (groupFilter === "lab") {
-    return h.group === "lab" || h.entityType === "lab" || h.entityType === "project";
+    return (
+      h.group === "lab" ||
+      h.entityType === "lab" ||
+      h.entityType === "project" ||
+      (h.entityType === "institute" && h.group !== "uni")
+    );
+  }
+  if (groupFilter === "uni") {
+    return h.group === "uni" || h.entityType === "uni";
   }
   return h.group === groupFilter || h.entityType === groupFilter;
 }
@@ -274,7 +284,9 @@ export function getNodeById(id) {
       return {
         id,
         name: ev.title,
-        city: `${ev.location}${ev.country ? ", " + ev.country : ""}`,
+        city: ev.country && !String(ev.location || "").toLowerCase().includes(ev.country.toLowerCase())
+          ? `${ev.location}, ${ev.country}`
+          : (ev.location || ev.country || ""),
         country: ev.country || "",
         lat: ev.lat,
         lng: ev.lng,

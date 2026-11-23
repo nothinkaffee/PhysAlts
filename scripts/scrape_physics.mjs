@@ -56,7 +56,27 @@ const KNOWN_HTTPS_HOSTS = new Set([
 ]);
 
 const NOISE_NAME_RE =
-  /\b(hospital|clinic|medical college|medical university|medical school|medical center|medical centre|medical institute|school of medicine|faculty of medicine|college of medicine|health science|health sciences|health system|health care|healthcare|cancer center|cancer centre|cancer institute|heart institute|eye institute|blood center|blood bank|child health|public health|tropical medicine|biomedical|clinical research|pathology|therapy|dental|dentistry|pharmacy|pharmaceutical|biopharma|nursing|veterinary|pediatric|surgical|surgery|rehabilitation|orthopedic|cardiology|oncology|chiropract|dermatolog|ophthalmolog|psychiatr|obstetric|gynecolog|maternity|sanatorium|hospice|wellness|cosmetic|agricultural|agronomy|forestry|fisheries|law school|school of law|business school|theological|seminary|divinity|conservatory|culinary|hospitality|tourism|consulting|insurance|real estate|law firm|accounting|restaurant|hotel|credit union)\b/i;
+  /\b(hospital|clinic|medical college|medical university|medical school|medical center|medical centre|medical institute|medical sciences|medical welfare|medical research institute|school of medicine|faculty of medicine|college of medicine|genomic medicine|digital medicine|occupational medicine|health science|health sciences|health system|health care|healthcare|health authority|health canada|health university|health protection|e-health|henry ford health|beaumont health|group health|environment and health|occupational safety|occupational health|cancer center|cancer centre|cancer institute|cancer research|cancer care|cancer trials|cancer society|cancer foundation|cancer agency|against cancer|treatment of cancer|german cancer|heart institute|eye institute|blood center|blood bank|child health|public health|tropical medicine|biomedical|clinical research|pathology|therapy|dental|dentistry|pharmacy|pharmaceuticals?|pharmacolog\w*|pharmacopeial|pharma|biopharma|allergopharma|pharmacyclics|nursing|midwifery|veterinar\w*|pediatric|surgical|surgery|rehabilitation|orthopedic\w*|cardiolog\w*|optometr\w*|podiatr\w*|chiropract\w*|dermatolog\w*|ophthalmolog\w*|psychiatr\w*|obstetric\w*|gynecolog\w*|maternity|sanatorium|hospice|wellness|cosmetic|agricultural|d'agriculture|agronomy|forestry|fisheries|law school|school of law|university of law|business school|management school|school of economics|university of finance|economics and business|economics and management|transport economics|theolog\w*|seminary|divinity|bible college|fine arts|academy of arts|music academy|art institute|school of the art|college of art|university of art|conservatory|culinary|hospitality|tourism|fashion|banking institute|university press|broadcasting corporation|consulting|insurance|real estate|law firm|accounting|restaurant|hotel|credit union|ministry of education|ministry of health|ministry of industry|department of commerce|brain, music)\b/i;
+
+const COUNTRY_NAME_ALIASES = {
+  "türkiye": "Turkey",
+  "turkiye": "Turkey",
+  "palestinian territory": "Palestine",
+  "occupied palestinian territory": "Palestine"
+};
+
+function normalizeCountryName(raw) {
+  const cleaned = cleanText(raw);
+  if (!cleaned) return "";
+  return COUNTRY_NAME_ALIASES[cleaned.toLowerCase()] || cleaned;
+}
+
+function groupForEntityType(entityType) {
+  if (entityType === "uni") return "uni";
+  if (entityType === "company" || entityType === "startup") return "company";
+  if (entityType === "history") return "history";
+  return "lab";
+}
 
 const DEEP_TECH_PHYSICS_RE =
   /quantum|fusion|photonic|asml|laser|cryo|superconduct|cern|plasma|semiconductor|optic|magnet|accelerat|space|astro|physics|particle|nuclear|neutrino|synchrotron|detector|spectroscop|vacuum|nanotech|lithograph|collider|tokamak|stellarator|qubit|trapped.?ion|ionq|rigetti|psiquantum|pasqal|xanadu|d-wave|helion|tae technologies|commonwealth fusion|tokamak energy|first light|marvel fusion|zap energy|type one|proxima|general fusion|coherent|thorlabs|hamamatsu|zeiss|bruker|oxford instruments|bluefors|lake shore|keysight|zurich instruments|toptica|menlo systems|nkt photonics|ipg photonics|trumpf|applied materials|lam research|kla corporation|imec|cea-leti|q-ctrl|quantinuum|quera|atom computing|infleqtion|iqm|alice & bob|orca computing|coldquanta|nord quantique|riverlane|phasecraft|zapata|sandboxaq|renaissance fusion|kyoto fusioneering|focused energy|shine technologies|type one energy/i;
@@ -185,7 +205,13 @@ function classifyEntityType(name, types = []) {
 
   if (t.includes("education")) {
     if (
-      /\b(observatory|national laboratory|max planck|perimeter institute|institute for advanced study)\b/.test(n) &&
+      /\b(laboratory|laboratoire|observatory|observatoire|synchrotron|accelerator|collider|telescope)\b/.test(n) &&
+      !/\b(university|universit[eéä]|universidad|universidade|università|college|school of)\b/.test(n)
+    ) {
+      return "lab";
+    }
+    if (
+      /\b(national laboratory|max planck|perimeter institute|institute for advanced study)\b/.test(n) &&
       !/\b(university|universit[eéä]|college)\b/.test(n)
     ) {
       return "institute";
@@ -193,7 +219,7 @@ function classifyEntityType(name, types = []) {
     return "uni";
   }
 
-  if (/\b(lab|laboratory|observatory|synchrotron|accelerator|collider|cern|fermi|slac|desy|kek|triumf|telescope)\b/.test(n)) {
+  if (/\b(lab|laboratory|laboratoire|observatory|observatoire|synchrotron|accelerator|collider|cern|fermi|slac|desy|kek|triumf|telescope)\b/.test(n)) {
     return "lab";
   }
   if (/\b(university|universit[eéä]|universidad|universidade|università|college|polytechnic|hochschule)\b/.test(n)) {
@@ -227,8 +253,8 @@ function normalizeOpenAlex(inst, hint = "") {
   if (isNoiseOrg(name, [type], `${topicNames} ${hint}`)) return null;
 
   const entityType = classifyEntityType(name, [type]);
-  const group = entityType === "uni" ? "uni" : "lab";
-  const country = cleanText(g.country || inst.country_code || "");
+  const group = groupForEntityType(entityType);
+  const country = normalizeCountryName(g.country || inst.country_code || "");
   const cityLabel = cleanText(g.city || "Research Hub");
   const works = Number(inst.works_count || 0);
   const cites = Number(inst.cited_by_count || 0);
@@ -284,8 +310,8 @@ function normalizeRor(org, hint = "") {
   if (isNoiseOrg(name, types, hint)) return null;
 
   const entityType = classifyEntityType(name, types);
-  const group = entityType === "uni" ? "uni" : "lab";
-  const country = cleanText(loc.country_name || "");
+  const group = groupForEntityType(entityType);
+  const country = normalizeCountryName(loc.country_name || "");
   const countryCode = cleanText(loc.country_code || "").toUpperCase() || null;
   const cityLabel = cleanText(loc.name || (entityType === "uni" ? "Campus" : "Lab"));
   const foundedYear = parseFoundedYear(org.established);
@@ -342,23 +368,24 @@ function normalizeExistingHub(hub) {
 
   if (isNoiseOrg(name, inferredTypes, hub.summary || "")) return null;
 
-  const entityType = ["uni", "lab", "institute", "company"].includes(hub.entityType)
+  const entityType = ["uni", "lab", "institute", "company", "startup"].includes(hub.entityType)
     ? hub.entityType
     : classifyEntityType(name, inferredTypes);
   const source = hub.verifiedSource || hub.sourceApi || "OpenAlex";
   const url = normalizeUrl(hub.url);
   if (!url) return null;
+  const country = normalizeCountryName(hub.country || "");
 
   return {
     id: String(hub.id || `hub-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 32)}`),
     name,
-    city: cleanText(hub.city || hub.country || "Research Hub"),
-    country: cleanText(hub.country || ""),
+    city: cleanText(hub.city || country || "Research Hub").replace(/Türkiye/g, "Turkey").replace(/Palestinian Territory/g, "Palestine"),
+    country,
     countryCode: hub.countryCode ? cleanText(hub.countryCode).toUpperCase() : null,
     lat: Number(hub.lat.toFixed(5)),
     lng: Number(hub.lng.toFixed(5)),
     zoom: Number(hub.zoom) || 15.6,
-    group: entityType === "uni" ? "uni" : "lab",
+    group: groupForEntityType(entityType),
     entityType,
     branch: hub.branch || classifyBranch(`${name} ${hub.summary || ""}`),
     foundedYear: parseFoundedYear(hub.foundedYear),
@@ -367,7 +394,7 @@ function normalizeExistingHub(hub) {
     sourceApi: source,
     verifiedSource: source,
     url,
-    summary: cleanText(hub.summary || `Global physics ${entityType} in ${hub.country || "worldwide"}.`)
+    summary: cleanText(hub.summary || `Global physics ${entityType} in ${country || "worldwide"}.`)
   };
 }
 

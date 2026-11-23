@@ -5,7 +5,7 @@
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v5";
+const APP_CACHE = "world-physics-app-v7";
 const TILE_CACHE = "world-physics-tiles-v1";
 
 const PRECACHE_APP = [
@@ -31,12 +31,6 @@ const PRECACHE_APP = [
 ];
 
 function isGlobeTileRequest(url) {
-  if (
-    (url.hostname === "services.arcgisonline.com" || url.hostname === "server.arcgisonline.com") &&
-    /\/World_Imagery\/MapServer\/tile\//i.test(url.pathname)
-  ) {
-    return true;
-  }
   if (url.origin === self.location.origin && url.pathname.startsWith("/tiles/bluemarble/")) {
     return true;
   }
@@ -75,11 +69,15 @@ self.addEventListener("fetch", (event) => {
       caches.open(TILE_CACHE).then(async (cache) => {
         const cached = (await cache.match(req.url)) || (await cache.match(req));
         if (cached) return cached;
-        const res = await fetch(req);
-        if (res && (res.ok || res.type === "opaque")) {
-          cache.put(req.url, res.clone()).catch(() => {});
+        try {
+          const res = await fetch(req);
+          if (res && (res.ok || res.type === "opaque")) {
+            cache.put(req.url, res.clone()).catch(() => {});
+          }
+          return res;
+        } catch {
+          return Response.error();
         }
-        return res;
       })
     );
     return;
@@ -100,7 +98,7 @@ self.addEventListener("fetch", (event) => {
           if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
           return res;
         } catch {
-          return cache.match(req);
+          return (await cache.match(req)) || Response.error();
         }
       })
     );

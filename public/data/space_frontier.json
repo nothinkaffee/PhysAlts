@@ -72,7 +72,13 @@
       "branch": "particle",
       "summary": "A 7.5-ton particle physics detector mounted on the International Space Station truss alongside the Cold Atom Lab, measuring over 200 billion cosmic rays above Earth's atmosphere.",
       "physicsDiscoveries": "Measured precision positron excess, cosmic-ray antiproton spectra, and heavy cosmic-ray isotopic ratios probing dark matter annihilation and pulsar acceleration.",
-      "instruments": ["Transition Radiation Detector", "Silicon Tracker", "Permanent Magnet (0.15 T)", "RICH Cherenkov Counter", "Electromagnetic Calorimeter"],
+      "instruments": [
+        "Transition Radiation Detector",
+        "Silicon Tracker",
+        "Permanent Magnet (0.15 T)",
+        "RICH Cherenkov Counter",
+        "Electromagnetic Calorimeter"
+      ],
       "officialUrl": "https://ams02.space/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Alpha_Magnetic_Spectrometer"
     },
@@ -91,7 +97,12 @@
       "branch": "astro",
       "summary": "A 2.4-meter optical, ultraviolet, and near-infrared space telescope operating above atmospheric distortion for over three decades.",
       "physicsDiscoveries": "Pinned down the Hubble constant and cosmic age (~13.8 Gyr), imaged the Hubble Deep Fields, confirmed supermassive black holes in galaxy cores, and measured exoplanet atmospheric transmission.",
-      "instruments": ["Wide Field Camera 3 (WFC3)", "Advanced Camera for Surveys (ACS)", "Cosmic Origins Spectrograph (COS)", "Space Telescope Imaging Spectrograph (STIS)"],
+      "instruments": [
+        "Wide Field Camera 3 (WFC3)",
+        "Advanced Camera for Surveys (ACS)",
+        "Cosmic Origins Spectrograph (COS)",
+        "Space Telescope Imaging Spectrograph (STIS)"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/hubble/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Hubble_Space_Telescope"
     },
@@ -110,7 +121,10 @@
       "branch": "astro",
       "summary": "All-sky high-energy gamma-ray observatory surveying photons from 8 keV to over 300 GeV from pulsars, blazars, and cosmic explosions.",
       "physicsDiscoveries": "Discovered the giant 50,000-light-year Fermi Bubbles above the Milky Way core, co-detected the GW170817 binary neutron star kilonova gamma-ray burst, and set stringent Lorentz-invariance limits.",
-      "instruments": ["Large Area Telescope (LAT)", "Gamma-ray Burst Monitor (GBM)"],
+      "instruments": [
+        "Large Area Telescope (LAT)",
+        "Gamma-ray Burst Monitor (GBM)"
+      ],
       "officialUrl": "https://fermi.gsfc.nasa.gov/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Fermi_Gamma-ray_Space_Telescope"
     },
@@ -121,15 +135,18 @@
       "country": "United States / Italy",
       "zoneId": "leo",
       "body": "Earth (Equatorial LEO ~600 km)",
-      "distanceAU": 0.0000040,
-      "lightTimeSec": 0.0020,
+      "distanceAU": 0.000004,
+      "lightTimeSec": 0.002,
       "lightTimeLabel": "0.0020 light-sec (600 km)",
       "launchYear": 2021,
       "status": "active",
       "branch": "astro",
       "summary": "Three grazing-incidence X-ray telescopes measuring the linear polarization of X-rays emitted by extreme magnetic fields and spacetime around neutron stars and black holes.",
       "physicsDiscoveries": "Mapped magnetic field geometry in supernova remnants, magnetars, and blazar jets, testing quantum electrodynamics vacuum birefringence in strong magnetic fields.",
-      "instruments": ["Three Gas Pixel Detector Units (GPD)", "Mirror Module Assemblies"],
+      "instruments": [
+        "Three Gas Pixel Detector Units (GPD)",
+        "Mirror Module Assemblies"
+      ],
       "officialUrl": "https://ixpe.msfc.nasa.gov/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Imaging_X-ray_Polarimetry_Explorer"
     },
@@ -140,15 +157,19 @@
       "country": "Europe",
       "zoneId": "leo",
       "body": "Earth (High Elliptical Orbit)",
-      "distanceAU": 0.00040,
-      "lightTimeSec": 0.20,
+      "distanceAU": 0.0004,
+      "lightTimeSec": 0.2,
       "lightTimeLabel": "0.20 light-sec (HEO)",
       "launchYear": 1999,
       "status": "active",
       "branch": "astro",
       "summary": "ESA's high-throughput X-ray spectroscopy flagship with 174 nested gold-coated nickel mirror shells studying hot plasma in galaxy clusters and active galactic nuclei.",
       "physicsDiscoveries": "Measured relativistic iron K-alpha line broadening near spinning black holes and mapped hot baryonic gas across the cosmic web.",
-      "instruments": ["European Photon Imaging Camera (EPIC)", "Reflection Grating Spectrometer (RGS)", "Optical Monitor (OM)"],
+      "instruments": [
+        "European Photon Imaging Camera (EPIC)",
+        "Reflection Grating Spectrometer (RGS)",
+        "Optical Monitor (OM)"
+      ],
       "officialUrl": "https://www.cosmos.esa.int/web/xmm-newton",
       "wikiUrl": "https://en.wikipedia.org/wiki/XMM-Newton"
     },
@@ -159,7 +180,7 @@
       "country": "United States",
       "zoneId": "leo",
       "body": "Earth (High Elliptical Orbit)",
-      "distanceAU": 0.00050,
+      "distanceAU": 0.0005,
       "lightTimeSec": 0.25,
       "lightTimeLabel": "0.25 light-sec (HEO)",
       "launchYear": 1999,
@@ -167,7 +188,12 @@
       "branch": "astro",
       "summary": "NASA's sub-arcsecond X-ray flagship flying a 64-hour elliptical orbit up to a third of the way to the Moon to avoid Earth's radiation belts.",
       "physicsDiscoveries": "Provided decisive empirical evidence for dark matter in the Bullet Cluster collision, imaged neutron star cooling superfluids, and traced black-hole feedback in galaxy clusters.",
-      "instruments": ["High Resolution Mirror Assembly (HRMA)", "ACIS Imaging Spectrometer", "High Resolution Camera (HRC)", "HETG / LETG Gratings"],
+      "instruments": [
+        "High Resolution Mirror Assembly (HRMA)",
+        "ACIS Imaging Spectrometer",
+        "High Resolution Camera (HRC)",
+        "HETG / LETG Gratings"
+      ],
       "officialUrl": "https://chandra.harvard.edu/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Chandra_X-ray_Observatory"
     },
@@ -186,7 +212,11 @@
       "branch": "gravity",
       "summary": "Passive corner-cube laser retroreflectors deployed by Apollo 11, 14, and 15 astronauts (plus Soviet Lunokhods) alongside historic ALSEP lunar seismometers and magnetometers.",
       "physicsDiscoveries": "Measures the Earth–Moon distance to millimeter precision, verifying Einstein's Strong Equivalence Principle, constraining any drift in Newton's G, and revealing the Moon's 3.8 cm/yr tidal recession.",
-      "instruments": ["Laser Ranging Retroreflector Arrays (LRRR)", "Passive Seismic Experiment (ALSEP)", "Lunar Surface Magnetometer"],
+      "instruments": [
+        "Laser Ranging Retroreflector Arrays (LRRR)",
+        "Passive Seismic Experiment (ALSEP)",
+        "Lunar Surface Magnetometer"
+      ],
       "officialUrl": "https://www.nasa.gov/the-apollo-program/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Lunar_Laser_Ranging_experiments"
     },
@@ -205,7 +235,13 @@
       "branch": "applied",
       "summary": "High-resolution lunar mapping and radiation-physics orbiter producing global topographic, thermal, and neutron maps of the Moon.",
       "physicsDiscoveries": "Measured the coldest known natural surface temperatures in the solar system (<30 K) inside permanently shadowed south-polar craters and mapped lunar water-ice signatures and cosmic-ray albedo.",
-      "instruments": ["Lunar Orbiter Laser Altimeter (LOLA)", "Diviner Lunar Radiometer", "CRaTER Cosmic Ray Telescope", "LEND Neutron Detector", "LROC Cameras"],
+      "instruments": [
+        "Lunar Orbiter Laser Altimeter (LOLA)",
+        "Diviner Lunar Radiometer",
+        "CRaTER Cosmic Ray Telescope",
+        "LEND Neutron Detector",
+        "LROC Cameras"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/lro/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Lunar_Reconnaissance_Orbiter"
     },
@@ -224,7 +260,13 @@
       "branch": "applied",
       "summary": "First mission to achieve a soft landing near the lunar south pole, performing in-situ thermophysical, plasma, seismic, and laser-breakdown elemental physics experiments.",
       "physicsDiscoveries": "Measured the first steep subsurface thermal gradient in southern high-latitude regolith, detected sparse lunar near-surface ionosphere plasma, and confirmed sulfur via LIBS.",
-      "instruments": ["ChaSTE Thermal Probe", "RAMBHA-LP Langmuir Plasma Probe", "ILSA Lunar Seismometer", "LIBS & APXS Spectrometers", "NASA Laser Retroreflector"],
+      "instruments": [
+        "ChaSTE Thermal Probe",
+        "RAMBHA-LP Langmuir Plasma Probe",
+        "ILSA Lunar Seismometer",
+        "LIBS & APXS Spectrometers",
+        "NASA Laser Retroreflector"
+      ],
       "officialUrl": "https://www.isro.gov.in/Chandrayaan3.html",
       "wikiUrl": "https://en.wikipedia.org/wiki/Chandrayaan-3"
     },
@@ -243,7 +285,12 @@
       "branch": "astro",
       "summary": "First soft landing on the radio-quiet far side of the Moon, relayed via the Queqiao Earth–Moon L2 satellite to conduct low-frequency radio astronomy and deep regolith radar sounding.",
       "physicsDiscoveries": "Performed ultra-long-wavelength radio observations shielded from terrestrial RFI, measured lunar surface neutral-atom radiation doses, and profiled 40 m of subsurface ejecta stratigraphy.",
-      "instruments": ["Low Frequency Spectrometer (LFS)", "Lunar Penetrating Radar (LPR)", "Lunar Lander Neutrons and Dosimetry (LND)", "Advanced Small Analyzer for Neutrals (ASAN)"],
+      "instruments": [
+        "Low Frequency Spectrometer (LFS)",
+        "Lunar Penetrating Radar (LPR)",
+        "Lunar Lander Neutrons and Dosimetry (LND)",
+        "Advanced Small Analyzer for Neutrals (ASAN)"
+      ],
       "officialUrl": "https://www.cnsa.gov.cn/english/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Chang%27e_4"
     },
@@ -262,7 +309,12 @@
       "branch": "applied",
       "summary": "Crewed lunar return and humanity's first deep-space orbital station in cislunar space, enabling next-generation lunar seismology, solar-wind radiation monitoring, and far-side cosmology precursors.",
       "physicsDiscoveries": "Will measure deep-space solar energetic particles outside Earth's magnetosphere (HERMES & ERSA) and deploy updated single-prism retroreflectors for sub-millimeter gravity tests.",
-      "instruments": ["HERMES Heliophysics Suite", "ERSA Radiation Sensors Array", "Next-Gen Lunar Retroreflectors", "Lunar Environment Monitoring Station (LEMS)"],
+      "instruments": [
+        "HERMES Heliophysics Suite",
+        "ERSA Radiation Sensors Array",
+        "Next-Gen Lunar Retroreflectors",
+        "Lunar Environment Monitoring Station (LEMS)"
+      ],
       "officialUrl": "https://www.nasa.gov/mission/gateway/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Lunar_Gateway"
     },
@@ -273,15 +325,20 @@
       "country": "Europe / United States",
       "zoneId": "lagrange",
       "body": "Sun–Earth L1 Halo Orbit",
-      "distanceAU": 0.010,
-      "lightTimeSec": 5.0,
+      "distanceAU": 0.01,
+      "lightTimeSec": 5,
       "lightTimeLabel": "5.0 light-sec (1.5M km, L1)",
       "launchYear": 1995,
       "status": "active",
       "branch": "fusion",
       "summary": "Positioned 1.5 million km sunward at Lagrange L1 for an uninterrupted view of the Sun's interior acoustic waves, corona, and solar wind.",
       "physicsDiscoveries": "Mapped the Sun's internal differential rotation and tachocline via helioseismology, monitored coronal mass ejections across nearly three solar cycles, and discovered over 5,000 sungrazing comets.",
-      "instruments": ["LASCO Coronagraphs", "EIT Extreme UV Imaging Telescope", "MDI / GOLF Helioseismology", "CELIAS Solar Wind Analyzer"],
+      "instruments": [
+        "LASCO Coronagraphs",
+        "EIT Extreme UV Imaging Telescope",
+        "MDI / GOLF Helioseismology",
+        "CELIAS Solar Wind Analyzer"
+      ],
       "officialUrl": "https://soho.nascom.nasa.gov/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Solar_and_Heliospheric_Observatory"
     },
@@ -292,15 +349,18 @@
       "country": "Europe",
       "zoneId": "lagrange",
       "body": "Sun–Earth L2 (Retired to Heliocentric)",
-      "distanceAU": 0.010,
-      "lightTimeSec": 5.0,
+      "distanceAU": 0.01,
+      "lightTimeSec": 5,
       "lightTimeLabel": "5.0 light-sec (1.5M km, L2)",
       "launchYear": 2009,
       "status": "historic",
       "branch": "astro",
       "summary": "Cryogenic microwave space telescope cooled to 0.1 K that mapped the entire Cosmic Microwave Background sky in nine frequency bands from 30 to 857 GHz.",
       "physicsDiscoveries": "Delivered the benchmark measurement of cosmic parameters: 68.5% dark energy, 26.5% dark matter, 4.9% ordinary matter, flat geometry, and tight constraints on primordial inflation.",
-      "instruments": ["High Frequency Instrument (HFI 0.1 K Bolometers)", "Low Frequency Instrument (LFI HEMT Receivers)"],
+      "instruments": [
+        "High Frequency Instrument (HFI 0.1 K Bolometers)",
+        "Low Frequency Instrument (LFI HEMT Receivers)"
+      ],
       "officialUrl": "https://www.cosmos.esa.int/web/planck",
       "wikiUrl": "https://en.wikipedia.org/wiki/Planck_(spacecraft)"
     },
@@ -310,16 +370,21 @@
       "agency": "ESA",
       "country": "Europe",
       "zoneId": "lagrange",
-      "body": "Sun–Earth L2",
-      "distanceAU": 0.010,
-      "lightTimeSec": 5.0,
+      "body": "Sun–Earth L2 (Retired to Heliocentric Orbit, 2025)",
+      "distanceAU": 0.01,
+      "lightTimeSec": 5,
       "lightTimeLabel": "5.0 light-sec (1.5M km, L2)",
       "launchYear": 2013,
       "status": "historic",
       "branch": "astro",
-      "summary": "Dual-telescope microarcsecond astrometry mission that charted the 3D positions, parallaxes, and velocities of nearly two billion stars in the Milky Way (science operations concluded 2025; DR4/DR5 releases ongoing).",
+      "summary": "Dual-telescope microarcsecond astrometry mission that charted the 3D positions, parallaxes, and velocities of nearly two billion stars in the Milky Way (science observations ended Jan 2025; spacecraft retired Mar 2025; DR4/DR5 releases ongoing).",
       "physicsDiscoveries": "Uncovered the ancient Gaia-Enceladus galactic merger, discovered dormant stellar-mass black holes (Gaia BH1–BH3), and tested general-relativistic light deflection across the whole sky.",
-      "instruments": ["1-Gigapixel Focal Plane Array", "Astrometric Instrument (ASTRO)", "Blue/Red Photometers (BP/RP)", "Radial Velocity Spectrometer (RVS)"],
+      "instruments": [
+        "1-Gigapixel Focal Plane Array",
+        "Astrometric Instrument (ASTRO)",
+        "Blue/Red Photometers (BP/RP)",
+        "Radial Velocity Spectrometer (RVS)"
+      ],
       "officialUrl": "https://www.cosmos.esa.int/web/gaia",
       "wikiUrl": "https://en.wikipedia.org/wiki/Gaia_(spacecraft)"
     },
@@ -330,15 +395,20 @@
       "country": "United States / Europe / Canada",
       "zoneId": "lagrange",
       "body": "Sun–Earth L2 Halo Orbit",
-      "distanceAU": 0.010,
-      "lightTimeSec": 5.0,
+      "distanceAU": 0.01,
+      "lightTimeSec": 5,
       "lightTimeLabel": "5.0 light-sec (1.5M km, L2)",
       "launchYear": 2021,
       "status": "active",
       "branch": "astro",
       "summary": "Humanity's largest space telescope—a 6.5 m gold-coated segmented infrared observatory shielded behind a five-layer tennis-court-sized sunshield at L2.",
       "physicsDiscoveries": "Revealed unexpectedly luminous galaxies at redshift z > 14 (<300 Myr after the Big Bang), detected CO₂ and CH₄ in exoplanet atmospheres, and sharpened measurements of the Hubble tension.",
-      "instruments": ["NIRCam", "NIRSpec Microshutter Spectrograph", "MIRI Mid-Infrared (6.7 K Cryocooler)", "NIRISS / FGS"],
+      "instruments": [
+        "NIRCam",
+        "NIRSpec Microshutter Spectrograph",
+        "MIRI Mid-Infrared (6.7 K Cryocooler)",
+        "NIRISS / FGS"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/webb/",
       "wikiUrl": "https://en.wikipedia.org/wiki/James_Webb_Space_Telescope"
     },
@@ -349,15 +419,18 @@
       "country": "Europe",
       "zoneId": "lagrange",
       "body": "Sun–Earth L2",
-      "distanceAU": 0.010,
-      "lightTimeSec": 5.0,
+      "distanceAU": 0.01,
+      "lightTimeSec": 5,
       "lightTimeLabel": "5.0 light-sec (1.5M km, L2)",
       "launchYear": 2023,
       "status": "active",
       "branch": "gravity",
       "summary": "Wide-field 1.2 m optical and near-infrared space telescope mapping weak gravitational lensing and baryon acoustic oscillations across one-third of the extragalactic sky.",
       "physicsDiscoveries": "Constructing a 3D cosmic map of billions of galaxies out to 10 billion light-years to test whether dark energy is a cosmological constant or modified gravity.",
-      "instruments": ["VIS 600-Megapixel Visible Imager", "NISP Near-Infrared Spectrometer and Photometer"],
+      "instruments": [
+        "VIS 600-Megapixel Visible Imager",
+        "NISP Near-Infrared Spectrometer and Photometer"
+      ],
       "officialUrl": "https://sci.esa.int/web/euclid",
       "wikiUrl": "https://en.wikipedia.org/wiki/Euclid_(spacecraft)"
     },
@@ -368,15 +441,18 @@
       "country": "United States",
       "zoneId": "lagrange",
       "body": "Sun–Earth L2",
-      "distanceAU": 0.010,
-      "lightTimeSec": 5.0,
+      "distanceAU": 0.01,
+      "lightTimeSec": 5,
       "lightTimeLabel": "5.0 light-sec (1.5M km, L2)",
-      "launchYear": 2027,
-      "status": "upcoming",
+      "launchYear": 2026,
+      "status": "active",
       "branch": "astro",
-      "summary": "A 2.4 m wide-field infrared survey observatory with 100× Hubble's field of view plus an active coronagraph for direct exoplanet imaging.",
+      "summary": "A 2.4 m wide-field infrared survey observatory launched on August 30, 2026 to Sun–Earth L2 with 100× Hubble's field of view plus an active coronagraph for direct exoplanet imaging.",
       "physicsDiscoveries": "Will measure dark energy via weak lensing and Type Ia supernovae while discovering thousands of cold and rogue exoplanets through gravitational microlensing.",
-      "instruments": ["Wide Field Instrument (WFI 300-MP)", "Coronagraph Instrument (CGI)"],
+      "instruments": [
+        "Wide Field Instrument (WFI 300-MP)",
+        "Coronagraph Instrument (CGI)"
+      ],
       "officialUrl": "https://roman.gsfc.nasa.gov/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Nancy_Grace_Roman_Space_Telescope"
     },
@@ -395,7 +471,11 @@
       "branch": "gravity",
       "summary": "Three drag-free spacecraft housing free-falling gold-platinum test masses in a 2.5-million-km laser interferometer triangle following Earth's orbit around the Sun.",
       "physicsDiscoveries": "Will detect millihertz gravitational waves from supermassive black hole coalescences, extreme mass-ratio inspirals, Galactic white dwarf binaries, and possible cosmological phase transitions.",
-      "instruments": ["Gravitational Reference Sensors (GRS)", "Picometer Laser Metrology System", "30 cm Optical Telescopes"],
+      "instruments": [
+        "Gravitational Reference Sensors (GRS)",
+        "Picometer Laser Metrology System",
+        "30 cm Optical Telescopes"
+      ],
       "officialUrl": "https://www.lisamission.org/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Laser_Interferometer_Space_Antenna"
     },
@@ -406,7 +486,7 @@
       "country": "Europe / United States",
       "zoneId": "inner",
       "body": "Inner Heliosphere (0.28 AU Perihelion)",
-      "distanceAU": 0.60,
+      "distanceAU": 0.6,
       "lightTimeSec": 300,
       "lightTimeLabel": "5.0 light-min (Inner Heliosphere)",
       "launchYear": 2020,
@@ -414,7 +494,13 @@
       "branch": "fusion",
       "summary": "Inclined heliophysics explorer using Venus gravity assists to climb out of the ecliptic plane and capture the first direct images of the Sun's magnetic poles.",
       "physicsDiscoveries": "Discovered miniature 'campfire' nanoflares heating the corona and directly linked in-situ solar-wind plasma streams back to their magnetic footpoints on the photosphere.",
-      "instruments": ["EUI Extreme UV Imager", "PHI Polarimetric & Helioseismic Imager", "MAG Magnetometer", "SWA Solar Wind Analyser", "Metis Coronagraph"],
+      "instruments": [
+        "EUI Extreme UV Imager",
+        "PHI Polarimetric & Helioseismic Imager",
+        "MAG Magnetometer",
+        "SWA Solar Wind Analyser",
+        "Metis Coronagraph"
+      ],
       "officialUrl": "https://sci.esa.int/web/solar-orbiter",
       "wikiUrl": "https://en.wikipedia.org/wiki/Solar_Orbiter"
     },
@@ -431,9 +517,14 @@
       "launchYear": 2018,
       "status": "active",
       "branch": "gravity",
-      "summary": "Dual-orbiter European-Japanese mission (MPO & Mio) arriving at Mercury to map its huge iron core, active dynamo magnetosphere, and perform precision tests of general relativity.",
+      "summary": "Dual-orbiter European-Japanese mission (MPO & Mio) entering Mercury orbit in November 2026 to map its huge iron core, active dynamo magnetosphere, and perform precision tests of general relativity.",
       "physicsDiscoveries": "Will measure Mercury's relativistic perihelion advance and Shapiro time delay to test the PPN gravity parameters γ and β while probing solar-wind magnetosphere coupling.",
-      "instruments": ["MORE Radio Science Relativity Experiment", "ISA Spring Accelerometer", "Mio Plasma & Magnetometer Suite", "BELA Laser Altimeter"],
+      "instruments": [
+        "MORE Radio Science Relativity Experiment",
+        "ISA Spring Accelerometer",
+        "Mio Plasma & Magnetometer Suite",
+        "BELA Laser Altimeter"
+      ],
       "officialUrl": "https://sci.esa.int/web/bepicolombo",
       "wikiUrl": "https://en.wikipedia.org/wiki/BepiColombo"
     },
@@ -444,7 +535,7 @@
       "country": "United States",
       "zoneId": "inner",
       "body": "Solar Corona (0.046 AU from Sun; ~1.0 AU from Earth)",
-      "distanceAU": 1.00,
+      "distanceAU": 1,
       "lightTimeSec": 499,
       "lightTimeLabel": "8.3 light-min (Solar Corona)",
       "launchYear": 2018,
@@ -452,7 +543,12 @@
       "branch": "fusion",
       "summary": "The fastest human-made object in history (~692,000 km/h), plunging through the Sun's outer atmosphere within 6.1 million km of the solar surface behind a carbon-composite heat shield.",
       "physicsDiscoveries": "Became the first spacecraft to cross the Alfvén critical surface into the magnetically dominated corona, uncovering magnetic 'switchbacks' and interchange reconnection powering the fast solar wind.",
-      "instruments": ["FIELDS Electric & Magnetic Field Suite", "SWEAP Solar Wind Electrons Alphas & Protons", "WISPR Wide-Field Imager", "IS☉IS Energetic Particle Detectors"],
+      "instruments": [
+        "FIELDS Electric & Magnetic Field Suite",
+        "SWEAP Solar Wind Electrons Alphas & Protons",
+        "WISPR Wide-Field Imager",
+        "IS☉IS Energetic Particle Detectors"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/parker-solar-probe/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Parker_Solar_Probe"
     },
@@ -471,7 +567,13 @@
       "branch": "applied",
       "summary": "Returned 5.4 grams of pristine carbonaceous asteroid regolith from Ryugu to Earth in 2020 after firing an explosive copper impactor to excavate subsurface material; now cruising toward asteroid 1998 KY26.",
       "physicsDiscoveries": "Revealed low-cohesion rubble-pile impact mechanics in microgravity and delivered amino-acid-rich primitive solar-nebula samples unaltered by terrestrial atmosphere.",
-      "instruments": ["Small Carry-on Impactor (SCI)", "LIDAR", "NIRS3 Near-Infrared Spectrometer", "TIR Thermal Imager", "MASCOT & MINERVA-II Landers"],
+      "instruments": [
+        "Small Carry-on Impactor (SCI)",
+        "LIDAR",
+        "NIRS3 Near-Infrared Spectrometer",
+        "TIR Thermal Imager",
+        "MASCOT & MINERVA-II Landers"
+      ],
       "officialUrl": "https://www.hayabusa2.jaxa.jp/en/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Hayabusa2"
     },
@@ -482,7 +584,7 @@
       "country": "United States",
       "zoneId": "mars",
       "body": "Asteroid 101955 Bennu → 99942 Apophis",
-      "distanceAU": 1.30,
+      "distanceAU": 1.3,
       "lightTimeSec": 649,
       "lightTimeLabel": "10.8 light-min (Inner Asteroid Orbits)",
       "launchYear": 2016,
@@ -490,7 +592,13 @@
       "branch": "applied",
       "summary": "Collected 121.6 grams of asteroid Bennu and delivered the sample capsule to Utah in 2023, continuing as OSIRIS-APEX to study tidal-torque physics during Apophis's 2029 close Earth flyby.",
       "physicsDiscoveries": "Directly measured the Yarkovsky thermal recoil force altering Bennu's orbit, observed spontaneous particle-ejection plumes, and found water-bearing clays and prebiotic organics.",
-      "instruments": ["TAGSAM Sampling Mechanism", "OLA Laser Altimeter", "OTES Thermal Emission Spectrometer", "OVIRS Visible/IR Spectrometer", "REXIS X-Ray Imaging Spectrometer"],
+      "instruments": [
+        "TAGSAM Sampling Mechanism",
+        "OLA Laser Altimeter",
+        "OTES Thermal Emission Spectrometer",
+        "OVIRS Visible/IR Spectrometer",
+        "REXIS X-Ray Imaging Spectrometer"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/osiris-rex/",
       "wikiUrl": "https://en.wikipedia.org/wiki/OSIRIS-REx"
     },
@@ -509,7 +617,13 @@
       "branch": "applied",
       "summary": "Nuclear-powered rover ascending Mount Sharp inside Gale Crater with an onboard analytical chemistry, radiation-physics, and laser-spectroscopy laboratory.",
       "physicsDiscoveries": "Quantified interplanetary and Martian surface ionizing radiation doses (RAD), detected seasonal methane variations, and documented ancient lacustrine habitability.",
-      "instruments": ["ChemCam Laser-Induced Breakdown Spectrometer", "RAD Radiation Assessment Detector", "SAM Mass Spectrometer", "CheMin X-Ray Diffraction", "DAN Dynamic Albedo of Neutrons"],
+      "instruments": [
+        "ChemCam Laser-Induced Breakdown Spectrometer",
+        "RAD Radiation Assessment Detector",
+        "SAM Mass Spectrometer",
+        "CheMin X-Ray Diffraction",
+        "DAN Dynamic Albedo of Neutrons"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/msl-curiosity/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Curiosity_(rover)"
     },
@@ -528,7 +642,13 @@
       "branch": "applied",
       "summary": "Core-sampling astrobiology and atmospheric-physics rover paired with the Ingenuity rotorcraft, which proved powered aerodynamic flight in Mars's 1% CO₂ atmosphere across 72 flights.",
       "physicsDiscoveries": "Demonstrated solid-oxide electrolysis producing O₂ from Martian CO₂ (MOXIE), recorded the dual speed of sound in CO₂ with microphones, and mapped subsurface strata via radar.",
-      "instruments": ["SuperCam Raman & LIBS", "SHERLOC Deep-UV Raman", "PIXL X-Ray Fluorescence", "RIMFAX Ground-Penetrating Radar", "MOXIE Oxygen Generator"],
+      "instruments": [
+        "SuperCam Raman & LIBS",
+        "SHERLOC Deep-UV Raman",
+        "PIXL X-Ray Fluorescence",
+        "RIMFAX Ground-Penetrating Radar",
+        "MOXIE Oxygen Generator"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/mars-2020-perseverance/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Perseverance_(rover)"
     },
@@ -547,7 +667,12 @@
       "branch": "applied",
       "summary": "Dedicated geophysical observatory that placed an ultra-sensitive broadband seismometer directly on the Martian surface to listen to the planet's deep interior (2018–2022).",
       "physicsDiscoveries": "Detected over 1,300 marsquakes and meteoroid impacts, directly measuring the thickness of the Martian crust (~24–72 km), mantle structure, and a liquid iron-alloy core (~1,650–1,830 km radius).",
-      "instruments": ["SEIS Broadband Seismometer", "RISE Rotation & Interior Structure Radio Science", "HP³ Heat Flow Probe", "TWINS Atmospheric Sensors"],
+      "instruments": [
+        "SEIS Broadband Seismometer",
+        "RISE Rotation & Interior Structure Radio Science",
+        "HP³ Heat Flow Probe",
+        "TWINS Atmospheric Sensors"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/insight/",
       "wikiUrl": "https://en.wikipedia.org/wiki/InSight"
     },
@@ -566,7 +691,11 @@
       "branch": "applied",
       "summary": "Humanity's first full-scale planetary defense kinetic-impactor experiment, colliding autonomously with asteroid moonlet Dimorphos at 6.1 km/s in September 2022 (impact at 0.073 AU from Earth).",
       "physicsDiscoveries": "Shortened Dimorphos's 11h 55m orbit by 33 minutes—demonstrating a momentum enhancement factor β ≈ 3.6 driven by high-velocity ejecta recoil.",
-      "instruments": ["DRACO Optical Navigation Imager", "SMART Nav Autonomous Guidance", "LICIACube (ASI Flyby CubeSat)"],
+      "instruments": [
+        "DRACO Optical Navigation Imager",
+        "SMART Nav Autonomous Guidance",
+        "LICIACube (ASI Flyby CubeSat)"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/dart/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Double_Asteroid_Redirection_Test"
     },
@@ -585,7 +714,12 @@
       "branch": "applied",
       "summary": "Solar-electric Hall-thruster spacecraft traveling to the metal-rich asteroid 16 Psyche (arrival 2029) while demonstrating Deep Space Optical Communications (DSOC) laser links across interplanetary distances.",
       "physicsDiscoveries": "Achieved record-breaking deep-space laser telemetry at hundreds of millions of km and will probe whether 16 Psyche is the exposed nickel-iron core of a differentiated planetesimal.",
-      "instruments": ["Magnetometer", "Gamma-Ray and Neutron Spectrometer (GRNS)", "Multispectral Imager", "DSOC Deep-Space Laser Transceiver"],
+      "instruments": [
+        "Magnetometer",
+        "Gamma-Ray and Neutron Spectrometer (GRNS)",
+        "Multispectral Imager",
+        "DSOC Deep-Space Laser Transceiver"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/psyche/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Psyche_(spacecraft)"
     },
@@ -596,7 +730,7 @@
       "country": "United States",
       "zoneId": "giants",
       "body": "Jupiter (5.2 AU)",
-      "distanceAU": 5.20,
+      "distanceAU": 5.2,
       "lightTimeSec": 2595,
       "lightTimeLabel": "43.2 light-min (Jupiter)",
       "launchYear": 2011,
@@ -604,7 +738,13 @@
       "branch": "fusion",
       "summary": "Solar-powered polar orbiter skimming within 4,200 km of Jupiter's cloud tops to probe its metallic-hydrogen interior, intense auroral radiation belts, and Galilean moons.",
       "physicsDiscoveries": "Discovered Jupiter's 'fuzzy' diluted core via precision Doppler gravity harmonics, mapped asymmetric non-dipolar magnetic fields, and revealed polygonal polar cyclones and 3,000 km deep jet streams.",
-      "instruments": ["Microwave Radiometer (MWR)", "MAG Vector Magnetometer", "JADE Auroral Plasma Detector", "Gravity Science Ka-Band Transponder", "JunoCam"],
+      "instruments": [
+        "Microwave Radiometer (MWR)",
+        "MAG Vector Magnetometer",
+        "JADE Auroral Plasma Detector",
+        "Gravity Science Ka-Band Transponder",
+        "JunoCam"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/juno/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Juno_(spacecraft)"
     },
@@ -615,7 +755,7 @@
       "country": "Europe",
       "zoneId": "giants",
       "body": "En Route to Jupiter & Ganymede (5.2 AU)",
-      "distanceAU": 5.20,
+      "distanceAU": 5.2,
       "lightTimeSec": 2595,
       "lightTimeLabel": "43.2 light-min (Jupiter System)",
       "launchYear": 2023,
@@ -623,7 +763,13 @@
       "branch": "applied",
       "summary": "ESA flagship mission arriving at Jupiter in 2031 to perform detailed flybys of Europa and Callisto before entering the first-ever orbit around Ganymede.",
       "physicsDiscoveries": "Will characterize Ganymede's unique intrinsic planetary magnetic dipole, measure subsurface liquid-water oceans via magnetic induction and ice-penetrating radar, and study tidal heating physics.",
-      "instruments": ["RIME Ice-Penetrating Radar", "J-MAG Magnetometer", "GALA Ganymede Laser Altimeter", "3GM Gravity & Geophysics", "RPWI Radio & Plasma Wave Investigation"],
+      "instruments": [
+        "RIME Ice-Penetrating Radar",
+        "J-MAG Magnetometer",
+        "GALA Ganymede Laser Altimeter",
+        "3GM Gravity & Geophysics",
+        "RPWI Radio & Plasma Wave Investigation"
+      ],
       "officialUrl": "https://sci.esa.int/web/juice",
       "wikiUrl": "https://en.wikipedia.org/wiki/Jupiter_Icy_Moons_Explorer"
     },
@@ -634,7 +780,7 @@
       "country": "United States",
       "zoneId": "giants",
       "body": "En Route to Jupiter / Europa (5.2 AU)",
-      "distanceAU": 5.20,
+      "distanceAU": 5.2,
       "lightTimeSec": 2595,
       "lightTimeLabel": "43.2 light-min (Europa / Jupiter)",
       "launchYear": 2024,
@@ -642,7 +788,13 @@
       "branch": "applied",
       "summary": "NASA's largest planetary spacecraft, arriving at Jupiter in 2030 to execute nearly 50 low-altitude flybys through Jupiter's extreme radiation belts to investigate Europa's global salty ocean.",
       "physicsDiscoveries": "Will measure Europa's ice-shell thickness, induced magnetic ocean salinity and depth, tidal flexing love numbers, and sputtered surface chemistry via mass spectrometry.",
-      "instruments": ["REASON Ice-Penetrating Radar", "ECM Magnetometer", "PIMS Plasma Instrument", "SUDA Surface Dust Mass Analyzer", "MASPEX Mass Spectrometer"],
+      "instruments": [
+        "REASON Ice-Penetrating Radar",
+        "ECM Magnetometer",
+        "PIMS Plasma Instrument",
+        "SUDA Surface Dust Mass Analyzer",
+        "MASPEX Mass Spectrometer"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/europa-clipper/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Europa_Clipper"
     },
@@ -661,7 +813,13 @@
       "branch": "applied",
       "summary": "Spent 13 years orbiting Saturn (2004–2017) and landed the ESA Huygens probe on Titan, concluding with Grand Finale plunges between Saturn and its rings.",
       "physicsDiscoveries": "Performed the highest-precision Shapiro gravitational time-delay test of general relativity (γ − 1 < 2.3 × 10⁻⁵), discovered hydrothermal water plumes erupting from Enceladus, and revealed liquid methane seas on Titan.",
-      "instruments": ["Radio Science Subsystem (RSS)", "MAG Magnetometer", "INMS Ion & Neutral Mass Spectrometer", "RPWS Radio & Plasma Wave Science", "Huygens Atmospheric Structure Instrument"],
+      "instruments": [
+        "Radio Science Subsystem (RSS)",
+        "MAG Magnetometer",
+        "INMS Ion & Neutral Mass Spectrometer",
+        "RPWS Radio & Plasma Wave Science",
+        "Huygens Atmospheric Structure Instrument"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/cassini/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Cassini%E2%80%93Huygens"
     },
@@ -680,7 +838,12 @@
       "branch": "applied",
       "summary": "Nuclear-powered dual-quadcopter lander slated to launch in 2028 and arrive at Titan in 2034, flying tens of kilometers across organic dunes and impact craters in Titan's dense 1.45-bar nitrogen atmosphere.",
       "physicsDiscoveries": "Will measure Titan's seismic interior and subsurface ocean, sample prebiotic organic chemistry with a laser mass spectrometer, and test cryogenic aerodynamics.",
-      "instruments": ["DraMS Mass Spectrometer", "DraGNS Gamma-Ray & Neutron Spectrometer", "DraGMet Geophysics & Seismometer Suite", "DragonCam"],
+      "instruments": [
+        "DraMS Mass Spectrometer",
+        "DraGNS Gamma-Ray & Neutron Spectrometer",
+        "DraGMet Geophysics & Seismometer Suite",
+        "DragonCam"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/dragonfly/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Dragonfly_(Titan_space_probe)"
     },
@@ -690,16 +853,22 @@
       "agency": "NASA / APL",
       "country": "United States",
       "zoneId": "interstellar",
-      "body": "Kuiper Belt (~63 AU)",
-      "distanceAU": 63.0,
-      "lightTimeSec": 31437,
-      "lightTimeLabel": "8.7 light-hours (~63 AU)",
+      "body": "Kuiper Belt (~66.8 AU)",
+      "distanceAU": 66.8,
+      "lightTimeSec": 33333,
+      "lightTimeLabel": "9.3 light-hours (~66.8 AU)",
       "launchYear": 2006,
       "status": "active",
       "branch": "astro",
       "summary": "First spacecraft to explore the Pluto–Charon system (2015) and contact-binary Kuiper Belt object Arrokoth (2019), now measuring outer heliosphere dust, plasma, and the dark cosmic optical background.",
       "physicsDiscoveries": "Uncovered active nitrogen-ice convection glaciers on Pluto, directly measured the faint extragalactic Cosmic Optical Background free of inner-solar-system zodiacal light, and tracked pickup-ion acceleration.",
-      "instruments": ["LORRI Long-Range Imager", "SWAP Solar Wind Around Pluto", "PEPSSI Energetic Particle Spectrometer", "SDC Venetia Burney Student Dust Counter", "Alice UV Spectrometer"],
+      "instruments": [
+        "LORRI Long-Range Imager",
+        "SWAP Solar Wind Around Pluto",
+        "PEPSSI Energetic Particle Spectrometer",
+        "SDC Venetia Burney Student Dust Counter",
+        "Alice UV Spectrometer"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/new-horizons/",
       "wikiUrl": "https://en.wikipedia.org/wiki/New_Horizons"
     },
@@ -709,16 +878,21 @@
       "agency": "NASA / JPL",
       "country": "United States",
       "zoneId": "interstellar",
-      "body": "Interstellar Medium (~138 AU)",
-      "distanceAU": 138.0,
-      "lightTimeSec": 68863,
-      "lightTimeLabel": "19.1 light-hours (~138 AU)",
+      "body": "Interstellar Medium (~145.4 AU)",
+      "distanceAU": 145.4,
+      "lightTimeSec": 72555,
+      "lightTimeLabel": "20.2 light-hours (~145.4 AU)",
       "launchYear": 1977,
       "status": "active",
       "branch": "fusion",
       "summary": "The only spacecraft to visit all four giant planets (Jupiter, Saturn, Uranus, and Neptune), having crossed the heliopause into interstellar space in November 2018.",
       "physicsDiscoveries": "Discovered tilted offset magnetic dynamos at Uranus and Neptune and provided the first direct in-situ plasma density and temperature measurements across the heliopause boundary.",
-      "instruments": ["Cosmic Ray Subsystem (CRS)", "Low-Energy Charged Particles (LECP)", "Triaxial Fluxgate Magnetometer (MAG)", "Plasma Wave Subsystem (PWS)"],
+      "instruments": [
+        "Cosmic Ray Subsystem (CRS)",
+        "Low-Energy Charged Particles (LECP)",
+        "Triaxial Fluxgate Magnetometer (MAG)",
+        "Plasma Wave Subsystem (PWS)"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/voyager/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Voyager_2"
     },
@@ -728,16 +902,21 @@
       "agency": "NASA / JPL",
       "country": "United States",
       "zoneId": "interstellar",
-      "body": "Interstellar Medium (~166 AU — approaching 1 full light-day)",
-      "distanceAU": 166.0,
-      "lightTimeSec": 82835,
-      "lightTimeLabel": "23.0 light-hours (~166 AU)",
+      "body": "Interstellar Medium (~173.1 AU — 1 Light-Day)",
+      "distanceAU": 173.1,
+      "lightTimeSec": 86400,
+      "lightTimeLabel": "24.0 light-hours (1 Light-Day, ~173.1 AU)",
       "launchYear": 1977,
       "status": "active",
       "branch": "fusion",
-      "summary": "Humanity's farthest ambassador—racing outward at ~3.6 AU/year in the local interstellar medium after crossing the heliopause in August 2012, rapidly closing in on 1 full light-day (~173.1 AU) from Earth.",
+      "summary": "Humanity's farthest ambassador—racing outward at ~3.6 AU/year in the local interstellar medium after crossing the heliopause in August 2012, officially reaching 1 full light-day (~173.1 AU, 25.9 billion km) from Earth on November 18, 2026.",
       "physicsDiscoveries": "Measured the abrupt jump in galactic cosmic rays and interstellar plasma electron density beyond the Sun's magnetic bubble, and detected persistent interstellar plasma-wave 'hum' driven by solar shock waves.",
-      "instruments": ["Cosmic Ray Subsystem (CRS)", "Low-Energy Charged Particles (LECP)", "Triaxial Fluxgate Magnetometer (MAG)", "Plasma Wave Subsystem (PWS)"],
+      "instruments": [
+        "Cosmic Ray Subsystem (CRS)",
+        "Low-Energy Charged Particles (LECP)",
+        "Triaxial Fluxgate Magnetometer (MAG)",
+        "Plasma Wave Subsystem (PWS)"
+      ],
       "officialUrl": "https://science.nasa.gov/mission/voyager/",
       "wikiUrl": "https://en.wikipedia.org/wiki/Voyager_1"
     }
