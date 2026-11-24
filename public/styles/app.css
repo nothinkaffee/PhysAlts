@@ -1315,6 +1315,32 @@ body.space-mode #zoom-controls .zoom-divider {
   }
 }
 
+/* Narrow Laptop (1024px–1140px): keep full "Universities" dock label cleanly clear of #earth-only-controls */
+@media (max-width: 1140px) and (min-width: 1024px) {
+  #bottom-dock {
+    padding: 5px 6px;
+    gap: 4px;
+  }
+  .dock-type-group,
+  .dock-explore-group {
+    gap: 2px;
+  }
+  .dock-btn {
+    padding: 0 8.5px;
+    gap: 4px;
+    font-size: 12.25px;
+  }
+  #earth-only-controls {
+    left: 12px;
+    padding: 3px;
+    gap: 2px;
+  }
+  #earth-only-controls button {
+    padding: 5px 7.5px;
+    font-size: 12px;
+  }
+}
+
 /* Laptop / Tablet corridor centering for #rabbit-trail-bar (768px–1199px) */
 @media (max-width: 1199px) and (min-width: 768px) {
   #rabbit-trail-bar {
