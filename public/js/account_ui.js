@@ -356,9 +356,6 @@ export function renderAccountWorkspaceModal(bodyEl, {
         <button type="button" id="ws-btn-offline" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition glass-btn">
           Offline Packs
         </button>
-        <button type="button" data-ws-tab="pathways" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "pathways" ? "glass-btn-active" : "glass-btn"}">
-          Career Portals
-        </button>
         <button type="button" data-ws-tab="profile" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "profile" ? "glass-btn-active" : "glass-btn"}">
           Profile
         </button>
@@ -485,7 +482,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
         panelHtml = `
           <div class="pt-6 text-center space-y-4">
             <div class="text-[17px] font-semibold text-white">Sign in to manage your profile</div>
-            <p class="text-[14px] text-neutral-400 max-w-sm mx-auto">Set your display name, physics interest, and career stage to tailor portals and bookmarks.</p>
+            <p class="text-[14px] text-neutral-400 max-w-sm mx-auto">Set your display name and research interest to personalize your saved collections.</p>
             <div class="flex items-center justify-center gap-3">
               <button type="button" id="ws-btn-signin" class="glass-btn rounded-full px-5 py-2.5 text-[14px]">Sign in</button>
               <button type="button" id="ws-btn-signup" class="glass-btn-active rounded-full px-5 py-2.5 text-[14px]">Create account</button>
@@ -508,18 +505,12 @@ export function renderAccountWorkspaceModal(bodyEl, {
               <input id="prof-name" type="text" required minlength="2" maxlength="80" value="${esc(u.displayName)}" class="glass-input" />
             </div>
             <div class="space-y-1.5">
-              <label for="prof-focus" class="block text-[14px] text-neutral-300">Primary physics interest</label>
-              <input id="prof-focus" type="text" maxlength="120" value="${esc(u.researchFocus || "")}" placeholder="e.g., Quantum Optics, Plasma Physics, Cosmology" class="glass-input" />
+              <label for="prof-focus" class="block text-[14px] text-neutral-300">Primary research interest</label>
+              <input id="prof-focus" type="text" maxlength="120" value="${esc(u.researchFocus || "")}" placeholder="e.g., Quantum Optics, AI Alignment, Cosmology" class="glass-input" />
             </div>
             <div class="space-y-1.5">
               <label for="prof-bio" class="block text-[14px] text-neutral-300">Short bio / affiliation (optional)</label>
               <textarea id="prof-bio" rows="2" maxlength="320" placeholder="Optional note about your studies or research goals" class="glass-input">${esc(u.bio || "")}</textarea>
-            </div>
-            <div class="space-y-1.5">
-              <label for="prof-stage" class="block text-[14px] text-neutral-300">Career stage</label>
-              <select id="prof-stage" class="glass-input">
-                ${Object.entries(STAGE_META).map(([k, v]) => `<option value="${esc(k)}" ${k === store.state.stage ? "selected" : ""} class="bg-[#111113] text-white">${esc(v.label)}</option>`).join("")}
-              </select>
             </div>
             <div class="flex items-center justify-between pt-2">
               <span class="text-[14px] text-neutral-400">Sync: ${snap.backend === "firebase" ? "Cloud Sync" : snap.backend === "server" ? "Server Sync" : "Local Vault"}</span>
@@ -670,23 +661,13 @@ export function renderAccountWorkspaceModal(bodyEl, {
       });
     });
 
-    // Wire career stage selector
-    bodyEl.querySelectorAll("[data-pick-stage]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        await updateAccountProfile({ stage: btn.dataset.pickStage });
-        onStageUpdated?.();
-        render();
-      });
-    });
-
     // Wire profile save
     bodyEl.querySelector("#ws-profile-form")?.addEventListener("submit", async (e) => {
       e.preventDefault();
       const res = await updateAccountProfile({
         displayName: bodyEl.querySelector("#prof-name")?.value,
         researchFocus: bodyEl.querySelector("#prof-focus")?.value,
-        bio: bodyEl.querySelector("#prof-bio")?.value,
-        stage: bodyEl.querySelector("#prof-stage")?.value
+        bio: bodyEl.querySelector("#prof-bio")?.value
       });
       if (!res.ok) return showToast?.(res.error || "Could not update profile");
       refreshAccountHeader();

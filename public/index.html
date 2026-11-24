@@ -57,24 +57,21 @@
   <!-- SCULPTURAL SYMMETRICAL DYNAMIC ISLAND -->
   <header id="dynamic-island" class="liquid-pill">
     <div class="island-inner">
-      <!-- Left Zone: Search + Academic/Career Level -->
+      <!-- Left Zone: Search + Rabbit Hole -->
       <div class="island-zone island-left">
-        <button id="btn-open-spotlight" type="button" title="Search hubs, AI, STEM, or Curate Rabbit Hole (⌘K or /)" aria-label="Search atlas" class="glass-btn island-btn">
+        <button id="btn-open-spotlight" type="button" title="Search hubs, AI, STEM, or Deep Research (⌘K or /)" aria-label="Search atlas" class="glass-btn island-btn">
           <i data-lucide="search" class="w-4 h-4 text-neutral-300 shrink-0"></i>
           <span class="island-label-sm text-neutral-200 whitespace-nowrap">Search</span>
           <kbd class="island-kbd">⌘K</kbd>
         </button>
 
-        <button id="btn-stage-picker" type="button" title="Select your academic or career level" aria-haspopup="dialog" aria-expanded="false" class="glass-btn island-btn island-stage-btn">
-          <i data-lucide="graduation-cap" class="w-4 h-4 accent-text shrink-0"></i>
-          <span id="stage-current-label" class="island-stage-label font-medium text-white">Undergrad</span>
-          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-neutral-400 shrink-0 island-chevron"></i>
+        <button id="btn-rabbit-hole" type="button" title="Rabbit Hole — Surprise discovery, curated journeys & official deep research (R)" aria-haspopup="dialog" aria-expanded="false" class="glass-btn island-btn island-rabbit-btn">
+          <i data-lucide="shuffle" class="w-4 h-4 accent-text shrink-0"></i>
+          <span class="island-label-sm font-medium text-white whitespace-nowrap">Rabbit Hole</span>
         </button>
       </div>
 
-      <div class="island-sep" aria-hidden="true"></div>
-
-      <!-- Center Zone (True Geometric Anchor): Earth | 1 Light-Day -->
+      <!-- Center Zone: Earth | 1 Light-Day -->
       <div class="island-zone island-center">
         <div class="island-mode-track" role="tablist" aria-label="View mode">
           <button id="btn-mode-earth" type="button" role="tab" aria-selected="true" title="Earth Globe (click again to reset view)" class="glass-btn-active island-mode-btn">
@@ -87,8 +84,6 @@
           </button>
         </div>
       </div>
-
-      <div class="island-sep" aria-hidden="true"></div>
 
       <!-- Right Zone: Precision Filters + Account -->
       <div class="island-zone island-right">
@@ -108,67 +103,68 @@
     </div>
   </header>
 
-  <!-- Academic & Career Level Selector Popover (non-blocking, anchored below Dynamic Island) -->
-  <section id="stage-popover" role="dialog" aria-label="Select Academic or Career Level" class="hidden atlas-popover atlas-popover-stage liquid-glass scroll-clean">
+  <!-- Sleek Rabbit Hole Popover (Surprise Me, Official Deep Research & Curated STEM Trails) -->
+  <section id="rabbit-popover" role="dialog" aria-label="Rabbit Hole Explorer" class="hidden atlas-popover atlas-popover-rabbit liquid-glass scroll-clean">
     <div class="flex items-center justify-between gap-2">
-      <div class="min-w-0">
-        <div class="text-[15px] font-semibold text-white">Academic &amp; Career Level</div>
-        <div class="text-[13px] text-neutral-400">Tailors pathways &amp; portals on every hub</div>
+      <div class="text-[15px] font-semibold text-white">Rabbit Hole</div>
+      <div class="flex items-center gap-2">
+        <button id="btn-rabbit-surprise" type="button" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px] inline-flex items-center gap-1.5">
+          <i data-lucide="shuffle" class="w-3.5 h-3.5 shrink-0"></i>
+          <span>Surprise Me</span>
+        </button>
+        <button id="btn-close-rabbit-popover" type="button" aria-label="Close Rabbit Hole" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px] shrink-0">✕</button>
       </div>
-      <button id="btn-close-stage-popover" type="button" aria-label="Close level selector" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px] shrink-0">✕</button>
     </div>
-    <div id="stage-dropdown-menu" role="listbox" class="stage-grid"></div>
-    <label class="popover-toggle-row">
-      <div class="min-w-0">
-        <div class="text-[14px] font-medium text-white">Verified stage programs only</div>
-        <div id="stage-only-hint" class="text-[12px] text-neutral-400">Show hubs with curated pathways for your level</div>
-      </div>
-      <input id="toggle-stage-only" type="checkbox" class="popover-checkbox" />
-    </label>
-    <div class="border-t border-white/10 pt-3 space-y-2">
-      <div id="stage-portals-title" class="section-label">Direct Official Portals</div>
-      <div id="stage-portals-list" class="flex flex-wrap gap-1.5"></div>
+
+    <form id="rabbit-agent-form" class="flex items-center gap-2">
+      <input id="rabbit-agent-input" type="text" autocomplete="off" placeholder="Topic to curate (e.g. AlphaFold, CRISPR)…" class="glass-input py-2 text-[13.5px] flex-1 min-w-0" />
+      <button type="submit" class="accent-chip rounded-full px-3.5 py-2 text-[13px] font-medium shrink-0 cursor-pointer">Curate →</button>
+    </form>
+
+    <div class="space-y-1.5">
+      <div class="section-label">Curated Journeys</div>
+      <div id="rabbit-popover-trails" class="space-y-1.5 max-h-[280px] scroll-clean pr-0.5"></div>
     </div>
   </section>
 
   <!-- Precision Multi-Filter Popover (non-blocking, live-filters the 3D globe) -->
-  <section id="filter-popover" role="dialog" aria-label="Filter STEM & Physics Institutions" class="hidden atlas-popover atlas-popover-filter liquid-glass scroll-clean">
+  <section id="filter-popover" role="dialog" aria-label="Filter STEM Institutions" class="hidden atlas-popover atlas-popover-filter liquid-glass scroll-clean">
     <div class="flex items-center justify-between gap-3">
       <div class="min-w-0">
-        <div class="text-[16px] font-semibold text-white">Precision Filters</div>
-        <div id="filter-live-count" class="text-[13px] text-neutral-400">Showing all institutions</div>
+        <div class="text-[15px] font-semibold text-white">Filters</div>
+        <div id="filter-live-count" class="text-[12.5px] text-neutral-400">Showing all institutions</div>
       </div>
       <div class="flex items-center gap-2 shrink-0">
         <button id="btn-filter-offline" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1.5" title="Download Organic-Maps style offline STEM & region packages (O)">
           <i data-lucide="download" class="w-3.5 h-3.5 accent-text shrink-0"></i>
-          <span>Offline Packs</span>
+          <span>Offline</span>
           <span id="offline-pack-count" class="hidden filter-chip-count">0</span>
         </button>
-        <button id="btn-filter-reset" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px]">Reset All</button>
+        <button id="btn-filter-reset" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px]">Reset</button>
         <button id="btn-close-filter-popover" type="button" aria-label="Close filters" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]">✕</button>
       </div>
     </div>
-    <div class="space-y-2">
-      <div class="section-label">STEM Discipline</div>
+    <div class="space-y-1.5">
+      <div class="section-label">Discipline</div>
       <div id="filter-discipline-chips" class="flex flex-wrap gap-1.5"></div>
     </div>
-    <div class="space-y-2">
-      <div class="section-label">Research Subfield</div>
+    <div class="space-y-1.5">
+      <div class="section-label">Subfield</div>
       <div id="filter-branch-chips" class="flex flex-wrap gap-1.5"></div>
     </div>
-    <div class="space-y-2">
-      <div class="section-label">Institution Type</div>
+    <div class="space-y-1.5">
+      <div class="section-label">Type</div>
       <div id="filter-type-chips" class="flex flex-wrap gap-1.5"></div>
     </div>
     <div class="filter-bottom-grid border-t border-white/10 pt-3">
-      <div class="space-y-1.5 min-w-0">
+      <div class="space-y-1 min-w-0">
         <label for="filter-country-select" class="section-label block">Country</label>
         <select id="filter-country-select" class="filter-select"></select>
       </div>
-      <div class="space-y-1.5 min-w-0">
-        <label for="filter-sort-select" class="section-label block">Rank By (ARWU-Inspired)</label>
+      <div class="space-y-1 min-w-0">
+        <label for="filter-sort-select" class="section-label block">Rank By</label>
         <select id="filter-sort-select" class="filter-select">
-          <option value="impact">Research Impact Score</option>
+          <option value="impact">Research Impact (ARWU)</option>
           <option value="citations">OpenAlex Citations</option>
           <option value="founded">Oldest Founded</option>
           <option value="name">Alphabetical (A → Z)</option>
@@ -176,15 +172,12 @@
       </div>
     </div>
     <label class="popover-toggle-row w-full">
-      <div class="min-w-0">
-        <div class="text-[14px] font-medium text-white">Curated flagships &amp; frontier labs only</div>
-        <div class="text-[12px] text-neutral-400">Top Physics, AI, Math, Bio, Climate &amp; Deep-Tech leaders</div>
-      </div>
+      <span class="text-[13.5px] font-medium text-white">Curated flagships only</span>
       <input id="toggle-curated-only" type="checkbox" class="popover-checkbox" />
     </label>
   </section>
 
-  <!-- Floating Active Filter Pill (centered cleanly below Dynamic Island, zero overlap with popovers) -->
+  <!-- Floating Active Filter Pill (centered cleanly below Dynamic Island) -->
   <div id="active-filter-pill" class="hidden fixed top-[76px] sm:top-[82px] left-1/2 -translate-x-1/2 z-[40] liquid-pill items-center gap-2 px-3.5 py-1.5 rounded-full text-[13px] text-neutral-100 max-w-[calc(100vw-32px)]">
     <span id="active-filter-text" class="truncate"></span>
     <button id="btn-clear-filters" type="button" class="text-neutral-400 hover:text-white cursor-pointer bg-transparent border-0 p-0 ml-1 shrink-0" aria-label="Clear all filters">✕</button>
@@ -192,7 +185,7 @@
 
   <!-- CENTERED SPOTLIGHT COMMAND SEARCH WINDOW (Cmd+K / / / Search button) -->
   <div id="spotlight-backdrop" class="hidden fixed inset-0 z-[65] modal-backdrop flex items-start justify-center pt-[10vh] px-5">
-    <section id="spotlight-modal" role="dialog" aria-modal="true" aria-label="Spotlight Search & Deep Rabbit-Hole Research" class="w-full max-w-[680px] max-h-[78dvh] liquid-glass rounded-[28px] flex flex-col overflow-hidden">
+    <section id="spotlight-modal" role="dialog" aria-modal="true" aria-label="Spotlight Search & Deep Rabbit-Hole Research" class="w-full max-w-[660px] max-h-[76dvh] liquid-glass rounded-[26px] flex flex-col overflow-hidden">
       <div class="px-5 py-4 border-b border-white/10 flex items-center gap-2.5 shrink-0">
         <i data-lucide="search" class="w-5 h-5 text-neutral-400 shrink-0"></i>
         <input
@@ -214,84 +207,62 @@
     </section>
   </div>
 
-  <!-- Concise IceCube-Style Revolving-Door Source Card (Desktop Left Card / Mobile Bottom Sheet) -->
-  <aside id="place-card" class="hidden fixed top-[88px] left-5 z-[38] w-[clamp(336px,33vw,404px)] max-w-[calc(100vw-24px)] max-h-[calc(100dvh-190px)] liquid-glass rounded-[24px] overflow-hidden flex flex-col">
+  <!-- Clean Editorial Overview Card (Desktop Left Card / Mobile Bottom Sheet) -->
+  <aside id="place-card" class="hidden fixed top-[84px] left-5 z-[38] liquid-glass rounded-[22px] overflow-hidden flex flex-col">
     <div class="card-sheet-handle" aria-hidden="true"></div>
-    <div id="card-photo-wrap" class="hidden relative h-[152px] w-full bg-white/[0.03] shrink-0 overflow-hidden">
+    <div id="card-photo-wrap" class="hidden relative w-full bg-white/[0.03] shrink-0 overflow-hidden">
       <img id="card-photo" class="w-full h-full object-cover opacity-0 transition-opacity duration-300" alt="" />
       <div id="card-photo-fallback" class="absolute inset-0"></div>
-      <div class="absolute inset-0 bg-gradient-to-t from-[#101012] via-transparent to-black/25"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-[#0b0b0d] via-transparent to-black/25"></div>
     </div>
 
-    <button id="btn-close-card" type="button" aria-label="Close card" class="absolute top-3.5 right-3.5 z-10 glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[14px]">✕</button>
+    <button id="btn-close-card" type="button" aria-label="Close card" class="absolute top-3 right-3 z-10 glass-btn rounded-full w-7 h-7 flex items-center justify-center text-[13px]">✕</button>
 
-    <div id="card-scroll-body" class="p-5 pb-4 space-y-3.5 scroll-clean min-w-0 flex-1">
+    <div id="card-scroll-body" class="p-5 pb-4 space-y-3 scroll-clean min-w-0 flex-1">
       <div class="min-w-0">
-        <div class="flex items-center flex-wrap gap-2 pr-10">
-          <span id="card-badge" class="text-[13.5px] font-medium accent-text truncate"></span>
-          <span id="card-impact-pill" class="hidden card-impact-pill"></span>
-        </div>
-        <h2 id="card-title" class="text-[20px] font-semibold text-white leading-snug mt-1 pr-6 break-words"></h2>
-        <div id="card-sub" class="text-[14px] text-neutral-400 mt-0.5 truncate"></div>
+        <div id="card-badge" class="text-[13px] font-medium accent-text pr-8 truncate"></div>
+        <h2 id="card-title" class="text-[20px] font-semibold text-white leading-snug mt-0.5 pr-6 break-words"></h2>
+        <div id="card-sub" class="text-[13.5px] text-neutral-400 mt-0.5 truncate"></div>
       </div>
 
-      <p id="card-summary" class="text-[14.5px] text-neutral-200 leading-relaxed"></p>
+      <p id="card-summary" class="text-[14px] text-neutral-200 leading-relaxed line-clamp-3"></p>
 
-      <!-- Live Wikipedia Brief Excerpt (IceCube-style overview) -->
-      <div id="card-wiki-brief-wrap" class="hidden card-wiki-brief">
-        <div class="flex items-center justify-between gap-2 mb-1">
-          <span class="text-[12px] font-medium text-neutral-400">From Wikipedia</span>
-          <a id="card-wiki-brief-link" href="#" target="_blank" rel="noopener noreferrer" class="text-[12px] accent-link">Read article ↗</a>
-        </div>
-        <p id="card-wiki-brief" class="text-[13.5px] text-neutral-300 leading-relaxed line-clamp-3"></p>
-      </div>
-
-      <!-- Selected Academic/Career Level Pathway (always visible on the card!) -->
-      <div id="card-stage-box" class="rounded-2xl bg-white/[0.04] border border-white/10 p-3.5 space-y-1.5">
-        <div class="flex items-center justify-between gap-2">
-          <div id="card-pathway-label" class="section-label truncate">Undergraduate Pathway</div>
-          <button id="btn-card-change-stage" type="button" class="text-[12px] accent-text hover:underline cursor-pointer bg-transparent border-0 p-0 shrink-0">Change level</button>
-        </div>
-        <p id="card-pathway" class="text-[14px] text-neutral-200 leading-relaxed"></p>
-      </div>
+      <!-- Clean Typographic Wikipedia Excerpt (zero boxy wrapper) -->
+      <p id="card-wiki-brief" class="hidden text-[13px] text-neutral-400 leading-relaxed line-clamp-2"></p>
 
       <!-- Official Primary Doors -->
-      <div id="card-links" class="flex flex-wrap items-center gap-x-3 gap-y-2"></div>
+      <div id="card-links" class="flex flex-wrap items-center gap-x-2.5 gap-y-2 pt-0.5"></div>
 
-      <!-- Connected Rabbit Hole Portals (with why-connected bridges) -->
-      <div id="card-rabbit-wrap" class="hidden space-y-2 pt-0.5 min-w-0">
-        <div class="section-label">Continue the Rabbit Hole</div>
-        <div id="card-rabbit-links" class="space-y-1.5 min-w-0"></div>
+      <!-- Compact Keep Exploring Chips -->
+      <div id="card-rabbit-wrap" class="hidden space-y-2 pt-1 min-w-0">
+        <div class="section-label text-[13px]">Keep Exploring</div>
+        <div id="card-rabbit-links" class="flex flex-wrap gap-1.5 min-w-0"></div>
       </div>
 
       <div id="card-extra-chips" class="flex flex-wrap gap-1.5 min-w-0"></div>
 
-      <!-- Optional Expanded Details -->
-      <div id="card-deeper-wrap" class="hidden space-y-4 border-t border-white/10 pt-4">
+      <!-- Optional Expanded Research Details -->
+      <div id="card-deeper-wrap" class="hidden space-y-4 border-t border-white/10 pt-3.5">
         <div id="deeper-impact-wrap" class="hidden">
-          <div class="section-label mb-2">Research Impact Index (ARWU-Inspired)</div>
+          <div class="section-label mb-2 text-[13px]">Research Impact (ARWU-Inspired)</div>
           <div id="deeper-impact" class="space-y-2"></div>
         </div>
         <div>
-          <div class="section-label mb-2">Recent Papers</div>
+          <div class="section-label mb-2 text-[13px]">Recent Papers</div>
           <div id="deeper-papers" class="space-y-2"></div>
         </div>
         <div>
-          <div class="section-label mb-2">Key Researchers</div>
+          <div class="section-label mb-2 text-[13px]">Key Researchers</div>
           <div id="deeper-authors" class="space-y-2"></div>
-        </div>
-        <div>
-          <div class="section-label mb-2">All Academic Stages</div>
-          <div id="deeper-stages" class="space-y-2"></div>
         </div>
       </div>
     </div>
 
-    <div class="card-actions flex items-center gap-1.5 px-5 py-3 border-t border-white/10 shrink-0 bg-black/20">
+    <div class="card-actions flex items-center gap-1.5 px-4 py-2.5 border-t border-white/10 shrink-0 bg-black/25">
       <button id="btn-save-shortlist" type="button" class="glass-btn card-action" title="Bookmark">
         <i data-lucide="bookmark" class="w-3.5 h-3.5 shrink-0"></i><span>Save</span>
       </button>
-      <button id="btn-card-rabbit" type="button" class="glass-btn card-action" title="Next discovery">
+      <button id="btn-card-rabbit" type="button" class="glass-btn card-action" title="Next Rabbit Hole discovery">
         <i data-lucide="shuffle" class="w-3.5 h-3.5 accent-text shrink-0"></i><span>Next</span>
       </button>
       <button id="btn-copy-link" type="button" class="glass-btn card-action" title="Copy share link">

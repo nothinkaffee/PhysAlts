@@ -299,8 +299,8 @@ def render_variant(variant, blender_frames, ui_imgs, vertical=False):
                 frame = composite_ui_showcase(
                     bg, ui_imgs["icecube"], lt,
                     "OFFICIAL OVERVIEW · WIKIPEDIA & IMPACT",
-                    "Every lab, every career level.",
-                    "Hero imagery, live Wikipedia briefs, ARWU-inspired Impact scores & tailored pathways.",
+                    "Every lab. Zero clutter.",
+                    "Hero imagery, live Wikipedia briefs, ARWU-inspired Impact scores & one-tap Rabbit Holes.",
                     vertical=vertical
                 )
             elif t < 13.5:
@@ -426,15 +426,16 @@ def main():
     frames_a = load_blender_frames(BLENDER_A_DIR)
     frames_b = load_blender_frames(BLENDER_B_DIR)
 
+    SS_DIR = os.path.join(REPO_ROOT, "store_submission/screenshots")
     ui_imgs = {
-        "rest": Image.open(os.path.join(QA_DIR, "01_desktop_rest_1440x900.png")).convert("RGBA"),
-        "icecube": Image.open(os.path.join(QA_DIR, "02_icecube_card_phd.png")).convert("RGBA"),
-        "filters": Image.open(os.path.join(QA_DIR, "03_precision_filters_ai_cs.png")).convert("RGBA"),
-        "agent": Image.open(os.path.join(QA_DIR, "04_agent_rabbithole_alphafold.png")).convert("RGBA"),
-        "trail": Image.open(os.path.join(QA_DIR, "04b_active_trail_bar.png")).convert("RGBA"),
-        "offline": Image.open(os.path.join(QA_DIR, "05_offline_packs_manager.png")).convert("RGBA"),
-        "space": Image.open(os.path.join(QA_DIR, "06_space_1lightday_pulse.png")).convert("RGBA"),
-        "mobile_card": Image.open(os.path.join(QA_DIR, "08_mobile_card_deepmind.png")).convert("RGBA"),
+        "rest": Image.open(os.path.join(SS_DIR, "desktop_earth_rest.png")).convert("RGBA"),
+        "icecube": Image.open(os.path.join(SS_DIR, "desktop_icecube_overview.png")).convert("RGBA"),
+        "filters": Image.open(os.path.join(SS_DIR, "desktop_filters_clean.png")).convert("RGBA"),
+        "agent": Image.open(os.path.join(SS_DIR, "desktop_agent_rabbithole.png")).convert("RGBA"),
+        "trail": Image.open(os.path.join(SS_DIR, "desktop_rabbit_hole.png")).convert("RGBA"),
+        "offline": Image.open(os.path.join(SS_DIR, "desktop_offline_packs.png")).convert("RGBA"),
+        "space": Image.open(os.path.join(SS_DIR, "desktop_space_1lightday.png")).convert("RGBA"),
+        "mobile_card": Image.open(os.path.join(SS_DIR, "mobile_icecube_card.png")).convert("RGBA"),
     }
 
     # Step 2: Render all 4 launch cuts (A 16:9, A 9:16, B 16:9, B 9:16)

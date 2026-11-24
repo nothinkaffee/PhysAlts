@@ -96,8 +96,8 @@ export function refreshDbBadge() {
   updateActiveFiltersPill();
 }
 
-function isStagePopoverOpen() {
-  const el = document.getElementById("stage-popover");
+function isRabbitPopoverOpen() {
+  const el = document.getElementById("rabbit-popover");
   return Boolean(el && !el.classList.contains("hidden"));
 }
 
@@ -106,9 +106,37 @@ function isFilterPopoverOpen() {
   return Boolean(el && !el.classList.contains("hidden"));
 }
 
-function closeStagePopover() {
-  const pop = document.getElementById("stage-popover");
-  const btn = document.getElementById("btn-stage-picker");
+function renderRabbitPopover() {
+  const box = document.getElementById("rabbit-popover-trails");
+  if (!box) return;
+  const trails = store.rabbitTrails || [];
+  if (!trails.length) {
+    box.innerHTML = `<div class="text-[13px] text-neutral-400 py-2">Loading curated journeys…</div>`;
+    return;
+  }
+  box.innerHTML = trails.map(tr => `
+    <button type="button" data-pop-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[13.5px] font-medium text-white truncate">${esc(tr.title)}</div>
+        <div class="text-[12px] text-neutral-400 truncate mt-0.5">${esc(tr.tagline)}</div>
+      </div>
+      <span class="text-[12.5px] accent-text shrink-0">${(tr.stops || []).length} stops →</span>
+    </button>
+  `).join("");
+  box.querySelectorAll("[data-pop-trail]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const tr = store.rabbitTrails.find(t => t.id === btn.dataset.popTrail);
+      if (tr) {
+        closeRabbitPopover();
+        startRabbitTrail(tr, 0);
+      }
+    });
+  });
+}
+
+function closeRabbitPopover() {
+  const pop = document.getElementById("rabbit-popover");
+  const btn = document.getElementById("btn-rabbit-hole");
   if (!pop || pop.classList.contains("hidden")) return;
   pop.classList.add("hidden");
   btn?.classList.remove("island-btn-open");
@@ -116,11 +144,11 @@ function closeStagePopover() {
   updateActiveFiltersPill();
 }
 
-function openStagePopover(keepCard = true) {
-  closeAllSurfaces(keepCard ? ["stage", "card"] : "stage");
-  renderStageMenu();
-  const pop = document.getElementById("stage-popover");
-  const btn = document.getElementById("btn-stage-picker");
+function openRabbitPopover() {
+  closeAllSurfaces(["rabbit", "card"]);
+  renderRabbitPopover();
+  const pop = document.getElementById("rabbit-popover");
+  const btn = document.getElementById("btn-rabbit-hole");
   if (!pop) return;
   pop.classList.remove("hidden");
   btn?.classList.add("island-btn-open");
@@ -128,9 +156,9 @@ function openStagePopover(keepCard = true) {
   updateActiveFiltersPill();
 }
 
-function toggleStagePopover() {
-  if (isStagePopoverOpen()) closeStagePopover();
-  else openStagePopover(true);
+function toggleRabbitPopover() {
+  if (isRabbitPopoverOpen()) closeRabbitPopover();
+  else openRabbitPopover();
 }
 
 function closeFilterPopover() {
@@ -183,7 +211,7 @@ export function openSpotlight() {
 
 export function closeDropdown() {
   closeSpotlight();
-  closeStagePopover();
+  closeRabbitPopover();
   closeFilterPopover();
 }
 
@@ -217,7 +245,7 @@ function closeAllSurfaces(except = null) {
   if (!keep.has("modal")) closeModal();
   if (!keep.has("auth")) closeAuthModal();
   if (!keep.has("card")) closePlaceCard();
-  if (!keep.has("stage")) closeStagePopover();
+  if (!keep.has("rabbit")) closeRabbitPopover();
   if (!keep.has("filter")) closeFilterPopover();
 }
 
@@ -418,12 +446,8 @@ export function selectSpaceMission(missionId) {
     if (nearby.length) {
       rWrap.classList.remove("hidden");
       rLinks.innerHTML = nearby.slice(0, 3).map(nb => `
-        <button type="button" data-jump-space="${esc(nb.id)}" class="rabbit-bridge-btn flex items-center justify-between gap-2">
-          <div class="min-w-0">
-            <div class="text-[13.5px] font-medium text-white truncate">${esc(nb.name.split(" (")[0])}</div>
-            <div class="text-[12px] text-neutral-400 truncate">${esc(nb.body)} · ${esc(nb.lightTimeLabel.split(" (")[0])}</div>
-          </div>
-          <span class="accent-text text-[13px] shrink-0">→</span>
+        <button type="button" data-jump-space="${esc(nb.id)}" title="${esc(nb.body)} · ${esc(nb.lightTimeLabel)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-full">
+          ${esc(nb.name.split(" (")[0])} →
         </button>
       `).join("");
       rLinks.querySelectorAll("[data-jump-space]").forEach(btn => {
@@ -725,14 +749,12 @@ function loadWikipediaCardBrief(node) {
   const photoWrap = document.getElementById("card-photo-wrap");
   const imgEl = document.getElementById("card-photo");
   const fallbackEl = document.getElementById("card-photo-fallback");
-  const briefWrap = document.getElementById("card-wiki-brief-wrap");
   const briefText = document.getElementById("card-wiki-brief");
-  const briefLink = document.getElementById("card-wiki-brief-link");
 
   photoWrap?.classList.add("hidden");
   imgEl?.classList.add("opacity-0");
   fallbackEl?.classList.remove("hidden");
-  briefWrap?.classList.add("hidden");
+  briefText?.classList.add("hidden");
 
   const reqId = ++activeWikiReq;
   let slug = node.wikiSlug || "";
@@ -763,13 +785,11 @@ function loadWikipediaCardBrief(node) {
     }
 
     const extract = String(data.extract || "").replace(/\s+/g, " ").trim();
-    const normSummary = String(node.summary || "").toLowerCase().slice(0, 60);
-    if (extract && briefWrap && briefText && !extract.toLowerCase().startsWith(normSummary || "___")) {
-      briefText.textContent = extract.length > 260 ? extract.slice(0, 256).replace(/\s+\S*$/, "") + "…" : extract;
-      if (briefLink) {
-        briefLink.href = data.content_urls?.desktop?.page || node.wiki || `https://en.wikipedia.org/wiki/${encodeURIComponent(data.title || slug)}`;
-      }
-      briefWrap.classList.remove("hidden");
+    const normSummary = String(node.summary || "").toLowerCase().slice(0, 50);
+    if (extract && briefText && !extract.toLowerCase().startsWith(normSummary || "___")) {
+      const clipped = extract.length > 185 ? extract.slice(0, 180).replace(/\s+\S*$/, "") + "…" : extract;
+      briefText.textContent = clipped;
+      briefText.classList.remove("hidden");
     }
   };
 
@@ -779,7 +799,6 @@ function loadWikipediaCardBrief(node) {
       .then(applyWikiData)
       .catch(() => {});
   } else if (node.name) {
-    // 200-only MediaWiki search fallback so scraped hubs also get photo + Wikipedia brief with ZERO 404s
     const cleanName = String(node.name).replace(/\s*\([^)]*\)\s*/g, " ").trim();
     fetch(proxyUrl(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(cleanName)}&srlimit=1&format=json&origin=*`))
       .then(r => r.ok ? r.json() : null)
@@ -787,7 +806,6 @@ function loadWikipediaCardBrief(node) {
         if (reqId !== activeWikiReq) return null;
         const hit = sData?.query?.search?.[0];
         if (!hit?.title) return null;
-        // Require at least one significant word overlap to avoid unrelated matches
         const words = cleanName.toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 4);
         const titleLow = hit.title.toLowerCase();
         if (words.length && !words.some(w => titleLow.includes(w))) return null;
@@ -812,7 +830,6 @@ export function selectHubNode(id, fly = true) {
   closeAllSurfaces("card");
   store.state.selectedId = node.id;
 
-  // Keep breadcrumb history updated
   if (store.state.trailHistory[store.state.trailHistory.length - 1] !== node.id) {
     store.state.trailHistory.push(node.id);
     if (store.state.trailHistory.length > 24) store.state.trailHistory.shift();
@@ -847,77 +864,55 @@ export function selectHubNode(id, fly = true) {
     : discLabel && node.discipline !== "physics" ? `${discLabel} University` : "Research University"
   );
   const yearPart = node.foundedYear != null ? ` · ${formatYear(node.foundedYear)}` : "";
-  document.getElementById("card-badge").textContent = `${typeLabel}${yearPart}`;
-  document.getElementById("card-title").textContent = node.name;
-  document.getElementById("card-sub").textContent = node.city;
-  document.getElementById("card-summary").textContent = node.summary;
-
-  // ARWU-Inspired Research Impact Pill + Transparent 5-Pillar Breakdown inside More
-  const impactPill = document.getElementById("card-impact-pill");
   const deeperImpactWrap = document.getElementById("deeper-impact-wrap");
   const deeperImpactEl = document.getElementById("deeper-impact");
+  let impactSuffix = "";
+
   if (node.tier !== "timeline") {
     const imp = node._impact || computeImpactScore(node);
     const eraScore = store.state.timeMode ? scoreHubForYear(node, store.state.timeYear) : imp.total;
-    if (impactPill) {
-      impactPill.textContent = `Impact ${eraScore} · ${imp.tierLabel}`;
-      impactPill.title = "ShanghaiRanking (ARWU/GRAS)-inspired composite score (Awards, Citations, CNCI, Mega-Facility, Collaboration)";
-      impactPill.classList.remove("hidden");
-    }
+    impactSuffix = ` · Impact ${eraScore}`;
     if (deeperImpactWrap && deeperImpactEl) {
       const b = imp.breakdown || {};
       const pillars = [
-        { label: "Laureates & Major Awards", val: b.awards || 0, max: 30 },
-        { label: "Verified Citation Volume", val: b.output || 0, max: 25 },
-        { label: "Impact per Work (CNCI)", val: b.cnci || 0, max: 20 },
-        { label: "Frontier Infrastructure", val: b.infra || 0, max: 15 },
-        { label: "Global Collaboration", val: b.collab || 0, max: 10 }
+        { label: "Laureates & Awards", val: b.awards || 0, max: 30 },
+        { label: "Citation Volume", val: b.output || 0, max: 25 },
+        { label: "Impact per Work", val: b.cnci || 0, max: 20 },
+        { label: "Infrastructure", val: b.infra || 0, max: 15 },
+        { label: "Collaboration", val: b.collab || 0, max: 10 }
       ];
       deeperImpactEl.innerHTML = `
-        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-3.5 space-y-2.5">
-          <div class="flex items-center justify-between text-[13.5px]">
-            <span class="font-medium text-white">${esc(imp.tierLabel)}${store.state.timeMode ? ` (${formatYear(store.state.timeYear)} Era)` : ""}</span>
+        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-3.5 space-y-2">
+          <div class="flex items-center justify-between text-[13px]">
+            <span class="font-medium text-white">${esc(imp.tierLabel)}</span>
             <span class="accent-text font-semibold tabular-nums">${eraScore} / 100</span>
           </div>
           ${pillars.map(p => `
             <div class="space-y-1">
               <div class="flex items-center justify-between text-[12px] text-neutral-400">
                 <span>${p.label}</span>
-                <span class="tabular-nums text-neutral-300">${p.val} / ${p.max}</span>
+                <span class="tabular-nums text-neutral-300">${p.val}/${p.max}</span>
               </div>
               <div class="impact-bar-track"><div class="impact-bar-fill" style="width:${Math.round((p.val / p.max) * 100)}%"></div></div>
             </div>
           `).join("")}
-          ${node.nobel ? `<div class="text-[12.5px] text-neutral-300 pt-1 border-t border-white/10">${esc(node.nobel)}</div>` : ""}
+          ${node.nobel ? `<div class="text-[12px] text-neutral-300 pt-1 border-t border-white/10">${esc(node.nobel)}</div>` : ""}
         </div>
       `;
       deeperImpactWrap.classList.remove("hidden");
     }
   } else {
-    impactPill?.classList.add("hidden");
     deeperImpactWrap?.classList.add("hidden");
   }
 
-  document.getElementById("card-stage-box")?.classList.remove("hidden");
-  const st = store.state.stage;
-  const stages = node.stages || buildDefaultStages();
-  const stageText = st === "all" ? stages.undergrad : (stages[st] || stages.undergrad);
-  const branchLabel = BRANCH_SHORT_LABELS[node.branch] || discLabel || "STEM";
-  const stageLabel = STAGE_META[st]?.label || "Academic";
-  const changeStageBtn = document.getElementById("btn-card-change-stage");
-  if (node.tier === "timeline") {
-    document.getElementById("card-pathway-label").textContent = "Historical & Scientific Impact";
-    document.getElementById("card-pathway").textContent = node.nobel || node.summary;
-    changeStageBtn?.classList.add("hidden");
-  } else {
-    document.getElementById("card-pathway-label").textContent = `${stageLabel} Pathway · ${branchLabel}`;
-    document.getElementById("card-pathway").textContent = stageText;
-    changeStageBtn?.classList.remove("hidden");
-  }
+  document.getElementById("card-badge").textContent = `${typeLabel}${yearPart}${impactSuffix}`;
+  document.getElementById("card-title").textContent = node.name;
+  document.getElementById("card-sub").textContent = node.city;
+  document.getElementById("card-summary").textContent = node.summary;
 
   updateBookmarkButtonUI(node.id);
 
-  // Connected Rabbit Hole Portals (prefers rich rabbitLinks with 1-line "why connected" bridges!)
+  // Compact Keep Exploring chips (clean horizontal pills matching IceCube reference!)
   const rWrap = document.getElementById("card-rabbit-wrap");
   const rLinks = document.getElementById("card-rabbit-links");
   if (rWrap && rLinks) {
@@ -948,14 +943,14 @@ export function selectHubNode(id, fly = true) {
       for (const cand of pool) {
         if (hops.length >= 3) break;
         if ((cand.branch === node.branch || cand.discipline === node.discipline) && cand.country !== node.country) {
-          hops.push({ node: cand, reason: `Peer leader in ${BRANCH_SHORT_LABELS[cand.branch] || "STEM"} · ${cand.country}` });
+          hops.push({ node: cand, reason: `Peer leader in ${BRANCH_SHORT_LABELS[cand.branch] || "STEM"}` });
           seen.add(cand.id);
         }
       }
       for (const cand of pool) {
         if (hops.length >= 3) break;
         if (!seen.has(cand.id)) {
-          hops.push({ node: cand, reason: `${BRANCH_SHORT_LABELS[cand.branch] || "STEM"} · ${cand.city}` });
+          hops.push({ node: cand, reason: cand.city });
           seen.add(cand.id);
         }
       }
@@ -964,12 +959,8 @@ export function selectHubNode(id, fly = true) {
     if (hops.length) {
       rWrap.classList.remove("hidden");
       rLinks.innerHTML = hops.slice(0, 3).map(({ node: p, reason }) => `
-        <button type="button" data-jump-hub="${esc(p.id)}" class="rabbit-bridge-btn flex items-center justify-between gap-2.5">
-          <div class="min-w-0">
-            <div class="text-[13.5px] font-medium text-white truncate">${esc(p.name.split(" (")[0])}</div>
-            ${reason ? `<div class="text-[12px] text-neutral-400 truncate mt-0.5">${esc(reason)}</div>` : ""}
-          </div>
-          <span class="accent-text text-[13px] shrink-0">→</span>
+        <button type="button" data-jump-hub="${esc(p.id)}" title="${esc(reason || p.city)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-full">
+          ${esc(p.name.split(" (")[0])} →
         </button>
       `).join("");
       rLinks.querySelectorAll("[data-jump-hub]").forEach(btn => {
@@ -980,39 +971,29 @@ export function selectHubNode(id, fly = true) {
     }
   }
 
-  // Concise project links (max 2 so action bar stays above the fold)
+  // Concise project links (max 2)
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     const chips = [];
     for (const p of (node.projects || []).slice(0, 2)) {
-      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[13.5px] transition truncate max-w-full inline-block">${esc(p.name)} ↗</a>`);
+      chips.push(`<a href="${esc(p.url || node.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1 rounded-full text-[13px] transition truncate max-w-full inline-block">${esc(p.name)} ↗</a>`);
     }
     extra.innerHTML = chips.join("");
   }
 
-  // Official verified links + guaranteed registry fallback for scraped hubs
+  // Official verified links
   const linksEl = document.getElementById("card-links");
   const links = [];
-  if (node.url) links.push(`<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[14px] inline-flex items-center gap-1 whitespace-nowrap">Official Site ↗</a>`);
-  if (node.wiki) links.push(`<a href="${esc(node.wiki)}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">Wikipedia ↗</a>`);
+  if (node.url) links.push(`<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1 whitespace-nowrap">Official Site ↗</a>`);
+  if (node.wiki) links.push(`<a href="${esc(node.wiki)}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Wikipedia ↗</a>`);
   if (node.id?.startsWith("ror-") && !String(node.url || "").includes("ror.org")) {
-    links.push(`<a href="https://ror.org/${esc(node.id.slice(4))}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">ROR ↗</a>`);
+    links.push(`<a href="https://ror.org/${esc(node.id.slice(4))}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">ROR ↗</a>`);
   } else if (node.id?.startsWith("oa-") && !String(node.url || "").includes("openalex.org")) {
-    links.push(`<a href="https://openalex.org/${esc(node.id.slice(3))}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">OpenAlex ↗</a>`);
+    links.push(`<a href="https://openalex.org/${esc(node.id.slice(3))}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">OpenAlex ↗</a>`);
   }
   const gEarth = `https://earth.google.com/web/@${node.lat},${node.lng},500a,2500d,35y,0h,45t,0r`;
-  links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-1 py-1 text-[14px] whitespace-nowrap">Google Earth ↗</a>`);
+  links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Google Earth ↗</a>`);
   if (linksEl) linksEl.innerHTML = links.join("");
-
-  const stagesEl = document.getElementById("deeper-stages");
-  if (stagesEl) {
-    stagesEl.innerHTML = Object.keys(STAGE_META).filter(k => k !== "all").map(k => `
-      <div class="rounded-2xl px-3.5 py-2.5 ${k === st ? "bg-white/12 border border-white/22" : "bg-white/[0.04] border border-white/10"}">
-        <div class="text-[14px] font-semibold text-white">${STAGE_META[k].label}</div>
-        <div class="text-[14px] text-neutral-300 mt-1 leading-snug">${esc(stages[k] || "—")}</div>
-      </div>
-    `).join("");
-  }
 
   // Load IceCube-style Wikimedia Hero Photo + Wikipedia Brief Excerpt (200-only fallback, zero 404s)
   const reqId = loadWikipediaCardBrief(node);
@@ -2192,84 +2173,8 @@ const GROUP_SHORT_LABELS = {
   history: "Historical"
 };
 
-function refreshOpenCardStage() {
-  const id = store.state.selectedId;
-  if (!id || String(id).startsWith("sp-")) return;
-  const node = getNodeById(id);
-  if (!node || node.tier === "timeline") return;
-  const st = store.state.stage;
-  const stages = node.stages || buildDefaultStages();
-  const stageText = st === "all" ? stages.undergrad : (stages[st] || stages.undergrad);
-  const branchLabel = BRANCH_SHORT_LABELS[node.branch] || "STEM";
-  const stageLabel = STAGE_META[st]?.label || "Academic";
-  const lblEl = document.getElementById("card-pathway-label");
-  const txtEl = document.getElementById("card-pathway");
-  if (lblEl) lblEl.textContent = `${stageLabel} Pathway · ${branchLabel}`;
-  if (txtEl) txtEl.textContent = stageText;
-
-  const stagesEl = document.getElementById("deeper-stages");
-  if (stagesEl) {
-    stagesEl.innerHTML = Object.keys(STAGE_META).filter(k => k !== "all").map(k => `
-      <div class="rounded-2xl px-3.5 py-2.5 ${k === st ? "bg-white/12 border border-white/22" : "bg-white/[0.04] border border-white/10"}">
-        <div class="text-[14px] font-semibold text-white">${STAGE_META[k].label}</div>
-        <div class="text-[14px] text-neutral-300 mt-1 leading-snug">${esc(stages[k] || "—")}</div>
-      </div>
-    `).join("");
-  }
-}
-
 export function renderStageMenu() {
-  const st = store.state.stage || "undergrad";
-  const lbl = document.getElementById("stage-current-label");
-  if (lbl) lbl.textContent = STAGE_META[st]?.short || "Undergrad";
-
-  const menu = document.getElementById("stage-dropdown-menu");
-  if (menu) {
-    menu.innerHTML = Object.entries(STAGE_META).map(([key, meta]) => {
-      const active = st === key;
-      return `
-        <button type="button" role="option" aria-selected="${active ? "true" : "false"}" data-stage-opt="${key}" class="${active ? "stage-opt stage-opt-active" : "stage-opt"}">
-          <span class="truncate">${esc(meta.label)}</span>
-          ${active ? '<span class="stage-opt-check">✓</span>' : ""}
-        </button>
-      `;
-    }).join("");
-    menu.querySelectorAll("[data-stage-opt]").forEach(btn => {
-      btn.addEventListener("click", async () => {
-        await updateAccountProfile({ stage: btn.dataset.stageOpt });
-        renderStageMenu();
-        refreshOpenCardStage();
-        if (store.state.stageOnly) syncGlobeMarkers();
-        if (isFilterPopoverOpen()) renderFilterPopover();
-        updateActiveFiltersPill();
-        showToast(`Level: ${STAGE_META[store.state.stage]?.label || store.state.stage}`);
-      });
-    });
-  }
-
-  const stageToggle = document.getElementById("toggle-stage-only");
-  if (stageToggle) stageToggle.checked = Boolean(store.state.stageOnly);
-  const stageHint = document.getElementById("stage-only-hint");
-  if (stageHint) {
-    stageHint.textContent = st === "all"
-      ? "Pick a specific level above to filter verified stage hubs"
-      : `Show hubs with curated ${STAGE_META[st]?.short || ""} pathways`;
-  }
-
-  const portalsTitle = document.getElementById("stage-portals-title");
-  if (portalsTitle) {
-    portalsTitle.textContent = `Direct Official Portals · ${STAGE_META[st]?.short || "All"}`;
-  }
-  const portalsList = document.getElementById("stage-portals-list");
-  if (portalsList) {
-    const portals = STAGE_PORTALS[st] || STAGE_PORTALS.all || [];
-    portalsList.innerHTML = portals.map(p => `
-      <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1">
-        <span>${esc(p.name)}</span>
-        <span aria-hidden="true">↗</span>
-      </a>
-    `).join("");
-  }
+  // Levels removed for a cleaner, universal exploration interface.
 }
 
 export function renderFilterPopover() {
@@ -2448,8 +2353,8 @@ function updateActiveFiltersPill() {
   const txt = document.getElementById("active-filter-text");
   if (!pill || !txt) return;
 
-  // Never overlap open Stage or Filter popovers
-  if (count === 0 || isStagePopoverOpen() || isFilterPopoverOpen()) {
+  // Never overlap open Rabbit Hole or Filter popovers
+  if (count === 0 || isRabbitPopoverOpen() || isFilterPopoverOpen()) {
     pill.classList.add("hidden");
     pill.classList.remove("inline-flex");
     return;
@@ -2470,9 +2375,6 @@ function updateActiveFiltersPill() {
   }
   if (store.state.curatedOnly) {
     labels.push("Curated");
-  }
-  if (store.state.stageOnly) {
-    labels.push(`${STAGE_META[store.state.stage]?.short || "Stage"} Verified`);
   }
 
   txt.textContent = labels.join(" · ");
@@ -2536,6 +2438,7 @@ function copyCurrentShareLink() {
 const recentRabbitIds = [];
 
 function jumpRabbitHole() {
+  closeRabbitPopover();
   if (store.state.viewMode === "space" && store.spaceMissions.length) {
     const pool = store.spaceMissions.filter(m => !recentRabbitIds.includes(`sp-${m.id}`));
     const pick = (pool.length ? pool : store.spaceMissions)[Math.floor(Math.random() * (pool.length || store.spaceMissions.length))];
@@ -2568,13 +2471,25 @@ function jumpRabbitHole() {
 // =========================================================================
 
 export function initUI() {
-  renderStageMenu();
   refreshDbBadge();
   refreshAccountHeader();
   refreshOfflinePackBadge();
   bindTimelineRuler();
 
-  document.getElementById("btn-rabbit-hole")?.addEventListener("click", jumpRabbitHole);
+  // Prominent Top-Bar Rabbit Hole Button (click opens Rabbit Hole hub; Shift+Click jumps straight in)
+  document.getElementById("btn-rabbit-hole")?.addEventListener("click", (e) => {
+    if (e.shiftKey) jumpRabbitHole();
+    else toggleRabbitPopover();
+  });
+  document.getElementById("btn-close-rabbit-popover")?.addEventListener("click", closeRabbitPopover);
+  document.getElementById("btn-rabbit-surprise")?.addEventListener("click", jumpRabbitHole);
+  document.getElementById("rabbit-agent-form")?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const q = document.getElementById("rabbit-agent-input")?.value?.trim() || "";
+    closeRabbitPopover();
+    openSpotlight();
+    runAgentRabbitHole(q || "AlphaFold");
+  });
   document.getElementById("btn-card-rabbit")?.addEventListener("click", jumpRabbitHole);
 
   // Floating Rabbit Hole Trail Breadcrumb Bar controls
@@ -2627,7 +2542,6 @@ export function initUI() {
       openAuthModal("signin", {
         showToast,
         onSuccess: () => {
-          renderStageMenu();
           refreshDbBadge();
         }
       });
@@ -2643,18 +2557,7 @@ export function initUI() {
     if (e.target.id === "drawer-backdrop") closeModal();
   });
 
-  // Level Selector Popover (#stage-popover) & Precision Filter Popover (#filter-popover)
-  document.getElementById("btn-stage-picker")?.addEventListener("click", toggleStagePopover);
-  document.getElementById("btn-close-stage-popover")?.addEventListener("click", closeStagePopover);
-  document.getElementById("btn-card-change-stage")?.addEventListener("click", () => openStagePopover(true));
-  document.getElementById("toggle-stage-only")?.addEventListener("change", (e) => {
-    store.state.stageOnly = Boolean(e.target.checked);
-    syncGlobeMarkers();
-    if (isFilterPopoverOpen()) renderFilterPopover();
-    updateActiveFiltersPill();
-    showToast(store.state.stageOnly ? "Showing verified stage pathways only" : "Showing all institutions");
-  });
-
+  // Precision Filter Popover (#filter-popover)
   document.getElementById("btn-open-filters")?.addEventListener("click", toggleFilterPopover);
   document.getElementById("btn-mobile-filters")?.addEventListener("click", toggleFilterPopover);
   document.getElementById("btn-close-filter-popover")?.addEventListener("click", closeFilterPopover);
@@ -2684,14 +2587,14 @@ export function initUI() {
     updateActiveFiltersPill();
   });
 
-  // Dismiss Stage / Filter popovers on outside click
+  // Dismiss Rabbit Hole / Filter popovers on outside click
   document.addEventListener("pointerdown", (e) => {
     const target = e.target;
     if (!(target instanceof Element)) return;
-    if (isStagePopoverOpen()) {
-      const pop = document.getElementById("stage-popover");
-      if (pop && !pop.contains(target) && !target.closest("#btn-stage-picker") && !target.closest("#btn-card-change-stage")) {
-        closeStagePopover();
+    if (isRabbitPopoverOpen()) {
+      const pop = document.getElementById("rabbit-popover");
+      if (pop && !pop.contains(target) && !target.closest("#btn-rabbit-hole")) {
+        closeRabbitPopover();
       }
     }
     if (isFilterPopoverOpen()) {
