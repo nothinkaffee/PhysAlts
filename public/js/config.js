@@ -31,6 +31,7 @@ export const SUBJECT_CONFIG = {
     stemMath: "./data/stem/math_hubs.json",
     stemBioMed: "./data/stem/bio_med_hubs.json",
     stemChemEarthEng: "./data/stem/chem_earth_eng_hubs.json",
+    stemEngineering: "./data/stem/engineering_hubs.json",
     stemTimeline: "./data/stem/stem_timeline.json",
     stemDomains: "./data/stem/stem_domains.json",
     rabbitTrails: "./data/stem/rabbit_trails.json"
@@ -38,32 +39,59 @@ export const SUBJECT_CONFIG = {
 };
 
 export const STEM_DISCIPLINES = [
-  { id: "all",            label: "All STEM",        short: "All STEM",    desc: "Physics, AI, Math, Biology, Chemistry, Earth & Engineering" },
+  { id: "all",            label: "All STEM",        short: "All STEM",    desc: "Physics, Engineering, AI & CS, Math, Biology, Chemistry & Earth" },
   { id: "physics",        label: "Physics & Space", short: "Physics",     desc: "Colliders, quantum, cosmology, fusion & condensed matter" },
-  { id: "ai_cs",          label: "AI & Computing",  short: "AI & CS",     desc: "Frontier AI labs, deep learning, robotics & CS theory" },
-  { id: "math",           label: "Mathematics",     short: "Math",        desc: "Pure & applied math institutes, geometry & foundations" },
-  { id: "bio_med",        label: "Biology & Bio",   short: "Biology",     desc: "Genomics, CRISPR, neuroscience & structural biology" },
-  { id: "chem_materials", label: "Chemistry",       short: "Chemistry",   desc: "Catalysis, polymers, battery & materials chemistry" },
-  { id: "earth_climate",  label: "Earth & Climate", short: "Climate",     desc: "Oceanography, polar research, atmospheric & energy science" },
-  { id: "engineering",    label: "Engineering",     short: "Engineering", desc: "Semiconductors, aerospace, autonomous robotics & chips" }
+  { id: "engineering",    label: "Engineering",     short: "Engineering", desc: "Aerospace, semiconductors, robotics, clean energy, bio-eng & materials" },
+  { id: "ai_cs",          label: "AI & Computing",  short: "AI & CS",     desc: "Frontier AI, HPC systems, theory/crypto, graphics & quantum computing" },
+  { id: "math",           label: "Mathematics",     short: "Math",        desc: "Algebra, number theory, analysis, PDEs, probability, logic & proof" },
+  { id: "bio_med",        label: "Biology & Med",   short: "Biology",     desc: "Genomics, CRISPR, neuroscience, structural biology & ecology" },
+  { id: "chem_materials", label: "Chemistry",       short: "Chemistry",   desc: "Synthesis, catalysis, nanomaterials, batteries & computational chemistry" },
+  { id: "earth_climate",  label: "Earth & Climate", short: "Climate",     desc: "Atmosphere, climate modeling, oceanography, geophysics & planetary" }
 ];
 
 export const PHYSICS_BRANCHES = [
-  { id: "all",            label: "All Subfields",               desc: "Complete global map across every discipline" },
-  { id: "particle",       label: "Particle & High-Energy",      desc: "Colliders, neutrinos, dark matter, QCD" },
-  { id: "quantum",        label: "Quantum & Photonics",         desc: "Qubits, attosecond lasers, quantum optics, EUV" },
-  { id: "astro",          label: "Astrophysics & Cosmology",    desc: "Optical/radio telescopes, black holes, CMB" },
-  { id: "gravity",        label: "Gravitational Waves & Theory",desc: "LIGO, general relativity, quantum gravity" },
-  { id: "fusion",         label: "Fusion & Plasma Physics",     desc: "Tokamaks, stellarators, HTS magnets, burning plasma" },
-  { id: "condensed",      label: "Condensed Matter & Materials",desc: "Synchrotrons, neutrons, 2D materials, superconductors" },
-  { id: "applied",        label: "Applied, Space & Biophysics", desc: "Space instrumentation, biophysics, fluid dynamics, metrology" },
-  { id: "ai_cs",          label: "AI & Computer Science",       desc: "Foundation models, ML systems, theory & autonomous agents" },
-  { id: "math",           label: "Mathematics",                 desc: "Number theory, geometry, analysis, probability & proof" },
-  { id: "bio_med",        label: "Biology & Genomics",          desc: "Molecular biology, gene editing, neuroscience & AlphaFold" },
-  { id: "chem_materials", label: "Chemistry & Materials",       desc: "Molecular synthesis, catalysis, batteries & nanomaterials" },
-  { id: "earth_climate",  label: "Earth, Ocean & Climate",      desc: "Climate modeling, oceanography, polar & clean energy" },
-  { id: "engineering",    label: "Robotics, Chips & Aerospace", desc: "Semiconductor fabs, robotics, propulsion & spacecraft" },
-  { id: "history",        label: "History & Origins",           desc: "From 1800 BCE & Euclid to Modern Frontier Science" }
+  { id: "all",               label: "All Subfields",                 disc: "all",            desc: "Complete global map across every STEM discipline" },
+  // Physics (7)
+  { id: "particle",          label: "Particle & High-Energy",        disc: "physics",        desc: "Colliders, neutrinos, dark matter, QCD" },
+  { id: "quantum",           label: "Quantum & Photonics",           disc: "physics",        desc: "Qubits, attosecond lasers, quantum optics, EUV" },
+  { id: "astro",             label: "Astrophysics & Cosmology",      disc: "physics",        desc: "Optical/radio telescopes, black holes, CMB" },
+  { id: "gravity",           label: "Gravitational Waves & Theory",  disc: "physics",        desc: "LIGO, general relativity, quantum gravity" },
+  { id: "fusion",            label: "Fusion & Plasma Physics",       disc: "physics",        desc: "Tokamaks, stellarators, HTS magnets, burning plasma" },
+  { id: "condensed",         label: "Condensed Matter & Materials",  disc: "physics",        desc: "Synchrotrons, neutrons, 2D materials, superconductors" },
+  { id: "applied",           label: "Applied, Space & Biophysics",   disc: "physics",        desc: "Space instrumentation, biophysics, fluid dynamics, metrology" },
+  // Engineering & Technology (6)
+  { id: "aerospace",         label: "Aerospace & Propulsion",        disc: "engineering",    desc: "Rockets, orbital propulsion, aerodynamics & flight test" },
+  { id: "semiconductors",    label: "Semiconductors & Photonics",    disc: "engineering",    desc: "EUV lithography, sub-2 nm fabs, silicon photonics & AI chips" },
+  { id: "robotics",          label: "Robotics & Autonomy",           disc: "engineering",    desc: "Embodied robotics, humanoids, control systems & autonomous vehicles" },
+  { id: "energy_civil",      label: "Energy, Nuclear & Civil",       disc: "engineering",    desc: "Grid storage, wind/solar, advanced nuclear & hydraulics" },
+  { id: "biomedical_eng",    label: "Biomedical & Neural Eng",       disc: "engineering",    desc: "Neural interfaces, bio-fabrication, surgical robotics & organoids" },
+  { id: "materials_mfg",     label: "Materials & Manufacturing",     disc: "engineering",    desc: "Metallurgy, additive manufacturing, composites & metrology" },
+  // AI & Computer Science (5)
+  { id: "ai_frontier",       label: "Frontier AI & Alignment",       disc: "ai_cs",          desc: "Foundation models, RL, reasoning & mechanistic interpretability" },
+  { id: "systems_arch",      label: "Systems, HPC & Architecture",   disc: "ai_cs",          desc: "Exascale supercomputers, compilers, chips & distributed systems" },
+  { id: "theory_crypto",     label: "Algorithms, Crypto & Formal",   disc: "ai_cs",          desc: "Complexity theory, cryptography & formal verification" },
+  { id: "graphics_hci",      label: "Vision, Graphics & HCI",        disc: "ai_cs",          desc: "Computer vision, 3D graphics, simulation & human-computer interaction" },
+  { id: "quantum_cs",        label: "Quantum Computing",             disc: "ai_cs",          desc: "Fault-tolerant qubits, neutral atoms, trapped ions & quantum algorithms" },
+  // Mathematics (4)
+  { id: "pure_math",         label: "Algebra & Number Theory",       disc: "math",           desc: "Algebraic geometry, Langlands program, number theory & arithmetic" },
+  { id: "analysis_pde",      label: "Analysis, Geometry & PDEs",     disc: "math",           desc: "Differential geometry, fluid PDEs, dynamical systems & harmonic analysis" },
+  { id: "applied_stat",      label: "Applied Math & Statistics",     disc: "math",           desc: "Probability, statistical inference, optimization & complex systems" },
+  { id: "logic_comb",        label: "Logic, Combinatorics & Proof",  disc: "math",           desc: "Graph theory, topology, foundations & Lean formal proof assistants" },
+  // Biology & Medicine (4)
+  { id: "genomics_synbio",   label: "Genomics, CRISPR & SynBio",     disc: "bio_med",        desc: "Gene editing, sequencing, cell atlases & synthetic biology" },
+  { id: "neuroscience",      label: "Neuroscience & BCIs",           disc: "bio_med",        desc: "Connectomics, systems neuroscience & neural recording probes" },
+  { id: "structural_pharma", label: "Structural Bio & Pharma",       disc: "bio_med",        desc: "Cryo-EM, AlphaFold protein design, immunology & mRNA medicine" },
+  { id: "ecology_evo",       label: "Evolution, Marine & Microbiome",disc: "bio_med",        desc: "Paleogenomics, marine biology, biodiversity & evolutionary ecology" },
+  // Chemistry & Materials (3)
+  { id: "catalysis_synth",   label: "Synthesis & Catalysis",         disc: "chem_materials", desc: "Organic catalysis, electrochemistry, asymmetric synthesis & green chem" },
+  { id: "nanomaterials",     label: "Nanomaterials & Batteries",     disc: "chem_materials", desc: "Graphene, 2D heterostructures, solid-state batteries & polymers" },
+  { id: "comp_chem",         label: "Theoretical & Comp Chem",       disc: "chem_materials", desc: "Quantum chemistry, molecular dynamics & ultrafast spectroscopy" },
+  // Earth, Climate & Planetary (3)
+  { id: "climate_atmo",      label: "Climate, Atmosphere & Polar",   disc: "earth_climate",  desc: "Earth-system modeling, weather prediction, ice cores & glaciology" },
+  { id: "ocean_geo",         label: "Oceanography & Geophysics",     disc: "earth_climate",  desc: "Deep-sea science, plate tectonics, seismology & volcanology" },
+  { id: "planetary_env",     label: "Planetary & Earth Systems",     disc: "earth_climate",  desc: "Planetary geology, satellite Earth observation & resilience science" },
+  // Cross-cutting
+  { id: "history",           label: "History & Origins",             disc: "all",            desc: "From 1800 BCE & Euclid to Modern Frontier Science" }
 ];
 
 export const ENTITY_FILTERS = [
@@ -152,7 +180,11 @@ export const COLLABORATION_ARCS = [
   ["ligo", "mit"], ["ligo", "caltech"], ["ligo", "aei"],
   ["iter", "cfs"], ["iter", "mpq"], ["iter", "parissaclay"],
   ["icecube", "desy"], ["icecube", "superk"], ["alma", "paranal"], ["paranal", "meerkat"],
-  ["perimeter", "princeton"], ["asml", "qutech"], ["utokyo", "riken"], ["cern", "sesame"]
+  ["perimeter", "princeton"], ["asml", "qutech"], ["utokyo", "riken"], ["cern", "sesame"],
+  ["asml", "imec"], ["imec", "tsmc_rd"], ["tsmc_rd", "nvidia_research"],
+  ["deepmind", "embl_ebi"], ["deepmind", "ecmwf"], ["mrc_lmb", "embl_ebi"],
+  ["imec", "hhmi_janelia"], ["broad_institute", "sanger_institute"],
+  ["ias_princeton", "ihes"], ["ncar", "ecmwf"]
 ];
 
 export function formatYear(y) {
@@ -165,22 +197,59 @@ export function formatYear(y) {
 
 export const BRANCH_SHORT_LABELS = {
   all: "All Subfields",
+  // Physics
   particle: "Particle & HEP",
-  quantum: "Quantum & Photonics",
+  quantum: "Quantum & Optics",
   astro: "Astrophysics",
   gravity: "Gravity & Theory",
   fusion: "Fusion & Plasma",
   condensed: "Condensed Matter",
   applied: "Applied & Space",
+  // Engineering
+  aerospace: "Aerospace",
+  semiconductors: "Semiconductors",
+  robotics: "Robotics",
+  energy_civil: "Energy & Civil",
+  biomedical_eng: "Biomedical Eng",
+  materials_mfg: "Materials & Mfg",
+  // AI & CS
+  ai_frontier: "Frontier AI",
+  systems_arch: "Systems & HPC",
+  theory_crypto: "Theory & Crypto",
+  graphics_hci: "Vision & HCI",
+  quantum_cs: "Quantum CS",
+  // Math
+  pure_math: "Algebra & Number",
+  analysis_pde: "Analysis & PDEs",
+  applied_stat: "Applied & Stats",
+  logic_comb: "Logic & Proof",
+  // Biology & Med
+  genomics_synbio: "Genomics & SynBio",
+  neuroscience: "Neuroscience",
+  structural_pharma: "Structural Bio",
+  ecology_evo: "Ecology & Marine",
+  // Chemistry
+  catalysis_synth: "Catalysis & Synth",
+  nanomaterials: "Nanomaterials",
+  comp_chem: "Comp Chemistry",
+  // Earth & Climate
+  climate_atmo: "Climate & Polar",
+  ocean_geo: "Ocean & Geo",
+  planetary_env: "Planetary & Earth",
+  // Legacy aliases & cross-cutting
   ai_cs: "AI & Computing",
   math: "Mathematics",
-  bio_med: "Biology & Genomics",
-  chem_materials: "Chemistry & Materials",
+  bio_med: "Biology & Bio",
+  chem_materials: "Chemistry",
   earth_climate: "Earth & Climate",
-  engineering: "Robotics & Chips",
-  history: "History of Science",
-  multi: "Multi-Branch STEM"
+  engineering: "Engineering",
+  history: "History",
+  multi: "Multi-Branch"
 };
+
+export const BRANCH_TO_DISCIPLINE = Object.fromEntries(
+  PHYSICS_BRANCHES.filter(b => b.disc && b.disc !== "all").map(b => [b.id, b.disc])
+);
 
 export function classifyPhysicsBranch(text) {
   const t = (text || "").toLowerCase();

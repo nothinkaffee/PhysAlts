@@ -1,9 +1,9 @@
 {
   "meta": {
     "name": "PhysAlts Cross-Disciplinary Rabbit Hole Trails",
-    "version": "1.0",
-    "updatedAt": "2026-11-23",
-    "description": "8 curated multi-stop cross-STEM journeys linking Physics, AI, Mathematics, Biology, Chemistry, Earth/Climate, Engineering, and Space via real intellectual and technological causal bridges."
+    "version": "1.1",
+    "updatedAt": "2026-11-24",
+    "description": "14 curated multi-stop cross-STEM journeys linking Physics, AI, Mathematics, Biology, Chemistry, Earth/Climate, Engineering, and Space via real intellectual and technological causal bridges."
   },
   "trails": [
     {
@@ -322,6 +322,244 @@
           "hubId": "ahri_krisp",
           "title": "AHRI & KRISP (Durban)",
           "bridge": "Brings high-speed genomics to global public health—tracking emerging viral variants in real time across Africa to protect the entire world."
+        }
+      ]
+    },
+    {
+      "id": "formal_logic_to_machine_proof",
+      "title": "From Formal Logic to Machine-Checked Proof",
+      "tagline": "Follow mathematical certainty from Gödel and Grothendieck through type-theory provers to Lean 4 and AI-verified theorems.",
+      "disciplines": ["math", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "princeton_math",
+          "title": "Princeton Mathematics & IAS",
+          "bridge": "Kurt Gödel, Alonzo Church, and John von Neumann forged modern formal logic, lambda calculus, and decidability theory here—exposing both the power and limits of axiomatic proof."
+        },
+        {
+          "hubId": "ihes",
+          "title": "IHÉS (Bures-sur-Yvette)",
+          "bridge": "Alexander Grothendieck rebuilt algebraic geometry on ultra-general foundations (schemes and toposes) whose towering abstraction inspired computer-checked proof architectures."
+        },
+        {
+          "hubId": "inria_saclay",
+          "title": "Inria (Paris-Saclay)",
+          "bridge": "Pioneered dependent type theory and the Rocq (Coq) interactive theorem prover—mechanically verifying the Four Color Theorem and the Feit–Thompson Odd Order Theorem."
+        },
+        {
+          "hubId": "cmu_scs",
+          "title": "Carnegie Mellon School of Computer Science",
+          "bridge": "Advanced Homotopy Type Theory, automated SAT/SMT solvers, and formal mathematics education—bridging computer science logic with Lean's global Mathlib library."
+        },
+        {
+          "hubId": "bonn_math",
+          "title": "University of Bonn Mathematical Institute",
+          "bridge": "Fields Medalist Peter Scholze challenged the Lean community with the Liquid Tensor Experiment—proving cutting-edge condensed mathematics can be 100% machine-verified."
+        },
+        {
+          "hubId": "deepmind",
+          "title": "Google DeepMind",
+          "bridge": "Coupled neural reasoning models directly to Lean 4 in AlphaProof and AlphaGeometry, producing formally verified silver-medal International Mathematical Olympiad proofs."
+        }
+      ]
+    },
+    {
+      "id": "mapping_the_living_brain",
+      "title": "Mapping the Living Brain",
+      "tagline": "Journey from foundational synaptic biology and the first worm connectome to silicon Neuropixels probes and brain-spine interfaces.",
+      "disciplines": ["bio_med", "engineering", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "institut_pasteur",
+          "title": "Institut Pasteur (Paris)",
+          "bridge": "Jean-Pierre Changeux isolated the first neurotransmitter receptor (nicotinic acetylcholine receptor) here, revealing the molecular switches of synaptic communication."
+        },
+        {
+          "hubId": "mrc_lmb",
+          "title": "MRC Laboratory of Molecular Biology",
+          "bridge": "Sydney Brenner and John White mapped the first complete nervous system in history—every neuron and synapse of the nematode C. elegans—proving whole-brain connectomics was possible."
+        },
+        {
+          "hubId": "imec",
+          "title": "imec Leuven (Neuropixels Silicon)",
+          "bridge": "Repurposed CMOS semiconductor lithography to fabricate hair-thin Neuropixels probes packed with hundreds of electrodes recording thousands of live neurons simultaneously."
+        },
+        {
+          "hubId": "janelia_hhmi",
+          "title": "HHMI Janelia Research Campus",
+          "bridge": "Co-engineered Neuropixels and GCaMP optical neural sensors while reconstructing dense electron-microscopy synaptic wiring diagrams of the fruit-fly brain."
+        },
+        {
+          "hubId": "allen_brain",
+          "title": "Allen Institute for Brain Science",
+          "bridge": "Scaled open brain mapping to 5,300+ mammalian cell types and cubic-millimeter cortical connectomes (MICrONS), turning neural architecture into open public data."
+        },
+        {
+          "hubId": "epfl_ai_center",
+          "title": "EPFL AI & Neuro-X Ecosystem",
+          "bridge": "Synthesizes large-scale neural simulation and real-time AI decoding into wireless brain-spine interfaces that restore voluntary walking after spinal cord injury."
+        }
+      ]
+    },
+    {
+      "id": "rockets_to_reusable_orbit",
+      "title": "From Wind Tunnels & Rockets to Reusable Orbit",
+      "tagline": "Trace the engineering arc from Caltech aerodynamics and Apollo flight software to propulsively landing orbital boosters.",
+      "disciplines": ["engineering", "physics"],
+      "stops": [
+        {
+          "hubId": "caltech",
+          "title": "Caltech (GALCIT & Physics)",
+          "bridge": "Theodore von Kármán's wind tunnels and graduate rocket experiments in Pasadena's Arroyo Seco transformed rocketry from backyard tinkering into precision aerospace science."
+        },
+        {
+          "hubId": "nasa_jpl",
+          "title": "NASA Jet Propulsion Laboratory",
+          "bridge": "Born directly from Caltech's GALCIT pioneers, JPL launched America's first satellite (Explorer 1) and mastered autonomous interplanetary navigation across the entire Solar System."
+        },
+        {
+          "hubId": "mit_aeroastro",
+          "title": "MIT AeroAstro",
+          "bridge": "Engineered the fault-tolerant Apollo Guidance Computer software that landed astronauts on the Moon and built MOXIE to manufacture breathable oxygen on Mars."
+        },
+        {
+          "hubId": "tudelft_aero",
+          "title": "TU Delft Aerospace Engineering",
+          "bridge": "Pushes Europe's frontier in hypersonic wind-tunnel physics, ultra-light composite airframes, sustainable hydrogen aviation, and orbital astrodynamics."
+        },
+        {
+          "hubId": "esa_estec",
+          "title": "ESA ESTEC (Noordwijk)",
+          "bridge": "Europe's technical spacecraft test heart qualifying Ariane payloads, automated orbital rendezvous vehicles, and precision deep-space science observatories."
+        },
+        {
+          "hubId": "dt_spacex",
+          "title": "SpaceX",
+          "bridge": "Combined real-time convex guidance algorithms with vertical booster recovery on Falcon 9 and Starship, slashing the cost of reaching orbit by an order of magnitude."
+        },
+        {
+          "hubId": "dt_rocket_lab",
+          "title": "Rocket Lab",
+          "bridge": "Scaled carbon-composite electric-pump small rockets and modular Photon spacecraft buses, bringing rapid dedicated orbital and cislunar launch to global science teams."
+        }
+      ]
+    },
+    {
+      "id": "catalysts_graphene_solid_state_batteries",
+      "title": "Catalysts, 2D Materials & the Solid-State Battery Race",
+      "tagline": "See how atomic surface catalysis, nanographenes, and AI crystal labs converge to power zero-carbon energy storage.",
+      "disciplines": ["chem_materials", "engineering", "physics"],
+      "stops": [
+        {
+          "hubId": "mpi_kofo",
+          "title": "Max-Planck-Institut für Kohlenforschung",
+          "bridge": "From Karl Ziegler's polymer catalysts to Benjamin List's Nobel asymmetric organocatalysis, revealed how atomically tailored active sites steer chemical reactions with minimal waste."
+        },
+        {
+          "hubId": "fritz_haber",
+          "title": "Fritz Haber Institute (Berlin)",
+          "bridge": "Gerhard Ertl's atomic surface-science spectroscopy imaged catalytic reactions directly on metal crystals, establishing the blueprint for clean electrocatalysis."
+        },
+        {
+          "hubId": "mpi_polymer",
+          "title": "Max Planck Institute for Polymer Research",
+          "bridge": "Bottom-up organic synthesis produces atomically precise nanographenes, 2D conductive frameworks, and ion-transporting polymer membranes."
+        },
+        {
+          "hubId": "cambridge_chem",
+          "title": "Cambridge Dept. of Chemistry",
+          "bridge": "Clare Grey's operando solid-state NMR peers inside working lithium and sodium batteries in real time to diagnose and prevent deadly dendrite growth."
+        },
+        {
+          "hubId": "lbl_foundry",
+          "title": "The Molecular Foundry & Materials Project (LBNL)",
+          "bridge": "Combines 150,000+ openly computed crystal structures with A-Lab robotic synthesis to accelerate discovery of cobalt-free cathodes and solid-state electrolytes."
+        },
+        {
+          "hubId": "nrel_golden",
+          "title": "National Renewable Energy Laboratory (NREL)",
+          "bridge": "Integrates next-generation battery cells with >33%-efficient perovskite-silicon tandem solar modules and megawatt grid testbeds to decarbonize global power."
+        }
+      ]
+    },
+    {
+      "id": "listening_to_earth_climate_system",
+      "title": "Listening to Earth: Ice Cores, Oceans & Satellites",
+      "tagline": "Connect polar ice-core time capsules, abyssal ocean floats, and exascale AI climate digital twins monitoring our living planet.",
+      "disciplines": ["earth_climate", "physics", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "bas_antarctic",
+          "title": "British Antarctic Survey",
+          "bridge": "After exposing the 1985 Ozone Hole, BAS ice-core and Thwaites Glacier expeditions unlocked 800,000 years of trapped ancient atmosphere and sea-level projections."
+        },
+        {
+          "hubId": "awi_bremerhaven",
+          "title": "Alfred Wegener Institute (AWI)",
+          "bridge": "Operates icebreaker RV Polarstern and leads the Beyond EPICA campaign drilling 1.5-million-year-old Antarctic ice to decode Earth's ancient glacial rhythm."
+        },
+        {
+          "hubId": "whoi",
+          "title": "Woods Hole Oceanographic Institution",
+          "bridge": "Deploys deep-sea moorings, autonomous gliders, and submersible Alvin to track how Earth's oceans absorb over 90% of excess planetary heat and drive Atlantic circulation."
+        },
+        {
+          "hubId": "scripps_ocean",
+          "title": "Scripps Institution of Oceanography",
+          "bridge": "Maintains the continuous Keeling Curve Mauna Loa CO2 record alongside the 4,000-float global Argo array profiling ocean temperature and salinity worldwide."
+        },
+        {
+          "hubId": "nsf_ncar",
+          "title": "NSF National Center for Atmospheric Research",
+          "bridge": "Fuses polar, oceanic, and atmospheric observations inside the open Community Earth System Model (CESM) to simulate centuries of coupled climate physics."
+        },
+        {
+          "hubId": "ecmwf",
+          "title": "ECMWF (Weather & Climate AI)",
+          "bridge": "Assimilates hundreds of millions of daily satellite measurements into ERA5 reanalysis and AIFS machine-learning weather models for life-saving global forecasts."
+        }
+      ]
+    },
+    {
+      "id": "machines_to_embodied_robots",
+      "title": "From Precision Machines to Embodied Robots",
+      "tagline": "Follow mechanical engineering from cyber-physical factories and field autonomy to agile humanoids trained in GPU physics worlds.",
+      "disciplines": ["engineering", "ai_cs"],
+      "stops": [
+        {
+          "hubId": "rwth_aachen_eng",
+          "title": "RWTH Aachen Engineering Cluster",
+          "bridge": "Unites centuries of European precision mechanical engineering with laser metallurgy, automated battery lines, and real-time Internet of Production digital twins."
+        },
+        {
+          "hubId": "fraunhofer_ipa",
+          "title": "Fraunhofer IPA (Stuttgart)",
+          "bridge": "Translates industrial manipulators, mobile factory cobots, and automated assembly systems from academic control equations into resilient 24/7 shop-floor hardware."
+        },
+        {
+          "hubId": "cmu_scs",
+          "title": "Carnegie Mellon Robotics Institute",
+          "bridge": "Founded the world's first dedicated Robotics Institute in 1979—pioneering autonomous vehicles, SLAM 3D perception, and planetary field robots."
+        },
+        {
+          "hubId": "boston_dynamics",
+          "title": "Boston Dynamics",
+          "bridge": "Broke robotics out of bolted factory cages by mastering dynamic legged balance and whole-body actuation in Spot and the all-electric Atlas humanoid."
+        },
+        {
+          "hubId": "eth_asl_rsl",
+          "title": "ETH Zurich Robotic Systems Labs",
+          "bridge": "Proved massively parallel GPU reinforcement learning can train rugged ANYmal quadrupeds in minutes to hike Alpine rockslides and explore dark subterranean tunnels."
+        },
+        {
+          "hubId": "mit_csail",
+          "title": "MIT CSAIL",
+          "bridge": "Combines underactuated nonlinear control, soft tactile hands, and multimodal perception to let robots safely manipulate deformable everyday objects."
+        },
+        {
+          "hubId": "nvidia_research",
+          "title": "NVIDIA Research",
+          "bridge": "Builds photorealistic GPU physics simulators (Isaac Lab) and generalist humanoid foundation models (GR00T), closing the sim-to-real training loop for embodied AI."
         }
       ]
     }

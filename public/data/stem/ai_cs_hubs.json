@@ -1,10 +1,10 @@
 {
   "meta": {
     "name": "PhysAlts STEM Atlas — Artificial Intelligence & Computer Science Hubs",
-    "version": "1.0",
-    "updatedAt": "2026-11-23",
+    "version": "2.0",
+    "updatedAt": "2026-11-24",
     "discipline": "ai_cs",
-    "description": "46 verified global frontier AI laboratories, research startups, and premier academic computer science institutes spanning machine learning, robotics, systems, and theoretical CS."
+    "description": "78 verified global AI & computer science hubs classified across 5 canonical sub-branches: Frontier AI, Systems & Architecture, Theory & Cryptography, Graphics & HCI, and Quantum Computing."
   },
   "hubs": [
     {
@@ -15,7 +15,7 @@
       "group": "company",
       "entityType": "company",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 51.5335,
       "lng": -0.1255,
@@ -36,16 +36,41 @@
         "assoc_prof": "Visiting Researcher collaborations and joint academic benchmarks in reinforcement learning and scientific discovery.",
         "prof": "Principal Scientist advisory partnerships and large-scale scientific dataset co-development."
       },
-      "next": ["isomorphic_labs", "alan_turing_inst", "embl_ebi", "openai"],
+      "next": [
+        "isomorphic_labs",
+        "alan_turing_inst",
+        "embl_ebi",
+        "openai"
+      ],
       "rabbitLinks": [
-        { "id": "isomorphic_labs", "reason": "Spun out of DeepMind to turn AlphaFold3 biomolecular modeling directly into AI-designed medicines." },
-        { "id": "embl_ebi", "reason": "Co-hosts the open AlphaFold Protein Structure Database containing 200M+ predicted structures." },
-        { "id": "ecmwf", "reason": "DeepMind's GraphCast and GenCast models are trained on ECMWF's ERA5 global atmospheric reanalysis." },
-        { "id": "epfl", "reason": "Collaborated with EPFL's Swiss Plasma Center to control tokamak plasma shapes using deep reinforcement learning." }
+        {
+          "id": "isomorphic_labs",
+          "reason": "Spun out of DeepMind to turn AlphaFold3 biomolecular modeling directly into AI-designed medicines."
+        },
+        {
+          "id": "embl_ebi",
+          "reason": "Co-hosts the open AlphaFold Protein Structure Database containing 200M+ predicted structures."
+        },
+        {
+          "id": "ecmwf",
+          "reason": "DeepMind's GraphCast and GenCast models are trained on ECMWF's ERA5 global atmospheric reanalysis."
+        },
+        {
+          "id": "epfl",
+          "reason": "Collaborated with EPFL's Swiss Plasma Center to control tokamak plasma shapes using deep reinforcement learning."
+        }
       ],
       "projects": [
-        { "name": "AlphaFold 3 & Protein Structure Database", "status": "ongoing", "url": "https://alphafold.ebi.ac.uk/" },
-        { "name": "Gemini Frontier Multimodal Models", "status": "ongoing", "url": "https://deepmind.google/technologies/gemini/" }
+        {
+          "name": "AlphaFold 3 & Protein Structure Database",
+          "status": "ongoing",
+          "url": "https://alphafold.ebi.ac.uk/"
+        },
+        {
+          "name": "Gemini Frontier Multimodal Models",
+          "status": "ongoing",
+          "url": "https://deepmind.google/technologies/gemini/"
+        }
       ]
     },
     {
@@ -56,11 +81,11 @@
       "group": "company",
       "entityType": "company",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 37.7621,
       "lng": -122.4148,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2015,
       "status": "active",
       "url": "https://openai.com/",
@@ -77,15 +102,37 @@
         "assoc_prof": "External Red Teaming Network and Preparedness academic grants on AI safety and governance.",
         "prof": "Senior research leadership and cross-institutional scientific evaluation collaborations."
       },
-      "next": ["anthropic", "nvidia_research", "stanford_hai", "ssi_ai"],
+      "next": [
+        "anthropic",
+        "nvidia_research",
+        "stanford_hai",
+        "ssi_ai"
+      ],
       "rabbitLinks": [
-        { "id": "nvidia_research", "reason": "Large-scale transformer pre-training and reasoning runs directly on clusters of tens of thousands of NVIDIA GPUs." },
-        { "id": "anthropic", "reason": "Founded by former OpenAI researchers focused on constitutional alignment and mechanistic interpretability." },
-        { "id": "berkeley_bair", "reason": "Deep lineage in policy-gradient reinforcement learning (TRPO/PPO) originated with Berkeley robotics researchers." }
+        {
+          "id": "nvidia_research",
+          "reason": "Large-scale transformer pre-training and reasoning runs directly on clusters of tens of thousands of NVIDIA GPUs."
+        },
+        {
+          "id": "anthropic",
+          "reason": "Founded by former OpenAI researchers focused on constitutional alignment and mechanistic interpretability."
+        },
+        {
+          "id": "berkeley_bair",
+          "reason": "Deep lineage in policy-gradient reinforcement learning (TRPO/PPO) originated with Berkeley robotics researchers."
+        }
       ],
       "projects": [
-        { "name": "Frontier Reasoning & Multimodal Foundation Models", "status": "ongoing", "url": "https://openai.com/research/" },
-        { "name": "AI Preparedness & Alignment Research", "status": "ongoing", "url": "https://openai.com/safety/" }
+        {
+          "name": "Frontier Reasoning & Multimodal Foundation Models",
+          "status": "ongoing",
+          "url": "https://openai.com/research/"
+        },
+        {
+          "name": "AI Preparedness & Alignment Research",
+          "status": "ongoing",
+          "url": "https://openai.com/safety/"
+        }
       ]
     },
     {
@@ -96,11 +143,11 @@
       "group": "company",
       "entityType": "company",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 37.7897,
       "lng": -122.4014,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2021,
       "status": "active",
       "url": "https://www.anthropic.com/",
@@ -117,15 +164,37 @@
         "assoc_prof": "Academic collaborations on Responsible Scaling evaluations and open interpretability benchmarks.",
         "prof": "External Safety Advisory collaborations and policy-science research exchanges."
       },
-      "next": ["openai", "deepmind", "berkeley_bair", "mit_csail"],
+      "next": [
+        "openai",
+        "deepmind",
+        "berkeley_bair",
+        "mit_csail"
+      ],
       "rabbitLinks": [
-        { "id": "allen_brain", "reason": "Mechanistic interpretability borrows concepts from systems neuroscience to map functional circuits inside artificial neurons." },
-        { "id": "stanford_hai", "reason": "Co-develops frontier model transparency evaluations and societal impact analyses." },
-        { "id": "cern", "reason": "Anthropic's founder Dario Amodei trained in computational physics and biophysics before pivoting to neural scaling." }
+        {
+          "id": "allen_brain",
+          "reason": "Mechanistic interpretability borrows concepts from systems neuroscience to map functional circuits inside artificial neurons."
+        },
+        {
+          "id": "stanford_hai",
+          "reason": "Co-develops frontier model transparency evaluations and societal impact analyses."
+        },
+        {
+          "id": "cern",
+          "reason": "Anthropic's founder Dario Amodei trained in computational physics and biophysics before pivoting to neural scaling."
+        }
       ],
       "projects": [
-        { "name": "Transformer Circuits & Mechanistic Interpretability", "status": "ongoing", "url": "https://transformer-circuits.pub/" },
-        { "name": "Claude Foundation Models & Constitutional AI", "status": "ongoing", "url": "https://www.anthropic.com/research" }
+        {
+          "name": "Transformer Circuits & Mechanistic Interpretability",
+          "status": "ongoing",
+          "url": "https://transformer-circuits.pub/"
+        },
+        {
+          "name": "Claude Foundation Models & Constitutional AI",
+          "status": "ongoing",
+          "url": "https://www.anthropic.com/research"
+        }
       ]
     },
     {
@@ -136,11 +205,11 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 48.8698,
       "lng": 2.3455,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2023,
       "status": "active",
       "url": "https://mistral.ai/",
@@ -157,14 +226,32 @@
         "assoc_prof": "Open-weight research benchmarking partnerships with French and EU academic labs.",
         "prof": "Strategic European AI sovereignty and scientific compute collaborations."
       },
-      "next": ["meta_fair", "inria_saclay", "huggingface", "ens_maths"],
+      "next": [
+        "meta_fair",
+        "inria_saclay",
+        "huggingface",
+        "ens_maths"
+      ],
       "rabbitLinks": [
-        { "id": "ens_maths", "reason": "Co-founders trained in the Paris mathematical and Polytechnique/ENS ecosystem before launching Mistral AI." },
-        { "id": "meta_fair", "reason": "Two co-founders were key architects of Meta's original LLaMA open-weights lineage in Paris." },
-        { "id": "huggingface", "reason": "Distributes open-weight Apache-licensed checkpoints globally via the Hugging Face Hub." }
+        {
+          "id": "ens_maths",
+          "reason": "Co-founders trained in the Paris mathematical and Polytechnique/ENS ecosystem before launching Mistral AI."
+        },
+        {
+          "id": "meta_fair",
+          "reason": "Two co-founders were key architects of Meta's original LLaMA open-weights lineage in Paris."
+        },
+        {
+          "id": "huggingface",
+          "reason": "Distributes open-weight Apache-licensed checkpoints globally via the Hugging Face Hub."
+        }
       ],
       "projects": [
-        { "name": "Open-Weight Sparse MoE & Code Models", "status": "ongoing", "url": "https://mistral.ai/news/" }
+        {
+          "name": "Open-Weight Sparse MoE & Code Models",
+          "status": "ongoing",
+          "url": "https://mistral.ai/news/"
+        }
       ]
     },
     {
@@ -175,10 +262,10 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 37.4419,
-      "lng": -122.1430,
+      "lng": -122.143,
       "zoom": 15.5,
       "foundedYear": 2023,
       "status": "active",
@@ -196,13 +283,28 @@
         "assoc_prof": "Evaluation collaborations on scientific reasoning and physics/math benchmarks.",
         "prof": "Advisory exchanges on ultra-scale training cluster architecture and scientific discovery."
       },
-      "next": ["nvidia_research", "openai", "vector_institute", "stanford_hai"],
+      "next": [
+        "nvidia_research",
+        "openai",
+        "vector_institute",
+        "stanford_hai"
+      ],
       "rabbitLinks": [
-        { "id": "nvidia_research", "reason": "Colossus supercomputer scales over 100,000+ NVIDIA Hopper/Blackwell GPUs with RDMA networking." },
-        { "id": "vector_institute", "reason": "Several founding researchers came out of Toronto's deep learning and mathematical reasoning community." }
+        {
+          "id": "nvidia_research",
+          "reason": "Colossus supercomputer scales over 100,000+ NVIDIA Hopper/Blackwell GPUs with RDMA networking."
+        },
+        {
+          "id": "vector_institute",
+          "reason": "Several founding researchers came out of Toronto's deep learning and mathematical reasoning community."
+        }
       ],
       "projects": [
-        { "name": "Grok Frontier Reasoning Models & Colossus Supercluster", "status": "ongoing", "url": "https://x.ai/blog" }
+        {
+          "name": "Grok Frontier Reasoning Models & Colossus Supercluster",
+          "status": "ongoing",
+          "url": "https://x.ai/blog"
+        }
       ]
     },
     {
@@ -213,11 +315,11 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 43.6487,
       "lng": -79.3854,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2019,
       "status": "active",
       "url": "https://cohere.com/",
@@ -234,13 +336,28 @@
         "assoc_prof": "Co-mentoring global open-science collaborations through Cohere Labs.",
         "prof": "Joint research on low-resource language benchmarks and efficient neural architectures."
       },
-      "next": ["vector_institute", "mila_quebec", "huggingface", "deepmind"],
+      "next": [
+        "vector_institute",
+        "mila_quebec",
+        "huggingface",
+        "deepmind"
+      ],
       "rabbitLinks": [
-        { "id": "vector_institute", "reason": "Anchored in Toronto's deep learning hub alongside Geoffrey Hinton's University of Toronto ecosystem." },
-        { "id": "huggingface", "reason": "Releases open multilingual Aya datasets and checkpoints for global community research." }
+        {
+          "id": "vector_institute",
+          "reason": "Anchored in Toronto's deep learning hub alongside Geoffrey Hinton's University of Toronto ecosystem."
+        },
+        {
+          "id": "huggingface",
+          "reason": "Releases open multilingual Aya datasets and checkpoints for global community research."
+        }
       ],
       "projects": [
-        { "name": "Aya Open Multilingual AI Initiative", "status": "ongoing", "url": "https://cohere.com/research" }
+        {
+          "name": "Aya Open Multilingual AI Initiative",
+          "status": "ongoing",
+          "url": "https://cohere.com/research"
+        }
       ]
     },
     {
@@ -251,11 +368,11 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 40.7033,
       "lng": -73.9881,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2016,
       "status": "active",
       "url": "https://huggingface.co/",
@@ -272,15 +389,37 @@
         "assoc_prof": "Host academic datasets, model weights, and interactive paper demos directly on the Hub.",
         "prof": "Co-lead global decentralized open-science consortia modeled on BigScience and BigCode."
       },
-      "next": ["mistral_ai", "ai2_allen", "meta_fair", "cornell_cs"],
+      "next": [
+        "mistral_ai",
+        "ai2_allen",
+        "meta_fair",
+        "cornell_cs"
+      ],
       "rabbitLinks": [
-        { "id": "cornell_cs", "reason": "Pairs with Cornell's arXiv preprint server as the twin pillars of modern open machine learning." },
-        { "id": "ai2_allen", "reason": "Hosts fully open OLMo weights, training data, and evaluation suites for transparent academic study." },
-        { "id": "physical_intelligence", "reason": "Hugging Face's LeRobot initiative democratizes open datasets and policies for embodied robot learning." }
+        {
+          "id": "cornell_cs",
+          "reason": "Pairs with Cornell's arXiv preprint server as the twin pillars of modern open machine learning."
+        },
+        {
+          "id": "ai2_allen",
+          "reason": "Hosts fully open OLMo weights, training data, and evaluation suites for transparent academic study."
+        },
+        {
+          "id": "physical_intelligence",
+          "reason": "Hugging Face's LeRobot initiative democratizes open datasets and policies for embodied robot learning."
+        }
       ],
       "projects": [
-        { "name": "Transformers & Open Model Hub", "status": "ongoing", "url": "https://huggingface.co/docs/transformers" },
-        { "name": "LeRobot Open-Source Robotics Stack", "status": "ongoing", "url": "https://github.com/huggingface/lerobot" }
+        {
+          "name": "Transformers & Open Model Hub",
+          "status": "ongoing",
+          "url": "https://huggingface.co/docs/transformers"
+        },
+        {
+          "name": "LeRobot Open-Source Robotics Stack",
+          "status": "ongoing",
+          "url": "https://github.com/huggingface/lerobot"
+        }
       ]
     },
     {
@@ -291,11 +430,11 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 35.6646,
       "lng": 139.7314,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2023,
       "status": "active",
       "url": "https://sakana.ai/",
@@ -312,13 +451,28 @@
         "assoc_prof": "Joint workshops on open-ended evolution and AI-accelerated scientific workflows.",
         "prof": "Collaborations bridging Tokyo's national supercomputing infrastructure with evolutionary AI."
       },
-      "next": ["riken_aip", "utokyo", "deepmind", "huggingface"],
+      "next": [
+        "riken_aip",
+        "utokyo",
+        "deepmind",
+        "huggingface"
+      ],
       "rabbitLinks": [
-        { "id": "riken_aip", "reason": "Anchored in Tokyo's AI research ecosystem alongside RIKEN's advanced intelligence and Fugaku supercomputing programs." },
-        { "id": "mpi_eva", "reason": "Draws conceptual inspiration from biological evolution and swarm intelligence to evolve neural architectures." }
+        {
+          "id": "riken_aip",
+          "reason": "Anchored in Tokyo's AI research ecosystem alongside RIKEN's advanced intelligence and Fugaku supercomputing programs."
+        },
+        {
+          "id": "mpi_eva",
+          "reason": "Draws conceptual inspiration from biological evolution and swarm intelligence to evolve neural architectures."
+        }
       ],
       "projects": [
-        { "name": "The AI Scientist & Evolutionary Model Merging", "status": "ongoing", "url": "https://sakana.ai/blog/" }
+        {
+          "name": "The AI Scientist & Evolutionary Model Merging",
+          "status": "ongoing",
+          "url": "https://sakana.ai/blog/"
+        }
       ]
     },
     {
@@ -329,7 +483,7 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 30.2741,
       "lng": 120.1551,
@@ -350,14 +504,32 @@
         "assoc_prof": "Reproducing and extending MIT-licensed DeepSeek-R1 reasoning models in academic labs.",
         "prof": "Evaluating open-weight reasoning distillation across physics, mathematics, and bioinformatics."
       },
-      "next": ["tsinghua_iiis", "pk_ai_bigai", "huggingface", "unitree_robotics"],
+      "next": [
+        "tsinghua_iiis",
+        "pk_ai_bigai",
+        "huggingface",
+        "unitree_robotics"
+      ],
       "rabbitLinks": [
-        { "id": "unitree_robotics", "reason": "Shares Hangzhou's booming hardware-and-AI startup ecosystem alongside quadruped and humanoid robot builders." },
-        { "id": "tsinghua_iiis", "reason": "Recruits heavily from China's top competitive programming and theoretical CS cohorts in Beijing and Hangzhou." },
-        { "id": "huggingface", "reason": "Open-source MIT-licensed R1/V3 releases sparked global community distillation and reproducibility research." }
+        {
+          "id": "unitree_robotics",
+          "reason": "Shares Hangzhou's booming hardware-and-AI startup ecosystem alongside quadruped and humanoid robot builders."
+        },
+        {
+          "id": "tsinghua_iiis",
+          "reason": "Recruits heavily from China's top competitive programming and theoretical CS cohorts in Beijing and Hangzhou."
+        },
+        {
+          "id": "huggingface",
+          "reason": "Open-source MIT-licensed R1/V3 releases sparked global community distillation and reproducibility research."
+        }
       ],
       "projects": [
-        { "name": "DeepSeek-R1 & DeepSeek-V3 Open Reasoning Models", "status": "ongoing", "url": "https://github.com/deepseek-ai" }
+        {
+          "name": "DeepSeek-R1 & DeepSeek-V3 Open Reasoning Models",
+          "status": "ongoing",
+          "url": "https://github.com/deepseek-ai"
+        }
       ]
     },
     {
@@ -368,11 +540,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 47.6531,
       "lng": -122.3335,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2014,
       "status": "active",
       "url": "https://allenai.org/",
@@ -389,15 +561,37 @@
         "assoc_prof": "Dual academic-Ai2 appointments conducting public-interest AI research.",
         "prof": "Distinguished Research Leader chairs advancing open scientific AI infrastructure."
       },
-      "next": ["uw_allen_cs", "allen_brain", "huggingface", "nsf_ncar"],
+      "next": [
+        "uw_allen_cs",
+        "allen_brain",
+        "huggingface",
+        "nsf_ncar"
+      ],
       "rabbitLinks": [
-        { "id": "allen_brain", "reason": "Sister institute founded by Paul G. Allen in Seattle; shares open-science philosophy across AI and neuroscience." },
-        { "id": "uw_allen_cs", "reason": "Tightly integrated with the University of Washington's Allen School through joint faculty and PhD students." },
-        { "id": "nsf_ncar", "reason": "Ai2's Climate Modeling group builds machine-learning atmospheric emulators benchmarked against NCAR physics simulations." }
+        {
+          "id": "allen_brain",
+          "reason": "Sister institute founded by Paul G. Allen in Seattle; shares open-science philosophy across AI and neuroscience."
+        },
+        {
+          "id": "uw_allen_cs",
+          "reason": "Tightly integrated with the University of Washington's Allen School through joint faculty and PhD students."
+        },
+        {
+          "id": "nsf_ncar",
+          "reason": "Ai2's Climate Modeling group builds machine-learning atmospheric emulators benchmarked against NCAR physics simulations."
+        }
       ],
       "projects": [
-        { "name": "OLMo & Molmo Fully Open Models", "status": "ongoing", "url": "https://allenai.org/olmo" },
-        { "name": "Semantic Scholar Scientific Literature Graph", "status": "ongoing", "url": "https://www.semanticscholar.org/" }
+        {
+          "name": "OLMo & Molmo Fully Open Models",
+          "status": "ongoing",
+          "url": "https://allenai.org/olmo"
+        },
+        {
+          "name": "Semantic Scholar Scientific Literature Graph",
+          "status": "ongoing",
+          "url": "https://www.semanticscholar.org/"
+        }
       ]
     },
     {
@@ -408,7 +602,7 @@
       "group": "company",
       "entityType": "company",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": true,
       "lat": 37.3708,
       "lng": -121.9675,
@@ -429,15 +623,37 @@
         "assoc_prof": "NVIDIA Academic Grant Program providing GPU compute and co-advising PhD students.",
         "prof": "Joint industry-academic leadership in sovereign AI supercomputers and scientific digital twins."
       },
-      "next": ["tsmc_rd", "asml", "stanford_hai", "openai"],
+      "next": [
+        "tsmc_rd",
+        "asml",
+        "stanford_hai",
+        "openai"
+      ],
       "rabbitLinks": [
-        { "id": "tsmc_rd", "reason": "Every frontier NVIDIA Blackwell and Hopper GPU is fabricated on TSMC's leading-edge nanometer silicon nodes in Taiwan." },
-        { "id": "asml", "reason": "TSMC fabricates NVIDIA's billion-transistor AI accelerators using ASML extreme ultraviolet (EUV) lithography machines." },
-        { "id": "ecmwf", "reason": "NVIDIA Earth-2 and FourCastNet pioneer kilometer-scale AI weather digital twins built on ECMWF reanalysis data." }
+        {
+          "id": "tsmc_rd",
+          "reason": "Every frontier NVIDIA Blackwell and Hopper GPU is fabricated on TSMC's leading-edge nanometer silicon nodes in Taiwan."
+        },
+        {
+          "id": "asml",
+          "reason": "TSMC fabricates NVIDIA's billion-transistor AI accelerators using ASML extreme ultraviolet (EUV) lithography machines."
+        },
+        {
+          "id": "ecmwf",
+          "reason": "NVIDIA Earth-2 and FourCastNet pioneer kilometer-scale AI weather digital twins built on ECMWF reanalysis data."
+        }
       ],
       "projects": [
-        { "name": "Earth-2 Climate Digital Twin & FourCastNet", "status": "ongoing", "url": "https://www.nvidia.com/en-us/high-performance-computing/earth-2/" },
-        { "name": "CUDA-Q Hybrid Quantum-Classical Computing", "status": "ongoing", "url": "https://developer.nvidia.com/cuda-q" }
+        {
+          "name": "Earth-2 Climate Digital Twin & FourCastNet",
+          "status": "ongoing",
+          "url": "https://www.nvidia.com/en-us/high-performance-computing/earth-2/"
+        },
+        {
+          "name": "CUDA-Q Hybrid Quantum-Classical Computing",
+          "status": "ongoing",
+          "url": "https://developer.nvidia.com/cuda-q"
+        }
       ]
     },
     {
@@ -448,11 +664,11 @@
       "group": "company",
       "entityType": "company",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 48.8705,
       "lng": 2.3365,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2013,
       "status": "active",
       "url": "https://ai.meta.com/research/",
@@ -469,15 +685,37 @@
         "assoc_prof": "Visiting Scientist sabbaticals working on self-supervised Joint Embedding Predictive Architectures (JEPA).",
         "prof": "Dual-appointment Research Scientists co-leading fundamental AI and materials discovery benchmarks."
       },
-      "next": ["inria_saclay", "mistral_ai", "courant_nyu", "cmu_scs"],
+      "next": [
+        "inria_saclay",
+        "mistral_ai",
+        "courant_nyu",
+        "cmu_scs"
+      ],
       "rabbitLinks": [
-        { "id": "cmu_scs", "reason": "Co-created the Open Catalyst Project (OC20/OC22) combining DFT quantum chemistry with graph neural networks." },
-        { "id": "courant_nyu", "reason": "Yann LeCun holds a joint professorship at NYU Courant, forming a transatlantic bridge with FAIR Paris." },
-        { "id": "mpi_kofo", "reason": "FAIR's Open Catalyst models accelerate screening of electrocatalysts for green hydrogen and carbon capture." }
+        {
+          "id": "cmu_scs",
+          "reason": "Co-created the Open Catalyst Project (OC20/OC22) combining DFT quantum chemistry with graph neural networks."
+        },
+        {
+          "id": "courant_nyu",
+          "reason": "Yann LeCun holds a joint professorship at NYU Courant, forming a transatlantic bridge with FAIR Paris."
+        },
+        {
+          "id": "mpi_kofo",
+          "reason": "FAIR's Open Catalyst models accelerate screening of electrocatalysts for green hydrogen and carbon capture."
+        }
       ],
       "projects": [
-        { "name": "PyTorch & Llama Open Ecosystem", "status": "ongoing", "url": "https://ai.meta.com/llama/" },
-        { "name": "Open Catalyst & Open Molecules AI for Chemistry", "status": "ongoing", "url": "https://fair-chem.github.io/" }
+        {
+          "name": "PyTorch & Llama Open Ecosystem",
+          "status": "ongoing",
+          "url": "https://ai.meta.com/llama/"
+        },
+        {
+          "name": "Open Catalyst & Open Molecules AI for Chemistry",
+          "status": "ongoing",
+          "url": "https://fair-chem.github.io/"
+        }
       ]
     },
     {
@@ -488,7 +726,7 @@
       "group": "company",
       "entityType": "lab",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "theory_crypto",
       "pinned": true,
       "lat": 47.6435,
       "lng": -122.1306,
@@ -509,15 +747,37 @@
         "assoc_prof": "Visiting Researcher collaborations and joint workshops in formal math and climate modeling.",
         "prof": "Partner Researcher roles bridging university departments with industrial compute."
       },
-      "next": ["qutech", "cambridge_cst", "uw_allen_cs", "bohr"],
+      "next": [
+        "qutech",
+        "cambridge_cst",
+        "uw_allen_cs",
+        "bohr"
+      ],
       "rabbitLinks": [
-        { "id": "bohr", "reason": "Microsoft Quantum Lab Copenhagen operates closely with the Niels Bohr Institute on topological superconducting qubits." },
-        { "id": "qutech", "reason": "Collaborates with Delft's QuTech on semiconductor-superconductor hybrid nanowire devices." },
-        { "id": "lbl_foundry", "reason": "MSR's MatterGen generative diffusion model designs novel inorganic crystals validated against national lab materials databases." }
+        {
+          "id": "bohr",
+          "reason": "Microsoft Quantum Lab Copenhagen operates closely with the Niels Bohr Institute on topological superconducting qubits."
+        },
+        {
+          "id": "qutech",
+          "reason": "Collaborates with Delft's QuTech on semiconductor-superconductor hybrid nanowire devices."
+        },
+        {
+          "id": "lbl_foundry",
+          "reason": "MSR's MatterGen generative diffusion model designs novel inorganic crystals validated against national lab materials databases."
+        }
       ],
       "projects": [
-        { "name": "Microsoft Research AI for Science (MatterGen & Aurora)", "status": "ongoing", "url": "https://www.microsoft.com/en-us/research/lab/microsoft-research-ai-for-science/" },
-        { "name": "Z3 Theorem Prover & Formal Verification", "status": "ongoing", "url": "https://github.com/Z3Prover/z3" }
+        {
+          "name": "Microsoft Research AI for Science (MatterGen & Aurora)",
+          "status": "ongoing",
+          "url": "https://www.microsoft.com/en-us/research/lab/microsoft-research-ai-for-science/"
+        },
+        {
+          "name": "Z3 Theorem Prover & Formal Verification",
+          "status": "ongoing",
+          "url": "https://github.com/Z3Prover/z3"
+        }
       ]
     },
     {
@@ -528,7 +788,7 @@
       "group": "company",
       "entityType": "lab",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "quantum_cs",
       "pinned": true,
       "lat": 41.2108,
       "lng": -73.8027,
@@ -549,15 +809,37 @@
         "assoc_prof": "IBM-MIT Watson AI Lab and Qiskit Network university research grants.",
         "prof": "IBM Research Collaborations across semiconductor consortia and utility-scale quantum computing."
       },
-      "next": ["mit_csail", "imec", "eth", "courant_nyu"],
+      "next": [
+        "mit_csail",
+        "imec",
+        "eth",
+        "courant_nyu"
+      ],
       "rabbitLinks": [
-        { "id": "mit_csail", "reason": "Co-runs the MIT-IBM Watson AI Lab investing over $240M in foundational AI and neuro-symbolic research." },
-        { "id": "imec", "reason": "Partners across the global semiconductor ecosystem on 2 nm gate-all-around nanosheet transistor physics." },
-        { "id": "eth", "reason": "IBM Research Zurich shares decades of Nobel-winning condensed matter and quantum physics collaboration with ETH Zurich." }
+        {
+          "id": "mit_csail",
+          "reason": "Co-runs the MIT-IBM Watson AI Lab investing over $240M in foundational AI and neuro-symbolic research."
+        },
+        {
+          "id": "imec",
+          "reason": "Partners across the global semiconductor ecosystem on 2 nm gate-all-around nanosheet transistor physics."
+        },
+        {
+          "id": "eth",
+          "reason": "IBM Research Zurich shares decades of Nobel-winning condensed matter and quantum physics collaboration with ETH Zurich."
+        }
       ],
       "projects": [
-        { "name": "IBM Quantum Roadmap & Qiskit Open SDK", "status": "ongoing", "url": "https://www.ibm.com/quantum" },
-        { "name": "Granite Open Enterprise & Geospatial Foundation Models", "status": "ongoing", "url": "https://research.ibm.com/artificial-intelligence" }
+        {
+          "name": "IBM Quantum Roadmap & Qiskit Open SDK",
+          "status": "ongoing",
+          "url": "https://www.ibm.com/quantum"
+        },
+        {
+          "name": "Granite Open Enterprise & Geospatial Foundation Models",
+          "status": "ongoing",
+          "url": "https://research.ibm.com/artificial-intelligence"
+        }
       ]
     },
     {
@@ -568,10 +850,10 @@
       "group": "company",
       "entityType": "company",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 37.3346,
-      "lng": -122.0090,
+      "lng": -122.009,
       "zoom": 15.5,
       "foundedYear": 2016,
       "status": "active",
@@ -589,14 +871,33 @@
         "assoc_prof": "Academic publications and open-source benchmark releases at NeurIPS, CVPR, and Interspeech.",
         "prof": "Visiting academic collaborations in computer vision, differential privacy, and neural silicon design."
       },
-      "next": ["stanford_hai", "tsmc_rd", "arm_research", "eth_ai_center"],
+      "next": [
+        "stanford_hai",
+        "tsmc_rd",
+        "arm_research",
+        "eth_ai_center"
+      ],
       "rabbitLinks": [
-        { "id": "tsmc_rd", "reason": "Apple's M-series and A-series Neural Engine chips are co-designed for TSMC's newest 3 nm and 2 nm process nodes." },
-        { "id": "arm_research", "reason": "Apple Silicon builds high-performance custom microarchitectures on the ARM instruction set architecture." }
+        {
+          "id": "tsmc_rd",
+          "reason": "Apple's M-series and A-series Neural Engine chips are co-designed for TSMC's newest 3 nm and 2 nm process nodes."
+        },
+        {
+          "id": "arm_research",
+          "reason": "Apple Silicon builds high-performance custom microarchitectures on the ARM instruction set architecture."
+        }
       ],
       "projects": [
-        { "name": "MLX Open-Source Array Framework for Apple Silicon", "status": "ongoing", "url": "https://github.com/ml-explore/mlx" },
-        { "name": "Privacy-Preserving & On-Device Foundation Models", "status": "ongoing", "url": "https://machinelearning.apple.com/research" }
+        {
+          "name": "MLX Open-Source Array Framework for Apple Silicon",
+          "status": "ongoing",
+          "url": "https://github.com/ml-explore/mlx"
+        },
+        {
+          "name": "Privacy-Preserving & On-Device Foundation Models",
+          "status": "ongoing",
+          "url": "https://machinelearning.apple.com/research"
+        }
       ]
     },
     {
@@ -607,10 +908,10 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 37.4443,
-      "lng": -122.1610,
+      "lng": -122.161,
       "zoom": 15.8,
       "foundedYear": 2024,
       "status": "active",
@@ -628,13 +929,28 @@
         "assoc_prof": "Follow foundational literature on generalization, compression, and superalignment.",
         "prof": "Engage with long-term technical safety paradigms for superhuman AI systems."
       },
-      "next": ["openai", "anthropic", "vector_institute", "technion_cs"],
+      "next": [
+        "openai",
+        "anthropic",
+        "vector_institute",
+        "technion_cs"
+      ],
       "rabbitLinks": [
-        { "id": "vector_institute", "reason": "Ilya Sutskever completed his PhD under Geoffrey Hinton in Toronto, co-creating AlexNet in 2012." },
-        { "id": "technion_cs", "reason": "Maintains a second research office in Tel Aviv drawing on Israel's deep theoretical CS and ML talent." }
+        {
+          "id": "vector_institute",
+          "reason": "Ilya Sutskever completed his PhD under Geoffrey Hinton in Toronto, co-creating AlexNet in 2012."
+        },
+        {
+          "id": "technion_cs",
+          "reason": "Maintains a second research office in Tel Aviv drawing on Israel's deep theoretical CS and ML talent."
+        }
       ],
       "projects": [
-        { "name": "Safe Superintelligence Core Research", "status": "ongoing", "url": "https://ssi.inc/" }
+        {
+          "name": "Safe Superintelligence Core Research",
+          "status": "ongoing",
+          "url": "https://ssi.inc/"
+        }
       ]
     },
     {
@@ -645,10 +961,10 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
-      "lat": 37.7790,
-      "lng": -122.4050,
+      "lat": 37.779,
+      "lng": -122.405,
       "zoom": 15.8,
       "foundedYear": 2024,
       "status": "active",
@@ -666,13 +982,28 @@
         "assoc_prof": "Collaborate via open π0 model weights and cross-embodiment robotics benchmarks.",
         "prof": "Shape standards for safe general-purpose physical AI deployment."
       },
-      "next": ["berkeley_bair", "stanford_hai", "boston_dynamics", "huggingface"],
+      "next": [
+        "berkeley_bair",
+        "stanford_hai",
+        "boston_dynamics",
+        "huggingface"
+      ],
       "rabbitLinks": [
-        { "id": "berkeley_bair", "reason": "Co-founder Sergey Levine leads Berkeley's RAIL lab, pioneering offline RL and open cross-embodiment datasets." },
-        { "id": "boston_dynamics", "reason": "Pairs generalist neural manipulation policies with the next generation of agile physical robot bodies." }
+        {
+          "id": "berkeley_bair",
+          "reason": "Co-founder Sergey Levine leads Berkeley's RAIL lab, pioneering offline RL and open cross-embodiment datasets."
+        },
+        {
+          "id": "boston_dynamics",
+          "reason": "Pairs generalist neural manipulation policies with the next generation of agile physical robot bodies."
+        }
       ],
       "projects": [
-        { "name": "π0 Generalist Vision-Language-Action Robot Policy", "status": "ongoing", "url": "https://www.physicalintelligence.company/blog/pi0" }
+        {
+          "name": "π0 Generalist Vision-Language-Action Robot Policy",
+          "status": "ongoing",
+          "url": "https://www.physicalintelligence.company/blog/pi0"
+        }
       ]
     },
     {
@@ -683,11 +1014,11 @@
       "group": "company",
       "entityType": "startup",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "graphics_hci",
       "pinned": false,
       "lat": 40.7233,
       "lng": -73.9985,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2018,
       "status": "active",
       "url": "https://runwayml.com/research",
@@ -704,13 +1035,28 @@
         "assoc_prof": "Academic collaborations on video evaluation benchmarks and physics fidelity.",
         "prof": "Advisory exchanges on generative media provenance and simulated world environments."
       },
-      "next": ["courant_nyu", "huggingface", "nvidia_research", "stanford_hai"],
+      "next": [
+        "courant_nyu",
+        "huggingface",
+        "nvidia_research",
+        "stanford_hai"
+      ],
       "rabbitLinks": [
-        { "id": "nvidia_research", "reason": "Generative video world models share deep mathematical roots with diffusion physics and neural rendering." },
-        { "id": "courant_nyu", "reason": "Anchored in New York City's vibrant computer vision and generative modeling community." }
+        {
+          "id": "nvidia_research",
+          "reason": "Generative video world models share deep mathematical roots with diffusion physics and neural rendering."
+        },
+        {
+          "id": "courant_nyu",
+          "reason": "Anchored in New York City's vibrant computer vision and generative modeling community."
+        }
       ],
       "projects": [
-        { "name": "General World Models & Video Diffusion Research", "status": "ongoing", "url": "https://runwayml.com/research" }
+        {
+          "name": "General World Models & Video Diffusion Research",
+          "status": "ongoing",
+          "url": "https://runwayml.com/research"
+        }
       ]
     },
     {
@@ -721,7 +1067,7 @@
       "group": "uni",
       "entityType": "lab",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": true,
       "lat": 42.3616,
       "lng": -71.0906,
@@ -742,16 +1088,41 @@
         "assoc_prof": "Cross-disciplinary grants with Broad Institute, MIT AeroAstro, and global labs.",
         "prof": "Principal Investigator leadership inside the Frank Gehry-designed Stata Center."
       },
-      "next": ["mit", "broad_institute", "ibm_research_ai", "boston_dynamics"],
+      "next": [
+        "mit",
+        "broad_institute",
+        "ibm_research_ai",
+        "boston_dynamics"
+      ],
       "rabbitLinks": [
-        { "id": "mit", "reason": "Housed inside MIT's Cambridge campus alongside MIT Physics, Media Lab, and Quantum Engineering." },
-        { "id": "cern", "reason": "World Wide Web inventor Tim Berners-Lee moved from CERN to MIT CSAIL to found the W3C." },
-        { "id": "broad_institute", "reason": "Joint CSAIL-Broad teams pioneer generative AI for antibiotics, protein design, and single-cell genomics." },
-        { "id": "boston_dynamics", "reason": "Spinout lineage traces directly to Marc Raibert's Leg Laboratory at MIT." }
+        {
+          "id": "mit",
+          "reason": "Housed inside MIT's Cambridge campus alongside MIT Physics, Media Lab, and Quantum Engineering."
+        },
+        {
+          "id": "cern",
+          "reason": "World Wide Web inventor Tim Berners-Lee moved from CERN to MIT CSAIL to found the W3C."
+        },
+        {
+          "id": "broad_institute",
+          "reason": "Joint CSAIL-Broad teams pioneer generative AI for antibiotics, protein design, and single-cell genomics."
+        },
+        {
+          "id": "boston_dynamics",
+          "reason": "Spinout lineage traces directly to Marc Raibert's Leg Laboratory at MIT."
+        }
       ],
       "projects": [
-        { "name": "MIT-IBM Watson AI Lab", "status": "ongoing", "url": "https://mitibmwatsonailab.mit.edu/" },
-        { "name": "CSAIL Robotics & Embodied Intelligence", "status": "ongoing", "url": "https://www.csail.mit.edu/research/robotics" }
+        {
+          "name": "MIT-IBM Watson AI Lab",
+          "status": "ongoing",
+          "url": "https://mitibmwatsonailab.mit.edu/"
+        },
+        {
+          "name": "CSAIL Robotics & Embodied Intelligence",
+          "status": "ongoing",
+          "url": "https://www.csail.mit.edu/research/robotics"
+        }
       ]
     },
     {
@@ -762,9 +1133,9 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
-      "lat": 37.4300,
+      "lat": 37.43,
       "lng": -122.1733,
       "zoom": 16.2,
       "foundedYear": 1962,
@@ -783,15 +1154,37 @@
         "assoc_prof": "HAI Seed Grants and Center for Research on Foundation Models (CRFM) collaborations.",
         "prof": "Visiting Faculty fellowships and international AI governance advisory boards."
       },
-      "next": ["slac", "berkeley_bair", "openai", "arc_institute"],
+      "next": [
+        "slac",
+        "berkeley_bair",
+        "openai",
+        "arc_institute"
+      ],
       "rabbitLinks": [
-        { "id": "slac", "reason": "Operated by Stanford right up Sand Hill Road; Stanford AI teams accelerate X-ray free-electron laser analysis at SLAC." },
-        { "id": "arc_institute", "reason": "Co-founded with Stanford faculty to pair frontier genomic foundation models (Evo) with high-throughput wet labs." },
-        { "id": "physical_intelligence", "reason": "SAIL robotics alumni lead the new wave of Vision-Language-Action manipulation startups." }
+        {
+          "id": "slac",
+          "reason": "Operated by Stanford right up Sand Hill Road; Stanford AI teams accelerate X-ray free-electron laser analysis at SLAC."
+        },
+        {
+          "id": "arc_institute",
+          "reason": "Co-founded with Stanford faculty to pair frontier genomic foundation models (Evo) with high-throughput wet labs."
+        },
+        {
+          "id": "physical_intelligence",
+          "reason": "SAIL robotics alumni lead the new wave of Vision-Language-Action manipulation startups."
+        }
       ],
       "projects": [
-        { "name": "Center for Research on Foundation Models (CRFM) & HELM", "status": "ongoing", "url": "https://crfm.stanford.edu/" },
-        { "name": "Annual AI Index Report", "status": "ongoing", "url": "https://aiindex.stanford.edu/" }
+        {
+          "name": "Center for Research on Foundation Models (CRFM) & HELM",
+          "status": "ongoing",
+          "url": "https://crfm.stanford.edu/"
+        },
+        {
+          "name": "Annual AI Index Report",
+          "status": "ongoing",
+          "url": "https://aiindex.stanford.edu/"
+        }
       ]
     },
     {
@@ -802,7 +1195,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": true,
       "lat": 40.4435,
       "lng": -79.9446,
@@ -823,14 +1216,33 @@
         "assoc_prof": "NSF AI Institute collaborations and industry-university partnerships in autonomous systems.",
         "prof": "Departmental chairs and joint appointments across Pittsburgh's robotics valley."
       },
-      "next": ["meta_fair", "mit_csail", "nasa_jpl", "gatech_irim"],
+      "next": [
+        "meta_fair",
+        "mit_csail",
+        "nasa_jpl",
+        "gatech_irim"
+      ],
       "rabbitLinks": [
-        { "id": "nasa_jpl", "reason": "CMU's Field Robotics Center builds lunar and planetary rover autonomy tested alongside NASA JPL." },
-        { "id": "meta_fair", "reason": "Co-led the Open Catalyst Project applying graph neural networks to clean-energy chemistry." }
+        {
+          "id": "nasa_jpl",
+          "reason": "CMU's Field Robotics Center builds lunar and planetary rover autonomy tested alongside NASA JPL."
+        },
+        {
+          "id": "meta_fair",
+          "reason": "Co-led the Open Catalyst Project applying graph neural networks to clean-energy chemistry."
+        }
       ],
       "projects": [
-        { "name": "Robotics Institute Field & Lunar Rover Autonomy", "status": "ongoing", "url": "https://www.ri.cmu.edu/" },
-        { "name": "Machine Learning Department Foundations", "status": "ongoing", "url": "https://www.ml.cmu.edu/" }
+        {
+          "name": "Robotics Institute Field & Lunar Rover Autonomy",
+          "status": "ongoing",
+          "url": "https://www.ri.cmu.edu/"
+        },
+        {
+          "name": "Machine Learning Department Foundations",
+          "status": "ongoing",
+          "url": "https://www.ml.cmu.edu/"
+        }
       ]
     },
     {
@@ -841,7 +1253,7 @@
       "group": "uni",
       "entityType": "lab",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 37.8756,
       "lng": -122.2587,
@@ -862,14 +1274,32 @@
         "assoc_prof": "Collaborative workshops at the Simons Institute and joint grants with LBNL.",
         "prof": "Visiting scholar appointments across AI safety, robotics, and RISC-V hardware."
       },
-      "next": ["berkeley", "slmath_msri", "physical_intelligence", "igi_berkeley"],
+      "next": [
+        "berkeley",
+        "slmath_msri",
+        "physical_intelligence",
+        "igi_berkeley"
+      ],
       "rabbitLinks": [
-        { "id": "berkeley", "reason": "Embedded inside UC Berkeley's campus alongside LBNL and the birthplace of BSD Unix and RISC-V." },
-        { "id": "slmath_msri", "reason": "Shares the Berkeley hills with SLMath and the Simons Institute for the Theory of Computing." },
-        { "id": "igi_berkeley", "reason": "Collaborates across campus to apply machine learning to CRISPR genome-editing design." }
+        {
+          "id": "berkeley",
+          "reason": "Embedded inside UC Berkeley's campus alongside LBNL and the birthplace of BSD Unix and RISC-V."
+        },
+        {
+          "id": "slmath_msri",
+          "reason": "Shares the Berkeley hills with SLMath and the Simons Institute for the Theory of Computing."
+        },
+        {
+          "id": "igi_berkeley",
+          "reason": "Collaborates across campus to apply machine learning to CRISPR genome-editing design."
+        }
       ],
       "projects": [
-        { "name": "BAIR Open Research & Sky Computing (Ray / vLLM)", "status": "ongoing", "url": "https://bair.berkeley.edu/blog/" }
+        {
+          "name": "BAIR Open Research & Sky Computing (Ray / vLLM)",
+          "status": "ongoing",
+          "url": "https://bair.berkeley.edu/blog/"
+        }
       ]
     },
     {
@@ -880,11 +1310,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 45.5307,
       "lng": -73.6134,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1993,
       "status": "active",
       "url": "https://mila.quebec/",
@@ -901,14 +1331,33 @@
         "assoc_prof": "Canada CIFAR AI Chairs and visiting academic sabbaticals.",
         "prof": "International AI safety governance (International AI Safety Report) and joint global labs."
       },
-      "next": ["vector_institute", "cohere", "meta_fair", "fields_institute"],
+      "next": [
+        "vector_institute",
+        "cohere",
+        "meta_fair",
+        "fields_institute"
+      ],
       "rabbitLinks": [
-        { "id": "vector_institute", "reason": "Forms Canada's Pan-Canadian AI Strategy axis with Toronto's Vector Institute and Edmonton's Amii." },
-        { "id": "pik_potsdam", "reason": "Mila's Climate Change AI co-founders link machine learning directly to global climate impact modeling." }
+        {
+          "id": "vector_institute",
+          "reason": "Forms Canada's Pan-Canadian AI Strategy axis with Toronto's Vector Institute and Edmonton's Amii."
+        },
+        {
+          "id": "pik_potsdam",
+          "reason": "Mila's Climate Change AI co-founders link machine learning directly to global climate impact modeling."
+        }
       ],
       "projects": [
-        { "name": "GFlowNets for Scientific & Molecular Discovery", "status": "ongoing", "url": "https://mila.quebec/en/ai4humanity" },
-        { "name": "International Scientific Report on Advanced AI Safety", "status": "ongoing", "url": "https://mila.quebec/en/" }
+        {
+          "name": "GFlowNets for Scientific & Molecular Discovery",
+          "status": "ongoing",
+          "url": "https://mila.quebec/en/ai4humanity"
+        },
+        {
+          "name": "International Scientific Report on Advanced AI Safety",
+          "status": "ongoing",
+          "url": "https://mila.quebec/en/"
+        }
       ]
     },
     {
@@ -919,11 +1368,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 43.6596,
       "lng": -79.3891,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2017,
       "status": "active",
       "url": "https://vectorinstitute.ai/",
@@ -940,13 +1389,28 @@
         "assoc_prof": "Canada CIFAR AI Chair faculty appointments across Ontario universities.",
         "prof": "Global academic-clinical AI partnerships with Toronto's hospital research network."
       },
-      "next": ["mila_quebec", "cohere", "fields_institute", "ssi_ai"],
+      "next": [
+        "mila_quebec",
+        "cohere",
+        "fields_institute",
+        "ssi_ai"
+      ],
       "rabbitLinks": [
-        { "id": "fields_institute", "reason": "Located blocks away in downtown Toronto; collaborates on the mathematical foundations of deep learning." },
-        { "id": "perimeter", "reason": "Connects Ontario's AI ecosystem with Waterloo's Perimeter Institute on quantum-inspired neural physics." }
+        {
+          "id": "fields_institute",
+          "reason": "Located blocks away in downtown Toronto; collaborates on the mathematical foundations of deep learning."
+        },
+        {
+          "id": "perimeter",
+          "reason": "Connects Ontario's AI ecosystem with Waterloo's Perimeter Institute on quantum-inspired neural physics."
+        }
       ],
       "projects": [
-        { "name": "Health AI & Scientific Machine Learning Consortia", "status": "ongoing", "url": "https://vectorinstitute.ai/research/" }
+        {
+          "name": "Health AI & Scientific Machine Learning Consortia",
+          "status": "ongoing",
+          "url": "https://vectorinstitute.ai/research/"
+        }
       ]
     },
     {
@@ -957,7 +1421,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 51.5299,
       "lng": -0.1277,
@@ -978,14 +1442,33 @@
         "assoc_prof": "Turing AI Acceleration Fellowships leading multi-institution research programs.",
         "prof": "Turing AI World-Leading Researcher Fellowships funded by UKRI."
       },
-      "next": ["deepmind", "francis_crick", "bas_antarctic", "oxford_cs"],
+      "next": [
+        "deepmind",
+        "francis_crick",
+        "bas_antarctic",
+        "oxford_cs"
+      ],
       "rabbitLinks": [
-        { "id": "francis_crick", "reason": "Sits directly across Euston Road in London's Knowledge Quarter, partnering on AI-driven biomedical discovery." },
-        { "id": "bas_antarctic", "reason": "Co-developed IceNet, a probabilistic deep learning system forecasting Arctic sea ice months ahead." }
+        {
+          "id": "francis_crick",
+          "reason": "Sits directly across Euston Road in London's Knowledge Quarter, partnering on AI-driven biomedical discovery."
+        },
+        {
+          "id": "bas_antarctic",
+          "reason": "Co-developed IceNet, a probabilistic deep learning system forecasting Arctic sea ice months ahead."
+        }
       ],
       "projects": [
-        { "name": "IceNet Polar Sea-Ice AI Forecasting", "status": "ongoing", "url": "https://www.turing.ac.uk/research/research-projects/icenet" },
-        { "name": "The Turing Way Open Reproducible Science Guide", "status": "ongoing", "url": "https://the-turing-way.netlify.app/" }
+        {
+          "name": "IceNet Polar Sea-Ice AI Forecasting",
+          "status": "ongoing",
+          "url": "https://www.turing.ac.uk/research/research-projects/icenet"
+        },
+        {
+          "name": "The Turing Way Open Reproducible Science Guide",
+          "status": "ongoing",
+          "url": "https://the-turing-way.netlify.app/"
+        }
       ]
     },
     {
@@ -996,11 +1479,11 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
       "lat": 47.3764,
       "lng": 8.5477,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2020,
       "status": "active",
       "url": "https://ai.ethz.ch/",
@@ -1017,14 +1500,32 @@
         "assoc_prof": "ELLIS Society Zurich Unit collaborations and Swiss AI Initiative compute grants.",
         "prof": "Core Faculty leadership shaping open European multilingual and scientific models."
       },
-      "next": ["eth", "epfl_ai_center", "eth_asl_rsl", "eth_math"],
+      "next": [
+        "eth",
+        "epfl_ai_center",
+        "eth_asl_rsl",
+        "eth_math"
+      ],
       "rabbitLinks": [
-        { "id": "eth", "reason": "Anchored inside ETH Zurich—alma mater of Albert Einstein and 20+ Nobel laureates." },
-        { "id": "eth_asl_rsl", "reason": "Direct pipeline between reinforcement learning theory and legged/autonomous field robots." },
-        { "id": "epfl_ai_center", "reason": "Co-leads the Swiss AI Initiative on the CSCS Alps Grace-Hopper supercomputer." }
+        {
+          "id": "eth",
+          "reason": "Anchored inside ETH Zurich—alma mater of Albert Einstein and 20+ Nobel laureates."
+        },
+        {
+          "id": "eth_asl_rsl",
+          "reason": "Direct pipeline between reinforcement learning theory and legged/autonomous field robots."
+        },
+        {
+          "id": "epfl_ai_center",
+          "reason": "Co-leads the Swiss AI Initiative on the CSCS Alps Grace-Hopper supercomputer."
+        }
       ],
       "projects": [
-        { "name": "Swiss AI Initiative (with EPFL & CSCS Alps)", "status": "ongoing", "url": "https://www.swiss-ai.org/" }
+        {
+          "name": "Swiss AI Initiative (with EPFL & CSCS Alps)",
+          "status": "ongoing",
+          "url": "https://www.swiss-ai.org/"
+        }
       ]
     },
     {
@@ -1035,11 +1536,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "graphics_hci",
       "pinned": true,
       "lat": 48.5367,
       "lng": 9.0579,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2011,
       "status": "active",
       "url": "https://is.mpg.de/",
@@ -1056,13 +1557,28 @@
         "assoc_prof": "Independent Research Group Leader positions (5-year tenure-equivalent funding).",
         "prof": "Max Planck Director appointments and Cyber Valley strategic partnerships."
       },
-      "next": ["ellis_tubingen", "eth_ai_center", "dfki", "fraunhofer_ipa"],
+      "next": [
+        "ellis_tubingen",
+        "eth_ai_center",
+        "dfki",
+        "fraunhofer_ipa"
+      ],
       "rabbitLinks": [
-        { "id": "ellis_tubingen", "reason": "Co-located in Tübingen's Cyber Valley, forming Europe's flagship machine learning research cluster." },
-        { "id": "fraunhofer_ipa", "reason": "Stuttgart campus bridges bio-inspired physical intelligence with industrial manufacturing robotics." }
+        {
+          "id": "ellis_tubingen",
+          "reason": "Co-located in Tübingen's Cyber Valley, forming Europe's flagship machine learning research cluster."
+        },
+        {
+          "id": "fraunhofer_ipa",
+          "reason": "Stuttgart campus bridges bio-inspired physical intelligence with industrial manufacturing robotics."
+        }
       ],
       "projects": [
-        { "name": "Causal Representation Learning & Cyber Valley", "status": "ongoing", "url": "https://is.mpg.de/research" }
+        {
+          "name": "Causal Representation Learning & Cyber Valley",
+          "status": "ongoing",
+          "url": "https://is.mpg.de/research"
+        }
       ]
     },
     {
@@ -1073,7 +1589,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": true,
       "lat": 48.7145,
       "lng": 2.2054,
@@ -1094,15 +1610,37 @@
         "assoc_prof": "Chargé de Recherche (CR) permanent national research scientist positions.",
         "prof": "Directeur de Recherche (DR) leading autonomous Inria project-teams."
       },
-      "next": ["parissaclay", "mistral_ai", "meta_fair", "ihes"],
+      "next": [
+        "parissaclay",
+        "mistral_ai",
+        "meta_fair",
+        "ihes"
+      ],
       "rabbitLinks": [
-        { "id": "parissaclay", "reason": "Embedded in the Paris-Saclay science plateau alongside top physics, optics, and mathematics labs." },
-        { "id": "ihes", "reason": "Minutes away in the Chevreuse valley; formal proof assistants like Rocq intersect with pure algebraic geometry." },
-        { "id": "cea_leti", "reason": "Collaborates across France's national research ecosystem on embedded AI and quantum software stacks." }
+        {
+          "id": "parissaclay",
+          "reason": "Embedded in the Paris-Saclay science plateau alongside top physics, optics, and mathematics labs."
+        },
+        {
+          "id": "ihes",
+          "reason": "Minutes away in the Chevreuse valley; formal proof assistants like Rocq intersect with pure algebraic geometry."
+        },
+        {
+          "id": "cea_leti",
+          "reason": "Collaborates across France's national research ecosystem on embedded AI and quantum software stacks."
+        }
       ],
       "projects": [
-        { "name": "scikit-learn & Probabilistic Machine Learning", "status": "ongoing", "url": "https://scikit-learn.org/" },
-        { "name": "Rocq (formerly Coq) Proof Assistant", "status": "ongoing", "url": "https://rocq-prover.org/" }
+        {
+          "name": "scikit-learn & Probabilistic Machine Learning",
+          "status": "ongoing",
+          "url": "https://scikit-learn.org/"
+        },
+        {
+          "name": "Rocq (formerly Coq) Proof Assistant",
+          "status": "ongoing",
+          "url": "https://rocq-prover.org/"
+        }
       ]
     },
     {
@@ -1113,11 +1651,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 49.2577,
       "lng": 7.0434,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1988,
       "status": "active",
       "url": "https://www.dfki.de/",
@@ -1134,13 +1672,28 @@
         "assoc_prof": "Joint professorial appointments with German partner universities.",
         "prof": "Research Department Director leading multi-million-euro EU Horizon consortia."
       },
-      "next": ["mpi_is", "ellis_tubingen", "fraunhofer_ipa", "rwth_aachen_eng"],
+      "next": [
+        "mpi_is",
+        "ellis_tubingen",
+        "fraunhofer_ipa",
+        "rwth_aachen_eng"
+      ],
       "rabbitLinks": [
-        { "id": "esa_estec", "reason": "DFKI's Robotics Innovation Center in Bremen develops space and lunar exploration robots with ESA." },
-        { "id": "awi_bremerhaven", "reason": "Collaborates in northern Germany on autonomous underwater vehicles for deep-sea and polar missions." }
+        {
+          "id": "esa_estec",
+          "reason": "DFKI's Robotics Innovation Center in Bremen develops space and lunar exploration robots with ESA."
+        },
+        {
+          "id": "awi_bremerhaven",
+          "reason": "Collaborates in northern Germany on autonomous underwater vehicles for deep-sea and polar missions."
+        }
       ],
       "projects": [
-        { "name": "Robotics Innovation Center (Space & Deep-Sea Autonomy)", "status": "ongoing", "url": "https://robotik.dfki-bremen.de/en/" }
+        {
+          "name": "Robotics Innovation Center (Space & Deep-Sea Autonomy)",
+          "status": "ongoing",
+          "url": "https://robotik.dfki-bremen.de/en/"
+        }
       ]
     },
     {
@@ -1151,11 +1704,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 48.5382,
       "lng": 9.0604,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2023,
       "status": "active",
       "url": "https://www.ellis-institute.de/",
@@ -1172,13 +1725,28 @@
         "assoc_prof": "Hector Endowed Fellow & Principal Investigator positions with long-term core funding.",
         "prof": "Scientific Director chairs shaping Europe's open fundamental AI agenda."
       },
-      "next": ["mpi_is", "uva_ellis", "eth_ai_center", "epfl_ai_center"],
+      "next": [
+        "mpi_is",
+        "uva_ellis",
+        "eth_ai_center",
+        "epfl_ai_center"
+      ],
       "rabbitLinks": [
-        { "id": "uva_ellis", "reason": "Connected through the pan-European ELLIS PhD exchange linking Tübingen, Amsterdam, Zurich, and Oxford." },
-        { "id": "mpi_is", "reason": "Shares Tübingen's Cyber Valley hill and scientific leadership under Bernhard Schölkopf." }
+        {
+          "id": "uva_ellis",
+          "reason": "Connected through the pan-European ELLIS PhD exchange linking Tübingen, Amsterdam, Zurich, and Oxford."
+        },
+        {
+          "id": "mpi_is",
+          "reason": "Shares Tübingen's Cyber Valley hill and scientific leadership under Bernhard Schölkopf."
+        }
       ],
       "projects": [
-        { "name": "Pan-European ELLIS PhD & Research Network", "status": "ongoing", "url": "https://ellis.eu/" }
+        {
+          "name": "Pan-European ELLIS PhD & Research Network",
+          "status": "ongoing",
+          "url": "https://ellis.eu/"
+        }
       ]
     },
     {
@@ -1189,7 +1757,7 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "theory_crypto",
       "pinned": true,
       "lat": 40.0005,
       "lng": 116.3324,
@@ -1210,13 +1778,28 @@
         "assoc_prof": "Tenure-track Assistant and Associate Professor positions modeled on top US research departments.",
         "prof": "Senior chairs leading China's Center for Quantum Information and AI theory."
       },
-      "next": ["pk_ai_bigai", "deepseek", "bicmr_beijing", "mit_csail"],
+      "next": [
+        "pk_ai_bigai",
+        "deepseek",
+        "bicmr_beijing",
+        "mit_csail"
+      ],
       "rabbitLinks": [
-        { "id": "bicmr_beijing", "reason": "Neighbors in Beijing's Haidian university district connecting theoretical CS with pure mathematics." },
-        { "id": "deepseek", "reason": "Tsinghua AI and Yao Class alumni play major roles across China's open-weight foundation model ecosystem." }
+        {
+          "id": "bicmr_beijing",
+          "reason": "Neighbors in Beijing's Haidian university district connecting theoretical CS with pure mathematics."
+        },
+        {
+          "id": "deepseek",
+          "reason": "Tsinghua AI and Yao Class alumni play major roles across China's open-weight foundation model ecosystem."
+        }
       ],
       "projects": [
-        { "name": "Center for Quantum Information (CQI) & Yao Class", "status": "ongoing", "url": "https://iiis.tsinghua.edu.cn/en/" }
+        {
+          "name": "Center for Quantum Information (CQI) & Yao Class",
+          "status": "ongoing",
+          "url": "https://iiis.tsinghua.edu.cn/en/"
+        }
       ]
     },
     {
@@ -1227,7 +1810,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "theory_crypto",
       "pinned": true,
       "lat": 51.7598,
       "lng": -1.2585,
@@ -1248,14 +1831,32 @@
         "assoc_prof": "Tutorial Fellowships combining college mentorship with world-class research groups.",
         "prof": "Statutory Chairs in AI, Verification, and Quantum Information."
       },
-      "next": ["oxford", "clay_math", "deepmind", "alan_turing_inst"],
+      "next": [
+        "oxford",
+        "clay_math",
+        "deepmind",
+        "alan_turing_inst"
+      ],
       "rabbitLinks": [
-        { "id": "oxford", "reason": "Directly collaborates with Oxford Physics on ion-trap quantum networks and photonic quantum computing." },
-        { "id": "clay_math", "reason": "Shares Oxford's mathematical ecosystem investigating P vs NP and formal theorem proving." },
-        { "id": "deepmind", "reason": "Strong research pipeline in multi-agent reinforcement learning and AI alignment with London labs." }
+        {
+          "id": "oxford",
+          "reason": "Directly collaborates with Oxford Physics on ion-trap quantum networks and photonic quantum computing."
+        },
+        {
+          "id": "clay_math",
+          "reason": "Shares Oxford's mathematical ecosystem investigating P vs NP and formal theorem proving."
+        },
+        {
+          "id": "deepmind",
+          "reason": "Strong research pipeline in multi-agent reinforcement learning and AI alignment with London labs."
+        }
       ],
       "projects": [
-        { "name": "AIMS CDT & Quantum Group", "status": "ongoing", "url": "https://www.cs.ox.ac.uk/research/" }
+        {
+          "name": "AIMS CDT & Quantum Group",
+          "status": "ongoing",
+          "url": "https://www.cs.ox.ac.uk/research/"
+        }
       ]
     },
     {
@@ -1266,7 +1867,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": true,
       "lat": 52.2109,
       "lng": 0.0919,
@@ -1287,15 +1888,37 @@
         "assoc_prof": "University Associate Professor posts collaborating with Microsoft Research Cambridge and Arm.",
         "prof": "Professorial chairs linking Silicon Fen spinouts with fundamental computing science."
       },
-      "next": ["cambridge", "arm_research", "newton_institute", "msr_redmond"],
+      "next": [
+        "cambridge",
+        "arm_research",
+        "newton_institute",
+        "msr_redmond"
+      ],
       "rabbitLinks": [
-        { "id": "arm_research", "reason": "Anchored together in Cambridge's Silicon Fen; CHERI hardware security architectures are co-engineered with Arm." },
-        { "id": "cambridge", "reason": "West Cambridge campus places the Computer Lab right beside the Cavendish Physics Laboratory." },
-        { "id": "newton_institute", "reason": "Close walking distance to Cambridge's Centre for Mathematical Sciences for ML theory programs." }
+        {
+          "id": "arm_research",
+          "reason": "Anchored together in Cambridge's Silicon Fen; CHERI hardware security architectures are co-engineered with Arm."
+        },
+        {
+          "id": "cambridge",
+          "reason": "West Cambridge campus places the Computer Lab right beside the Cavendish Physics Laboratory."
+        },
+        {
+          "id": "newton_institute",
+          "reason": "Close walking distance to Cambridge's Centre for Mathematical Sciences for ML theory programs."
+        }
       ],
       "projects": [
-        { "name": "CHERI Hardware Capability Security Architecture", "status": "ongoing", "url": "https://www.cl.cam.ac.uk/research/security/ctsrd/cheri/" },
-        { "name": "Accelerate Programme for Scientific Discovery", "status": "ongoing", "url": "https://acceleratescience.github.io/" }
+        {
+          "name": "CHERI Hardware Capability Security Architecture",
+          "status": "ongoing",
+          "url": "https://www.cl.cam.ac.uk/research/security/ctsrd/cheri/"
+        },
+        {
+          "name": "Accelerate Programme for Scientific Discovery",
+          "status": "ongoing",
+          "url": "https://acceleratescience.github.io/"
+        }
       ]
     },
     {
@@ -1306,11 +1929,11 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 46.5186,
-      "lng": 6.5620,
-      "zoom": 16.0,
+      "lng": 6.562,
+      "zoom": 16,
       "foundedYear": 2023,
       "status": "active",
       "url": "https://www.epfl.ch/research/domains/ai-center/",
@@ -1327,13 +1950,28 @@
         "assoc_prof": "Tenure-track faculty positions with high-throughput access to CSCS Alps GPU clusters.",
         "prof": "Cross-faculty leadership connecting Lake Geneva's physics, neuroengineering, and AI labs."
       },
-      "next": ["epfl", "eth_ai_center", "cern", "inria_saclay"],
+      "next": [
+        "epfl",
+        "eth_ai_center",
+        "cern",
+        "inria_saclay"
+      ],
       "rabbitLinks": [
-        { "id": "epfl", "reason": "Integrates directly with EPFL's Swiss Plasma Center and Blue Brain / neuroengineering programs." },
-        { "id": "cern", "reason": "40 minutes along Lake Geneva from CERN; joint projects deploy ultra-fast ML triggers on LHC FPGA hardware." }
+        {
+          "id": "epfl",
+          "reason": "Integrates directly with EPFL's Swiss Plasma Center and Blue Brain / neuroengineering programs."
+        },
+        {
+          "id": "cern",
+          "reason": "40 minutes along Lake Geneva from CERN; joint projects deploy ultra-fast ML triggers on LHC FPGA hardware."
+        }
       ],
       "projects": [
-        { "name": "Swiss AI Open Multilingual & Scientific Models", "status": "ongoing", "url": "https://www.epfl.ch/research/domains/ai-center/" }
+        {
+          "name": "Swiss AI Open Multilingual & Scientific Models",
+          "status": "ongoing",
+          "url": "https://www.epfl.ch/research/domains/ai-center/"
+        }
       ]
     },
     {
@@ -1344,11 +1982,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": true,
-      "lat": 35.6820,
+      "lat": 35.682,
       "lng": 139.7745,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2016,
       "status": "active",
       "url": "https://aip.riken.jp/",
@@ -1365,13 +2003,28 @@
         "assoc_prof": "Unit Leader positions managing independent research teams in Nihonbashi, Tokyo.",
         "prof": "Team Leader appointments coordinating national AI-for-Science programs."
       },
-      "next": ["riken", "utokyo", "sakana_ai", "riken_bdr"],
+      "next": [
+        "riken",
+        "utokyo",
+        "sakana_ai",
+        "riken_bdr"
+      ],
       "rabbitLinks": [
-        { "id": "riken", "reason": "Part of Japan's flagship RIKEN network connecting AI theory with nuclear physics and supercomputing." },
-        { "id": "riken_bdr", "reason": "Collaborates with RIKEN's Kobe biosystems center on AI-driven cellular imaging and protein dynamics." }
+        {
+          "id": "riken",
+          "reason": "Part of Japan's flagship RIKEN network connecting AI theory with nuclear physics and supercomputing."
+        },
+        {
+          "id": "riken_bdr",
+          "reason": "Collaborates with RIKEN's Kobe biosystems center on AI-driven cellular imaging and protein dynamics."
+        }
       ],
       "projects": [
-        { "name": "Mathematical Foundations of Deep Learning & Tensor Networks", "status": "ongoing", "url": "https://aip.riken.jp/labs/" }
+        {
+          "name": "Mathematical Foundations of Deep Learning & Tensor Networks",
+          "status": "ongoing",
+          "url": "https://aip.riken.jp/labs/"
+        }
       ]
     },
     {
@@ -1382,9 +2035,9 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": false,
-      "lat": 1.2950,
+      "lat": 1.295,
       "lng": 103.7738,
       "zoom": 16.2,
       "foundedYear": 1998,
@@ -1403,13 +2056,28 @@
         "assoc_prof": "Presidential Young Professorships with substantial start-up compute grants.",
         "prof": "Distinguished Chairs linking Singapore's quantum, genomics, and AI ecosystems."
       },
-      "next": ["cqt", "gis_singapore", "tsinghua_iiis", "kaist_ai"],
+      "next": [
+        "cqt",
+        "gis_singapore",
+        "tsinghua_iiis",
+        "kaist_ai"
+      ],
       "rabbitLinks": [
-        { "id": "cqt", "reason": "Located right on the NUS campus, collaborating closely on quantum algorithms and complexity theory." },
-        { "id": "gis_singapore", "reason": "Joint NUS-A*STAR researchers apply machine learning to Asian population genomics and spatial transcriptomics." }
+        {
+          "id": "cqt",
+          "reason": "Located right on the NUS campus, collaborating closely on quantum algorithms and complexity theory."
+        },
+        {
+          "id": "gis_singapore",
+          "reason": "Joint NUS-A*STAR researchers apply machine learning to Asian population genomics and spatial transcriptomics."
+        }
       ],
       "projects": [
-        { "name": "SEA-LION Southeast Asian Open Foundation Models (AI Singapore)", "status": "ongoing", "url": "https://sea-lion.ai/" }
+        {
+          "name": "SEA-LION Southeast Asian Open Foundation Models (AI Singapore)",
+          "status": "ongoing",
+          "url": "https://sea-lion.ai/"
+        }
       ]
     },
     {
@@ -1420,11 +2088,11 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 36.3735,
       "lng": 127.3655,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2019,
       "status": "active",
       "url": "https://gsai.kaist.ac.kr/",
@@ -1441,13 +2109,28 @@
         "assoc_prof": "Joint industrial-academic labs with Samsung SAIT and Naver AI.",
         "prof": "National AI research hub chairs driving next-generation high-bandwidth memory AI hardware."
       },
-      "next": ["kaist", "samsung_sait", "riken_aip", "nus_soc"],
+      "next": [
+        "kaist",
+        "samsung_sait",
+        "riken_aip",
+        "nus_soc"
+      ],
       "rabbitLinks": [
-        { "id": "samsung_sait", "reason": "Collaborates deeply on Processing-in-Memory (PIM) and HBM semiconductor architectures for LLM inference." },
-        { "id": "kaist", "reason": "Embedded in KAIST's Daejeon campus alongside Korea's flagship physics and humanoid robotics (HUBO) labs." }
+        {
+          "id": "samsung_sait",
+          "reason": "Collaborates deeply on Processing-in-Memory (PIM) and HBM semiconductor architectures for LLM inference."
+        },
+        {
+          "id": "kaist",
+          "reason": "Embedded in KAIST's Daejeon campus alongside Korea's flagship physics and humanoid robotics (HUBO) labs."
+        }
       ],
       "projects": [
-        { "name": "AI Semiconductor & Generative Modeling Research", "status": "ongoing", "url": "https://gsai.kaist.ac.kr/" }
+        {
+          "name": "AI Semiconductor & Generative Modeling Research",
+          "status": "ongoing",
+          "url": "https://gsai.kaist.ac.kr/"
+        }
       ]
     },
     {
@@ -1458,11 +2141,11 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 24.4326,
       "lng": 54.6184,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2019,
       "status": "active",
       "url": "https://mbzuai.ac.ae/",
@@ -1479,13 +2162,28 @@
         "assoc_prof": "Global faculty recruiting with interdisciplinary AI-for-sustainability initiatives.",
         "prof": "Department Chairs and Institute Directors building Middle East-global scientific bridges."
       },
-      "next": ["cmu_scs", "kaust", "iitm_rbcdsai", "stanford_hai"],
+      "next": [
+        "cmu_scs",
+        "kaust",
+        "iitm_rbcdsai",
+        "stanford_hai"
+      ],
       "rabbitLinks": [
-        { "id": "kaust", "reason": "Partners across the Gulf scientific corridor with KAUST in Red Sea environmental AI and scientific computing." },
-        { "id": "cmu_scs", "reason": "Strong leadership and curriculum heritage connecting Pittsburgh's machine learning school with Abu Dhabi." }
+        {
+          "id": "kaust",
+          "reason": "Partners across the Gulf scientific corridor with KAUST in Red Sea environmental AI and scientific computing."
+        },
+        {
+          "id": "cmu_scs",
+          "reason": "Strong leadership and curriculum heritage connecting Pittsburgh's machine learning school with Abu Dhabi."
+        }
       ],
       "projects": [
-        { "name": "Institute of Foundation Models (IFM) & K2 Open LLM", "status": "ongoing", "url": "https://mbzuai.ac.ae/research/" }
+        {
+          "name": "Institute of Foundation Models (IFM) & K2 Open LLM",
+          "status": "ongoing",
+          "url": "https://mbzuai.ac.ae/research/"
+        }
       ]
     },
     {
@@ -1496,11 +2194,11 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 12.9915,
       "lng": 80.2337,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2017,
       "status": "active",
       "url": "https://dsai.iitm.ac.in/",
@@ -1517,13 +2215,28 @@
         "assoc_prof": "Joint research with India's National AI Mission and international partner universities.",
         "prof": "Visiting Chairs in interdisciplinary data science and low-resource language AI."
       },
-      "next": ["iisc", "ncbs_bengaluru", "iit_bombay_eng", "cohere"],
+      "next": [
+        "iisc",
+        "ncbs_bengaluru",
+        "iit_bombay_eng",
+        "cohere"
+      ],
       "rabbitLinks": [
-        { "id": "iisc", "reason": "South India's twin research powerhouses collaborating on AI for healthcare, climate, and Indic NLP." },
-        { "id": "cohere", "reason": "AI4Bharat's open Indic corpora complement global multilingual open-science initiatives like Aya." }
+        {
+          "id": "iisc",
+          "reason": "South India's twin research powerhouses collaborating on AI for healthcare, climate, and Indic NLP."
+        },
+        {
+          "id": "cohere",
+          "reason": "AI4Bharat's open Indic corpora complement global multilingual open-science initiatives like Aya."
+        }
       ],
       "projects": [
-        { "name": "AI4Bharat Open Indian Language Models & Speech", "status": "ongoing", "url": "https://ai4bharat.iitm.ac.in/" }
+        {
+          "name": "AI4Bharat Open Indian Language Models & Speech",
+          "status": "ongoing",
+          "url": "https://ai4bharat.iitm.ac.in/"
+        }
       ]
     },
     {
@@ -1534,7 +2247,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "theory_crypto",
       "pinned": false,
       "lat": 32.7777,
       "lng": 35.0216,
@@ -1555,13 +2268,28 @@
         "assoc_prof": "Cross-faculty Technion AI Hub collaborations with electrical engineering and medicine.",
         "prof": "Global collaborations with Cornell Tech, NVIDIA Research Israel, and MIT."
       },
-      "next": ["weizmann", "cornell_cs", "nvidia_research", "ssi_ai"],
+      "next": [
+        "weizmann",
+        "cornell_cs",
+        "nvidia_research",
+        "ssi_ai"
+      ],
       "rabbitLinks": [
-        { "id": "weizmann", "reason": "Partners across Israel's theoretical CS, cryptography, and computational biology triangle." },
-        { "id": "cornell_cs", "reason": "Co-founded the Jacobs Technion-Cornell Institute at Cornell Tech in New York City." }
+        {
+          "id": "weizmann",
+          "reason": "Partners across Israel's theoretical CS, cryptography, and computational biology triangle."
+        },
+        {
+          "id": "cornell_cs",
+          "reason": "Co-founded the Jacobs Technion-Cornell Institute at Cornell Tech in New York City."
+        }
       ],
       "projects": [
-        { "name": "Technion Machine Learning & Intelligent Systems Center (MLIS)", "status": "ongoing", "url": "https://mlis.technion.ac.il/" }
+        {
+          "name": "Technion Machine Learning & Intelligent Systems Center (MLIS)",
+          "status": "ongoing",
+          "url": "https://mlis.technion.ac.il/"
+        }
       ]
     },
     {
@@ -1572,7 +2300,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 52.3556,
       "lng": 4.9554,
@@ -1593,13 +2321,28 @@
         "assoc_prof": "ICAI Lab Director roles bridging academic AI with healthcare and sustainability.",
         "prof": "ELLIS Fellow chairs advancing symmetry-preserving AI for the natural sciences."
       },
-      "next": ["ellis_tubingen", "qutech", "tudelft_aero", "asml"],
+      "next": [
+        "ellis_tubingen",
+        "qutech",
+        "tudelft_aero",
+        "asml"
+      ],
       "rabbitLinks": [
-        { "id": "asml", "reason": "Dutch AI-for-physics groups collaborate on computational lithography and scientific machine learning." },
-        { "id": "qutech", "reason": "Links Amsterdam's CWI/UvA quantum software and AI labs with Delft's quantum hardware hub." }
+        {
+          "id": "asml",
+          "reason": "Dutch AI-for-physics groups collaborate on computational lithography and scientific machine learning."
+        },
+        {
+          "id": "qutech",
+          "reason": "Links Amsterdam's CWI/UvA quantum software and AI labs with Delft's quantum hardware hub."
+        }
       ],
       "projects": [
-        { "name": "AI4Science Lab & Geometric Deep Learning", "status": "ongoing", "url": "https://ai4science.uva.nl/" }
+        {
+          "name": "AI4Science Lab & Geometric Deep Learning",
+          "status": "ongoing",
+          "url": "https://ai4science.uva.nl/"
+        }
       ]
     },
     {
@@ -1610,11 +2353,11 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": false,
       "lat": 59.3474,
       "lng": 18.0728,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2015,
       "status": "active",
       "url": "https://wasp-sweden.org/",
@@ -1631,13 +2374,28 @@
         "assoc_prof": "WASP Assistant Professor recruitment packages with independent PhD/postdoc funding.",
         "prof": "Wallenberg Scholars leading autonomous marine, aerial, and industrial robotics."
       },
-      "next": ["karolinska", "mittag_leffler", "eth_ai_center", "edinburgh_informatics"],
+      "next": [
+        "karolinska",
+        "mittag_leffler",
+        "eth_ai_center",
+        "edinburgh_informatics"
+      ],
       "rabbitLinks": [
-        { "id": "karolinska", "reason": "Stockholm's Science for Life Laboratory (SciLifeLab) unites KTH AI/data science with Karolinska biomedical research." },
-        { "id": "mittag_leffler", "reason": "Shares Stockholm's mathematical heritage linking statistical learning theory with harmonic analysis." }
+        {
+          "id": "karolinska",
+          "reason": "Stockholm's Science for Life Laboratory (SciLifeLab) unites KTH AI/data science with Karolinska biomedical research."
+        },
+        {
+          "id": "mittag_leffler",
+          "reason": "Shares Stockholm's mathematical heritage linking statistical learning theory with harmonic analysis."
+        }
       ],
       "projects": [
-        { "name": "WASP Autonomous Systems & Berzelius AI Supercomputer", "status": "ongoing", "url": "https://wasp-sweden.org/research/" }
+        {
+          "name": "WASP Autonomous Systems & Berzelius AI Supercomputer",
+          "status": "ongoing",
+          "url": "https://wasp-sweden.org/research/"
+        }
       ]
     },
     {
@@ -1648,7 +2406,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "theory_crypto",
       "pinned": false,
       "lat": 55.9447,
       "lng": -3.1873,
@@ -1669,13 +2427,28 @@
         "assoc_prof": "ELLIS Unit Edinburgh and Turing Fellowship research leadership.",
         "prof": "Chairs in machine translation, probabilistic inference, and humanoid robotics."
       },
-      "next": ["alan_turing_inst", "oxford_cs", "cambridge_cst", "kth_wasp"],
+      "next": [
+        "alan_turing_inst",
+        "oxford_cs",
+        "cambridge_cst",
+        "kth_wasp"
+      ],
       "rabbitLinks": [
-        { "id": "alan_turing_inst", "reason": "Founding university partner of The Alan Turing Institute, leading national programs in NLP and robotics." },
-        { "id": "cern", "reason": "University of Edinburgh is also home to Peter Higgs; EPCC supercomputing links HPC physics with AI." }
+        {
+          "id": "alan_turing_inst",
+          "reason": "Founding university partner of The Alan Turing Institute, leading national programs in NLP and robotics."
+        },
+        {
+          "id": "cern",
+          "reason": "University of Edinburgh is also home to Peter Higgs; EPCC supercomputing links HPC physics with AI."
+        }
       ],
       "projects": [
-        { "name": "Edinburgh Centre for Robotics & National Robotarium", "status": "ongoing", "url": "https://www.edinburgh-robotics.org/" }
+        {
+          "name": "Edinburgh Centre for Robotics & National Robotarium",
+          "status": "ongoing",
+          "url": "https://www.edinburgh-robotics.org/"
+        }
       ]
     },
     {
@@ -1686,11 +2459,11 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "theory_crypto",
       "pinned": true,
       "lat": 42.4449,
       "lng": -76.4809,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1965,
       "status": "active",
       "url": "https://www.cs.cornell.edu/",
@@ -1707,14 +2480,33 @@
         "assoc_prof": "Interdisciplinary grants spanning arXiv infrastructure, sustainability AI, and theory.",
         "prof": "Faculty leadership stewarding global open-access scientific publishing and algorithms."
       },
-      "next": ["huggingface", "technion_cs", "mit_csail", "courant_nyu"],
+      "next": [
+        "huggingface",
+        "technion_cs",
+        "mit_csail",
+        "courant_nyu"
+      ],
       "rabbitLinks": [
-        { "id": "huggingface", "reason": "Cornell's arXiv (founded by physicist Paul Ginsparg) pairs with Hugging Face as the backbone of modern open AI research." },
-        { "id": "technion_cs", "reason": "Partners with the Technion to operate the Jacobs Institute at Cornell Tech on Roosevelt Island." }
+        {
+          "id": "huggingface",
+          "reason": "Cornell's arXiv (founded by physicist Paul Ginsparg) pairs with Hugging Face as the backbone of modern open AI research."
+        },
+        {
+          "id": "technion_cs",
+          "reason": "Partners with the Technion to operate the Jacobs Institute at Cornell Tech on Roosevelt Island."
+        }
       ],
       "projects": [
-        { "name": "arXiv Open Scientific Preprint Archive", "status": "ongoing", "url": "https://arxiv.org/" },
-        { "name": "Cornell AI for Science Institute", "status": "ongoing", "url": "https://ai.cornell.edu/" }
+        {
+          "name": "arXiv Open Scientific Preprint Archive",
+          "status": "ongoing",
+          "url": "https://arxiv.org/"
+        },
+        {
+          "name": "Cornell AI for Science Institute",
+          "status": "ongoing",
+          "url": "https://ai.cornell.edu/"
+        }
       ]
     },
     {
@@ -1725,7 +2517,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "systems_arch",
       "pinned": false,
       "lat": 47.6533,
       "lng": -122.3059,
@@ -1746,13 +2538,28 @@
         "assoc_prof": "Dual academic-industry research appointments across the Pacific Northwest AI corridor.",
         "prof": "Endowed chairs bridging computer science with computational biochemistry and accessibility."
       },
-      "next": ["ai2_allen", "msr_redmond", "allen_brain", "nvidia_research"],
+      "next": [
+        "ai2_allen",
+        "msr_redmond",
+        "allen_brain",
+        "nvidia_research"
+      ],
       "rabbitLinks": [
-        { "id": "ai2_allen", "reason": "Founded and staffed by UW Allen School professors advancing fully open OLMo language models." },
-        { "id": "deepmind", "reason": "UW's Institute for Protein Design (RoseTTAFold / RFdiffusion) shared the 2024 Chemistry Nobel with DeepMind's AlphaFold team." }
+        {
+          "id": "ai2_allen",
+          "reason": "Founded and staffed by UW Allen School professors advancing fully open OLMo language models."
+        },
+        {
+          "id": "deepmind",
+          "reason": "UW's Institute for Protein Design (RoseTTAFold / RFdiffusion) shared the 2024 Chemistry Nobel with DeepMind's AlphaFold team."
+        }
       ],
       "projects": [
-        { "name": "Molecular Information Systems Lab (DNA Data Storage)", "status": "ongoing", "url": "https://misl.cs.washington.edu/" }
+        {
+          "name": "Molecular Information Systems Lab (DNA Data Storage)",
+          "status": "ongoing",
+          "url": "https://misl.cs.washington.edu/"
+        }
       ]
     },
     {
@@ -1763,11 +2570,11 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "ai_cs",
-      "branch": "ai_cs",
+      "branch": "ai_frontier",
       "pinned": false,
       "lat": 39.9929,
       "lng": 116.3109,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2002,
       "status": "active",
       "url": "https://www.cis.pku.edu.cn/",
@@ -1784,13 +2591,1151 @@
         "assoc_prof": "Tenure-track faculty positions partnering with BICMR mathematics and national AI labs.",
         "prof": "Senior academic leadership in general-purpose embodied intelligence."
       },
-      "next": ["tsinghua_iiis", "bicmr_beijing", "deepseek", "chern_math"],
+      "next": [
+        "tsinghua_iiis",
+        "bicmr_beijing",
+        "deepseek",
+        "chern_math"
+      ],
       "rabbitLinks": [
-        { "id": "bicmr_beijing", "reason": "Shares Peking University's historic Yan Yuan campus, uniting statistical learning with pure mathematics." },
-        { "id": "tsinghua_iiis", "reason": "Adjacent across Zhongguancun Street, forming Asia's densest academic AI research corridor." }
+        {
+          "id": "bicmr_beijing",
+          "reason": "Shares Peking University's historic Yan Yuan campus, uniting statistical learning with pure mathematics."
+        },
+        {
+          "id": "tsinghua_iiis",
+          "reason": "Adjacent across Zhongguancun Street, forming Asia's densest academic AI research corridor."
+        }
       ],
       "projects": [
-        { "name": "Embodied General Intelligence & Visual Commonsense", "status": "ongoing", "url": "https://www.ai.pku.edu.cn/" }
+        {
+          "name": "Embodied General Intelligence & Visual Commonsense",
+          "status": "ongoing",
+          "url": "https://www.ai.pku.edu.cn/"
+        }
+      ]
+    },
+    {
+      "id": "zhipu_ai",
+      "name": "Zhipu AI (GLM / Z.ai)",
+      "city": "Beijing, China",
+      "country": "China",
+      "group": "company",
+      "entityType": "startup",
+      "discipline": "ai_cs",
+      "branch": "ai_frontier",
+      "pinned": true,
+      "lat": 39.9928,
+      "lng": 116.3315,
+      "zoom": 15.5,
+      "foundedYear": 2019,
+      "status": "active",
+      "url": "https://www.zhipuai.cn/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Zhipu_AI",
+      "wikiSlug": "Zhipu_AI",
+      "summary": "Frontier AI research company spun out of Tsinghua University's Knowledge Engineering Group, developing the GLM open-weight foundation model series, CogVideo, and autonomous AutoGLM agents.",
+      "nobel": "Pioneered bilingual Chinese-English General Language Model (GLM) autoregressive blank-infilling architectures and open academic benchmarks.",
+      "next": [
+        "tsinghua_iiis",
+        "deepseek",
+        "pk_ai_bigai",
+        "huggingface"
+      ],
+      "projects": [
+        {
+          "name": "GLM Open Foundation Models & AutoGLM Agents",
+          "status": "ongoing",
+          "url": "https://github.com/THUDM"
+        },
+        {
+          "name": "CogVideoX Open Multimodal Video Generation",
+          "status": "ongoing",
+          "url": "https://github.com/THUDM/CogVideo"
+        }
+      ]
+    },
+    {
+      "id": "eth_dinfk",
+      "name": "ETH Zurich Department of Computer Science (D-INFK)",
+      "city": "Zurich, Switzerland",
+      "country": "Switzerland",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 47.3783,
+      "lng": 8.5486,
+      "zoom": 15.5,
+      "foundedYear": 1981,
+      "status": "active",
+      "url": "https://inf.ethz.ch/",
+      "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
+      "wikiSlug": "ETH_Zurich",
+      "summary": "Continental Europe's top-ranked computer science department—founded in the tradition of Niklaus Wirth—leading high-performance computing, systems security, distributed databases, and machine learning systems.",
+      "nobel": "Home to 1984 ACM Turing Award laureate Niklaus Wirth (creator of Pascal, Modula-2, and Oberon) and ACM Gordon Bell Prize winners in HPC.",
+      "next": [
+        "eth_ai_center",
+        "cscs_lugano",
+        "disney_research_zurich",
+        "epfl_ic"
+      ],
+      "projects": [
+        {
+          "name": "Scalable Parallel Computing Lab (SPCL)",
+          "status": "ongoing",
+          "url": "https://spcl.inf.ethz.ch/"
+        },
+        {
+          "name": "Systems Group & Enzian Research Computer",
+          "status": "ongoing",
+          "url": "https://systems.ethz.ch/"
+        }
+      ]
+    },
+    {
+      "id": "berkeley_sky",
+      "name": "UC Berkeley Sky Computing Lab (formerly RISELab)",
+      "city": "Berkeley, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 37.8756,
+      "lng": -122.2588,
+      "zoom": 15.5,
+      "foundedYear": 2022,
+      "status": "active",
+      "url": "https://sky.cs.berkeley.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/UC_Berkeley_College_of_Computing,_Data_Science,_and_Society",
+      "wikiSlug": "UC_Berkeley_College_of_Computing,_Data_Science,_and_Society",
+      "summary": "Flagship UC Berkeley distributed systems lab continuing the AMPLab and RISELab lineage—creator of Apache Spark, Ray, vLLM, and SkyPilot open-source cloud and AI serving infrastructure.",
+      "nobel": "Produced foundational open-source data and AI infrastructure powering global distributed training, inference, and cloud scheduling.",
+      "next": [
+        "berkeley_bair",
+        "simons_theory_berkeley",
+        "mit_csail",
+        "nvidia_research"
+      ],
+      "projects": [
+        {
+          "name": "vLLM High-Throughput LLM Serving & SkyPilot",
+          "status": "ongoing",
+          "url": "https://sky.cs.berkeley.edu/projects/"
+        },
+        {
+          "name": "Ray Distributed Compute Framework",
+          "status": "ongoing",
+          "url": "https://www.ray.io/"
+        }
+      ]
+    },
+    {
+      "id": "uiuc_ncsa",
+      "name": "National Center for Supercomputing Applications (NCSA), UIUC",
+      "city": "Urbana, IL, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 40.1149,
+      "lng": -88.2249,
+      "zoom": 15.5,
+      "foundedYear": 1986,
+      "status": "active",
+      "url": "https://www.ncsa.illinois.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/National_Center_for_Supercomputing_Applications",
+      "wikiSlug": "National_Center_for_Supercomputing_Applications",
+      "summary": "Historic NSF supercomputing center at the University of Illinois Urbana-Champaign—birthplace of NCSA Mosaic and the Apache HTTP Server—now operating the Delta and DeltaAI GPU supercomputers for national open science.",
+      "nobel": "Developed NCSA Mosaic (1993), catalyzing the modern World Wide Web, and pioneered petascale scientific visualization via Blue Waters.",
+      "next": [
+        "ornl_olcf",
+        "mit_csail",
+        "nvidia_research",
+        "chicago_quantum"
+      ],
+      "projects": [
+        {
+          "name": "Delta & DeltaAI National GPU Supercomputers",
+          "status": "ongoing",
+          "url": "https://www.ncsa.illinois.edu/research/project-highlights/delta/"
+        }
+      ]
+    },
+    {
+      "id": "ornl_olcf",
+      "name": "Oak Ridge Leadership Computing Facility (OLCF / Frontier)",
+      "city": "Oak Ridge, TN, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 35.9311,
+      "lng": -84.31,
+      "zoom": 15.5,
+      "foundedYear": 2004,
+      "status": "active",
+      "url": "https://www.olcf.ornl.gov/",
+      "wiki": "https://en.wikipedia.org/wiki/Oak_Ridge_Leadership_Computing_Facility",
+      "wikiSlug": "Oak_Ridge_Leadership_Computing_Facility",
+      "summary": "US Department of Energy leadership supercomputing center at Oak Ridge National Laboratory, home to Frontier—the world's first verified exascale supercomputer—driving climate, materials, nuclear, and scientific AI simulations.",
+      "nobel": "Frontier broke the exaFLOPS barrier in 2022 (1.2+ exaFLOPS), repeatedly winning ACM Gordon Bell Prizes in scientific supercomputing.",
+      "next": [
+        "uiuc_ncsa",
+        "riken_rccs",
+        "bsc_barcelona",
+        "nvidia_research"
+      ],
+      "projects": [
+        {
+          "name": "Frontier Exascale Supercomputer & INCITE Program",
+          "status": "ongoing",
+          "url": "https://www.olcf.ornl.gov/frontier/"
+        }
+      ]
+    },
+    {
+      "id": "bsc_barcelona",
+      "name": "Barcelona Supercomputing Center (BSC-CNS)",
+      "city": "Barcelona, Spain",
+      "country": "Spain",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 41.3895,
+      "lng": 2.1162,
+      "zoom": 15.5,
+      "foundedYear": 2005,
+      "status": "active",
+      "url": "https://www.bsc.es/",
+      "wiki": "https://en.wikipedia.org/wiki/Barcelona_Supercomputing_Center",
+      "wikiSlug": "Barcelona_Supercomputing_Center",
+      "summary": "Spain's national supercomputing center hosting MareNostrum 5 (famed for its Torre Girona chapel site), leading Europe's open RISC-V processor initiative, EuroHPC AI factories, and Destination Earth climate digital twins.",
+      "nobel": "Anchors the European Processor Initiative (EPI) and EuroHPC pre-exascale architecture research across Europe.",
+      "next": [
+        "cscs_lugano",
+        "ornl_olcf",
+        "crm_barcelona",
+        "inria_saclay"
+      ],
+      "projects": [
+        {
+          "name": "MareNostrum 5 & EuroHPC AI Factory",
+          "status": "ongoing",
+          "url": "https://www.bsc.es/marenostrum/marenostrum-5"
+        },
+        {
+          "name": "European RISC-V & Open Chip Initiative",
+          "status": "ongoing",
+          "url": "https://www.bsc.es/research-and-development/computer-sciences"
+        }
+      ]
+    },
+    {
+      "id": "cscs_lugano",
+      "name": "CSCS (Swiss National Supercomputing Centre)",
+      "city": "Lugano, Switzerland",
+      "country": "Switzerland",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 46.011,
+      "lng": 8.9616,
+      "zoom": 15.5,
+      "foundedYear": 1991,
+      "status": "active",
+      "url": "https://www.cscs.ch/",
+      "wiki": "https://en.wikipedia.org/wiki/Swiss_National_Supercomputing_Centre",
+      "wikiSlug": "Swiss_National_Supercomputing_Centre",
+      "summary": "ETH Zurich's national supercomputing facility in Lugano operating the Alps Grace-Hopper research supercomputer—powering the open Swiss AI Initiative, kilometer-scale weather prediction, and computational physics.",
+      "nobel": "Alps is one of Europe's first software-defined versatile GPU supercomputers built for both traditional HPC and open foundation model training.",
+      "next": [
+        "eth_dinfk",
+        "eth_ai_center",
+        "epfl_ai_center",
+        "bsc_barcelona"
+      ],
+      "projects": [
+        {
+          "name": "Alps Research Infrastructure & Swiss AI Compute",
+          "status": "ongoing",
+          "url": "https://www.cscs.ch/computers/alps"
+        }
+      ]
+    },
+    {
+      "id": "riken_rccs",
+      "name": "RIKEN Center for Computational Science (R-CCS / Fugaku)",
+      "city": "Kobe, Japan",
+      "country": "Japan",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 34.6534,
+      "lng": 135.2205,
+      "zoom": 15.5,
+      "foundedYear": 2010,
+      "status": "active",
+      "url": "https://www.r-ccs.riken.jp/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Fugaku_(supercomputer)",
+      "wikiSlug": "Fugaku_(supercomputer)",
+      "summary": "Japan's flagship supercomputing institute in Kobe operating Fugaku—the Arm-based co-designed supercomputer built with Fujitsu—advancing disaster simulation, drug discovery, Fugaku-LLM, and next-generation quantum-HPC integration.",
+      "nobel": "Fugaku swept #1 across TOP500, HPCG, HPL-AI, and Graph500 simultaneously for four consecutive rankings under Director Satoshi Matsuoka.",
+      "next": [
+        "riken_aip",
+        "riken_rqc",
+        "ornl_olcf",
+        "bsc_barcelona"
+      ],
+      "projects": [
+        {
+          "name": "Supercomputer Fugaku & FugakuNEXT Program",
+          "status": "ongoing",
+          "url": "https://www.r-ccs.riken.jp/en/fugaku/"
+        }
+      ]
+    },
+    {
+      "id": "mpi_sws",
+      "name": "Max Planck Institute for Software Systems (MPI-SWS)",
+      "city": "Saarbrücken, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 49.2577,
+      "lng": 7.0462,
+      "zoom": 15.5,
+      "foundedYear": 2004,
+      "status": "active",
+      "url": "https://www.mpi-sws.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Software_Systems",
+      "wikiSlug": "Max_Planck_Institute_for_Software_Systems",
+      "summary": "Premier European basic-research institute spanning Saarbrücken and Kaiserslautern dedicated to distributed systems, operating systems, memory-safe Rust verification (RustBelt), and algorithmic fairness in socio-technical systems.",
+      "nobel": "Pioneered the Iris concurrent separation logic framework and RustBelt formal soundness proof for the Rust programming language.",
+      "next": [
+        "mpi_inf",
+        "eth_dinfk",
+        "cambridge_cst",
+        "inria_saclay"
+      ],
+      "projects": [
+        {
+          "name": "RustBelt & Iris Concurrent Program Verification",
+          "status": "ongoing",
+          "url": "https://plv.mpi-sws.org/rustbelt/"
+        }
+      ]
+    },
+    {
+      "id": "cerebras_systems",
+      "name": "Cerebras Systems",
+      "city": "Sunnyvale, CA, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "startup",
+      "discipline": "ai_cs",
+      "branch": "systems_arch",
+      "pinned": true,
+      "lat": 37.3924,
+      "lng": -122.0226,
+      "zoom": 15.5,
+      "foundedYear": 2016,
+      "status": "active",
+      "url": "https://www.cerebras.ai/",
+      "wiki": "https://en.wikipedia.org/wiki/Cerebras",
+      "wikiSlug": "Cerebras",
+      "summary": "AI hardware architecture pioneer building the Wafer-Scale Engine (WSE-3)—the largest silicon processor ever fabricated on a single intact wafer—delivering ultra-fast LLM inference and scientific PDE acceleration.",
+      "nobel": "Engineered a 4-trillion-transistor single-wafer processor eliminating inter-chip memory bottlenecks for sparse AI and physics simulations.",
+      "next": [
+        "nvidia_research",
+        "ornl_olcf",
+        "stanford_hai",
+        "tsmc_rd"
+      ],
+      "projects": [
+        {
+          "name": "Wafer-Scale Engine (WSE-3) & CS-3 AI Supercomputers",
+          "status": "ongoing",
+          "url": "https://www.cerebras.ai/chip"
+        }
+      ]
+    },
+    {
+      "id": "simons_theory_berkeley",
+      "name": "Simons Institute for the Theory of Computing",
+      "city": "Berkeley, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "theory_crypto",
+      "pinned": true,
+      "lat": 37.8736,
+      "lng": -122.2575,
+      "zoom": 15.5,
+      "foundedYear": 2012,
+      "status": "active",
+      "url": "https://simons.berkeley.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Simons_Institute_for_the_Theory_of_Computing",
+      "wikiSlug": "Simons_Institute_for_the_Theory_of_Computing",
+      "summary": "The world's foremost collaborative venue for theoretical computer science at UC Berkeley, convening semester-long programs in computational complexity, cryptography, quantum algorithms, and mathematical foundations of AI.",
+      "nobel": "Founding director Richard Karp (1985 Turing Award) and director Shafi Goldwasser (2012 Turing Award) shaped modern complexity and cryptography.",
+      "next": [
+        "slmath_msri",
+        "berkeley_bair",
+        "weizmann_cs",
+        "mit_csail"
+      ],
+      "projects": [
+        {
+          "name": "Thematic Research Programs in Complexity, Crypto & Quantum",
+          "status": "ongoing",
+          "url": "https://simons.berkeley.edu/programs"
+        }
+      ]
+    },
+    {
+      "id": "cwi_amsterdam",
+      "name": "CWI (Centrum Wiskunde & Informatica)",
+      "city": "Amsterdam, Netherlands",
+      "country": "Netherlands",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "theory_crypto",
+      "pinned": true,
+      "lat": 52.3565,
+      "lng": 4.9517,
+      "zoom": 15.5,
+      "foundedYear": 1946,
+      "status": "active",
+      "url": "https://www.cwi.nl/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Centrum_Wiskunde_%26_Informatica",
+      "wikiSlug": "Centrum_Wiskunde_&_Informatica",
+      "summary": "The Netherlands' national research institute for mathematics and computer science—birthplace of the Python programming language, Dijkstra's shortest-path algorithm, ALGOL, and pioneering European post-quantum cryptography.",
+      "nobel": "Edsger W. Dijkstra won the 1972 Turing Award; Guido van Rossum created Python at CWI in 1989; co-founded QuSoft quantum software center.",
+      "next": [
+        "qusoft_amsterdam",
+        "uva_ellis",
+        "qutech",
+        "simons_theory_berkeley"
+      ],
+      "projects": [
+        {
+          "name": "Cryptology, Post-Quantum Security & Algorithms Research",
+          "status": "ongoing",
+          "url": "https://www.cwi.nl/en/groups/cryptology/"
+        },
+        {
+          "name": "DuckDB & High-Performance Database Systems",
+          "status": "ongoing",
+          "url": "https://www.cwi.nl/en/groups/database-architectures/"
+        }
+      ]
+    },
+    {
+      "id": "weizmann_cs",
+      "name": "Weizmann Institute Dept. of Computer Science & Applied Math",
+      "city": "Rehovot, Israel",
+      "country": "Israel",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "theory_crypto",
+      "pinned": true,
+      "lat": 31.9073,
+      "lng": 34.8093,
+      "zoom": 15.5,
+      "foundedYear": 1949,
+      "status": "active",
+      "url": "https://www.weizmann.ac.il/math/",
+      "wiki": "https://en.wikipedia.org/wiki/Weizmann_Institute_of_Science",
+      "wikiSlug": "Weizmann_Institute_of_Science",
+      "summary": "World-renowned theoretical computer science and cryptography powerhouse in Rehovot, celebrated for foundational breakthroughs in public-key encryption, zero-knowledge proofs, pseudorandomness, and computational vision.",
+      "nobel": "Home to ACM Turing Award laureates Adi Shamir (2002, RSA & differential cryptanalysis) and Shafi Goldwasser (2012, interactive & zero-knowledge proofs).",
+      "next": [
+        "technion_cs",
+        "simons_theory_berkeley",
+        "mit_csail",
+        "weizmann"
+      ],
+      "projects": [
+        {
+          "name": "Foundations of Cryptography & Complexity Theory",
+          "status": "ongoing",
+          "url": "https://www.weizmann.ac.il/math/research-areas/theoretical-computer-science"
+        }
+      ]
+    },
+    {
+      "id": "mpi_inf",
+      "name": "Max Planck Institute for Informatics (MPI-INF)",
+      "city": "Saarbrücken, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "theory_crypto",
+      "pinned": true,
+      "lat": 49.2579,
+      "lng": 7.0466,
+      "zoom": 15.5,
+      "foundedYear": 1990,
+      "status": "active",
+      "url": "https://www.mpi-inf.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Informatics",
+      "wikiSlug": "Max_Planck_Institute_for_Informatics",
+      "summary": "Flagship Max Planck institute dedicated to algorithms and complexity, automated reasoning, computational geometry, knowledge bases (YAGO), and visual computing on the Saarland Informatics Campus.",
+      "nobel": "Led by Leibniz Prize and EATCS Award laureates in graph algorithms, computational geometry, and automated theorem proving.",
+      "next": [
+        "mpi_sws",
+        "dfki",
+        "eth_dinfk",
+        "simons_theory_berkeley"
+      ],
+      "projects": [
+        {
+          "name": "Algorithms & Complexity and Automated Logic",
+          "status": "ongoing",
+          "url": "https://www.mpi-inf.mpg.de/departments/algorithms-complexity"
+        }
+      ]
+    },
+    {
+      "id": "epfl_ic",
+      "name": "EPFL School of Computer and Communication Sciences (IC)",
+      "city": "Lausanne, Switzerland",
+      "country": "Switzerland",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "ai_cs",
+      "branch": "theory_crypto",
+      "pinned": true,
+      "lat": 46.5186,
+      "lng": 6.5618,
+      "zoom": 15.5,
+      "foundedYear": 2002,
+      "status": "active",
+      "url": "https://www.epfl.ch/schools/ic/",
+      "wiki": "https://en.wikipedia.org/wiki/EPFL",
+      "wikiSlug": "EPFL",
+      "summary": "Leading European hub for programming languages, cryptography, information theory, and decentralized security—birthplace of the Scala language, polar codes advances, and privacy-preserving cryptographic protocols.",
+      "nobel": "Home to Scala creator Martin Odersky and Gödel Prize & IEEE Information Theory Society pioneers on Lake Geneva.",
+      "next": [
+        "epfl_ai_center",
+        "eth_dinfk",
+        "inria_saclay",
+        "cwi_amsterdam"
+      ],
+      "projects": [
+        {
+          "name": "Scala Programming Language & Formal Verification",
+          "status": "ongoing",
+          "url": "https://www.scala-lang.org/"
+        },
+        {
+          "name": "SPRING & DEDIS Privacy and Cryptography Labs",
+          "status": "ongoing",
+          "url": "https://www.epfl.ch/schools/ic/research/"
+        }
+      ]
+    },
+    {
+      "id": "mit_media_lab",
+      "name": "MIT Media Lab",
+      "city": "Cambridge, MA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 42.3605,
+      "lng": -71.0873,
+      "zoom": 15.5,
+      "foundedYear": 1985,
+      "status": "active",
+      "url": "https://www.media.mit.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/MIT_Media_Lab",
+      "wikiSlug": "MIT_Media_Lab",
+      "summary": "Iconic anti-disciplinary laboratory at MIT that pioneered tangible user interfaces, Scratch creative coding, wearable computing, femto-photography, affective computing, and bionic human-machine interfaces.",
+      "nobel": "Co-founded by Nicholas Negroponte and Jerome Wiesner; launched Scratch (used by 100M+ learners) and modern computational photography.",
+      "next": [
+        "mit_csail",
+        "cmu_hcii",
+        "stanford_graphics",
+        "uw_reality_lab"
+      ],
+      "projects": [
+        {
+          "name": "Tangible Media, Fluid Interfaces & Camera Culture",
+          "status": "ongoing",
+          "url": "https://www.media.mit.edu/research/"
+        }
+      ]
+    },
+    {
+      "id": "cmu_hcii",
+      "name": "CMU Human-Computer Interaction Institute (HCII)",
+      "city": "Pittsburgh, PA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 40.4435,
+      "lng": -79.9455,
+      "zoom": 15.5,
+      "foundedYear": 1993,
+      "status": "active",
+      "url": "https://hcii.cmu.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Human-Computer_Interaction_Institute",
+      "wikiSlug": "Human-Computer_Interaction_Institute",
+      "summary": "The world's premier academic institute for human-computer interaction inside Carnegie Mellon's School of Computer Science, uniting AI interaction design, ubiquitous sensing, accessibility, and cognitive tutoring systems.",
+      "nobel": "Pioneered foundational HCI models (GOMS), Duolingo/reCAPTCHA human computation roots, and intelligent tutoring science.",
+      "next": [
+        "cmu_scs",
+        "mit_media_lab",
+        "uw_reality_lab",
+        "stanford_graphics"
+      ],
+      "projects": [
+        {
+          "name": "Human-AI Interaction & Future Interfaces Research",
+          "status": "ongoing",
+          "url": "https://hcii.cmu.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "disney_research_zurich",
+      "name": "DisneyResearch|Studios & ETH Visual Computing",
+      "city": "Zurich, Switzerland",
+      "country": "Switzerland",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 47.3792,
+      "lng": 8.5453,
+      "zoom": 15.5,
+      "foundedYear": 2008,
+      "status": "active",
+      "url": "https://studios.disneyresearch.com/",
+      "wiki": "https://en.wikipedia.org/wiki/Disney_Research",
+      "wikiSlug": "Disney_Research",
+      "summary": "Premier visual computing and digital-human research studio embedded beside ETH Zurich, advancing neural rendering, Medusa facial performance capture, physics-based simulation, and robotic character animation.",
+      "nobel": "Recipient of multiple Academy Scientific and Technical Awards (Sci-Tech Oscars) for Medusa facial capture and photorealistic rendering.",
+      "next": [
+        "eth_dinfk",
+        "pixar_research",
+        "mpi_is",
+        "tu_wien_visual"
+      ],
+      "projects": [
+        {
+          "name": "Neural Digital Humans & Volumetric Performance Capture",
+          "status": "ongoing",
+          "url": "https://studios.disneyresearch.com/publications/"
+        }
+      ]
+    },
+    {
+      "id": "stanford_graphics",
+      "name": "Stanford Computer Graphics Laboratory",
+      "city": "Stanford, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 37.43,
+      "lng": -122.1735,
+      "zoom": 15.5,
+      "foundedYear": 1990,
+      "status": "active",
+      "url": "https://graphics.stanford.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Pat_Hanrahan",
+      "wikiSlug": "Pat_Hanrahan",
+      "summary": "Legendary computer graphics laboratory behind programmable GPU shading languages, light-field photography, the Stanford Bunny 3D scanning benchmarks, neural computational imaging, and geometric deep learning.",
+      "nobel": "Home to 2019 ACM Turing Award laureate Pat Hanrahan (RenderMan & GPU shading) and computational photography pioneer Marc Levoy.",
+      "next": [
+        "pixar_research",
+        "stanford_hai",
+        "nvidia_research",
+        "uw_reality_lab"
+      ],
+      "projects": [
+        {
+          "name": "Computational Imaging, Neural Rendering & 3D Geometry",
+          "status": "ongoing",
+          "url": "https://graphics.stanford.edu/projects/"
+        }
+      ]
+    },
+    {
+      "id": "pixar_research",
+      "name": "Pixar Research Group",
+      "city": "Emeryville, CA, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 37.8325,
+      "lng": -122.2838,
+      "zoom": 15.5,
+      "foundedYear": 1986,
+      "status": "active",
+      "url": "https://graphics.pixar.com/research/",
+      "wiki": "https://en.wikipedia.org/wiki/Pixar",
+      "wikiSlug": "Pixar",
+      "summary": "Industrial computer graphics powerhouse behind RenderMan, OpenSubdiv subdivision surfaces, OpenUSD (Universal Scene Description), and physically based Monte Carlo light transport for feature animation.",
+      "nobel": "Co-founder Ed Catmull won the 2019 ACM Turing Award (with Pat Hanrahan) for fundamental contributions to 3D computer graphics.",
+      "next": [
+        "stanford_graphics",
+        "disney_research_zurich",
+        "nvidia_research",
+        "runway_research"
+      ],
+      "projects": [
+        {
+          "name": "OpenUSD (Universal Scene Description) & RenderMan XPU",
+          "status": "ongoing",
+          "url": "https://openusd.org/"
+        }
+      ]
+    },
+    {
+      "id": "tu_wien_visual",
+      "name": "TU Wien Research Unit of Computer Graphics",
+      "city": "Vienna, Austria",
+      "country": "Austria",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 48.1955,
+      "lng": 16.3698,
+      "zoom": 15.5,
+      "foundedYear": 1991,
+      "status": "active",
+      "url": "https://www.cg.tuwien.ac.at/",
+      "wiki": "https://en.wikipedia.org/wiki/TU_Wien",
+      "wikiSlug": "TU_Wien",
+      "summary": "Leading European visual computing hub advancing real-time ray tracing, differentiable rendering, 3D point-cloud and Gaussian splatting reconstruction, and interactive medical and scientific visualization.",
+      "nobel": "Internationally recognized at SIGGRAPH and Eurographics for real-time rendering engines and billion-point-cloud visualization.",
+      "next": [
+        "inria_sophia_graphics",
+        "disney_research_zurich",
+        "mpi_is",
+        "esi_vienna"
+      ],
+      "projects": [
+        {
+          "name": "Real-Time Rendering & Point-Cloud Visualization",
+          "status": "ongoing",
+          "url": "https://www.cg.tuwien.ac.at/research/"
+        }
+      ]
+    },
+    {
+      "id": "uw_reality_lab",
+      "name": "University of Washington Reality Lab",
+      "city": "Seattle, WA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 47.6533,
+      "lng": -122.3052,
+      "zoom": 15.5,
+      "foundedYear": 2018,
+      "status": "active",
+      "url": "https://realitylab.uw.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Paul_G._Allen_School_of_Computer_Science_and_Engineering",
+      "wikiSlug": "Paul_G._Allen_School_of_Computer_Science_and_Engineering",
+      "summary": "Dedicated spatial computing, 3D vision, and AR/VR research lab inside UW's Allen School, pioneering structure-from-motion, dynamic neural radiance fields (Nerfies), and photorealistic 3D reconstruction.",
+      "nobel": "Faculty pioneered Photo Tourism, Building Rome in a Day, and dynamic neural scene reconstruction shaping modern spatial computing.",
+      "next": [
+        "uw_allen_cs",
+        "stanford_graphics",
+        "inria_sophia_graphics",
+        "mit_media_lab"
+      ],
+      "projects": [
+        {
+          "name": "Dynamic 3D Scene Reconstruction & Spatial Computing",
+          "status": "ongoing",
+          "url": "https://realitylab.uw.edu/research/"
+        }
+      ]
+    },
+    {
+      "id": "inria_sophia_graphics",
+      "name": "Inria Centre at Université Côte d'Azur (GraphDeco)",
+      "city": "Sophia Antipolis, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "graphics_hci",
+      "pinned": true,
+      "lat": 43.6156,
+      "lng": 7.068,
+      "zoom": 15.5,
+      "foundedYear": 1983,
+      "status": "active",
+      "url": "https://team.inria.fr/graphdeco/",
+      "wiki": "https://en.wikipedia.org/wiki/French_Institute_for_Research_in_Computer_Science_and_Automation",
+      "wikiSlug": "French_Institute_for_Research_in_Computer_Science_and_Automation",
+      "summary": "Inria's flagship computer graphics and vision research hub on the French Riviera, creator of 3D Gaussian Splatting—transforming real-time radiance-field rendering, differentiable graphics, and 3D capture.",
+      "nobel": "Introduced 3D Gaussian Splatting (SIGGRAPH 2023), triggering a global paradigm shift in real-time neural rendering and spatial AI.",
+      "next": [
+        "inria_saclay",
+        "tu_wien_visual",
+        "disney_research_zurich",
+        "runway_research"
+      ],
+      "projects": [
+        {
+          "name": "3D Gaussian Splatting & Differentiable Rendering",
+          "status": "ongoing",
+          "url": "https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/"
+        }
+      ]
+    },
+    {
+      "id": "google_quantum_ai",
+      "name": "Google Quantum AI",
+      "city": "Santa Barbara, CA, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 34.4326,
+      "lng": -119.8588,
+      "zoom": 15.5,
+      "foundedYear": 2012,
+      "status": "active",
+      "url": "https://quantumai.google/",
+      "wiki": "https://en.wikipedia.org/wiki/Google_Quantum_AI",
+      "wikiSlug": "Google_Quantum_AI",
+      "summary": "Google's superconducting quantum computing campus in Santa Barbara, creator of the Sycamore and Willow processors, Cirq SDK, and landmark demonstrations of below-threshold surface-code quantum error correction.",
+      "nobel": "Achieved the 2019 beyond-classical quantum sampling milestone (Sycamore) and 2024 exponential error suppression below threshold (Willow); collaborates with 2025 Nobel laureate John Martinis's UCSB lineage.",
+      "next": [
+        "ibm_research_ai",
+        "caltech_iqim",
+        "aws_quantum",
+        "deepmind"
+      ],
+      "projects": [
+        {
+          "name": "Willow Processor & Below-Threshold Surface Codes",
+          "status": "ongoing",
+          "url": "https://quantumai.google/roadmap"
+        },
+        {
+          "name": "Cirq Open-Source Quantum Programming Framework",
+          "status": "ongoing",
+          "url": "https://quantumai.google/cirq"
+        }
+      ]
+    },
+    {
+      "id": "iqc_waterloo",
+      "name": "Institute for Quantum Computing (IQC), University of Waterloo",
+      "city": "Waterloo, Canada",
+      "country": "Canada",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 43.4793,
+      "lng": -80.5449,
+      "zoom": 15.5,
+      "foundedYear": 2002,
+      "status": "active",
+      "url": "https://uwaterloo.ca/institute-for-quantum-computing/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Quantum_Computing",
+      "wikiSlug": "Institute_for_Quantum_Computing",
+      "summary": "Canada's premier quantum information research institute in Waterloo's Quantum Valley, uniting quantum complexity theory, post-quantum cryptography, satellite QKD, and trapped-ion/superconducting quantum hardware.",
+      "nobel": "Co-founded by Raymond Laflamme and Mike Lazaridis; home to pioneering quantum error correction codes and satellite quantum key distribution.",
+      "next": [
+        "perimeter",
+        "waterloo_co",
+        "ibm_research_ai",
+        "quics_umd"
+      ],
+      "projects": [
+        {
+          "name": "QEYSSat Quantum Encryption Satellite & Quantum Algorithms",
+          "status": "ongoing",
+          "url": "https://uwaterloo.ca/institute-for-quantum-computing/research"
+        }
+      ]
+    },
+    {
+      "id": "cqc2t_sydney",
+      "name": "ARC Centre for Quantum Computation & Communication Technology (CQC2T)",
+      "city": "Sydney, Australia",
+      "country": "Australia",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": -33.9173,
+      "lng": 151.2313,
+      "zoom": 15.5,
+      "foundedYear": 2000,
+      "status": "active",
+      "url": "https://www.cqc2t.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Centre_for_Quantum_Computation_and_Communication_Technology",
+      "wikiSlug": "Centre_for_Quantum_Computation_and_Communication_Technology",
+      "summary": "Australia's flagship multi-university quantum computing consortium headquartered in Sydney, world-leading in atomic-precision silicon spin qubits, optical quantum networks, and quantum software verification.",
+      "nobel": "Led by Michelle Simmons (2018 Australian of the Year), pioneering single-atom phosphorus-in-silicon transistors and integrated quantum processors.",
+      "next": [
+        "unsw",
+        "cqt",
+        "google_quantum_ai",
+        "riken_rqc"
+      ],
+      "projects": [
+        {
+          "name": "Atomic-Scale Silicon Quantum Processors & Optical Networks",
+          "status": "ongoing",
+          "url": "https://www.cqc2t.org/research/"
+        }
+      ]
+    },
+    {
+      "id": "caltech_iqim",
+      "name": "Institute for Quantum Information and Matter (IQIM), Caltech",
+      "city": "Pasadena, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 34.1372,
+      "lng": -118.1258,
+      "zoom": 15.5,
+      "foundedYear": 2011,
+      "status": "active",
+      "url": "https://iqim.caltech.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Quantum_Information_and_Matter",
+      "wikiSlug": "Institute_for_Quantum_Information_and_Matter",
+      "summary": "NSF Physics Frontiers Center at Caltech investigating fault-tolerant quantum error correction, topological quantum computing, holographic quantum gravity, and neutral-atom optical tweezer arrays.",
+      "nobel": "Led by John Preskill (who coined 'NISQ' and 'quantum supremacy') alongside Alexei Kitaev (creator of the toric code and Majorana chain).",
+      "next": [
+        "aws_quantum",
+        "google_quantum_ai",
+        "caltech",
+        "quics_umd"
+      ],
+      "projects": [
+        {
+          "name": "Topological Qubits, qLDPC Codes & Classical Shadows",
+          "status": "ongoing",
+          "url": "https://iqim.caltech.edu/research/"
+        }
+      ]
+    },
+    {
+      "id": "quics_umd",
+      "name": "Joint Center for Quantum Information and Computer Science (QuICS)",
+      "city": "College Park, MD, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 38.9896,
+      "lng": -76.9396,
+      "zoom": 15.5,
+      "foundedYear": 2014,
+      "status": "active",
+      "url": "https://quics.umd.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Joint_Center_for_Quantum_Information_and_Computer_Science",
+      "wikiSlug": "Joint_Center_for_Quantum_Information_and_Computer_Science",
+      "summary": "Joint University of Maryland and NIST research institute advancing quantum algorithms, quantum complexity theory, Hamiltonian simulation, and quantum cryptography alongside UMD's trapped-ion quantum hardware ecosystem.",
+      "nobel": "Anchored at the intersection of NIST precision physics and theoretical computer science, driving fault-tolerant quantum algorithm design.",
+      "next": [
+        "dt_ionq",
+        "ibm_research_ai",
+        "caltech_iqim",
+        "simons_theory_berkeley"
+      ],
+      "projects": [
+        {
+          "name": "Quantum Algorithms, Complexity & Hamiltonian Simulation",
+          "status": "ongoing",
+          "url": "https://quics.umd.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "qusoft_amsterdam",
+      "name": "QuSoft (Dutch Research Center for Quantum Software)",
+      "city": "Amsterdam, Netherlands",
+      "country": "Netherlands",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 52.3567,
+      "lng": 4.9522,
+      "zoom": 15.5,
+      "foundedYear": 2015,
+      "status": "active",
+      "url": "https://qusoft.org/",
+      "wiki": "https://en.wikipedia.org/wiki/QuSoft",
+      "wikiSlug": "QuSoft",
+      "summary": "The world's first dedicated research center for quantum software—co-founded by CWI and the University of Amsterdam—advancing quantum algorithms, quantum communication complexity, and post-quantum cryptography.",
+      "nobel": "Co-founded by Harry Buhrman and Kareljan Schoutens; drives Europe's Quantum Software Consortium and quantum network protocol theory.",
+      "next": [
+        "cwi_amsterdam",
+        "qutech",
+        "uva_ellis",
+        "quics_umd"
+      ],
+      "projects": [
+        {
+          "name": "Quantum Software Consortium & Quantum Cryptography",
+          "status": "ongoing",
+          "url": "https://qusoft.org/research/"
+        }
+      ]
+    },
+    {
+      "id": "aws_quantum",
+      "name": "AWS Center for Quantum Computing",
+      "city": "Pasadena, CA, USA",
+      "country": "United States",
+      "group": "company",
+      "entityType": "lab",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 34.1391,
+      "lng": -118.1256,
+      "zoom": 15.5,
+      "foundedYear": 2019,
+      "status": "active",
+      "url": "https://aws.amazon.com/braket/quantum-computing-center/",
+      "wiki": "https://en.wikipedia.org/wiki/Amazon_Braket",
+      "wikiSlug": "Amazon_Braket",
+      "summary": "Amazon Web Services' dedicated quantum hardware and theory laboratory on the Caltech campus, pioneering bosonic cat-qubit chips (Ocelot) for hardware-efficient fault-tolerant quantum error correction.",
+      "nobel": "Demonstrated bosonic cat-qubit error suppression on the Ocelot prototype chip, sharply reducing physical-qubit overhead for logical qubits.",
+      "next": [
+        "caltech_iqim",
+        "google_quantum_ai",
+        "ibm_research_ai",
+        "dt_alice_bob"
+      ],
+      "projects": [
+        {
+          "name": "Ocelot Bosonic Cat-Qubit Architecture & Amazon Braket",
+          "status": "ongoing",
+          "url": "https://aws.amazon.com/braket/"
+        }
+      ]
+    },
+    {
+      "id": "chicago_quantum",
+      "name": "Chicago Quantum Exchange (CQE)",
+      "city": "Chicago, IL, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 41.7924,
+      "lng": -87.6016,
+      "zoom": 15.5,
+      "foundedYear": 2017,
+      "status": "active",
+      "url": "https://chicagoquantum.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Pritzker_School_of_Molecular_Engineering",
+      "wikiSlug": "Pritzker_School_of_Molecular_Engineering",
+      "summary": "Intellectual hub uniting University of Chicago, Argonne National Lab, Fermilab, and UIUC across quantum computing algorithms, spin-defect quantum memories, and a 124-mile metropolitan quantum entanglement testbed.",
+      "nobel": "Operates one of the longest terrestrial optical-fiber quantum networks in the United States linking national laboratories and universities.",
+      "next": [
+        "fermilab",
+        "uiuc_ncsa",
+        "ibm_research_ai",
+        "iqc_waterloo"
+      ],
+      "projects": [
+        {
+          "name": "Chicago Quantum Network & Illinois Quantum Park",
+          "status": "ongoing",
+          "url": "https://chicagoquantum.org/research"
+        }
+      ]
+    },
+    {
+      "id": "riken_rqc",
+      "name": "RIKEN Center for Quantum Computing (RQC)",
+      "city": "Wako, Japan",
+      "country": "Japan",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "ai_cs",
+      "branch": "quantum_cs",
+      "pinned": true,
+      "lat": 35.7795,
+      "lng": 139.6134,
+      "zoom": 15.5,
+      "foundedYear": 2021,
+      "status": "active",
+      "url": "https://rqc.riken.jp/",
+      "wiki": "https://en.wikipedia.org/wiki/RIKEN",
+      "wikiSlug": "RIKEN",
+      "summary": "Japan's national flagship quantum computing center led by superconducting-qubit pioneer Yasunobu Nakamura, integrating domestic superconducting and optical quantum processors with RIKEN's Fugaku supercomputer.",
+      "nobel": "Director Yasunobu Nakamura demonstrated the world's first coherent control of a superconducting qubit in 1999.",
+      "next": [
+        "riken",
+        "riken_rccs",
+        "google_quantum_ai",
+        "cqc2t_sydney"
+      ],
+      "projects": [
+        {
+          "name": "Japanese Superconducting Quantum Cloud & Quantum-HPC Hybrid",
+          "status": "ongoing",
+          "url": "https://rqc.riken.jp/en/research/"
+        }
       ]
     }
   ]

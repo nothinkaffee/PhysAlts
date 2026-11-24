@@ -1,10 +1,10 @@
 {
   "meta": {
     "name": "PhysAlts STEM Atlas — Mathematics & Theoretical Foundations Hubs",
-    "version": "1.0",
-    "updatedAt": "2026-11-23",
+    "version": "2.0",
+    "updatedAt": "2026-11-24",
     "discipline": "math",
-    "description": "26 verified global flagship mathematical research institutes and departments spanning algebraic geometry, number theory, topology, PDEs, probability, and mathematical physics."
+    "description": "55 verified global mathematical sciences institutes and departments classified across 4 canonical sub-branches: Pure Mathematics, Analysis & PDEs, Applied Math & Statistics, and Logic & Combinatorics."
   },
   "hubs": [
     {
@@ -15,7 +15,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 48.6956,
       "lng": 2.1687,
@@ -36,15 +36,37 @@
         "assoc_prof": "General Visiting Researcher Program (1–12 months) funded by IHÉS.",
         "prof": "Visiting Professorships and Permanent Professor chairs in pure mathematics and theoretical physics."
       },
-      "next": ["ens_maths", "parissaclay", "princeton_math", "simons_scgp"],
+      "next": [
+        "ens_maths",
+        "parissaclay",
+        "princeton_math",
+        "simons_scgp"
+      ],
       "rabbitLinks": [
-        { "id": "parissaclay", "reason": "Anchor of the Université Paris-Saclay ecosystem, uniting pure mathematics with theoretical physics." },
-        { "id": "inria_saclay", "reason": "Minutes away in Saclay; formalization of Grothendieck's schemes and modern geometry intersects with computer proof assistants." },
-        { "id": "cern", "reason": "Permanent physicists at IHÉS develop scattering amplitude geometry and black hole gravitational-wave templates." }
+        {
+          "id": "parissaclay",
+          "reason": "Anchor of the Université Paris-Saclay ecosystem, uniting pure mathematics with theoretical physics."
+        },
+        {
+          "id": "inria_saclay",
+          "reason": "Minutes away in Saclay; formalization of Grothendieck's schemes and modern geometry intersects with computer proof assistants."
+        },
+        {
+          "id": "cern",
+          "reason": "Permanent physicists at IHÉS develop scattering amplitude geometry and black hole gravitational-wave templates."
+        }
       ],
       "projects": [
-        { "name": "Publications Mathématiques de l'IHÉS", "status": "ongoing", "url": "https://www.ihes.fr/en/publications/" },
-        { "name": "IHÉS Annual Summer Schools in Math & Physics", "status": "ongoing", "url": "https://www.ihes.fr/en/summer-schools/" }
+        {
+          "name": "Publications Mathématiques de l'IHÉS",
+          "status": "ongoing",
+          "url": "https://www.ihes.fr/en/publications/"
+        },
+        {
+          "name": "IHÉS Annual Summer Schools in Math & Physics",
+          "status": "ongoing",
+          "url": "https://www.ihes.fr/en/summer-schools/"
+        }
       ]
     },
     {
@@ -55,7 +77,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 48.3458,
       "lng": 8.2348,
@@ -76,14 +98,33 @@
         "assoc_prof": "Co-organize Mini-Workshops or Research in Pairs (RiP) retreats (2–4 collaborators).",
         "prof": "Organize flagship 50-person Oberwolfach Workshops shaping entire mathematical subfields."
       },
-      "next": ["mpim_bonn", "birs_banff", "eth_math", "gottingen"],
+      "next": [
+        "mpim_bonn",
+        "birs_banff",
+        "eth_math",
+        "gottingen"
+      ],
       "rabbitLinks": [
-        { "id": "birs_banff", "reason": "Banff International Research Station in the Canadian Rockies was directly modeled on Oberwolfach's weekly retreat format." },
-        { "id": "gottingen", "reason": "Continues Germany's historic Gauss-Riemann-Hilbert-Noether tradition of collaborative mathematics." }
+        {
+          "id": "birs_banff",
+          "reason": "Banff International Research Station in the Canadian Rockies was directly modeled on Oberwolfach's weekly retreat format."
+        },
+        {
+          "id": "gottingen",
+          "reason": "Continues Germany's historic Gauss-Riemann-Hilbert-Noether tradition of collaborative mathematics."
+        }
       ],
       "projects": [
-        { "name": "IMAGINARY Open Mathematics Exhibitions", "status": "ongoing", "url": "https://www.imaginary.org/" },
-        { "name": "Oberwolfach Reports & Research in Pairs", "status": "ongoing", "url": "https://www.mfo.de/scientific-program" }
+        {
+          "name": "IMAGINARY Open Mathematics Exhibitions",
+          "status": "ongoing",
+          "url": "https://www.imaginary.org/"
+        },
+        {
+          "name": "Oberwolfach Reports & Research in Pairs",
+          "status": "ongoing",
+          "url": "https://www.mfo.de/scientific-program"
+        }
       ]
     },
     {
@@ -94,7 +135,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 37.8797,
       "lng": -122.2443,
@@ -115,14 +156,32 @@
         "assoc_prof": "Research Professorships and Summer Research in Mathematics (SRiM) small-group fellowships.",
         "prof": "Chern Professorships and Simons Visiting Professorships organizing semester-long programs."
       },
-      "next": ["berkeley", "berkeley_bair", "chern_math", "birs_banff"],
+      "next": [
+        "berkeley",
+        "berkeley_bair",
+        "chern_math",
+        "birs_banff"
+      ],
       "rabbitLinks": [
-        { "id": "berkeley", "reason": "Sits directly above UC Berkeley's campus and Lawrence Berkeley National Laboratory." },
-        { "id": "chern_math", "reason": "Co-founder Shiing-Shen Chern also founded the Chern Institute in Tianjin, bridging US and Chinese geometry." },
-        { "id": "berkeley_bair", "reason": "Hosts thematic programs on the mathematical foundations of deep learning, high-dimensional probability, and optimization." }
+        {
+          "id": "berkeley",
+          "reason": "Sits directly above UC Berkeley's campus and Lawrence Berkeley National Laboratory."
+        },
+        {
+          "id": "chern_math",
+          "reason": "Co-founder Shiing-Shen Chern also founded the Chern Institute in Tianjin, bridging US and Chinese geometry."
+        },
+        {
+          "id": "berkeley_bair",
+          "reason": "Hosts thematic programs on the mathematical foundations of deep learning, high-dimensional probability, and optimization."
+        }
       ],
       "projects": [
-        { "name": "Thematic Semester Programs & Open VMath Video Archive", "status": "ongoing", "url": "https://www.slmath.org/programs" }
+        {
+          "name": "Thematic Semester Programs & Open VMath Video Archive",
+          "status": "ongoing",
+          "url": "https://www.slmath.org/programs"
+        }
       ]
     },
     {
@@ -133,7 +192,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 43.6589,
       "lng": -79.3976,
@@ -154,13 +213,28 @@
         "assoc_prof": "Fields Research Fellowships and thematic program co-organization.",
         "prof": "Distinguished Visiting Chairs and Fields Medal Symposium lectureships."
       },
-      "next": ["vector_institute", "birs_banff", "perimeter", "slmath_msri"],
+      "next": [
+        "vector_institute",
+        "birs_banff",
+        "perimeter",
+        "slmath_msri"
+      ],
       "rabbitLinks": [
-        { "id": "vector_institute", "reason": "Steps away in downtown Toronto; jointly investigates statistical learning theory and optimization." },
-        { "id": "perimeter", "reason": "Collaborates closely across southern Ontario on mathematical physics, quantum gravity, and knot theory." }
+        {
+          "id": "vector_institute",
+          "reason": "Steps away in downtown Toronto; jointly investigates statistical learning theory and optimization."
+        },
+        {
+          "id": "perimeter",
+          "reason": "Collaborates closely across southern Ontario on mathematical physics, quantum gravity, and knot theory."
+        }
       ],
       "projects": [
-        { "name": "Fields Medal Symposium & Mathematics for Public Health", "status": "ongoing", "url": "https://www.fields.utoronto.ca/activities" }
+        {
+          "name": "Fields Medal Symposium & Mathematics for Public Health",
+          "status": "ongoing",
+          "url": "https://www.fields.utoronto.ca/activities"
+        }
       ]
     },
     {
@@ -171,7 +245,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 52.2108,
       "lng": 0.1021,
@@ -192,13 +266,28 @@
         "assoc_prof": "Programme participant invitations across pure math, fluid dynamics, and climate modeling.",
         "prof": "Rothschild Distinguished Visiting Fellowships and programme directorships."
       },
-      "next": ["cambridge_damtp", "cambridge", "clay_math", "princeton_math"],
+      "next": [
+        "cambridge_damtp",
+        "cambridge",
+        "clay_math",
+        "princeton_math"
+      ],
       "rabbitLinks": [
-        { "id": "cambridge_damtp", "reason": "Physically adjacent on Wilberforce Road at Cambridge's Centre for Mathematical Sciences." },
-        { "id": "princeton_math", "reason": "Princeton's Andrew Wiles delivered his historic three-day Fermat's Last Theorem lecture series right here in 1993." }
+        {
+          "id": "cambridge_damtp",
+          "reason": "Physically adjacent on Wilberforce Road at Cambridge's Centre for Mathematical Sciences."
+        },
+        {
+          "id": "princeton_math",
+          "reason": "Princeton's Andrew Wiles delivered his historic three-day Fermat's Last Theorem lecture series right here in 1993."
+        }
       ],
       "projects": [
-        { "name": "National Thematic Programmes & Newton Gateway to Mathematics", "status": "ongoing", "url": "https://www.newton.ac.uk/events/programmes/" }
+        {
+          "name": "National Thematic Programmes & Newton Gateway to Mathematics",
+          "status": "ongoing",
+          "url": "https://www.newton.ac.uk/events/programmes/"
+        }
       ]
     },
     {
@@ -209,7 +298,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 50.7347,
       "lng": 7.1003,
@@ -230,13 +319,28 @@
         "assoc_prof": "Guest Scientist grants (1–12 months) hosting 200+ international visitors annually.",
         "prof": "Senior Visiting Chairs and permanent Max Planck Scientific Member directorships."
       },
-      "next": ["hausdorff_bonn", "bonn_math", "oberwolfach", "ihes"],
+      "next": [
+        "hausdorff_bonn",
+        "bonn_math",
+        "oberwolfach",
+        "ihes"
+      ],
       "rabbitLinks": [
-        { "id": "hausdorff_bonn", "reason": "Forms Germany's undisputed mathematics capital together with the University of Bonn and HCM." },
-        { "id": "ihes", "reason": "Continuous dialogue on arithmetic geometry, motives, and noncommutative geometry across the Rhine." }
+        {
+          "id": "hausdorff_bonn",
+          "reason": "Forms Germany's undisputed mathematics capital together with the University of Bonn and HCM."
+        },
+        {
+          "id": "ihes",
+          "reason": "Continuous dialogue on arithmetic geometry, motives, and noncommutative geometry across the Rhine."
+        }
       ],
       "projects": [
-        { "name": "IMPRS Moduli Spaces & Perfectoid Arithmetic Geometry", "status": "ongoing", "url": "https://www.mpim-bonn.mpg.de/imprs" }
+        {
+          "name": "IMPRS Moduli Spaces & Perfectoid Arithmetic Geometry",
+          "status": "ongoing",
+          "url": "https://www.mpim-bonn.mpg.de/imprs"
+        }
       ]
     },
     {
@@ -247,7 +351,7 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 40.7287,
       "lng": -73.9957,
@@ -268,14 +372,32 @@
         "assoc_prof": "Interdisciplinary research with NYU Center for Data Science and Flatiron Institute.",
         "prof": "Permanent chairs spanning pure PDEs, plasma physics, and deep learning theory."
       },
-      "next": ["gottingen", "meta_fair", "simons_scgp", "lamont_doherty"],
+      "next": [
+        "gottingen",
+        "meta_fair",
+        "simons_scgp",
+        "lamont_doherty"
+      ],
       "rabbitLinks": [
-        { "id": "gottingen", "reason": "Richard Courant rebuilt Göttingen's legendary Hilbert-Klein mathematics spirit in Greenwich Village after fleeing Nazi Germany in 1933." },
-        { "id": "meta_fair", "reason": "Houses Yann LeCun's academic lab connecting mathematical optimization directly to modern deep learning." },
-        { "id": "lamont_doherty", "reason": "Courant's Center for Atmosphere Ocean Science pairs rigorous fluid PDEs with Columbia's climate observations." }
+        {
+          "id": "gottingen",
+          "reason": "Richard Courant rebuilt Göttingen's legendary Hilbert-Klein mathematics spirit in Greenwich Village after fleeing Nazi Germany in 1933."
+        },
+        {
+          "id": "meta_fair",
+          "reason": "Houses Yann LeCun's academic lab connecting mathematical optimization directly to modern deep learning."
+        },
+        {
+          "id": "lamont_doherty",
+          "reason": "Courant's Center for Atmosphere Ocean Science pairs rigorous fluid PDEs with Columbia's climate observations."
+        }
       ],
       "projects": [
-        { "name": "Applied Math Lab (Bio-Fluid Dynamics) & Center for Atmosphere Ocean Science", "status": "ongoing", "url": "https://cims.nyu.edu/research/" }
+        {
+          "name": "Applied Math Lab (Bio-Fluid Dynamics) & Center for Atmosphere Ocean Science",
+          "status": "ongoing",
+          "url": "https://cims.nyu.edu/research/"
+        }
       ]
     },
     {
@@ -286,7 +408,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 51.7605,
       "lng": -1.2627,
@@ -307,14 +429,32 @@
         "assoc_prof": "Clay Senior Scholars supporting multi-month collaborative residencies worldwide.",
         "prof": "Clay Research Award honors and Scientific Advisory Board leadership."
       },
-      "next": ["oxford", "oxford_cs", "princeton_math", "steklov_math"],
+      "next": [
+        "oxford",
+        "oxford_cs",
+        "princeton_math",
+        "steklov_math"
+      ],
       "rabbitLinks": [
-        { "id": "oxford", "reason": "Headquartered inside Oxford's Mathematical Institute, steps from Oxford Physics and Computer Science." },
-        { "id": "steklov_math", "reason": "Grigori Perelman solved the only conquered Millennium Prize Problem (Poincaré Conjecture) while at Steklov's St. Petersburg branch." },
-        { "id": "cern", "reason": "The Yang-Mills Existence and Mass Gap Millennium Problem seeks a rigorous mathematical proof of quantum chromodynamics." }
+        {
+          "id": "oxford",
+          "reason": "Headquartered inside Oxford's Mathematical Institute, steps from Oxford Physics and Computer Science."
+        },
+        {
+          "id": "steklov_math",
+          "reason": "Grigori Perelman solved the only conquered Millennium Prize Problem (Poincaré Conjecture) while at Steklov's St. Petersburg branch."
+        },
+        {
+          "id": "cern",
+          "reason": "The Yang-Mills Existence and Mass Gap Millennium Problem seeks a rigorous mathematical proof of quantum chromodynamics."
+        }
       ],
       "projects": [
-        { "name": "The Seven Millennium Prize Problems", "status": "ongoing", "url": "https://www.claymath.org/millennium-problems/" }
+        {
+          "name": "The Seven Millennium Prize Problems",
+          "status": "ongoing",
+          "url": "https://www.claymath.org/millennium-problems/"
+        }
       ]
     },
     {
@@ -325,11 +465,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
-      "lat": -22.9660,
+      "lat": -22.966,
       "lng": -43.2372,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1952,
       "status": "active",
       "url": "https://impa.br/",
@@ -346,13 +486,28 @@
         "assoc_prof": "Permanent Research Faculty (Pesquisador) positions with strong international visitor exchanges.",
         "prof": "Visiting Researcher collaborations (IMPA hosted the 2018 International Congress of Mathematicians)."
       },
-      "next": ["ictpsaifr", "ihes", "eth_math", "ens_maths"],
+      "next": [
+        "ictpsaifr",
+        "ihes",
+        "eth_math",
+        "ens_maths"
+      ],
       "rabbitLinks": [
-        { "id": "ictpsaifr", "reason": "Partners across Brazil with São Paulo's ICTP-SAIFR to anchor South American mathematics and theoretical physics." },
-        { "id": "eth_math", "reason": "Fields Medalist Artur Avila holds joint appointments uniting IMPA Rio de Janeiro and University of Zurich / ETH ecosystem." }
+        {
+          "id": "ictpsaifr",
+          "reason": "Partners across Brazil with São Paulo's ICTP-SAIFR to anchor South American mathematics and theoretical physics."
+        },
+        {
+          "id": "eth_math",
+          "reason": "Fields Medalist Artur Avila holds joint appointments uniting IMPA Rio de Janeiro and University of Zurich / ETH ecosystem."
+        }
       ],
       "projects": [
-        { "name": "OBMEP National Mathematics Olympiad & IMPA Tech", "status": "ongoing", "url": "https://impa.br/en_US/" }
+        {
+          "name": "OBMEP National Mathematics Olympiad & IMPA Tech",
+          "status": "ongoing",
+          "url": "https://impa.br/en_US/"
+        }
       ]
     },
     {
@@ -363,7 +518,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 35.0285,
       "lng": 135.7867,
@@ -384,13 +539,28 @@
         "assoc_prof": "RIMS Joint Research Activities hosting 70+ national and international workshops yearly.",
         "prof": "Visiting Professorships for 3–12 month research collaborations in Kyoto."
       },
-      "next": ["yukawa", "utokyo", "kyoto_icems", "ihes"],
+      "next": [
+        "yukawa",
+        "utokyo",
+        "kyoto_icems",
+        "ihes"
+      ],
       "rabbitLinks": [
-        { "id": "yukawa", "reason": "Steps away on Kyoto University's North Campus—connecting algebraic analysis directly to string theory and QFT." },
-        { "id": "kyoto_icems", "reason": "Kyoto University bridges pure topology with porous coordination polymers and cell-material science." }
+        {
+          "id": "yukawa",
+          "reason": "Steps away on Kyoto University's North Campus—connecting algebraic analysis directly to string theory and QFT."
+        },
+        {
+          "id": "kyoto_icems",
+          "reason": "Kyoto University bridges pure topology with porous coordination polymers and cell-material science."
+        }
       ],
       "projects": [
-        { "name": "RIMS International Joint Usage/Research Center", "status": "ongoing", "url": "https://www.kurims.kyoto-u.ac.jp/en/joint-01.html" }
+        {
+          "name": "RIMS International Joint Usage/Research Center",
+          "status": "ongoing",
+          "url": "https://www.kurims.kyoto-u.ac.jp/en/joint-01.html"
+        }
       ]
     },
     {
@@ -401,7 +571,7 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": false,
       "lat": 50.7267,
       "lng": 7.0846,
@@ -422,13 +592,28 @@
         "assoc_prof": "Bonn Junior Fellows (5-year tenure-track research chairs).",
         "prof": "Hausdorff Chairs attracting world-leading mathematicians to Bonn."
       },
-      "next": ["mpim_bonn", "bonn_math", "oberwolfach", "eth_math"],
+      "next": [
+        "mpim_bonn",
+        "bonn_math",
+        "oberwolfach",
+        "eth_math"
+      ],
       "rabbitLinks": [
-        { "id": "mpim_bonn", "reason": "Operates in seamless tandem with MPIM to host Trimester Programs and train global arithmetic geometers." },
-        { "id": "bonn_math", "reason": "Anchored directly inside the University of Bonn's Mathematical Institute on Endenicher Allee." }
+        {
+          "id": "mpim_bonn",
+          "reason": "Operates in seamless tandem with MPIM to host Trimester Programs and train global arithmetic geometers."
+        },
+        {
+          "id": "bonn_math",
+          "reason": "Anchored directly inside the University of Bonn's Mathematical Institute on Endenicher Allee."
+        }
       ],
       "projects": [
-        { "name": "Hausdorff Research Institute for Mathematics (HIM) Trimesters", "status": "ongoing", "url": "https://www.him.uni-bonn.de/" }
+        {
+          "name": "Hausdorff Research Institute for Mathematics (HIM) Trimesters",
+          "status": "ongoing",
+          "url": "https://www.him.uni-bonn.de/"
+        }
       ]
     },
     {
@@ -439,11 +624,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": false,
       "lat": 55.6915,
-      "lng": 37.5680,
-      "zoom": 16.0,
+      "lng": 37.568,
+      "zoom": 16,
       "foundedYear": 1934,
       "status": "active",
       "url": "https://www.mi-ras.ru/",
@@ -460,13 +645,28 @@
         "assoc_prof": "Independent research positions across Steklov's specialized mathematical departments.",
         "prof": "Editorial stewardship of Izvestiya and Sbornik: Mathematics journals."
       },
-      "next": ["clay_math", "ihes", "esi_vienna", "princeton_math"],
+      "next": [
+        "clay_math",
+        "ihes",
+        "esi_vienna",
+        "princeton_math"
+      ],
       "rabbitLinks": [
-        { "id": "clay_math", "reason": "PDMI researcher Grigori Perelman proved the Poincaré Conjecture in 2002–2003, solving the first Millennium Prize Problem." },
-        { "id": "esi_vienna", "reason": "Historical bridge in integrable systems and mathematical physics between Eastern and Central Europe." }
+        {
+          "id": "clay_math",
+          "reason": "PDMI researcher Grigori Perelman proved the Poincaré Conjecture in 2002–2003, solving the first Millennium Prize Problem."
+        },
+        {
+          "id": "esi_vienna",
+          "reason": "Historical bridge in integrable systems and mathematical physics between Eastern and Central Europe."
+        }
       ],
       "projects": [
-        { "name": "All-Russian Mathematical Portal (Math-Net.Ru)", "status": "ongoing", "url": "https://www.mathnet.ru/" }
+        {
+          "name": "All-Russian Mathematical Portal (Math-Net.Ru)",
+          "status": "ongoing",
+          "url": "https://www.mathnet.ru/"
+        }
       ]
     },
     {
@@ -477,7 +677,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 18.9067,
       "lng": 72.8058,
@@ -498,13 +698,28 @@
         "assoc_prof": "Permanent faculty Fellow/Reader appointments at Mumbai Colaba or TIFR-CAM Bengaluru.",
         "prof": "Senior Professorships organizing TIFR International Colloquia every four years."
       },
-      "next": ["tifr", "ncbs_bengaluru", "iisc", "princeton_math"],
+      "next": [
+        "tifr",
+        "ncbs_bengaluru",
+        "iisc",
+        "princeton_math"
+      ],
       "rabbitLinks": [
-        { "id": "tifr", "reason": "Shares the seafront Colaba campus with TIFR Physics and theoretical string theory groups." },
-        { "id": "ncbs_bengaluru", "reason": "Part of the TIFR national family linking pure mathematics with quantitative biology in Bengaluru." }
+        {
+          "id": "tifr",
+          "reason": "Shares the seafront Colaba campus with TIFR Physics and theoretical string theory groups."
+        },
+        {
+          "id": "ncbs_bengaluru",
+          "reason": "Part of the TIFR national family linking pure mathematics with quantitative biology in Bengaluru."
+        }
       ],
       "projects": [
-        { "name": "TIFR Lecture Notes in Mathematics & CAM Applied Math", "status": "ongoing", "url": "https://www.math.tifr.res.in/publications/" }
+        {
+          "name": "TIFR Lecture Notes in Mathematics & CAM Applied Math",
+          "status": "ongoing",
+          "url": "https://www.math.tifr.res.in/publications/"
+        }
       ]
     },
     {
@@ -515,11 +730,11 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": false,
       "lat": 39.1042,
-      "lng": 117.1670,
-      "zoom": 16.0,
+      "lng": 117.167,
+      "zoom": 16,
       "foundedYear": 1985,
       "status": "active",
       "url": "https://www.cim.nankai.edu.cn/",
@@ -536,13 +751,28 @@
         "assoc_prof": "International Visitor Program hosting workshops throughout the academic year.",
         "prof": "Visiting Professorships advancing Sino-international mathematical collaboration."
       },
-      "next": ["bicmr_beijing", "slmath_msri", "simons_scgp", "rims_kyoto"],
+      "next": [
+        "bicmr_beijing",
+        "slmath_msri",
+        "simons_scgp",
+        "rims_kyoto"
+      ],
       "rabbitLinks": [
-        { "id": "slmath_msri", "reason": "Shiing-Shen Chern founded both MSRI in Berkeley (1982) and the Chern Institute in Tianjin (1985)." },
-        { "id": "simons_scgp", "reason": "Chern-Simons theory (co-authored with Jim Simons) is a cornerstone of topological quantum matter and string theory." }
+        {
+          "id": "slmath_msri",
+          "reason": "Shiing-Shen Chern founded both MSRI in Berkeley (1982) and the Chern Institute in Tianjin (1985)."
+        },
+        {
+          "id": "simons_scgp",
+          "reason": "Chern-Simons theory (co-authored with Jim Simons) is a cornerstone of topological quantum matter and string theory."
+        }
       ],
       "projects": [
-        { "name": "Differential Geometry & Theoretical Physics Thematic Years", "status": "ongoing", "url": "https://www.cim.nankai.edu.cn/" }
+        {
+          "name": "Differential Geometry & Theoretical Physics Thematic Years",
+          "status": "ongoing",
+          "url": "https://www.cim.nankai.edu.cn/"
+        }
       ]
     },
     {
@@ -553,7 +783,7 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": false,
       "lat": 39.9977,
       "lng": 116.3082,
@@ -574,13 +804,28 @@
         "assoc_prof": "Tenure-track faculty positions with low teaching loads and international sabbatical links.",
         "prof": "Distinguished Visitor Chairs and international thematic semesters."
       },
-      "next": ["tsinghua_iiis", "pk_ai_bigai", "chern_math", "princeton_math"],
+      "next": [
+        "tsinghua_iiis",
+        "pk_ai_bigai",
+        "chern_math",
+        "princeton_math"
+      ],
       "rabbitLinks": [
-        { "id": "pk_ai_bigai", "reason": "Shares Peking University's campus, advancing the mathematical theory of deep neural networks and optimal transport." },
-        { "id": "princeton_math", "reason": "Close scientific lineage connecting Kähler geometry and number theory between Princeton and Beijing." }
+        {
+          "id": "pk_ai_bigai",
+          "reason": "Shares Peking University's campus, advancing the mathematical theory of deep neural networks and optimal transport."
+        },
+        {
+          "id": "princeton_math",
+          "reason": "Close scientific lineage connecting Kähler geometry and number theory between Princeton and Beijing."
+        }
       ],
       "projects": [
-        { "name": "BICMR Thematic Programs in Geometry & Applied Math", "status": "ongoing", "url": "https://bicmr.pku.edu.cn/en/" }
+        {
+          "name": "BICMR Thematic Programs in Geometry & Applied Math",
+          "status": "ongoing",
+          "url": "https://bicmr.pku.edu.cn/en/"
+        }
       ]
     },
     {
@@ -591,7 +836,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": false,
       "lat": 48.2216,
       "lng": 16.3563,
@@ -612,13 +857,28 @@
         "assoc_prof": "Senior Research Fellow residencies collaborating with European quantum and math groups.",
         "prof": "Co-organize ESI Thematic Programmes attracting 100+ global specialists to Vienna."
       },
-      "next": ["oberwolfach", "mpim_bonn", "perimeter", "ictp"],
+      "next": [
+        "oberwolfach",
+        "mpim_bonn",
+        "perimeter",
+        "ictp"
+      ],
       "rabbitLinks": [
-        { "id": "perimeter", "reason": "Shares a dedicated mission at the exact boundary of pure mathematics, quantum gravity, and quantum foundations." },
-        { "id": "ictp", "reason": "Part of Central Europe's visitor-institute network linking Vienna with Trieste's theoretical physics hub." }
+        {
+          "id": "perimeter",
+          "reason": "Shares a dedicated mission at the exact boundary of pure mathematics, quantum gravity, and quantum foundations."
+        },
+        {
+          "id": "ictp",
+          "reason": "Part of Central Europe's visitor-institute network linking Vienna with Trieste's theoretical physics hub."
+        }
       ],
       "projects": [
-        { "name": "Thematic Programmes in Quantum Foundations & Geometry", "status": "ongoing", "url": "https://www.esi.ac.at/events" }
+        {
+          "name": "Thematic Programmes in Quantum Foundations & Geometry",
+          "status": "ongoing",
+          "url": "https://www.esi.ac.at/events"
+        }
       ]
     },
     {
@@ -629,7 +889,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": false,
       "lat": 59.4036,
       "lng": 18.0819,
@@ -650,13 +910,28 @@
         "assoc_prof": "Senior Visiting Fellow invitations across harmonic analysis, PDEs, and algebraic geometry.",
         "prof": "Program Organizer chairs hosting Nordic and global research semesters."
       },
-      "next": ["kth_wasp", "karolinska", "oberwolfach", "newton_institute"],
+      "next": [
+        "kth_wasp",
+        "karolinska",
+        "oberwolfach",
+        "newton_institute"
+      ],
       "rabbitLinks": [
-        { "id": "kth_wasp", "reason": "Operates closely with Stockholm's KTH and Stockholm University on harmonic analysis and mathematical AI." },
-        { "id": "bohr", "reason": "Anchor of Nordic fundamental research alongside Copenhagen's Niels Bohr Institute." }
+        {
+          "id": "kth_wasp",
+          "reason": "Operates closely with Stockholm's KTH and Stockholm University on harmonic analysis and mathematical AI."
+        },
+        {
+          "id": "bohr",
+          "reason": "Anchor of Nordic fundamental research alongside Copenhagen's Niels Bohr Institute."
+        }
       ],
       "projects": [
-        { "name": "Acta Mathematica & Semester Research Programs", "status": "ongoing", "url": "https://www.mittag-leffler.se/research-programs/" }
+        {
+          "name": "Acta Mathematica & Semester Research Programs",
+          "status": "ongoing",
+          "url": "https://www.mittag-leffler.se/research-programs/"
+        }
       ]
     },
     {
@@ -667,11 +942,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": false,
       "lat": 41.5008,
       "lng": 2.1095,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1984,
       "status": "active",
       "url": "https://www.crm.cat/",
@@ -688,13 +963,28 @@
         "assoc_prof": "Intensive Research Program (IRP) visiting stays in Barcelona.",
         "prof": "ICREA Research Professorships leading international math-biology and geometry groups."
       },
-      "next": ["icfo", "ihes", "oberwolfach", "champalimaud"],
+      "next": [
+        "icfo",
+        "ihes",
+        "oberwolfach",
+        "champalimaud"
+      ],
       "rabbitLinks": [
-        { "id": "icfo", "reason": "Barcelona's sister María de Maeztu excellence center—linking mathematical physics with quantum optics." },
-        { "id": "champalimaud", "reason": "CRM's Computational Neuroscience group collaborates across Iberia on mathematical models of brain circuits." }
+        {
+          "id": "icfo",
+          "reason": "Barcelona's sister María de Maeztu excellence center—linking mathematical physics with quantum optics."
+        },
+        {
+          "id": "champalimaud",
+          "reason": "CRM's Computational Neuroscience group collaborates across Iberia on mathematical models of brain circuits."
+        }
       ],
       "projects": [
-        { "name": "Intensive Research Programmes & Computational Neuroscience", "status": "ongoing", "url": "https://www.crm.cat/research/" }
+        {
+          "name": "Intensive Research Programmes & Computational Neuroscience",
+          "status": "ongoing",
+          "url": "https://www.crm.cat/research/"
+        }
       ]
     },
     {
@@ -705,7 +995,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "applied_stat",
       "pinned": false,
       "lat": 51.1704,
       "lng": -115.5625,
@@ -726,13 +1016,28 @@
         "assoc_prof": "Propose and co-organize 42-person international BIRS workshops.",
         "prof": "Lead cross-disciplinary North American research syntheses with NSF/NSERC/CONAHCYT backing."
       },
-      "next": ["oberwolfach", "fields_institute", "slmath_msri", "triumf"],
+      "next": [
+        "oberwolfach",
+        "fields_institute",
+        "slmath_msri",
+        "triumf"
+      ],
       "rabbitLinks": [
-        { "id": "oberwolfach", "reason": "Directly modeled on Oberwolfach's intimate mountain-retreat format for intensive mathematical collaboration." },
-        { "id": "fields_institute", "reason": "Jointly anchors Canada's national mathematical sciences infrastructure with PIMS and CRM Montreal." }
+        {
+          "id": "oberwolfach",
+          "reason": "Directly modeled on Oberwolfach's intimate mountain-retreat format for intensive mathematical collaboration."
+        },
+        {
+          "id": "fields_institute",
+          "reason": "Jointly anchors Canada's national mathematical sciences infrastructure with PIMS and CRM Montreal."
+        }
       ],
       "projects": [
-        { "name": "BIRS Weekly Workshops & Open Video Archive", "status": "ongoing", "url": "https://www.birs.ca/workshops" }
+        {
+          "name": "BIRS Weekly Workshops & Open Video Archive",
+          "status": "ongoing",
+          "url": "https://www.birs.ca/workshops"
+        }
       ]
     },
     {
@@ -743,10 +1048,10 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 40.9163,
-      "lng": -73.1260,
+      "lng": -73.126,
       "zoom": 16.2,
       "foundedYear": 2008,
       "status": "active",
@@ -764,13 +1069,28 @@
         "assoc_prof": "Visiting Program Fellowships (1–3 months) during thematic geometry-physics semesters.",
         "prof": "Permanent Faculty and Simons Distinguished Visiting Chairs."
       },
-      "next": ["princeton_math", "ihes", "chern_math", "courant_nyu"],
+      "next": [
+        "princeton_math",
+        "ihes",
+        "chern_math",
+        "courant_nyu"
+      ],
       "rabbitLinks": [
-        { "id": "chern_math", "reason": "Jim Simons's 1974 paper with Shiing-Shen Chern gave birth to Chern-Simons invariants used in quantum Hall physics and knot theory." },
-        { "id": "cshl", "reason": "Located 30 minutes away on Long Island, forming a corridor between mathematical physics and molecular biology." }
+        {
+          "id": "chern_math",
+          "reason": "Jim Simons's 1974 paper with Shiing-Shen Chern gave birth to Chern-Simons invariants used in quantum Hall physics and knot theory."
+        },
+        {
+          "id": "cshl",
+          "reason": "Located 30 minutes away on Long Island, forming a corridor between mathematical physics and molecular biology."
+        }
       ],
       "projects": [
-        { "name": "Geometry & Quantum Field Theory Programs", "status": "ongoing", "url": "https://scgp.stonybrook.edu/science/programs" }
+        {
+          "name": "Geometry & Quantum Field Theory Programs",
+          "status": "ongoing",
+          "url": "https://scgp.stonybrook.edu/science/programs"
+        }
       ]
     },
     {
@@ -781,7 +1101,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 48.8422,
       "lng": 2.3451,
@@ -802,14 +1122,32 @@
         "assoc_prof": "Maître de Conférences and CNRS Chargé de Recherche chairs at rue d'Ulm.",
         "prof": "Chairs uniting ENS, Collège de France, and IHÉS in the Paris mathematical triangle."
       },
-      "next": ["ihes", "mistral_ai", "inria_saclay", "institut_curie"],
+      "next": [
+        "ihes",
+        "mistral_ai",
+        "inria_saclay",
+        "institut_curie"
+      ],
       "rabbitLinks": [
-        { "id": "ihes", "reason": "Core feeder and collaborator for IHÉS permanent chairs—together defining modern algebraic geometry." },
-        { "id": "mistral_ai", "reason": "ENS math and computer science alumni fuel Paris's explosive frontier AI startup wave." },
-        { "id": "institut_curie", "reason": "Literally steps down rue d'Ulm from Marie Curie's historic laboratories on Montagne Sainte-Geneviève." }
+        {
+          "id": "ihes",
+          "reason": "Core feeder and collaborator for IHÉS permanent chairs—together defining modern algebraic geometry."
+        },
+        {
+          "id": "mistral_ai",
+          "reason": "ENS math and computer science alumni fuel Paris's explosive frontier AI startup wave."
+        },
+        {
+          "id": "institut_curie",
+          "reason": "Literally steps down rue d'Ulm from Marie Curie's historic laboratories on Montagne Sainte-Geneviève."
+        }
       ],
       "projects": [
-        { "name": "Fondation Sciences Mathématiques de Paris (FSMP) & Bourbaki Seminars", "status": "ongoing", "url": "https://www.sciencesmaths-paris.fr/" }
+        {
+          "name": "Fondation Sciences Mathématiques de Paris (FSMP) & Bourbaki Seminars",
+          "status": "ongoing",
+          "url": "https://www.sciencesmaths-paris.fr/"
+        }
       ]
     },
     {
@@ -820,7 +1158,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": false,
       "lat": 50.7271,
       "lng": 7.0842,
@@ -841,13 +1179,28 @@
         "assoc_prof": "W2/W3 Professorships embedded in Bonn's Cluster of Excellence.",
         "prof": "Leadership of the annual Arbeitstagung and German mathematical sciences."
       },
-      "next": ["mpim_bonn", "hausdorff_bonn", "gottingen", "oberwolfach"],
+      "next": [
+        "mpim_bonn",
+        "hausdorff_bonn",
+        "gottingen",
+        "oberwolfach"
+      ],
       "rabbitLinks": [
-        { "id": "mpim_bonn", "reason": "Shares directors, students, and daily colloquia across downtown Bonn." },
-        { "id": "gottingen", "reason": "Inherited Bonn's postwar leadership in topology and arithmetic geometry alongside Göttingen's classical heritage." }
+        {
+          "id": "mpim_bonn",
+          "reason": "Shares directors, students, and daily colloquia across downtown Bonn."
+        },
+        {
+          "id": "gottingen",
+          "reason": "Inherited Bonn's postwar leadership in topology and arithmetic geometry alongside Göttingen's classical heritage."
+        }
       ],
       "projects": [
-        { "name": "Bonn International Graduate School in Mathematics (BIGS)", "status": "ongoing", "url": "https://www.bigs-math.uni-bonn.de/" }
+        {
+          "name": "Bonn International Graduate School in Mathematics (BIGS)",
+          "status": "ongoing",
+          "url": "https://www.bigs-math.uni-bonn.de/"
+        }
       ]
     },
     {
@@ -858,7 +1211,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 40.3458,
       "lng": -74.6524,
@@ -879,14 +1232,32 @@
         "assoc_prof": "Joint Fine Hall – IAS research collaborations and Annals of Mathematics editorial work.",
         "prof": "Permanent Faculty chairs at Princeton University and the Institute for Advanced Study."
       },
-      "next": ["princeton", "ihes", "newton_institute", "clay_math"],
+      "next": [
+        "princeton",
+        "ihes",
+        "newton_institute",
+        "clay_math"
+      ],
       "rabbitLinks": [
-        { "id": "princeton", "reason": "Adjacent to Jadwin Hall Physics and the Institute for Advanced Study where Einstein and Witten worked." },
-        { "id": "cambridge_cst", "reason": "Alan Turing earned his PhD in Princeton's Fine Hall under Alonzo Church in 1938 right after inventing the Turing machine." },
-        { "id": "newton_institute", "reason": "Andrew Wiles worked in secret for 7 years in Princeton before unveiling his proof of Fermat's Last Theorem at Cambridge's Newton Institute." }
+        {
+          "id": "princeton",
+          "reason": "Adjacent to Jadwin Hall Physics and the Institute for Advanced Study where Einstein and Witten worked."
+        },
+        {
+          "id": "cambridge_cst",
+          "reason": "Alan Turing earned his PhD in Princeton's Fine Hall under Alonzo Church in 1938 right after inventing the Turing machine."
+        },
+        {
+          "id": "newton_institute",
+          "reason": "Andrew Wiles worked in secret for 7 years in Princeton before unveiling his proof of Fermat's Last Theorem at Cambridge's Newton Institute."
+        }
       ],
       "projects": [
-        { "name": "Annals of Mathematics & IAS Special Year Programs", "status": "ongoing", "url": "https://www.math.ias.edu/" }
+        {
+          "name": "Annals of Mathematics & IAS Special Year Programs",
+          "status": "ongoing",
+          "url": "https://www.math.ias.edu/"
+        }
       ]
     },
     {
@@ -897,7 +1268,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "math",
-      "branch": "math",
+      "branch": "pure_math",
       "pinned": true,
       "lat": 52.2102,
       "lng": 0.1023,
@@ -918,14 +1289,32 @@
         "assoc_prof": "University Associate Professorships bridging pure math with theoretical physics.",
         "prof": "Historic chairs including the Lucasian, Rouse Ball, and Sadleirian Professorships."
       },
-      "next": ["cambridge", "newton_institute", "cambridge_cst", "oxford_cs"],
+      "next": [
+        "cambridge",
+        "newton_institute",
+        "cambridge_cst",
+        "oxford_cs"
+      ],
       "rabbitLinks": [
-        { "id": "cambridge", "reason": "Home to Stephen Hawking's cosmology group and David Tong's famous open QFT/physics lecture notes." },
-        { "id": "newton_institute", "reason": "Shares the Wilberforce Road campus with the Isaac Newton Institute for Mathematical Sciences." },
-        { "id": "tifr_math", "reason": "Historic Cambridge-India bond forged when Srinivasa Ramanujan arrived at Trinity College to collaborate with G.H. Hardy." }
+        {
+          "id": "cambridge",
+          "reason": "Home to Stephen Hawking's cosmology group and David Tong's famous open QFT/physics lecture notes."
+        },
+        {
+          "id": "newton_institute",
+          "reason": "Shares the Wilberforce Road campus with the Isaac Newton Institute for Mathematical Sciences."
+        },
+        {
+          "id": "tifr_math",
+          "reason": "Historic Cambridge-India bond forged when Srinivasa Ramanujan arrived at Trinity College to collaborate with G.H. Hardy."
+        }
       ],
       "projects": [
-        { "name": "Part III Mathematical Tripos & Millennium Mathematics Project", "status": "ongoing", "url": "https://maths.org/" }
+        {
+          "name": "Part III Mathematical Tripos & Millennium Mathematics Project",
+          "status": "ongoing",
+          "url": "https://maths.org/"
+        }
       ]
     },
     {
@@ -936,7 +1325,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "math",
-      "branch": "math",
+      "branch": "analysis_pde",
       "pinned": true,
       "lat": 47.3763,
       "lng": 8.5482,
@@ -957,13 +1346,28 @@
         "assoc_prof": "Tenure-track professorships in optimal transport, stochastics, numerical PDEs, and data science.",
         "prof": "Visiting Professorships via FIM hosting hundreds of global mathematicians each year."
       },
-      "next": ["eth", "eth_ai_center", "oberwolfach", "ihes"],
+      "next": [
+        "eth",
+        "eth_ai_center",
+        "oberwolfach",
+        "ihes"
+      ],
       "rabbitLinks": [
-        { "id": "eth", "reason": "ETH mathematician Marcel Grossmann introduced his former classmate Albert Einstein to Riemannian tensors for General Relativity." },
-        { "id": "eth_ai_center", "reason": "D-MATH's Seminar for Applied Mathematics (SAM) underpins neural PDE solvers and AI theory." }
+        {
+          "id": "eth",
+          "reason": "ETH mathematician Marcel Grossmann introduced his former classmate Albert Einstein to Riemannian tensors for General Relativity."
+        },
+        {
+          "id": "eth_ai_center",
+          "reason": "D-MATH's Seminar for Applied Mathematics (SAM) underpins neural PDE solvers and AI theory."
+        }
       ],
       "projects": [
-        { "name": "Forschungsinstitut für Mathematik (FIM) & ETH-ITS", "status": "ongoing", "url": "https://fim.math.ethz.ch/" }
+        {
+          "name": "Forschungsinstitut für Mathematik (FIM) & ETH-ITS",
+          "status": "ongoing",
+          "url": "https://fim.math.ethz.ch/"
+        }
       ]
     },
     {
@@ -974,11 +1378,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "math",
-      "branch": "math",
+      "branch": "applied_stat",
       "pinned": true,
       "lat": -34.1066,
       "lng": 18.4728,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2003,
       "status": "active",
       "url": "https://aims.ac.za/",
@@ -995,14 +1399,1018 @@
         "assoc_prof": "Volunteer as a 3-week visiting lecturer teaching specialized modules to Africa's top math students.",
         "prof": "Hold AIMS Research Chairs (including German Research Chairs supported by Humboldt Foundation)."
       },
-      "next": ["meerkat", "ictp_eaifr", "ahri_krisp", "perimeter"],
+      "next": [
+        "meerkat",
+        "ictp_eaifr",
+        "ahri_krisp",
+        "perimeter"
+      ],
       "rabbitLinks": [
-        { "id": "meerkat", "reason": "AIMS graduates analyze petabytes of radio astronomy data from South Africa's MeerKAT and Square Kilometre Array." },
-        { "id": "perimeter", "reason": "Founded by cosmologist Neil Turok before he directed Perimeter Institute, creating a lasting Canada-Africa math bridge." },
-        { "id": "ahri_krisp", "reason": "AIMS mathematical epidemiologists collaborate with South African genomic surveillance teams on infectious disease modeling." }
+        {
+          "id": "meerkat",
+          "reason": "AIMS graduates analyze petabytes of radio astronomy data from South Africa's MeerKAT and Square Kilometre Array."
+        },
+        {
+          "id": "perimeter",
+          "reason": "Founded by cosmologist Neil Turok before he directed Perimeter Institute, creating a lasting Canada-Africa math bridge."
+        },
+        {
+          "id": "ahri_krisp",
+          "reason": "AIMS mathematical epidemiologists collaborate with South African genomic surveillance teams on infectious disease modeling."
+        }
       ],
       "projects": [
-        { "name": "AI for Science Master's (with Google DeepMind) & Next Einstein Forum", "status": "ongoing", "url": "https://ai.aims.ac.za/" }
+        {
+          "name": "AI for Science Master's (with Google DeepMind) & Next Einstein Forum",
+          "status": "ongoing",
+          "url": "https://ai.aims.ac.za/"
+        }
+      ]
+    },
+    {
+      "id": "oxford_math",
+      "name": "University of Oxford Mathematical Institute",
+      "city": "Oxford, United Kingdom",
+      "country": "United Kingdom",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "pure_math",
+      "pinned": true,
+      "lat": 51.7606,
+      "lng": -1.2624,
+      "zoom": 15.5,
+      "foundedYear": 1966,
+      "status": "active",
+      "url": "https://www.maths.ox.ac.uk/",
+      "wiki": "https://en.wikipedia.org/wiki/Mathematical_Institute,_University_of_Oxford",
+      "wikiSlug": "Mathematical_Institute,_University_of_Oxford",
+      "summary": "Housed in the landmark Andrew Wiles Building, one of the world's largest and strongest mathematics departments spanning analytic number theory, algebraic geometry, topology, mathematical logic, and mathematical physics.",
+      "nobel": "Home to Abel laureate Andrew Wiles (Fermat's Last Theorem), 2020 Physics Nobel laureate Roger Penrose, and 2022 Fields Medalist James Maynard.",
+      "next": [
+        "clay_math",
+        "oxford_ociam",
+        "cambridge_damtp",
+        "newton_institute"
+      ],
+      "projects": [
+        {
+          "name": "Number Theory, Geometry & Langlands Research Groups",
+          "status": "ongoing",
+          "url": "https://www.maths.ox.ac.uk/research"
+        }
+      ]
+    },
+    {
+      "id": "icmat_madrid",
+      "name": "ICMAT (Instituto de Ciencias Matemáticas)",
+      "city": "Madrid, Spain",
+      "country": "Spain",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "pure_math",
+      "pinned": true,
+      "lat": 40.5493,
+      "lng": -3.6889,
+      "zoom": 15.5,
+      "foundedYear": 2007,
+      "status": "active",
+      "url": "https://www.icmat.es/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_of_Mathematical_Sciences_(Spain)",
+      "wikiSlug": "Institute_of_Mathematical_Sciences_(Spain)",
+      "summary": "Spain's flagship Severo Ochoa mathematical research institute (jointly operated by CSIC, UAM, UC3M, and UCM) excelling in algebraic geometry, moduli spaces, differential geometry, number theory, and fluid PDEs.",
+      "nobel": "Consistently awarded Spain's Severo Ochoa Centre of Excellence distinction and numerous European Research Council (ERC) grants.",
+      "next": [
+        "crm_barcelona",
+        "ihes",
+        "cirm_luminy",
+        "oxford_math"
+      ],
+      "projects": [
+        {
+          "name": "ICMAT Thematic Laboratories in Geometry & Number Theory",
+          "status": "ongoing",
+          "url": "https://www.icmat.es/research"
+        }
+      ]
+    },
+    {
+      "id": "sns_pisa_math",
+      "name": "Scuola Normale Superiore – Centro De Giorgi",
+      "city": "Pisa, Italy",
+      "country": "Italy",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "pure_math",
+      "pinned": true,
+      "lat": 43.7196,
+      "lng": 10.4002,
+      "zoom": 15.5,
+      "foundedYear": 1810,
+      "status": "active",
+      "url": "https://www.crm.sns.it/",
+      "wiki": "https://en.wikipedia.org/wiki/Scuola_Normale_Superiore_di_Pisa",
+      "wikiSlug": "Scuola_Normale_Superiore_di_Pisa",
+      "summary": "Italy's elite graduate university and Centro di Ricerca Matematica Ennio De Giorgi in Pisa—legendary incubator of algebraic geometry, Diophantine number theory, calculus of variations, and optimal transport.",
+      "nobel": "Nurtured Fields Medalists Enrico Bombieri (1974) and Alessio Figalli (2018), alongside Wolf Prize laureate Ennio De Giorgi.",
+      "next": [
+        "ihes",
+        "eth_math",
+        "oberwolfach",
+        "cirm_luminy"
+      ],
+      "projects": [
+        {
+          "name": "Centro De Giorgi Intensive Research Periods",
+          "status": "ongoing",
+          "url": "https://www.crm.sns.it/events/"
+        }
+      ]
+    },
+    {
+      "id": "imsc_chennai",
+      "name": "The Institute of Mathematical Sciences (IMSc)",
+      "city": "Chennai, India",
+      "country": "India",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "pure_math",
+      "pinned": true,
+      "lat": 12.9944,
+      "lng": 80.2469,
+      "zoom": 15.5,
+      "foundedYear": 1962,
+      "status": "active",
+      "url": "https://www.imsc.res.in/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_of_Mathematical_Sciences,_Chennai",
+      "wikiSlug": "Institute_of_Mathematical_Sciences,_Chennai",
+      "summary": "National fundamental research institute in Chennai founded by Alladi Ramakrishnan—famous for algebraic geometry, analytic number theory, representation theory, theoretical computer science, and quantum gravity.",
+      "nobel": "Inspired by Niels Bohr and the IAS Princeton model; home to multiple Shanti Swarup Bhatnagar and Infosys Prize laureates in mathematics.",
+      "next": [
+        "tifr_math",
+        "isi_kolkata",
+        "iitm_rbcdsai",
+        "princeton_math"
+      ],
+      "projects": [
+        {
+          "name": "Number Theory, Algebraic Geometry & Representation Theory",
+          "status": "ongoing",
+          "url": "https://www.imsc.res.in/mathematics"
+        }
+      ]
+    },
+    {
+      "id": "cirm_luminy",
+      "name": "CIRM (Centre International de Rencontres Mathématiques)",
+      "city": "Marseille, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "analysis_pde",
+      "pinned": true,
+      "lat": 43.2323,
+      "lng": 5.4426,
+      "zoom": 15.5,
+      "foundedYear": 1981,
+      "status": "active",
+      "url": "https://www.cirm-math.com/",
+      "wiki": "https://en.wikipedia.org/wiki/Centre_international_de_rencontres_math%C3%A9matiques",
+      "wikiSlug": "Centre_international_de_rencontres_mathématiques",
+      "summary": "France's residential mathematical retreat nestled in the Calanques National Park of Marseille, run by CNRS and the Société Mathématique de France to host 90+ week-long international workshops and Jean-Morlet Chairs annually.",
+      "nobel": "Welcomes ~5,000 visiting mathematicians each year across PDEs, dynamical systems, algebraic geometry, and mathematical physics.",
+      "next": [
+        "oberwolfach",
+        "ihp_paris",
+        "ihes",
+        "crm_barcelona"
+      ],
+      "projects": [
+        {
+          "name": "Jean-Morlet Chair Semesters & Audiovisual Math Library",
+          "status": "ongoing",
+          "url": "https://library.cirm-math.fr/"
+        }
+      ]
+    },
+    {
+      "id": "ucla_ipam",
+      "name": "Institute for Pure and Applied Mathematics (IPAM), UCLA",
+      "city": "Los Angeles, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "analysis_pde",
+      "pinned": true,
+      "lat": 34.0706,
+      "lng": -118.4418,
+      "zoom": 15.5,
+      "foundedYear": 2000,
+      "status": "active",
+      "url": "https://www.ipam.ucla.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Pure_and_Applied_Mathematics",
+      "wikiSlug": "Institute_for_Pure_and_Applied_Mathematics",
+      "summary": "NSF-funded national mathematics institute at UCLA (home to Fields Medalist Terence Tao), running long programs uniting harmonic analysis, nonlinear PDEs, mathematical imaging, materials modeling, and AI theory.",
+      "nobel": "Directly partnered with UCLA Mathematics (Terence Tao, Stanley Osher, Andrea Bertozzi) and renowned for its RIPS undergraduate research program.",
+      "next": [
+        "slmath_msri",
+        "courant_nyu",
+        "caltech_cms",
+        "stanford_stat_icme"
+      ],
+      "projects": [
+        {
+          "name": "IPAM Long Programs & RIPS Summer Research",
+          "status": "ongoing",
+          "url": "https://www.ipam.ucla.edu/programs/"
+        }
+      ]
+    },
+    {
+      "id": "ihp_paris",
+      "name": "Institut Henri Poincaré (IHP)",
+      "city": "Paris, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "analysis_pde",
+      "pinned": true,
+      "lat": 48.843,
+      "lng": 2.3452,
+      "zoom": 15.5,
+      "foundedYear": 1928,
+      "status": "active",
+      "url": "https://www.ihp.fr/en",
+      "wiki": "https://en.wikipedia.org/wiki/Institut_Henri_Poincar%C3%A9",
+      "wikiSlug": "Institut_Henri_Poincaré",
+      "summary": "Historic 'Maison des Mathématiques' in Paris's Latin Quarter hosting international thematic trimesters in PDEs, geometry, probability, and theoretical physics—alongside the Maison Poincaré mathematics museum.",
+      "nobel": "Directed by Émile Borel and later 2010 Fields Medalist Cédric Villani; historic home of the Annales de l'Institut Henri Poincaré.",
+      "next": [
+        "ens_maths",
+        "ihes",
+        "cirm_luminy",
+        "oberwolfach"
+      ],
+      "projects": [
+        {
+          "name": "IHP Thematic Trimesters & Maison Poincaré Museum",
+          "status": "ongoing",
+          "url": "https://www.ihp.fr/en/scientific-programs"
+        }
+      ]
+    },
+    {
+      "id": "stanford_stat_icme",
+      "name": "Stanford Department of Statistics & ICME",
+      "city": "Stanford, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 37.4292,
+      "lng": -122.1704,
+      "zoom": 15.5,
+      "foundedYear": 1948,
+      "status": "active",
+      "url": "https://statistics.stanford.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Stanford_University",
+      "wikiSlug": "Stanford_University",
+      "summary": "World-leading hub for modern mathematical statistics, statistical learning, compressed sensing, and computational engineering—uniting Stanford Statistics with the Institute for Computational & Mathematical Engineering (ICME).",
+      "nobel": "Home to International Prize in Statistics laureate Bradley Efron (bootstrap), David Donoho, Emmanuel Candès, Trevor Hastie, and Rob Tibshirani.",
+      "next": [
+        "stanford_hai",
+        "slmath_msri",
+        "uchicago_stat",
+        "columbia_stat"
+      ],
+      "projects": [
+        {
+          "name": "Statistical Learning, Conformal Prediction & Compressed Sensing",
+          "status": "ongoing",
+          "url": "https://icme.stanford.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "mit_applied_math",
+      "name": "MIT Department of Mathematics (Applied Mathematics)",
+      "city": "Cambridge, MA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 42.3596,
+      "lng": -71.0906,
+      "zoom": 15.5,
+      "foundedYear": 1861,
+      "status": "active",
+      "url": "https://math.mit.edu/research/applied/",
+      "wiki": "https://en.wikipedia.org/wiki/Massachusetts_Institute_of_Technology",
+      "wikiSlug": "Massachusetts_Institute_of_Technology",
+      "summary": "Powerhouse of applied mathematics, numerical linear algebra, scientific computing (birthplace of the Julia language), physical applied math, combinatorics, and quantum algorithms inside MIT's Building 2.",
+      "nobel": "Home to Peter Shor (Shor's quantum factoring algorithm), Gilbert Strang (linear algebra educator), and Abel Prize laureate Isadore Singer's legacy.",
+      "next": [
+        "mit_csail",
+        "courant_nyu",
+        "oxford_ociam",
+        "caltech_cms"
+      ],
+      "projects": [
+        {
+          "name": "Julia Scientific Computing & Physical Applied Math Lab",
+          "status": "ongoing",
+          "url": "https://math.mit.edu/research/applied/"
+        }
+      ]
+    },
+    {
+      "id": "oxford_ociam",
+      "name": "Oxford Centre for Industrial and Applied Mathematics (OCIAM)",
+      "city": "Oxford, United Kingdom",
+      "country": "United Kingdom",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 51.7604,
+      "lng": -1.2621,
+      "zoom": 15.5,
+      "foundedYear": 1989,
+      "status": "active",
+      "url": "https://www.maths.ox.ac.uk/groups/ociam",
+      "wiki": "https://en.wikipedia.org/wiki/Oxford_Centre_for_Industrial_and_Applied_Mathematics",
+      "wikiSlug": "Oxford_Centre_for_Industrial_and_Applied_Mathematics",
+      "summary": "World-leading applied mathematics research group inside Oxford's Andrew Wiles Building, pioneering mathematical modeling for batteries, continuum mechanics, fluid flows, and industrial Study Groups.",
+      "nobel": "Invented the globally replicated European Study Groups with Industry (ESGI) model connecting rigorous asymptotic PDEs with real-world engineering.",
+      "next": [
+        "oxford_math",
+        "cambridge_damtp",
+        "imperial_math_stat",
+        "mit_applied_math"
+      ],
+      "projects": [
+        {
+          "name": "Mathematical Modelling of Energy Storage & Continuum Mechanics",
+          "status": "ongoing",
+          "url": "https://www.maths.ox.ac.uk/groups/ociam/research"
+        }
+      ]
+    },
+    {
+      "id": "eth_sfs",
+      "name": "ETH Zurich Seminar for Statistics (SfS)",
+      "city": "Zurich, Switzerland",
+      "country": "Switzerland",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 47.3765,
+      "lng": 8.548,
+      "zoom": 15.5,
+      "foundedYear": 1973,
+      "status": "active",
+      "url": "https://stat.math.ethz.ch/",
+      "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
+      "wikiSlug": "ETH_Zurich",
+      "summary": "Continental Europe's foremost center for mathematical statistics and causal inference within ETH D-MATH, advancing high-dimensional statistics, robust estimation, distributional robustness, and statistical learning theory.",
+      "nobel": "Led by Peter Bühlmann, Nicolai Meinshausen, and Sara van de Geer—pioneers of high-dimensional Lasso theory and invariance-based causal inference.",
+      "next": [
+        "eth_math",
+        "eth_ai_center",
+        "stanford_stat_icme",
+        "columbia_stat"
+      ],
+      "projects": [
+        {
+          "name": "Causal Inference & High-Dimensional Statistical Learning",
+          "status": "ongoing",
+          "url": "https://stat.math.ethz.ch/research.html"
+        }
+      ]
+    },
+    {
+      "id": "columbia_stat",
+      "name": "Columbia University Department of Statistics",
+      "city": "New York, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 40.8087,
+      "lng": -73.9617,
+      "zoom": 15.5,
+      "foundedYear": 1946,
+      "status": "active",
+      "url": "https://stat.columbia.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Columbia_University",
+      "wikiSlug": "Columbia_University",
+      "summary": "Historic statistics powerhouse founded by Abraham Wald and Harold Hotelling, today driving Bayesian computation (Stan probabilistic programming), variational inference, causal inference, and probabilistic machine learning.",
+      "nobel": "Home to Abraham Wald's sequential analysis legacy alongside Andrew Gelman (Stan) and David Blei (Latent Dirichlet Allocation & variational inference).",
+      "next": [
+        "courant_nyu",
+        "stanford_stat_icme",
+        "uchicago_stat",
+        "eth_sfs"
+      ],
+      "projects": [
+        {
+          "name": "Stan Probabilistic Programming & Bayesian Workflow",
+          "status": "ongoing",
+          "url": "https://mc-stan.org/"
+        }
+      ]
+    },
+    {
+      "id": "uchicago_stat",
+      "name": "University of Chicago Department of Statistics",
+      "city": "Chicago, IL, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 41.7913,
+      "lng": -87.5998,
+      "zoom": 15.5,
+      "foundedYear": 1949,
+      "status": "active",
+      "url": "https://stat.uchicago.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/University_of_Chicago",
+      "wikiSlug": "University_of_Chicago",
+      "summary": "Renowned theoretical and applied statistics department bridging deep mathematical probability, statistical genetics, tensor algebra, optimal transport, and foundations of machine learning.",
+      "nobel": "Shaped by Leonard Savage, Patrick Billingsley, and Stephen Stigler; closely linked with UChicago's Committee on Computational and Applied Mathematics.",
+      "next": [
+        "stanford_stat_icme",
+        "columbia_stat",
+        "courant_nyu",
+        "chicago_quantum"
+      ],
+      "projects": [
+        {
+          "name": "Mathematical Statistics, Genetics & Data Science Foundations",
+          "status": "ongoing",
+          "url": "https://stat.uchicago.edu/research/"
+        }
+      ]
+    },
+    {
+      "id": "isi_kolkata",
+      "name": "Indian Statistical Institute (ISI)",
+      "city": "Kolkata, India",
+      "country": "India",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 22.6484,
+      "lng": 88.3769,
+      "zoom": 15.5,
+      "foundedYear": 1931,
+      "status": "active",
+      "url": "https://www.isical.ac.in/",
+      "wiki": "https://en.wikipedia.org/wiki/Indian_Statistical_Institute",
+      "wikiSlug": "Indian_Statistical_Institute",
+      "summary": "Iconic national institution of importance founded by Prasanta Chandra Mahalanobis—birthplace of the Mahalanobis distance, Cramér-Rao inequality, and India's premier school of probability, statistics, and theoretical CS.",
+      "nobel": "Home to 2023 International Prize in Statistics laureate C.R. Rao and Abel Prize laureate S.R.S. Varadhan (PhD 1963).",
+      "next": [
+        "tifr_math",
+        "imsc_chennai",
+        "courant_nyu",
+        "stanford_stat_icme"
+      ],
+      "projects": [
+        {
+          "name": "Sankhya Journal & Theoretical Statistics and Probability Unit",
+          "status": "ongoing",
+          "url": "https://www.isical.ac.in/~statmath/"
+        }
+      ]
+    },
+    {
+      "id": "kaust_cemse",
+      "name": "KAUST CEMSE Applied Mathematics & Computational Science",
+      "city": "Thuwal, Saudi Arabia",
+      "country": "Saudi Arabia",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 22.3095,
+      "lng": 39.1047,
+      "zoom": 15.5,
+      "foundedYear": 2009,
+      "status": "active",
+      "url": "https://cemse.kaust.edu.sa/amcs",
+      "wiki": "https://en.wikipedia.org/wiki/King_Abdullah_University_of_Science_and_Technology",
+      "wikiSlug": "King_Abdullah_University_of_Science_and_Technology",
+      "summary": "Middle East's flagship applied mathematics and statistics division on the Red Sea coast, advancing exascale numerical PDEs, federated and stochastic optimization, spatio-temporal climate statistics, and Shaheen III supercomputing.",
+      "nobel": "Home to Extreme Computing Research Center and world-leading groups in federated optimization and extreme-value environmental statistics.",
+      "next": [
+        "kaust",
+        "mbzuai",
+        "eth_sfs",
+        "mit_applied_math"
+      ],
+      "projects": [
+        {
+          "name": "Extreme Computing & Stochastic Optimization Programs",
+          "status": "ongoing",
+          "url": "https://cemse.kaust.edu.sa/amcs/research"
+        }
+      ]
+    },
+    {
+      "id": "caltech_cms",
+      "name": "Caltech Computing and Mathematical Sciences (CMS)",
+      "city": "Pasadena, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 34.1375,
+      "lng": -118.1253,
+      "zoom": 15.5,
+      "foundedYear": 2010,
+      "status": "active",
+      "url": "https://www.cms.caltech.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/California_Institute_of_Technology",
+      "wikiSlug": "California_Institute_of_Technology",
+      "summary": "Interdisciplinary Caltech department uniting applied mathematics, randomized numerical linear algebra, Bayesian inverse problems, neural operators for PDEs, and algorithmic economics.",
+      "nobel": "Pioneered Fourier Neural Operators (FNO) for scientific PDEs and matrix concentration inequalities underpinning randomized algorithms.",
+      "next": [
+        "ucla_ipam",
+        "caltech_iqim",
+        "mit_applied_math",
+        "stanford_stat_icme"
+      ],
+      "projects": [
+        {
+          "name": "Neural Operators, Inverse Problems & Randomized Linear Algebra",
+          "status": "ongoing",
+          "url": "https://www.cms.caltech.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "kth_math_stat",
+      "name": "KTH & Stockholm University Mathematical Statistics",
+      "city": "Stockholm, Sweden",
+      "country": "Sweden",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 59.3474,
+      "lng": 18.0719,
+      "zoom": 15.5,
+      "foundedYear": 1929,
+      "status": "active",
+      "url": "https://www.kth.se/math/divisions/mathstat",
+      "wiki": "https://en.wikipedia.org/wiki/Harald_Cram%C3%A9r",
+      "wikiSlug": "Harald_Cramér",
+      "summary": "Continues Harald Cramér's historic Stockholm school of probability and mathematical statistics—advancing stochastic processes, spatial statistics, actuarial risk theory, epidemic modeling, and mathematical machine learning.",
+      "nobel": "Harald Cramér established foundational large-deviations theory and the Cramér-Rao lower bound in Stockholm's probability tradition.",
+      "next": [
+        "mittag_leffler",
+        "kth_wasp",
+        "eth_sfs",
+        "isi_kolkata"
+      ],
+      "projects": [
+        {
+          "name": "Stochastic Processes, Epidemic Modeling & Risk Theory",
+          "status": "ongoing",
+          "url": "https://www.kth.se/math/divisions/mathstat"
+        }
+      ]
+    },
+    {
+      "id": "imperial_math_stat",
+      "name": "Imperial College London Department of Mathematics",
+      "city": "London, United Kingdom",
+      "country": "United Kingdom",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "applied_stat",
+      "pinned": true,
+      "lat": 51.4988,
+      "lng": -0.1795,
+      "zoom": 15.5,
+      "foundedYear": 1907,
+      "status": "active",
+      "url": "https://www.imperial.ac.uk/mathematics/",
+      "wiki": "https://en.wikipedia.org/wiki/Imperial_College_London",
+      "wikiSlug": "Imperial_College_London",
+      "summary": "Premier London mathematics department spanning stochastic PDEs, mathematical finance, statistical machine learning, fluid dynamics, and Lean formalization of modern number theory.",
+      "nobel": "Home to Fields Medalists Martin Hairer (2014, regularity structures for SPDEs) and Simon Donaldson (1986), plus Lean evangelist Kevin Buzzard.",
+      "next": [
+        "alan_turing_inst",
+        "oxford_ociam",
+        "cambridge_damtp",
+        "lean_fro"
+      ],
+      "projects": [
+        {
+          "name": "Stochastic Analysis, Mathematical Finance & Xena Lean Project",
+          "status": "ongoing",
+          "url": "https://www.imperial.ac.uk/mathematics/research/"
+        }
+      ]
+    },
+    {
+      "id": "renyi_budapest",
+      "name": "Alfréd Rényi Institute of Mathematics",
+      "city": "Budapest, Hungary",
+      "country": "Hungary",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 47.4931,
+      "lng": 19.0573,
+      "zoom": 15.5,
+      "foundedYear": 1950,
+      "status": "active",
+      "url": "https://renyi.hu/en",
+      "wiki": "https://en.wikipedia.org/wiki/Alfr%C3%A9d_R%C3%A9nyi_Institute_of_Mathematics",
+      "wikiSlug": "Alfréd_Rényi_Institute_of_Mathematics",
+      "summary": "World capital of extremal combinatorics, graph theory, discrete geometry, and probabilistic methods—founded by Alfréd Rényi and shaped by Paul Erdős's legendary problem-solving legacy.",
+      "nobel": "Home to Abel Prize laureates Endre Szemerédi (2012, arithmetic progressions) and László Lovász (2021, graph limits & algorithms).",
+      "next": [
+        "banach_warsaw",
+        "kurt_godel_vienna",
+        "waterloo_co",
+        "hebrew_einstein_math"
+      ],
+      "projects": [
+        {
+          "name": "Erdős Center & Graph Limits / Combinatorics Programs",
+          "status": "ongoing",
+          "url": "https://erdoscenter.renyi.hu/"
+        }
+      ]
+    },
+    {
+      "id": "banach_warsaw",
+      "name": "Stefan Banach International Mathematical Center (IMPAN)",
+      "city": "Warsaw, Poland",
+      "country": "Poland",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 52.2229,
+      "lng": 21.0156,
+      "zoom": 15.5,
+      "foundedYear": 1972,
+      "status": "active",
+      "url": "https://www.impan.pl/en/activities/banach-center",
+      "wiki": "https://en.wikipedia.org/wiki/Institute_of_Mathematics_of_the_Polish_Academy_of_Sciences",
+      "wikiSlug": "Institute_of_Mathematics_of_the_Polish_Academy_of_Sciences",
+      "summary": "Central European international conference and research institute of the Polish Academy of Sciences continuing the historic Polish School of topology, set theory, logic, and Banach-space functional analysis.",
+      "nobel": "Carries forward the foundational legacy of Stefan Banach, Alfred Tarski, Kazimierz Kuratowski, and the Lwów-Warsaw mathematical schools.",
+      "next": [
+        "renyi_budapest",
+        "kurt_godel_vienna",
+        "oberwolfach",
+        "berkeley_logic"
+      ],
+      "projects": [
+        {
+          "name": "Banach Center Thematic Semesters & Topology Publications",
+          "status": "ongoing",
+          "url": "https://www.impan.pl/en/activities/banach-center/conferences"
+        }
+      ]
+    },
+    {
+      "id": "kurt_godel_vienna",
+      "name": "Kurt Gödel Research Center for Mathematical Logic (KGRC)",
+      "city": "Vienna, Austria",
+      "country": "Austria",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 48.209,
+      "lng": 16.3607,
+      "zoom": 15.5,
+      "foundedYear": 1995,
+      "status": "active",
+      "url": "https://www.logic.univie.ac.at/",
+      "wiki": "https://en.wikipedia.org/wiki/Kurt_G%C3%B6del_Research_Center",
+      "wikiSlug": "Kurt_Gödel_Research_Center",
+      "summary": "University of Vienna research institute honoring Kurt Gödel's incompleteness breakthroughs, dedicated to set theory, large cardinals, forcing, descriptive set theory, and the foundations of mathematics.",
+      "nobel": "Located in the city where Kurt Gödel proved his 1931 Incompleteness Theorems; a premier global node for set-theoretic logic.",
+      "next": [
+        "esi_vienna",
+        "berkeley_logic",
+        "renyi_budapest",
+        "bonn_logic"
+      ],
+      "projects": [
+        {
+          "name": "Set Theory, Large Cardinals & Forcing Research",
+          "status": "ongoing",
+          "url": "https://www.logic.univie.ac.at/Research.html"
+        }
+      ]
+    },
+    {
+      "id": "cmu_hoskinson",
+      "name": "CMU Hoskinson Center for Formal Mathematics",
+      "city": "Pittsburgh, PA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 40.4416,
+      "lng": -79.9441,
+      "zoom": 15.5,
+      "foundedYear": 2021,
+      "status": "active",
+      "url": "https://www.cmu.edu/hoskinson-center/",
+      "wiki": "https://en.wikipedia.org/wiki/Carnegie_Mellon_University",
+      "wikiSlug": "Carnegie_Mellon_University",
+      "summary": "Carnegie Mellon research center led by Jeremy Avigad advancing machine-checked formal mathematics in Lean 4, homotopy type theory, automated reasoning, and open educational libraries for formal proof.",
+      "nobel": "Co-authored 'Mathematics in Lean' and bridges philosophical logic, type theory, and AI-assisted theorem proving.",
+      "next": [
+        "lean_fro",
+        "cmu_scs",
+        "msr_redmond",
+        "bonn_logic"
+      ],
+      "projects": [
+        {
+          "name": "Formal Mathematics in Lean 4 & Automated Reasoning",
+          "status": "ongoing",
+          "url": "https://www.cmu.edu/hoskinson-center/research/index.html"
+        }
+      ]
+    },
+    {
+      "id": "lean_fro",
+      "name": "Lean Focused Research Organization (Lean FRO)",
+      "city": "San Francisco, CA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 37.7897,
+      "lng": -122.4002,
+      "zoom": 15.5,
+      "foundedYear": 2023,
+      "status": "active",
+      "url": "https://lean-fro.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Lean_(proof_assistant)",
+      "wikiSlug": "Lean_(proof_assistant)",
+      "summary": "Non-profit focused research organization led by Leonardo de Moura and Sebastian Ullrich engineering the Lean 4 interactive theorem prover and scaling the global Mathlib formalized mathematics library.",
+      "nobel": "Lean 4 powers the Liquid Tensor Experiment, Fermat's Last Theorem formalization, and AI neuro-symbolic proof systems worldwide.",
+      "next": [
+        "cmu_hoskinson",
+        "msr_redmond",
+        "imperial_math_stat",
+        "mpim_bonn"
+      ],
+      "projects": [
+        {
+          "name": "Lean 4 Proof Assistant & Mathlib4 Library",
+          "status": "ongoing",
+          "url": "https://lean-lang.org/"
+        }
+      ]
+    },
+    {
+      "id": "waterloo_co",
+      "name": "University of Waterloo Dept. of Combinatorics & Optimization",
+      "city": "Waterloo, Canada",
+      "country": "Canada",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 43.4721,
+      "lng": -80.5439,
+      "zoom": 15.5,
+      "foundedYear": 1967,
+      "status": "active",
+      "url": "https://uwaterloo.ca/combinatorics-and-optimization/",
+      "wiki": "https://en.wikipedia.org/wiki/Faculty_of_Mathematics,_University_of_Waterloo",
+      "wikiSlug": "Faculty_of_Mathematics,_University_of_Waterloo",
+      "summary": "The world's only standalone university department dedicated exclusively to combinatorics and optimization—founded by Bletchley Park cryptanalyst and graph-theory pioneer W.T. Tutte—spanning graph theory, cryptography, and quantum information.",
+      "nobel": "Founded by W.T. Tutte (Lorenz cipher breaker & matroid theory pioneer); tightly linked with IQC and Perimeter Institute.",
+      "next": [
+        "iqc_waterloo",
+        "fields_institute",
+        "renyi_budapest",
+        "crm_montreal"
+      ],
+      "projects": [
+        {
+          "name": "Graph Theory, Algebraic Combinatorics & Post-Quantum Crypto",
+          "status": "ongoing",
+          "url": "https://uwaterloo.ca/combinatorics-and-optimization/research"
+        }
+      ]
+    },
+    {
+      "id": "hebrew_einstein_math",
+      "name": "Einstein Institute of Mathematics, Hebrew University",
+      "city": "Jerusalem, Israel",
+      "country": "Israel",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 31.7768,
+      "lng": 35.1977,
+      "zoom": 15.5,
+      "foundedYear": 1925,
+      "status": "active",
+      "url": "https://mathematics.huji.ac.il/",
+      "wiki": "https://en.wikipedia.org/wiki/Einstein_Institute_of_Mathematics",
+      "wikiSlug": "Einstein_Institute_of_Mathematics",
+      "summary": "Historic mathematics institute on Jerusalem's Givat Ram campus—globally celebrated for mathematical logic, model theory, ergodic theory, algebraic combinatorics, and game theory.",
+      "nobel": "Home to Fields Medalist Elon Lindenstrauss (2010), Abel laureate Hillel Furstenberg (2020), Wolf laureate Saharon Shelah (logic), and Economics Nobel laureate Robert Aumann.",
+      "next": [
+        "technion_math",
+        "weizmann_cs",
+        "renyi_budapest",
+        "princeton_math"
+      ],
+      "projects": [
+        {
+          "name": "Model Theory, Combinatorics & Ergodic Theory Groups",
+          "status": "ongoing",
+          "url": "https://mathematics.huji.ac.il/research"
+        }
+      ]
+    },
+    {
+      "id": "technion_math",
+      "name": "Technion Faculty of Mathematics",
+      "city": "Haifa, Israel",
+      "country": "Israel",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 32.777,
+      "lng": 35.0235,
+      "zoom": 15.5,
+      "foundedYear": 1950,
+      "status": "active",
+      "url": "https://math.technion.ac.il/",
+      "wiki": "https://en.wikipedia.org/wiki/Technion_%E2%80%93_Israel_Institute_of_Technology",
+      "wikiSlug": "Technion_–_Israel_Institute_of_Technology",
+      "summary": "Leading Israeli mathematics faculty in Haifa excelling in extremal and topological combinatorics, convex and discrete geometry, spectral graph theory, convex optimization, and mathematical physics.",
+      "nobel": "Renowned for topological combinatorics, matrix theory, and continuous-discrete optimization feeding directly into Technion's CS and engineering hubs.",
+      "next": [
+        "technion_cs",
+        "hebrew_einstein_math",
+        "renyi_budapest",
+        "waterloo_co"
+      ],
+      "projects": [
+        {
+          "name": "Combinatorics, Discrete Geometry & Optimization",
+          "status": "ongoing",
+          "url": "https://math.technion.ac.il/en/research/"
+        }
+      ]
+    },
+    {
+      "id": "crm_montreal",
+      "name": "Centre de Recherches Mathématiques (CRM Montréal)",
+      "city": "Montreal, Canada",
+      "country": "Canada",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 45.5015,
+      "lng": -73.6156,
+      "zoom": 15.5,
+      "foundedYear": 1968,
+      "status": "active",
+      "url": "https://www.crmath.ca/",
+      "wiki": "https://en.wikipedia.org/wiki/Centre_de_recherches_math%C3%A9matiques",
+      "wikiSlug": "Centre_de_recherches_mathématiques",
+      "summary": "Canada's oldest national mathematical sciences research institute, uniting 13 Quebec and Ontario universities across algebraic combinatorics (LaCIM), topology, mathematical physics, and mathematical AI.",
+      "nobel": "Awards the prestigious CRM-Fields-PIMS Prize and anchors Montreal's mathematical bridge to Mila's deep learning ecosystem.",
+      "next": [
+        "fields_institute",
+        "mila_quebec",
+        "waterloo_co",
+        "birs_banff"
+      ],
+      "projects": [
+        {
+          "name": "CRM Thematic Semesters & LaCIM Combinatorics Lab",
+          "status": "ongoing",
+          "url": "https://www.crmath.ca/en/activities/"
+        }
+      ]
+    },
+    {
+      "id": "berkeley_logic",
+      "name": "UC Berkeley Group in Logic and the Methodology of Science",
+      "city": "Berkeley, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "uni",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 37.8736,
+      "lng": -122.2578,
+      "zoom": 15.5,
+      "foundedYear": 1958,
+      "status": "active",
+      "url": "https://logic.berkeley.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Alfred_Tarski",
+      "wikiSlug": "Alfred_Tarski",
+      "summary": "Interdisciplinary doctoral and research center founded by Alfred Tarski at UC Berkeley—the historic epicenter of model theory, set theory, recursion theory, and mathematical foundations.",
+      "nobel": "Founded by Alfred Tarski and shaped by Julia Robinson, Robert Solovay, Hugh Woodin, and Thomas Scanlon.",
+      "next": [
+        "slmath_msri",
+        "simons_theory_berkeley",
+        "kurt_godel_vienna",
+        "bonn_logic"
+      ],
+      "projects": [
+        {
+          "name": "Model Theory, Set Theory & Computability Seminars",
+          "status": "ongoing",
+          "url": "https://logic.berkeley.edu/"
+        }
+      ]
+    },
+    {
+      "id": "bonn_logic",
+      "name": "University of Bonn Discrete Mathematics & Logic Institute",
+      "city": "Bonn, Germany",
+      "country": "Germany",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "math",
+      "branch": "logic_comb",
+      "pinned": true,
+      "lat": 50.7315,
+      "lng": 7.1052,
+      "zoom": 15.5,
+      "foundedYear": 1988,
+      "status": "active",
+      "url": "https://www.or.uni-bonn.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Research_Institute_for_Discrete_Mathematics",
+      "wikiSlug": "Research_Institute_for_Discrete_Mathematics",
+      "summary": "Home to the Arithmeum museum and Bonn's world-renowned Research Institute for Discrete Mathematics & Mathematical Logic—pioneering combinatorial VLSI chip layout optimization alongside Bonn's set-theory and logic groups.",
+      "nobel": "BonnTools combinatorial algorithms developed by Bernhard Korte and Jens Vygen have routed billions of transistors on IBM microprocessor chips.",
+      "next": [
+        "bonn_math",
+        "hausdorff_bonn",
+        "mpim_bonn",
+        "kurt_godel_vienna"
+      ],
+      "projects": [
+        {
+          "name": "BonnTools Combinatorial Optimization & Set Theory",
+          "status": "ongoing",
+          "url": "https://www.or.uni-bonn.de/research/"
+        }
       ]
     }
   ]

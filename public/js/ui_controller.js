@@ -1638,19 +1638,38 @@ async function renderOfflinePacksModal(bodyEl) {
   render();
 }
 
-function renderDomainsModal(bodyEl, focusDomainId = null) {
-  const activeDomain = focusDomainId || (store.state.branch !== "all" ? store.state.branch : (store.domains[0]?.id || "particle"));
-  const branchPills = PHYSICS_BRANCHES.map(b => {
-    const isAct = store.state.branch === b.id;
+function renderDomainsModal(bodyEl, focusDomainId = null, focusDiscipline = null) {
+  const curDisc = focusDiscipline || (store.state.discipline !== "all" ? store.state.discipline : "all");
+  const activeDomain = focusDomainId || (
+    store.domains.some(d => d.id === curDisc) ? curDisc
+    : store.state.branch !== "all" && store.domains.some(d => d.id === store.state.branch) ? store.state.branch
+    : (store.domains[0]?.id || "particle")
+  );
+
+  const discPills = STEM_DISCIPLINES.map(d => {
+    const isAct = curDisc === d.id;
     return `
-      <button type="button" data-filter-branch="${esc(b.id)}" class="branch-pill px-3.5 py-1.5 rounded-full text-[14px] transition ${isAct ? "glass-btn-active" : "glass-btn"}">
-        ${esc(b.label.split(/[\s,]+/)[0])}
+      <button type="button" data-dom-disc="${esc(d.id)}" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${isAct ? "glass-btn-active" : "glass-btn"}">
+        ${esc(d.short)}
+      </button>
+    `;
+  }).join("");
+
+  const visibleBranches = curDisc === "all"
+    ? PHYSICS_BRANCHES.filter(b => ALL_STEM_FEATURED_BRANCHES.includes(b.id) || store.state.branch === b.id)
+    : PHYSICS_BRANCHES.filter(b => b.id === "all" || b.disc === curDisc);
+
+  const branchPills = visibleBranches.map(b => {
+    const isAct = store.state.branch === b.id && (b.id !== "all" || store.state.discipline === curDisc);
+    return `
+      <button type="button" data-filter-branch="${esc(b.id)}" data-filter-disc="${esc(b.disc || "all")}" class="branch-pill px-3 py-1 rounded-full text-[13px] whitespace-nowrap transition ${isAct ? "glass-btn-active" : "glass-btn"}">
+        ${esc(BRANCH_SHORT_LABELS[b.id] || b.label)}
       </button>
     `;
   }).join("");
 
   const domainTabs = store.domains.map(d => `
-    <button type="button" data-dom-tab="${esc(d.id)}" class="dom-tab px-3.5 py-2 rounded-xl text-[14px] transition ${d.id === activeDomain ? "glass-row-active font-medium" : "glass-row"}">
+    <button type="button" data-dom-tab="${esc(d.id)}" class="dom-tab px-3.5 py-1.5 rounded-xl text-[13.5px] whitespace-nowrap transition ${d.id === activeDomain ? "glass-row-active font-medium" : "glass-row"}">
       ${esc(d.name.split(",")[0].split(" &")[0])}
     </button>
   `).join("");
@@ -1679,7 +1698,7 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
                       <div class="text-[14px] font-medium text-white truncate">${esc(m.title)}</div>
                       <div class="text-[14px] accent-text truncate">${esc(m.provider)} · ${esc(m.type)} ↗</div>
                     </a>
-                    <button type="button" data-save-mat="${esc(matId)}" data-mat-title="${esc(m.title)}" data-mat-sub="${esc(m.provider + " · " + sub.name)}" data-mat-url="${esc(m.url)}" class="px-3 py-1 rounded-full text-[14px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}">
+                    <button type="button" data-save-mat="${esc(matId)}" data-mat-title="${esc(m.title)}" data-mat-sub="${esc(m.provider + " · " + sub.name)}" data-mat-url="${esc(m.url)}" class="px-3 py-1 rounded-full text-[13.5px] shrink-0 transition ${saved ? "glass-btn-active" : "glass-btn"}">
                       ${saved ? "✓ Saved" : "+ Save"}
                     </button>
                   </div>
@@ -1693,7 +1712,7 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
             <div class="section-label">Active &amp; Upcoming Projects</div>
             <div class="flex flex-wrap gap-2">
               ${sub.projects.map(p => `
-                <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1.5 rounded-full text-[14px]">
+                <a href="${esc(p.url)}" target="_blank" rel="noopener noreferrer" class="accent-chip px-3 py-1.5 rounded-full text-[13.5px]">
                   ${esc(p.name)} ↗
                 </a>
               `).join("")}
@@ -1706,7 +1725,7 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
 
   const trailsHtml = store.rabbitTrails?.length ? `
     <div class="space-y-2.5">
-      <div class="section-label">Curated Cross-STEM Rabbit Hole Journeys</div>
+      <div class="section-label">Curated Cross-STEM Journeys (${store.rabbitTrails.length})</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
         ${store.rabbitTrails.map(tr => `
           <button type="button" data-dom-trail="${esc(tr.id)}" class="glass-row text-left rounded-2xl p-3.5 space-y-1 transition">
@@ -1723,16 +1742,17 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
 
   bodyEl.innerHTML = `
     <div class="space-y-5">
-      ${trailsHtml}
-      <div class="${trailsHtml ? "border-t border-white/10 pt-4 " : ""}space-y-2.5">
-        <div class="section-label">Filter Globe by Subfield</div>
-        <div class="flex flex-wrap gap-2">${branchPills}</div>
+      <div class="space-y-2.5">
+        <div class="section-label">Filter Globe by Discipline &amp; Branch</div>
+        <div class="flex flex-wrap gap-1.5">${discPills}</div>
+        <div class="flex flex-wrap gap-1.5 pt-1">${branchPills}</div>
       </div>
       <div class="border-t border-white/10 pt-4 space-y-3.5">
-        <div class="section-label">Browse STEM Domain Materials</div>
-        <div class="flex flex-wrap gap-2">${domainTabs}</div>
+        <div class="section-label">Open Courses, Books &amp; Frontier Projects</div>
+        <div class="flex flex-wrap gap-1.5">${domainTabs}</div>
         <div class="space-y-3">${subCards || '<div class="text-neutral-400 text-[14px]">Loading domains…</div>'}</div>
       </div>
+      ${trailsHtml ? `<div class="border-t border-white/10 pt-4">${trailsHtml}</div>` : ""}
     </div>
   `;
 
@@ -1746,17 +1766,33 @@ function renderDomainsModal(bodyEl, focusDomainId = null) {
     });
   });
 
-  bodyEl.querySelectorAll(".branch-pill").forEach(btn => {
+  bodyEl.querySelectorAll("[data-dom-disc]").forEach(btn => {
     btn.addEventListener("click", () => {
-      store.state.branch = btn.dataset.filterBranch;
+      const disc = btn.dataset.domDisc;
+      store.state.discipline = disc;
+      store.state.branch = "all";
       updateActiveFiltersPill();
       syncGlobeMarkers();
-      renderDomainsModal(bodyEl, btn.dataset.filterBranch === "all" ? activeDomain : btn.dataset.filterBranch);
-      showToast(`Branch: ${PHYSICS_BRANCHES.find(b => b.id === store.state.branch)?.label || store.state.branch}`);
+      const matchDom = store.domains.find(d => d.id === disc)?.id || activeDomain;
+      renderDomainsModal(bodyEl, matchDom, disc);
+    });
+  });
+
+  bodyEl.querySelectorAll(".branch-pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const br = btn.dataset.filterBranch;
+      const bDisc = btn.dataset.filterDisc;
+      store.state.branch = br;
+      if (br !== "all" && bDisc && bDisc !== "all") store.state.discipline = bDisc;
+      updateActiveFiltersPill();
+      syncGlobeMarkers();
+      const nextDom = store.domains.find(d => d.id === br || d.id === bDisc)?.id || activeDomain;
+      renderDomainsModal(bodyEl, nextDom, store.state.discipline);
+      showToast(BRANCH_SHORT_LABELS[br] || br);
     });
   });
   bodyEl.querySelectorAll(".dom-tab").forEach(btn => {
-    btn.addEventListener("click", () => renderDomainsModal(bodyEl, btn.dataset.domTab));
+    btn.addEventListener("click", () => renderDomainsModal(bodyEl, btn.dataset.domTab, curDisc));
   });
   bodyEl.querySelectorAll("[data-save-mat]").forEach(btn => {
     btn.addEventListener("click", async () => {
@@ -1790,12 +1826,12 @@ function renderCountriesModal(bodyEl) {
 
   const render = () => {
     const headerTabs = `
-      <div class="flex items-center justify-between gap-3 pb-4 border-b border-white/10">
+      <div class="flex items-center justify-between gap-2 pb-4 border-b border-white/10">
         <div class="flex items-center gap-2">
-          <button type="button" data-ctab="regions" class="px-4 py-2 rounded-full text-[14px] transition ${tab === "regions" ? "glass-btn-active" : "glass-btn"}">Continents &amp; Countries</button>
-          <button type="button" data-ctab="private" class="px-4 py-2 rounded-full text-[14px] transition ${tab === "private" ? "glass-btn-active" : "glass-btn"}">Private &amp; Startups</button>
+          <button type="button" data-ctab="regions" class="px-4 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${tab === "regions" ? "glass-btn-active" : "glass-btn"}">Countries</button>
+          <button type="button" data-ctab="private" class="px-4 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${tab === "private" ? "glass-btn-active" : "glass-btn"}">Startups</button>
         </div>
-        ${store.state.countryFilter !== "all" ? `<button type="button" id="btn-clear-country" class="accent-link text-[14px] bg-transparent border-0 cursor-pointer">Reset</button>` : ""}
+        ${store.state.countryFilter !== "all" ? `<button type="button" id="btn-clear-country" class="accent-link text-[13.5px] bg-transparent border-0 cursor-pointer shrink-0">Reset</button>` : ""}
       </div>
     `;
 
@@ -2156,23 +2192,24 @@ function downloadBlob(content, filename, type) {
 // STAGE SELECTOR POPOVER, PRECISION FILTER POPOVER & ACTIVE FILTER PILL
 // =========================================================================
 
+const ALL_STEM_FEATURED_BRANCHES = [
+  "all",
+  "particle", "quantum", "astro", "fusion", "condensed",
+  "aerospace", "semiconductors", "robotics", "energy_civil", "biomedical_eng", "materials_mfg",
+  "ai_frontier", "systems_arch", "quantum_cs",
+  "pure_math", "applied_stat",
+  "genomics_synbio", "neuroscience",
+  "catalysis_synth", "nanomaterials",
+  "climate_atmo", "ocean_geo"
+];
+
 const FILTER_BRANCHES = [
-  { id: "all",            label: "All",               disc: "all" },
-  { id: "particle",       label: "Particle & HEP",    disc: "physics" },
-  { id: "quantum",        label: "Quantum & Optics",  disc: "physics" },
-  { id: "astro",          label: "Astrophysics",      disc: "physics" },
-  { id: "gravity",        label: "Gravity & Theory",  disc: "physics" },
-  { id: "fusion",         label: "Fusion & Plasma",   disc: "physics" },
-  { id: "condensed",      label: "Condensed Matter",  disc: "physics" },
-  { id: "applied",        label: "Applied & Space",   disc: "physics" },
-  { id: "ai_cs",          label: "AI & Computing",    disc: "ai_cs" },
-  { id: "math",           label: "Mathematics",       disc: "math" },
-  { id: "bio_med",        label: "Biology & Bio",     disc: "bio_med" },
-  { id: "chem_materials", label: "Chemistry",         disc: "chem_materials" },
-  { id: "earth_climate",  label: "Earth & Climate",   disc: "earth_climate" },
-  { id: "engineering",    label: "Engineering",       disc: "engineering" },
-  { id: "history",        label: "History",           disc: "all" },
-  { id: "multi",          label: "Multi-Branch",      disc: "physics" }
+  ...PHYSICS_BRANCHES.map(b => ({
+    id: b.id,
+    label: BRANCH_SHORT_LABELS[b.id] || b.label,
+    disc: b.disc || "all"
+  })),
+  { id: "multi", label: "Multi-Branch", disc: "physics" }
 ];
 
 const FILTER_TYPES = [
@@ -2236,9 +2273,9 @@ export function renderFilterPopover() {
   const branchBox = document.getElementById("filter-branch-chips");
   if (branchBox) {
     const curDisc = store.state.discipline || "all";
-    const visibleBranches = FILTER_BRANCHES.filter(b =>
-      b.id === "all" || curDisc === "all" || b.disc === curDisc || b.disc === "all"
-    );
+    const visibleBranches = curDisc === "all"
+      ? FILTER_BRANCHES.filter(b => ALL_STEM_FEATURED_BRANCHES.includes(b.id) || store.state.branch === b.id)
+      : FILTER_BRANCHES.filter(b => b.id === "all" || b.disc === curDisc);
     branchBox.innerHTML = visibleBranches.map(b => {
       const count = getFilteredHubs({ branch: b.id, skipSort: true }).length;
       if (b.id !== "all" && count === 0 && store.state.branch !== b.id) return "";

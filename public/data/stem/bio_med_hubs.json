@@ -1,10 +1,10 @@
 {
   "meta": {
     "name": "PhysAlts STEM Atlas — Biology, Genomics & Neuroscience Hubs",
-    "version": "1.0",
-    "updatedAt": "2026-11-23",
+    "version": "2.0",
+    "updatedAt": "2026-11-24",
     "discipline": "bio_med",
-    "description": "31 verified global flagship institutes for genomics, molecular biology, structural cryo-EM, CRISPR genome engineering, AI drug discovery, and systems neuroscience."
+    "description": "59 verified global flagship institutes across Genomics, CRISPR & Synthetic Biology; Neuroscience & Connectomics; Structural Biology, Immunology & Therapeutics; and Evolutionary Biology, Marine & Microbiome Science."
   },
   "hubs": [
     {
@@ -15,7 +15,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 42.3629,
       "lng": -71.0875,
@@ -36,15 +36,37 @@
         "assoc_prof": "Core Institute Member and Associate Member collaborative multi-lab initiatives.",
         "prof": "Institute Member chairs leading global consortia like the Human Cell Atlas and gnomAD."
       },
-      "next": ["whitehead_inst", "mit_csail", "igi_berkeley", "wellcome_sanger"],
+      "next": [
+        "whitehead_inst",
+        "mit_csail",
+        "igi_berkeley",
+        "wellcome_sanger"
+      ],
       "rabbitLinks": [
-        { "id": "mit_csail", "reason": "Steps away in Kendall Square; joint Eric and Wendy Schmidt Center merges machine learning with single-cell biology." },
-        { "id": "wellcome_sanger", "reason": "Transatlantic partners since the Human Genome Project, co-leading the global Human Cell Atlas." },
-        { "id": "igi_berkeley", "reason": "Twin pillars of the CRISPR revolution advancing base, prime, and clinical gene editing." }
+        {
+          "id": "mit_csail",
+          "reason": "Steps away in Kendall Square; joint Eric and Wendy Schmidt Center merges machine learning with single-cell biology."
+        },
+        {
+          "id": "wellcome_sanger",
+          "reason": "Transatlantic partners since the Human Genome Project, co-leading the global Human Cell Atlas."
+        },
+        {
+          "id": "igi_berkeley",
+          "reason": "Twin pillars of the CRISPR revolution advancing base, prime, and clinical gene editing."
+        }
       ],
       "projects": [
-        { "name": "gnomAD (Genome Aggregation Database) & GATK", "status": "ongoing", "url": "https://gnomad.broadinstitute.org/" },
-        { "name": "Eric and Wendy Schmidt Center (ML & Biology)", "status": "ongoing", "url": "https://www.ericandwendyschmidtcenter.org/" }
+        {
+          "name": "gnomAD (Genome Aggregation Database) & GATK",
+          "status": "ongoing",
+          "url": "https://gnomad.broadinstitute.org/"
+        },
+        {
+          "name": "Eric and Wendy Schmidt Center (ML & Biology)",
+          "status": "ongoing",
+          "url": "https://www.ericandwendyschmidtcenter.org/"
+        }
       ]
     },
     {
@@ -55,11 +77,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 52.0805,
       "lng": 0.1846,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1993,
       "status": "active",
       "url": "https://www.sanger.ac.uk/",
@@ -76,14 +98,33 @@
         "assoc_prof": "Group Leader appointments with substantial core Wellcome Trust sequencing budgets.",
         "prof": "Head of Programme leadership steering global biodiversity and cancer genomics."
       },
-      "next": ["embl_ebi", "mrc_lmb", "broad_institute", "francis_crick"],
+      "next": [
+        "embl_ebi",
+        "mrc_lmb",
+        "broad_institute",
+        "francis_crick"
+      ],
       "rabbitLinks": [
-        { "id": "embl_ebi", "reason": "Shares the Wellcome Genome Campus in Hinxton—turning massive raw DNA sequencing into global open databases." },
-        { "id": "mrc_lmb", "reason": "Just up the road in Cambridge where Frederick Sanger invented dideoxy DNA sequencing in 1977." }
+        {
+          "id": "embl_ebi",
+          "reason": "Shares the Wellcome Genome Campus in Hinxton—turning massive raw DNA sequencing into global open databases."
+        },
+        {
+          "id": "mrc_lmb",
+          "reason": "Just up the road in Cambridge where Frederick Sanger invented dideoxy DNA sequencing in 1977."
+        }
       ],
       "projects": [
-        { "name": "Darwin Tree of Life (Sequencing 70,000+ UK Species)", "status": "ongoing", "url": "https://www.darwintreeoflife.org/" },
-        { "name": "COSMIC Catalogue of Somatic Mutations in Cancer", "status": "ongoing", "url": "https://cancer.sanger.ac.uk/cosmic" }
+        {
+          "name": "Darwin Tree of Life (Sequencing 70,000+ UK Species)",
+          "status": "ongoing",
+          "url": "https://www.darwintreeoflife.org/"
+        },
+        {
+          "name": "COSMIC Catalogue of Somatic Mutations in Cancer",
+          "status": "ongoing",
+          "url": "https://cancer.sanger.ac.uk/cosmic"
+        }
       ]
     },
     {
@@ -94,11 +135,11 @@
       "group": "lab",
       "entityType": "lab",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 49.3835,
       "lng": 8.7107,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1974,
       "status": "active",
       "url": "https://www.embl.org/",
@@ -115,15 +156,37 @@
         "assoc_prof": "EMBL Group Leader model (9-year max tenure) continuously refreshing Europe's academic leadership.",
         "prof": "Unit Heads and Director General steering European life-science infrastructure."
       },
-      "next": ["embl_ebi", "esrf", "desy", "mpi_biochem"],
+      "next": [
+        "embl_ebi",
+        "esrf",
+        "desy",
+        "mpi_biochem"
+      ],
       "rabbitLinks": [
-        { "id": "esrf", "reason": "EMBL Grenoble operates directly on the ESRF synchrotron campus for high-brilliance X-ray protein crystallography." },
-        { "id": "desy", "reason": "EMBL Hamburg runs macromolecular beamlines right inside DESY's PETRA III synchrotron." },
-        { "id": "cern", "reason": "Explicitly modeled on CERN's intergovernmental treaty architecture to unite European molecular biology." }
+        {
+          "id": "esrf",
+          "reason": "EMBL Grenoble operates directly on the ESRF synchrotron campus for high-brilliance X-ray protein crystallography."
+        },
+        {
+          "id": "desy",
+          "reason": "EMBL Hamburg runs macromolecular beamlines right inside DESY's PETRA III synchrotron."
+        },
+        {
+          "id": "cern",
+          "reason": "Explicitly modeled on CERN's intergovernmental treaty architecture to unite European molecular biology."
+        }
       ],
       "projects": [
-        { "name": "TREC (Traversing European Coastlines) Planetary Biology Expedition", "status": "ongoing", "url": "https://www.embl.org/about/info/trec/" },
-        { "name": "EMBL Imaging Centre (Cryo-EM & Super-Resolution)", "status": "ongoing", "url": "https://www.embl.org/about/info/imaging-centre/" }
+        {
+          "name": "TREC (Traversing European Coastlines) Planetary Biology Expedition",
+          "status": "ongoing",
+          "url": "https://www.embl.org/about/info/trec/"
+        },
+        {
+          "name": "EMBL Imaging Centre (Cryo-EM & Super-Resolution)",
+          "status": "ongoing",
+          "url": "https://www.embl.org/about/info/imaging-centre/"
+        }
       ]
     },
     {
@@ -134,11 +197,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 52.0801,
       "lng": 0.1869,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1994,
       "status": "active",
       "url": "https://www.ebi.ac.uk/",
@@ -155,14 +218,33 @@
         "assoc_prof": "Team Leader roles curating global biological archives accessed by millions of scientists daily.",
         "prof": "Global leadership in ELIXIR European life-science data infrastructure."
       },
-      "next": ["deepmind", "wellcome_sanger", "embl_heidelberg", "isomorphic_labs"],
+      "next": [
+        "deepmind",
+        "wellcome_sanger",
+        "embl_heidelberg",
+        "isomorphic_labs"
+      ],
       "rabbitLinks": [
-        { "id": "deepmind", "reason": "Partnered with Google DeepMind to publicly release AlphaFold predictions for nearly every known cataloged protein on Earth." },
-        { "id": "wellcome_sanger", "reason": "Co-located on the Wellcome Genome Campus south of Cambridge." }
+        {
+          "id": "deepmind",
+          "reason": "Partnered with Google DeepMind to publicly release AlphaFold predictions for nearly every known cataloged protein on Earth."
+        },
+        {
+          "id": "wellcome_sanger",
+          "reason": "Co-located on the Wellcome Genome Campus south of Cambridge."
+        }
       ],
       "projects": [
-        { "name": "AlphaFold Protein Structure Database (with Google DeepMind)", "status": "ongoing", "url": "https://alphafold.ebi.ac.uk/" },
-        { "name": "UniProt, Ensembl & Open Targets Platform", "status": "ongoing", "url": "https://www.ebi.ac.uk/services" }
+        {
+          "name": "AlphaFold Protein Structure Database (with Google DeepMind)",
+          "status": "ongoing",
+          "url": "https://alphafold.ebi.ac.uk/"
+        },
+        {
+          "name": "UniProt, Ensembl & Open Targets Platform",
+          "status": "ongoing",
+          "url": "https://www.ebi.ac.uk/services"
+        }
       ]
     },
     {
@@ -173,7 +255,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 51.5317,
       "lng": -0.1288,
@@ -194,13 +276,28 @@
         "assoc_prof": "Early Career Group Leader 6+6 year model fostering radical interdisciplinary science.",
         "prof": "Senior Group Leaders collaborating across physics, AI, and translational cancer trials."
       },
-      "next": ["alan_turing_inst", "deepmind", "mrc_lmb", "wellcome_sanger"],
+      "next": [
+        "alan_turing_inst",
+        "deepmind",
+        "mrc_lmb",
+        "wellcome_sanger"
+      ],
       "rabbitLinks": [
-        { "id": "alan_turing_inst", "reason": "Directly across the street from the British Library, uniting London's flagship AI and biomedical centers." },
-        { "id": "deepmind", "reason": "Neighbors in London's King's Cross Knowledge Quarter, collaborating on AI-driven structural and cellular biology." }
+        {
+          "id": "alan_turing_inst",
+          "reason": "Directly across the street from the British Library, uniting London's flagship AI and biomedical centers."
+        },
+        {
+          "id": "deepmind",
+          "reason": "Neighbors in London's King's Cross Knowledge Quarter, collaborating on AI-driven structural and cellular biology."
+        }
       ],
       "projects": [
-        { "name": "TRACERx Lung Cancer Evolution & Worldwide Influenza Centre", "status": "ongoing", "url": "https://www.crick.ac.uk/research" }
+        {
+          "name": "TRACERx Lung Cancer Evolution & Worldwide Influenza Centre",
+          "status": "ongoing",
+          "url": "https://www.crick.ac.uk/research"
+        }
       ]
     },
     {
@@ -211,7 +308,7 @@
       "group": "lab",
       "entityType": "lab",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 52.1753,
       "lng": 0.1355,
@@ -232,14 +329,32 @@
         "assoc_prof": "Programme Leader-Track appointments with core MRC long-term support and small collaborative labs.",
         "prof": "Division Heads sustaining the legendary tea-room cross-disciplinary discovery culture."
       },
-      "next": ["cambridge", "wellcome_sanger", "cambridge_chem", "deepmind"],
+      "next": [
+        "cambridge",
+        "wellcome_sanger",
+        "cambridge_chem",
+        "deepmind"
+      ],
       "rabbitLinks": [
-        { "id": "cambridge", "reason": "Born inside the Cavendish Physics Laboratory under Lawrence Bragg, proving physics X-ray diffraction could decode life." },
-        { "id": "deepmind", "reason": "LMB's decades of experimentally solved cryo-EM and crystal structures formed the ground truth powering AlphaFold." },
-        { "id": "cambridge_chem", "reason": "Close Cambridge collaboration on synthetic genetic codes, click chemistry, and nucleic acid structures." }
+        {
+          "id": "cambridge",
+          "reason": "Born inside the Cavendish Physics Laboratory under Lawrence Bragg, proving physics X-ray diffraction could decode life."
+        },
+        {
+          "id": "deepmind",
+          "reason": "LMB's decades of experimentally solved cryo-EM and crystal structures formed the ground truth powering AlphaFold."
+        },
+        {
+          "id": "cambridge_chem",
+          "reason": "Close Cambridge collaboration on synthetic genetic codes, click chemistry, and nucleic acid structures."
+        }
       ],
       "projects": [
-        { "name": "Atomic-Resolution Cryo-EM & Synthetic Genetic Code Expansion", "status": "ongoing", "url": "https://www2.mrc-lmb.cam.ac.uk/research/" }
+        {
+          "name": "Atomic-Resolution Cryo-EM & Synthetic Genetic Code Expansion",
+          "status": "ongoing",
+          "url": "https://www2.mrc-lmb.cam.ac.uk/research/"
+        }
       ]
     },
     {
@@ -250,11 +365,11 @@
       "group": "lab",
       "entityType": "lab",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 40.8588,
       "lng": -73.4676,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1890,
       "status": "active",
       "url": "https://www.cshl.edu/",
@@ -271,14 +386,33 @@
         "assoc_prof": "Quantitative Biology and Plant Genetics faculty driving cancer and neurobiology breakthroughs.",
         "prof": "Host iconic Cold Spring Harbor Symposia on Quantitative Biology (running since 1933)."
       },
-      "next": ["rockefeller_uni", "simons_scgp", "cornell_cs", "broad_institute"],
+      "next": [
+        "rockefeller_uni",
+        "simons_scgp",
+        "cornell_cs",
+        "broad_institute"
+      ],
       "rabbitLinks": [
-        { "id": "cornell_cs", "reason": "CSHL launched bioRxiv and medRxiv inspired directly by Cornell's arXiv physics preprint revolution." },
-        { "id": "simons_scgp", "reason": "30 minutes away on Long Island, collaborating on quantitative biology and mathematical neuroscience." }
+        {
+          "id": "cornell_cs",
+          "reason": "CSHL launched bioRxiv and medRxiv inspired directly by Cornell's arXiv physics preprint revolution."
+        },
+        {
+          "id": "simons_scgp",
+          "reason": "30 minutes away on Long Island, collaborating on quantitative biology and mathematical neuroscience."
+        }
       ],
       "projects": [
-        { "name": "bioRxiv & medRxiv Open Biology Preprint Servers", "status": "ongoing", "url": "https://www.biorxiv.org/" },
-        { "name": "Simons Center for Quantitative Biology", "status": "ongoing", "url": "https://www.cshl.edu/research/quantitative-biology/" }
+        {
+          "name": "bioRxiv & medRxiv Open Biology Preprint Servers",
+          "status": "ongoing",
+          "url": "https://www.biorxiv.org/"
+        },
+        {
+          "name": "Simons Center for Quantitative Biology",
+          "status": "ongoing",
+          "url": "https://www.cshl.edu/research/quantitative-biology/"
+        }
       ]
     },
     {
@@ -289,7 +423,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "neuroscience",
       "pinned": true,
       "lat": 32.8877,
       "lng": -117.2464,
@@ -310,14 +444,33 @@
         "assoc_prof": "Independent faculty appointments across ~50 agile, cross-disciplinary labs.",
         "prof": "Harnessing Plants Initiative (carbon-sequestering deep-root crops) and BRAIN Initiative leadership."
       },
-      "next": ["scripps_research", "scripps_ocean", "allen_brain", "janelia_hhmi"],
+      "next": [
+        "scripps_research",
+        "scripps_ocean",
+        "allen_brain",
+        "janelia_hhmi"
+      ],
       "rabbitLinks": [
-        { "id": "scripps_research", "reason": "Adjacent on Torrey Pines Mesa, forming one of the planet's densest biomedical and chemical biology clusters." },
-        { "id": "scripps_ocean", "reason": "Minutes down the La Jolla cliffs; Salk's Harnessing Plants Initiative links plant genetics directly to climate carbon drawdown." }
+        {
+          "id": "scripps_research",
+          "reason": "Adjacent on Torrey Pines Mesa, forming one of the planet's densest biomedical and chemical biology clusters."
+        },
+        {
+          "id": "scripps_ocean",
+          "reason": "Minutes down the La Jolla cliffs; Salk's Harnessing Plants Initiative links plant genetics directly to climate carbon drawdown."
+        }
       ],
       "projects": [
-        { "name": "Harnessing Plants Initiative (Salk Ideal Plants for Carbon Capture)", "status": "ongoing", "url": "https://www.salk.edu/science/research-centers/harnessing-plants-initiative/" },
-        { "name": "BRAIN Initiative Mammalian Brain Cell Atlas", "status": "ongoing", "url": "https://www.salk.edu/science/research-centers/" }
+        {
+          "name": "Harnessing Plants Initiative (Salk Ideal Plants for Carbon Capture)",
+          "status": "ongoing",
+          "url": "https://www.salk.edu/science/research-centers/harnessing-plants-initiative/"
+        },
+        {
+          "name": "BRAIN Initiative Mammalian Brain Cell Atlas",
+          "status": "ongoing",
+          "url": "https://www.salk.edu/science/research-centers/"
+        }
       ]
     },
     {
@@ -328,11 +481,11 @@
       "group": "lab",
       "entityType": "lab",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "neuroscience",
       "pinned": true,
       "lat": 39.0715,
       "lng": -77.4658,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2006,
       "status": "active",
       "url": "https://www.janelia.org/",
@@ -349,14 +502,33 @@
         "assoc_prof": "Small, hands-on Group Leader labs (max ~6 people, 100% HHMI internal funding, zero grant chasing).",
         "prof": "Visiting Scientist Program hosting external biologists to use Janelia's next-gen microscopes."
       },
-      "next": ["allen_brain", "mrc_lmb", "champalimaud", "salk_institute"],
+      "next": [
+        "allen_brain",
+        "mrc_lmb",
+        "champalimaud",
+        "salk_institute"
+      ],
       "rabbitLinks": [
-        { "id": "allen_brain", "reason": "Co-pioneers of open neuroscience tools—Janelia's GCaMP calcium indicators and Neuropixels silicon probes are standard across brain labs." },
-        { "id": "imec", "reason": "Janelia partnered directly with Belgium's imec semiconductor lab to fabricate Neuropixels—recording thousands of neurons simultaneously." }
+        {
+          "id": "allen_brain",
+          "reason": "Co-pioneers of open neuroscience tools—Janelia's GCaMP calcium indicators and Neuropixels silicon probes are standard across brain labs."
+        },
+        {
+          "id": "imec",
+          "reason": "Janelia partnered directly with Belgium's imec semiconductor lab to fabricate Neuropixels—recording thousands of neurons simultaneously."
+        }
       ],
       "projects": [
-        { "name": "FlyEM Connectome & Neuropixels Neural Probes (with imec)", "status": "ongoing", "url": "https://www.janelia.org/project-team/flyem" },
-        { "name": "4D Cellular Physiology & Advanced Optical Microscopy", "status": "ongoing", "url": "https://www.janelia.org/research-areas" }
+        {
+          "name": "FlyEM Connectome & Neuropixels Neural Probes (with imec)",
+          "status": "ongoing",
+          "url": "https://www.janelia.org/project-team/flyem"
+        },
+        {
+          "name": "4D Cellular Physiology & Advanced Optical Microscopy",
+          "status": "ongoing",
+          "url": "https://www.janelia.org/research-areas"
+        }
       ]
     },
     {
@@ -367,7 +539,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 48.8404,
       "lng": 2.3117,
@@ -388,13 +560,28 @@
         "assoc_prof": "G5 Five-Year Junior Group Leader positions launching independent labs.",
         "prof": "Research Unit Directors coordinating global epidemic preparedness and vaccine science."
       },
-      "next": ["institut_curie", "ens_maths", "ahri_krisp", "embl_heidelberg"],
+      "next": [
+        "institut_curie",
+        "ens_maths",
+        "ahri_krisp",
+        "embl_heidelberg"
+      ],
       "rabbitLinks": [
-        { "id": "institut_curie", "reason": "Paris's twin historic biomedical foundations, uniting microbiology and cancer biophysics across the Left Bank." },
-        { "id": "ahri_krisp", "reason": "The global Pasteur Network (including Dakar and Tunis) collaborates across Africa on real-time pathogen genomics." }
+        {
+          "id": "institut_curie",
+          "reason": "Paris's twin historic biomedical foundations, uniting microbiology and cancer biophysics across the Left Bank."
+        },
+        {
+          "id": "ahri_krisp",
+          "reason": "The global Pasteur Network (including Dakar and Tunis) collaborates across Africa on real-time pathogen genomics."
+        }
       ],
       "projects": [
-        { "name": "Pasteur Network Global Pandemic Preparedness (30+ Institutes)", "status": "ongoing", "url": "https://pasteur-network.org/" }
+        {
+          "name": "Pasteur Network Global Pandemic Preparedness (30+ Institutes)",
+          "status": "ongoing",
+          "url": "https://pasteur-network.org/"
+        }
       ]
     },
     {
@@ -405,11 +592,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 32.8955,
       "lng": -117.2423,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1924,
       "status": "active",
       "url": "https://www.scripps.edu/",
@@ -426,13 +613,28 @@
         "assoc_prof": "Independent faculty bridging fundamental chemical synthesis with Calibr clinical translation.",
         "prof": "Endowed chairs driving click chemistry, HIV/flu universal vaccines, and AI-guided digital medicine."
       },
-      "next": ["salk_institute", "scripps_ocean", "caltech_beckman", "mpi_kofo"],
+      "next": [
+        "salk_institute",
+        "scripps_ocean",
+        "caltech_beckman",
+        "mpi_kofo"
+      ],
       "rabbitLinks": [
-        { "id": "caltech_beckman", "reason": "Southern California chemical biology corridor linking Scripps click chemistry with Caltech directed evolution." },
-        { "id": "salk_institute", "reason": "Direct neighbors on Torrey Pines Mesa sharing San Diego's vibrant neuroscience and structural biology seminars." }
+        {
+          "id": "caltech_beckman",
+          "reason": "Southern California chemical biology corridor linking Scripps click chemistry with Caltech directed evolution."
+        },
+        {
+          "id": "salk_institute",
+          "reason": "Direct neighbors on Torrey Pines Mesa sharing San Diego's vibrant neuroscience and structural biology seminars."
+        }
       ],
       "projects": [
-        { "name": "Calibr-Skaggs Translational Drug Discovery & Universal Vaccines", "status": "ongoing", "url": "https://www.scripps.edu/science-and-medicine/" }
+        {
+          "name": "Calibr-Skaggs Translational Drug Discovery & Universal Vaccines",
+          "status": "ongoing",
+          "url": "https://www.scripps.edu/science-and-medicine/"
+        }
       ]
     },
     {
@@ -443,7 +645,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 59.3489,
       "lng": 18.0268,
@@ -464,13 +666,28 @@
         "assoc_prof": "Assistant Professor career-ladder grants with SciLifeLab national technology platforms.",
         "prof": "Professorial chairs at Biomedicum and potential election to the Nobel Assembly."
       },
-      "next": ["kth_wasp", "mittag_leffler", "embl_heidelberg", "broad_institute"],
+      "next": [
+        "kth_wasp",
+        "mittag_leffler",
+        "embl_heidelberg",
+        "broad_institute"
+      ],
       "rabbitLinks": [
-        { "id": "kth_wasp", "reason": "Co-operates SciLifeLab in Solna, where spatial transcriptomics and the Human Protein Atlas meet Swedish AI supercomputing." },
-        { "id": "mpi_eva", "reason": "Awarded the 2022 Medicine Nobel to Svante Pääbo (son of KI Nobel laureate Sune Bergström) for paleogenomics." }
+        {
+          "id": "kth_wasp",
+          "reason": "Co-operates SciLifeLab in Solna, where spatial transcriptomics and the Human Protein Atlas meet Swedish AI supercomputing."
+        },
+        {
+          "id": "mpi_eva",
+          "reason": "Awarded the 2022 Medicine Nobel to Svante Pääbo (son of KI Nobel laureate Sune Bergström) for paleogenomics."
+        }
       ],
       "projects": [
-        { "name": "SciLifeLab & Spatial Transcriptomics / Human Protein Atlas", "status": "ongoing", "url": "https://www.scilifelab.se/" }
+        {
+          "name": "SciLifeLab & Spatial Transcriptomics / Human Protein Atlas",
+          "status": "ongoing",
+          "url": "https://www.scilifelab.se/"
+        }
       ]
     },
     {
@@ -481,7 +698,7 @@
       "group": "uni",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 37.8726,
       "lng": -122.2663,
@@ -502,14 +719,32 @@
         "assoc_prof": "Principal Investigator programs tackling equitable clinical delivery of in-vivo CRISPR therapies.",
         "prof": "Cross-campus leadership uniting biochemistry, agriculture, and global bioethics."
       },
-      "next": ["berkeley", "berkeley_bair", "broad_institute", "arc_institute"],
+      "next": [
+        "berkeley",
+        "berkeley_bair",
+        "broad_institute",
+        "arc_institute"
+      ],
       "rabbitLinks": [
-        { "id": "berkeley", "reason": "Rooted in UC Berkeley's chemistry and molecular biology campus alongside Lawrence Berkeley National Lab." },
-        { "id": "berkeley_bair", "reason": "Combines protein language models with wet-lab screening to discover novel compact CRISPR nucleases." },
-        { "id": "cz_biohub", "reason": "Partners across the San Francisco Bay with UCSF and CZ Biohub on clinical sickle-cell trials." }
+        {
+          "id": "berkeley",
+          "reason": "Rooted in UC Berkeley's chemistry and molecular biology campus alongside Lawrence Berkeley National Lab."
+        },
+        {
+          "id": "berkeley_bair",
+          "reason": "Combines protein language models with wet-lab screening to discover novel compact CRISPR nucleases."
+        },
+        {
+          "id": "cz_biohub",
+          "reason": "Partners across the San Francisco Bay with UCSF and CZ Biohub on clinical sickle-cell trials."
+        }
       ],
       "projects": [
-        { "name": "CRISPR Clinical Therapeutics & Climate-Smart Crop Editing", "status": "ongoing", "url": "https://innovativegenomics.org/research/" }
+        {
+          "name": "CRISPR Clinical Therapeutics & Climate-Smart Crop Editing",
+          "status": "ongoing",
+          "url": "https://innovativegenomics.org/research/"
+        }
       ]
     },
     {
@@ -520,11 +755,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": 37.4027,
       "lng": -122.1453,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2021,
       "status": "active",
       "url": "https://arcinstitute.org/",
@@ -541,13 +776,28 @@
         "assoc_prof": "Arc Core Investigator appointments (8-year renewable fully funded labs).",
         "prof": "Technology Center leadership scaling Virtual Cell foundation models."
       },
-      "next": ["stanford_hai", "igi_berkeley", "cz_biohub", "nvidia_research"],
+      "next": [
+        "stanford_hai",
+        "igi_berkeley",
+        "cz_biohub",
+        "nvidia_research"
+      ],
       "rabbitLinks": [
-        { "id": "nvidia_research", "reason": "Collaborated with NVIDIA to train Evo 2—a 40B-parameter genomic foundation model across 9.3 trillion DNA nucleotides." },
-        { "id": "stanford_hai", "reason": "Core partner university linking Silicon Valley foundation-model scaling directly to wet-lab molecular biology." }
+        {
+          "id": "nvidia_research",
+          "reason": "Collaborated with NVIDIA to train Evo 2—a 40B-parameter genomic foundation model across 9.3 trillion DNA nucleotides."
+        },
+        {
+          "id": "stanford_hai",
+          "reason": "Core partner university linking Silicon Valley foundation-model scaling directly to wet-lab molecular biology."
+        }
       ],
       "projects": [
-        { "name": "Evo / Evo 2 Genomic Foundation Models & Virtual Cell Initiative", "status": "ongoing", "url": "https://arcinstitute.org/tools/evo" }
+        {
+          "name": "Evo / Evo 2 Genomic Foundation Models & Virtual Cell Initiative",
+          "status": "ongoing",
+          "url": "https://arcinstitute.org/tools/evo"
+        }
       ]
     },
     {
@@ -558,7 +808,7 @@
       "group": "company",
       "entityType": "company",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": false,
       "lat": 51.5345,
       "lng": -0.1246,
@@ -579,13 +829,28 @@
         "assoc_prof": "Collaborations on open biomolecular benchmarks and free-energy perturbation methods.",
         "prof": "Scientific advisory exchanges spanning structural biology and pharmaceutical chemistry."
       },
-      "next": ["deepmind", "francis_crick", "embl_ebi", "eth_bsse"],
+      "next": [
+        "deepmind",
+        "francis_crick",
+        "embl_ebi",
+        "eth_bsse"
+      ],
       "rabbitLinks": [
-        { "id": "deepmind", "reason": "Sister Alphabet lab in King's Cross; together they built AlphaFold 3 to predict drug-protein binding geometry." },
-        { "id": "epfl_ai_center", "reason": "Opened a major European research office in Lausanne drawing on Switzerland's computational biophysics and pharma ecosystem." }
+        {
+          "id": "deepmind",
+          "reason": "Sister Alphabet lab in King's Cross; together they built AlphaFold 3 to predict drug-protein binding geometry."
+        },
+        {
+          "id": "epfl_ai_center",
+          "reason": "Opened a major European research office in Lausanne drawing on Switzerland's computational biophysics and pharma ecosystem."
+        }
       ],
       "projects": [
-        { "name": "AlphaFold 3 Co-Development & Rational AI Drug Design Engine", "status": "ongoing", "url": "https://www.isomorphiclabs.com/articles/rational-drug-design-with-alphafold-3" }
+        {
+          "name": "AlphaFold 3 Co-Development & Rational AI Drug Design Engine",
+          "status": "ongoing",
+          "url": "https://www.isomorphiclabs.com/articles/rational-drug-design-with-alphafold-3"
+        }
       ]
     },
     {
@@ -596,7 +861,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": false,
       "lat": 37.7675,
       "lng": -122.3887,
@@ -617,13 +882,28 @@
         "assoc_prof": "CZ Biohub Investigator awards funding high-risk interdisciplinary university faculty.",
         "prof": "Network leadership across San Francisco, Chicago, and New York Biohubs."
       },
-      "next": ["arc_institute", "igi_berkeley", "broad_institute", "stanford_hai"],
+      "next": [
+        "arc_institute",
+        "igi_berkeley",
+        "broad_institute",
+        "stanford_hai"
+      ],
       "rabbitLinks": [
-        { "id": "broad_institute", "reason": "Core partners in constructing open global single-cell reference atlases and virtual cell models." },
-        { "id": "ahri_krisp", "reason": "CZ ID open-source metagenomic sequencing tools empower low-resource labs worldwide to detect emerging pathogens." }
+        {
+          "id": "broad_institute",
+          "reason": "Core partners in constructing open global single-cell reference atlases and virtual cell models."
+        },
+        {
+          "id": "ahri_krisp",
+          "reason": "CZ ID open-source metagenomic sequencing tools empower low-resource labs worldwide to detect emerging pathogens."
+        }
       ],
       "projects": [
-        { "name": "Tabula Sapiens Single-Cell Atlas & OpenCell Proteome Map", "status": "ongoing", "url": "https://www.czbiohub.org/sf/projects/" }
+        {
+          "name": "Tabula Sapiens Single-Cell Atlas & OpenCell Proteome Map",
+          "status": "ongoing",
+          "url": "https://www.czbiohub.org/sf/projects/"
+        }
       ]
     },
     {
@@ -634,11 +914,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": false,
-      "lat": 34.6540,
+      "lat": 34.654,
       "lng": 135.2213,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 2018,
       "status": "active",
       "url": "https://www.bdr.riken.jp/",
@@ -655,13 +935,28 @@
         "assoc_prof": "Team Leader appointments running independent laboratories on Kobe's biomedical island.",
         "prof": "Global collaborations connecting structural biology with Japan's Fugaku supercomputer next door."
       },
-      "next": ["riken", "riken_aip", "kyoto_icems", "embl_heidelberg"],
+      "next": [
+        "riken",
+        "riken_aip",
+        "kyoto_icems",
+        "embl_heidelberg"
+      ],
       "rabbitLinks": [
-        { "id": "riken", "reason": "Located minutes from RIKEN R-CCS's Fugaku supercomputer—running massive whole-cell molecular dynamics." },
-        { "id": "kyoto_icems", "reason": "Kansai region life-science corridor linking RIKEN organoids with Kyoto's Nobel-winning iPS cell & cell-material science." }
+        {
+          "id": "riken",
+          "reason": "Located minutes from RIKEN R-CCS's Fugaku supercomputer—running massive whole-cell molecular dynamics."
+        },
+        {
+          "id": "kyoto_icems",
+          "reason": "Kansai region life-science corridor linking RIKEN organoids with Kyoto's Nobel-winning iPS cell & cell-material science."
+        }
       ],
       "projects": [
-        { "name": "3D Organoid Morphogenesis & Whole-Cell Molecular Simulation", "status": "ongoing", "url": "https://www.bdr.riken.jp/en/research/" }
+        {
+          "name": "3D Organoid Morphogenesis & Whole-Cell Molecular Simulation",
+          "status": "ongoing",
+          "url": "https://www.bdr.riken.jp/en/research/"
+        }
       ]
     },
     {
@@ -672,11 +967,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 48.1059,
       "lng": 11.4596,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1973,
       "status": "active",
       "url": "https://www.biochem.mpg.de/",
@@ -693,13 +988,28 @@
         "assoc_prof": "Independent Research Group Leader positions (5+ year core funding).",
         "prof": "Max Planck Director chairs shaping cellular structural biology and single-cell proteomics."
       },
-      "next": ["tum", "embl_heidelberg", "mrc_lmb", "mpi_eva"],
+      "next": [
+        "tum",
+        "embl_heidelberg",
+        "mrc_lmb",
+        "mpi_eva"
+      ],
       "rabbitLinks": [
-        { "id": "tum", "reason": "Collaborates across Munich's science hub with TU Munich physics and medical imaging groups." },
-        { "id": "mrc_lmb", "reason": "Co-pioneered atomic cryo-EM and cryo-electron tomography to visualize intact molecular machines inside frozen cells." }
+        {
+          "id": "tum",
+          "reason": "Collaborates across Munich's science hub with TU Munich physics and medical imaging groups."
+        },
+        {
+          "id": "mrc_lmb",
+          "reason": "Co-pioneered atomic cryo-EM and cryo-electron tomography to visualize intact molecular machines inside frozen cells."
+        }
       ],
       "projects": [
-        { "name": "Visual Proteomics via Cryo-Electron Tomography & MaxQuant", "status": "ongoing", "url": "https://www.biochem.mpg.de/research" }
+        {
+          "name": "Visual Proteomics via Cryo-Electron Tomography & MaxQuant",
+          "status": "ongoing",
+          "url": "https://www.biochem.mpg.de/research"
+        }
       ]
     },
     {
@@ -710,9 +1020,9 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "ecology_evo",
       "pinned": true,
-      "lat": 51.3210,
+      "lat": 51.321,
       "lng": 12.3944,
       "zoom": 16.2,
       "foundedYear": 1997,
@@ -731,13 +1041,28 @@
         "assoc_prof": "Independent Research Group Leaders integrating genomics with archaeological excavation.",
         "prof": "Max Planck Directors mapping the deep genetic history of humanity."
       },
-      "next": ["karolinska", "wellcome_sanger", "mpi_biochem", "embl_heidelberg"],
+      "next": [
+        "karolinska",
+        "wellcome_sanger",
+        "mpi_biochem",
+        "embl_heidelberg"
+      ],
       "rabbitLinks": [
-        { "id": "karolinska", "reason": "Svante Pääbo's 2022 Nobel Prize honored discoveries made in Leipzig that rewrote human evolutionary medicine." },
-        { "id": "wellcome_sanger", "reason": "Ancient DNA pipelines intersect directly with global human population genomics." }
+        {
+          "id": "karolinska",
+          "reason": "Svante Pääbo's 2022 Nobel Prize honored discoveries made in Leipzig that rewrote human evolutionary medicine."
+        },
+        {
+          "id": "wellcome_sanger",
+          "reason": "Ancient DNA pipelines intersect directly with global human population genomics."
+        }
       ],
       "projects": [
-        { "name": "Neanderthal, Denisovan & Ancient Human Genome Projects", "status": "ongoing", "url": "https://www.eva.mpg.de/genetics/index/" }
+        {
+          "name": "Neanderthal, Denisovan & Ancient Human Genome Projects",
+          "status": "ongoing",
+          "url": "https://www.eva.mpg.de/genetics/index/"
+        }
       ]
     },
     {
@@ -748,7 +1073,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "neuroscience",
       "pinned": true,
       "lat": 47.6248,
       "lng": -122.3391,
@@ -769,13 +1094,28 @@
         "assoc_prof": "OpenScope Program (submit proposals to run your experiment on the Allen Brain Observatory like a telescope).",
         "prof": "Next Generation Leaders Council and international BICAN human brain atlas leadership."
       },
-      "next": ["ai2_allen", "janelia_hhmi", "uw_allen_cs", "champalimaud"],
+      "next": [
+        "ai2_allen",
+        "janelia_hhmi",
+        "uw_allen_cs",
+        "champalimaud"
+      ],
       "rabbitLinks": [
-        { "id": "ai2_allen", "reason": "Sister institute in Seattle founded by Paul G. Allen—bridging biological neural circuits with artificial intelligence." },
-        { "id": "anthropic", "reason": "Connectomics and cell-type atlases inspire mechanistic interpretability methods probing artificial neural networks." }
+        {
+          "id": "ai2_allen",
+          "reason": "Sister institute in Seattle founded by Paul G. Allen—bridging biological neural circuits with artificial intelligence."
+        },
+        {
+          "id": "anthropic",
+          "reason": "Connectomics and cell-type atlases inspire mechanistic interpretability methods probing artificial neural networks."
+        }
       ],
       "projects": [
-        { "name": "Allen Brain Cell Atlas & MICrONS Cortical Connectome", "status": "ongoing", "url": "https://portal.brain-map.org/" }
+        {
+          "name": "Allen Brain Cell Atlas & MICrONS Cortical Connectome",
+          "status": "ongoing",
+          "url": "https://portal.brain-map.org/"
+        }
       ]
     },
     {
@@ -786,10 +1126,10 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": false,
       "lat": 42.3627,
-      "lng": -71.0890,
+      "lng": -71.089,
       "zoom": 16.4,
       "foundedYear": 1982,
       "status": "active",
@@ -807,13 +1147,28 @@
         "assoc_prof": "Core Whitehead Member faculty appointments paired with MIT Biology professorships.",
         "prof": "Institute leadership spanning regeneration, biomolecular condensates, and immunology."
       },
-      "next": ["broad_institute", "mit", "mit_csail", "rockefeller_uni"],
+      "next": [
+        "broad_institute",
+        "mit",
+        "mit_csail",
+        "rockefeller_uni"
+      ],
       "rabbitLinks": [
-        { "id": "broad_institute", "reason": "Directly across Main Street—the Broad Institute grew out of the Whitehead Center for Genome Research in 2004." },
-        { "id": "mit", "reason": "All Whitehead Members hold MIT Biology faculty appointments, fusing fundamental biology with MIT engineering." }
+        {
+          "id": "broad_institute",
+          "reason": "Directly across Main Street—the Broad Institute grew out of the Whitehead Center for Genome Research in 2004."
+        },
+        {
+          "id": "mit",
+          "reason": "All Whitehead Members hold MIT Biology faculty appointments, fusing fundamental biology with MIT engineering."
+        }
       ],
       "projects": [
-        { "name": "Biomolecular Condensates, RNA Regulation & Regeneration", "status": "ongoing", "url": "https://wi.mit.edu/research" }
+        {
+          "name": "Biomolecular Condensates, RNA Regulation & Regeneration",
+          "status": "ongoing",
+          "url": "https://wi.mit.edu/research"
+        }
       ]
     },
     {
@@ -824,10 +1179,10 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 40.7625,
-      "lng": -73.9560,
+      "lng": -73.956,
       "zoom": 16.3,
       "foundedYear": 1901,
       "status": "active",
@@ -845,13 +1200,28 @@
         "assoc_prof": "Head of Laboratory appointments granting complete autonomy over lab direction.",
         "prof": "Tri-Institutional collaborations with Memorial Sloan Kettering Cancer Center and Weill Cornell Medicine."
       },
-      "next": ["cshl", "courant_nyu", "broad_institute", "salk_institute"],
+      "next": [
+        "cshl",
+        "courant_nyu",
+        "broad_institute",
+        "salk_institute"
+      ],
       "rabbitLinks": [
-        { "id": "cshl", "reason": "New York's twin historic pillars of genetics—Rockefeller proved DNA carries heredity in 1944, confirmed by Hershey-Chase at CSHL in 1952." },
-        { "id": "courant_nyu", "reason": "Collaborates across Manhattan on statistical physics, biophysics, and quantitative biology." }
+        {
+          "id": "cshl",
+          "reason": "New York's twin historic pillars of genetics—Rockefeller proved DNA carries heredity in 1944, confirmed by Hershey-Chase at CSHL in 1952."
+        },
+        {
+          "id": "courant_nyu",
+          "reason": "Collaborates across Manhattan on statistical physics, biophysics, and quantitative biology."
+        }
       ],
       "projects": [
-        { "name": "Tri-Institutional Computational Biology & Cryo-EM Center", "status": "ongoing", "url": "https://www.rockefeller.edu/research/" }
+        {
+          "name": "Tri-Institutional Computational Biology & Cryo-EM Center",
+          "status": "ongoing",
+          "url": "https://www.rockefeller.edu/research/"
+        }
       ]
     },
     {
@@ -862,7 +1232,7 @@
       "group": "uni",
       "entityType": "uni",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": false,
       "lat": 47.5646,
       "lng": 7.5819,
@@ -883,13 +1253,28 @@
         "assoc_prof": "Tenure-track faculty collaborating with University of Basel, FMI, Roche, and Novartis.",
         "prof": "Leadership in European organoid bioengineering and quantitative evolutionary epidemiology."
       },
-      "next": ["fmi_basel", "eth", "eth_ai_center", "isomorphic_labs"],
+      "next": [
+        "fmi_basel",
+        "eth",
+        "eth_ai_center",
+        "isomorphic_labs"
+      ],
       "rabbitLinks": [
-        { "id": "fmi_basel", "reason": "Neighbors in Basel—uniting ETH's synthetic bioengineering with FMI's epigenetics and neurobiology." },
-        { "id": "eth", "reason": "Extends ETH Zurich's physics and engineering precision directly into living biological systems." }
+        {
+          "id": "fmi_basel",
+          "reason": "Neighbors in Basel—uniting ETH's synthetic bioengineering with FMI's epigenetics and neurobiology."
+        },
+        {
+          "id": "eth",
+          "reason": "Extends ETH Zurich's physics and engineering precision directly into living biological systems."
+        }
       ],
       "projects": [
-        { "name": "Synthetic Mammalian Gene Circuits & Single-Cell Organoid Atlases", "status": "ongoing", "url": "https://bsse.ethz.ch/research.html" }
+        {
+          "name": "Synthetic Mammalian Gene Circuits & Single-Cell Organoid Atlases",
+          "status": "ongoing",
+          "url": "https://bsse.ethz.ch/research.html"
+        }
       ]
     },
     {
@@ -900,7 +1285,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "neuroscience",
       "pinned": false,
       "lat": 47.5712,
       "lng": 7.5831,
@@ -921,13 +1306,28 @@
         "assoc_prof": "Junior Group Leader tracks with strong internal funding and Basel academic chairs.",
         "prof": "Senior Group Leaders shaping European epigenetics and systems neuroscience."
       },
-      "next": ["eth_bsse", "embl_heidelberg", "janelia_hhmi", "mpi_biochem"],
+      "next": [
+        "eth_bsse",
+        "embl_heidelberg",
+        "janelia_hhmi",
+        "mpi_biochem"
+      ],
       "rabbitLinks": [
-        { "id": "eth_bsse", "reason": "Co-anchors Basel's life sciences campus across the Rhine alongside University of Basel." },
-        { "id": "janelia_hhmi", "reason": "Collaborates closely on neural circuit dynamics and predictive-processing models of perception." }
+        {
+          "id": "eth_bsse",
+          "reason": "Co-anchors Basel's life sciences campus across the Rhine alongside University of Basel."
+        },
+        {
+          "id": "janelia_hhmi",
+          "reason": "Collaborates closely on neural circuit dynamics and predictive-processing models of perception."
+        }
       ],
       "projects": [
-        { "name": "Genome Regulation & Predictive Neural Circuit Dynamics", "status": "ongoing", "url": "https://www.fmi.ch/research-groups/" }
+        {
+          "name": "Genome Regulation & Predictive Neural Circuit Dynamics",
+          "status": "ongoing",
+          "url": "https://www.fmi.ch/research-groups/"
+        }
       ]
     },
     {
@@ -938,7 +1338,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "neuroscience",
       "pinned": false,
       "lat": 38.6933,
       "lng": -9.2188,
@@ -959,13 +1359,28 @@
         "assoc_prof": "Principal Investigator positions with dedicated open-hardware engineering cores.",
         "prof": "Leadership across the International Brain Laboratory and digital therapeutics."
       },
-      "next": ["janelia_hhmi", "allen_brain", "crm_barcelona", "deepmind"],
+      "next": [
+        "janelia_hhmi",
+        "allen_brain",
+        "crm_barcelona",
+        "deepmind"
+      ],
       "rabbitLinks": [
-        { "id": "deepmind", "reason": "Systems neuroscientists here study dopamine, timing, and reinforcement learning directly linked to AI theory." },
-        { "id": "crm_barcelona", "reason": "Iberian scientific collaboration in mathematical modeling of decision-making circuits." }
+        {
+          "id": "deepmind",
+          "reason": "Systems neuroscientists here study dopamine, timing, and reinforcement learning directly linked to AI theory."
+        },
+        {
+          "id": "crm_barcelona",
+          "reason": "Iberian scientific collaboration in mathematical modeling of decision-making circuits."
+        }
       ],
       "projects": [
-        { "name": "International Brain Laboratory (IBL) & Bonsai Open Neuro-Software", "status": "ongoing", "url": "https://www.fchampalimaud.org/research" }
+        {
+          "name": "International Brain Laboratory (IBL) & Bonsai Open Neuro-Software",
+          "status": "ongoing",
+          "url": "https://www.fchampalimaud.org/research"
+        }
       ]
     },
     {
@@ -976,7 +1391,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": true,
       "lat": 48.8435,
       "lng": 2.3446,
@@ -997,13 +1412,28 @@
         "assoc_prof": "ATIP-Avenir Junior Group Leader fellowships launching independent labs in Paris.",
         "prof": "Research Unit Chairs integrating clinical oncology with fundamental physics of living matter."
       },
-      "next": ["ens_maths", "institut_pasteur", "parissaclay", "cern"],
+      "next": [
+        "ens_maths",
+        "institut_pasteur",
+        "parissaclay",
+        "cern"
+      ],
       "rabbitLinks": [
-        { "id": "ens_maths", "reason": "Literally next door on rue d'Ulm; together they form Paris's Montagne Sainte-Geneviève science hill." },
-        { "id": "parissaclay", "reason": "Operates the Orsay Proton Therapy Center in Paris-Saclay, applying nuclear accelerator physics directly to tumors." }
+        {
+          "id": "ens_maths",
+          "reason": "Literally next door on rue d'Ulm; together they form Paris's Montagne Sainte-Geneviève science hill."
+        },
+        {
+          "id": "parissaclay",
+          "reason": "Operates the Orsay Proton Therapy Center in Paris-Saclay, applying nuclear accelerator physics directly to tumors."
+        }
       ],
       "projects": [
-        { "name": "Physical Biology of Cells & Orsay Proton Therapy Center", "status": "ongoing", "url": "https://science.institut-curie.org/" }
+        {
+          "name": "Physical Biology of Cells & Orsay Proton Therapy Center",
+          "status": "ongoing",
+          "url": "https://science.institut-curie.org/"
+        }
       ]
     },
     {
@@ -1014,7 +1444,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": false,
       "lat": 51.0079,
       "lng": 3.7069,
@@ -1035,13 +1465,28 @@
         "assoc_prof": "Group Leader positions with dedicated tech-transfer and spin-out support.",
         "prof": "Center Directors uniting academic excellence across Flanders with biotech translation."
       },
-      "next": ["imec", "embl_heidelberg", "uva_ellis", "francis_crick"],
+      "next": [
+        "imec",
+        "embl_heidelberg",
+        "uva_ellis",
+        "francis_crick"
+      ],
       "rabbitLinks": [
-        { "id": "imec", "reason": "Shares Belgium's Leuven-Ghent deep-tech axis—combining imec bio-chips and silicon photonics with VIB single-cell diagnostics." },
-        { "id": "igi_berkeley", "reason": "Co-leads global precision gene-editing efforts for sustainable, drought-resistant crops." }
+        {
+          "id": "imec",
+          "reason": "Shares Belgium's Leuven-Ghent deep-tech axis—combining imec bio-chips and silicon photonics with VIB single-cell diagnostics."
+        },
+        {
+          "id": "igi_berkeley",
+          "reason": "Co-leads global precision gene-editing efforts for sustainable, drought-resistant crops."
+        }
       ],
       "projects": [
-        { "name": "VIB.AI Center for AI & Computational Biology & Plant Systems", "status": "ongoing", "url": "https://vib.be/en/research" }
+        {
+          "name": "VIB.AI Center for AI & Computational Biology & Plant Systems",
+          "status": "ongoing",
+          "url": "https://vib.be/en/research"
+        }
       ]
     },
     {
@@ -1052,11 +1497,11 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "ecology_evo",
       "pinned": true,
       "lat": 13.0715,
       "lng": 77.5803,
-      "zoom": 16.0,
+      "zoom": 16,
       "foundedYear": 1991,
       "status": "active",
       "url": "https://www.ncbs.res.in/",
@@ -1073,13 +1518,28 @@
         "assoc_prof": "Faculty Fellows bridging theoretical physics and experimental life sciences.",
         "prof": "Global leadership in South Asian biodiversity genomics and stem-cell biology."
       },
-      "next": ["tifr", "iisc", "tifr_math", "iitm_rbcdsai"],
+      "next": [
+        "tifr",
+        "iisc",
+        "tifr_math",
+        "iitm_rbcdsai"
+      ],
       "rabbitLinks": [
-        { "id": "tifr", "reason": "Sister center of TIFR Mumbai; hosts the Simons Centre uniting statistical physicists with cell biologists." },
-        { "id": "iisc", "reason": "Across northern Bengaluru from IISc—forming India's premier interdisciplinary science cluster." }
+        {
+          "id": "tifr",
+          "reason": "Sister center of TIFR Mumbai; hosts the Simons Centre uniting statistical physicists with cell biologists."
+        },
+        {
+          "id": "iisc",
+          "reason": "Across northern Bengaluru from IISc—forming India's premier interdisciplinary science cluster."
+        }
       ],
       "projects": [
-        { "name": "Simons Centre for the Study of Living Machines & Indian Biodiversity Genomics", "status": "ongoing", "url": "https://theory.ncbs.res.in/" }
+        {
+          "name": "Simons Centre for the Study of Living Machines & Indian Biodiversity Genomics",
+          "status": "ongoing",
+          "url": "https://theory.ncbs.res.in/"
+        }
       ]
     },
     {
@@ -1090,7 +1550,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": false,
       "lat": 1.3037,
       "lng": 103.7924,
@@ -1111,13 +1571,28 @@
         "assoc_prof": "Senior Principal Investigator posts with dual NUS/NTU academic appointments.",
         "prof": "Leadership of Asian precision-medicine consortia and global genomic data standards."
       },
-      "next": ["nus_soc", "cqt", "wellcome_sanger", "riken_bdr"],
+      "next": [
+        "nus_soc",
+        "cqt",
+        "wellcome_sanger",
+        "riken_bdr"
+      ],
       "rabbitLinks": [
-        { "id": "nus_soc", "reason": "Minutes from NUS—joint teams build machine learning algorithms for single-cell and long-read RNA sequencing." },
-        { "id": "wellcome_sanger", "reason": "Collaborates internationally on the Human Cell Atlas Asia and global pathogen surveillance." }
+        {
+          "id": "nus_soc",
+          "reason": "Minutes from NUS—joint teams build machine learning algorithms for single-cell and long-read RNA sequencing."
+        },
+        {
+          "id": "wellcome_sanger",
+          "reason": "Collaborates internationally on the Human Cell Atlas Asia and global pathogen surveillance."
+        }
       ],
       "projects": [
-        { "name": "SG100K National Precision Medicine Asian Genome Cohort", "status": "ongoing", "url": "https://www.npm.sg/" }
+        {
+          "name": "SG100K National Precision Medicine Asian Genome Cohort",
+          "status": "ongoing",
+          "url": "https://www.npm.sg/"
+        }
       ]
     },
     {
@@ -1128,7 +1603,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "genomics_synbio",
       "pinned": true,
       "lat": -29.8744,
       "lng": 30.9901,
@@ -1149,13 +1624,28 @@
         "assoc_prof": "Faculty positions bridging rural population cohorts in Somkhele with BSL-3 immunology labs in Durban.",
         "prof": "Global leadership in epidemic genomics, climate-sensitive infectious disease, and equitable biotech."
       },
-      "next": ["aims_africa", "meerkat", "wellcome_sanger", "institut_pasteur"],
+      "next": [
+        "aims_africa",
+        "meerkat",
+        "wellcome_sanger",
+        "institut_pasteur"
+      ],
       "rabbitLinks": [
-        { "id": "aims_africa", "reason": "Pairs South African real-time genomic surveillance with AIMS mathematical modeling of infectious outbreaks." },
-        { "id": "wellcome_sanger", "reason": "Both Wellcome-backed hubs collaborating on open global pathogen genomics." }
+        {
+          "id": "aims_africa",
+          "reason": "Pairs South African real-time genomic surveillance with AIMS mathematical modeling of infectious outbreaks."
+        },
+        {
+          "id": "wellcome_sanger",
+          "reason": "Both Wellcome-backed hubs collaborating on open global pathogen genomics."
+        }
       ],
       "projects": [
-        { "name": "African Pathogen Genomic Surveillance & HIV/TB Immunology", "status": "ongoing", "url": "https://www.krisp.org.za/" }
+        {
+          "name": "African Pathogen Genomic Surveillance & HIV/TB Immunology",
+          "status": "ongoing",
+          "url": "https://www.krisp.org.za/"
+        }
       ]
     },
     {
@@ -1166,7 +1656,7 @@
       "group": "lab",
       "entityType": "institute",
       "discipline": "bio_med",
-      "branch": "bio_med",
+      "branch": "structural_pharma",
       "pinned": false,
       "lat": 31.9075,
       "lng": 34.8092,
@@ -1187,13 +1677,1103 @@
         "assoc_prof": "Principal Investigator tracks renowned for rapid lab launch and minimal bureaucracy.",
         "prof": "Global leadership in phage-defense biology, synthetic embryo models, and AI-guided medicine."
       },
-      "next": ["weizmann", "technion_cs", "mrc_lmb", "broad_institute"],
+      "next": [
+        "weizmann",
+        "technion_cs",
+        "mrc_lmb",
+        "broad_institute"
+      ],
       "rabbitLinks": [
-        { "id": "weizmann", "reason": "Co-located on the Rehovot campus—biologists share coffee daily with quantum physicists and mathematicians." },
-        { "id": "mrc_lmb", "reason": "Ada Yonath shared the 2009 Ribosome Nobel Prize alongside MRC LMB's Venki Ramakrishnan and Yale's Thomas Steitz." }
+        {
+          "id": "weizmann",
+          "reason": "Co-located on the Rehovot campus—biologists share coffee daily with quantum physicists and mathematicians."
+        },
+        {
+          "id": "mrc_lmb",
+          "reason": "Ada Yonath shared the 2009 Ribosome Nobel Prize alongside MRC LMB's Venki Ramakrishnan and Yale's Thomas Steitz."
+        }
       ],
       "projects": [
-        { "name": "Bacterial Anti-Phage Immune Discovery & Synthetic Embryo Models", "status": "ongoing", "url": "https://www.weizmann.ac.il/pages/research-areas" }
+        {
+          "name": "Bacterial Anti-Phage Immune Discovery & Synthetic Embryo Models",
+          "status": "ongoing",
+          "url": "https://www.weizmann.ac.il/pages/research-areas"
+        }
+      ]
+    },
+    {
+      "id": "jcvi_san_diego",
+      "name": "J. Craig Venter Institute (JCVI)",
+      "city": "La Jolla, CA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "genomics_synbio",
+      "pinned": true,
+      "lat": 32.8855,
+      "lng": -117.2435,
+      "zoom": 15.5,
+      "foundedYear": 2006,
+      "status": "active",
+      "url": "https://www.jcvi.org/",
+      "wiki": "https://en.wikipedia.org/wiki/J._Craig_Venter_Institute",
+      "wikiSlug": "J._Craig_Venter_Institute",
+      "summary": "Pioneer of whole-genome shotgun sequencing and synthetic genomics—creator of the first self-replicating synthetic bacterial cell (JCVI-syn1.0) and the minimal-genome organism JCVI-syn3.0 alongside global marine metagenomics.",
+      "nobel": "Constructed the first synthetic bacterial genome and the 473-gene minimal living cell (JCVI-syn3.0) illuminating the essential genes of life.",
+      "next": [
+        "salk_institute",
+        "scripps_research",
+        "broad_institute",
+        "igi_berkeley"
+      ],
+      "projects": [
+        {
+          "name": "Minimal Synthetic Cell (JCVI-syn3A)",
+          "status": "ongoing",
+          "url": "https://www.jcvi.org/research/minimal-cell"
+        },
+        {
+          "name": "Global Ocean Sampling Metagenomics",
+          "status": "ongoing",
+          "url": "https://www.jcvi.org/research/gos"
+        }
+      ]
+    },
+    {
+      "id": "bgi_research",
+      "name": "BGI Research",
+      "city": "Shenzhen, China",
+      "country": "China",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "genomics_synbio",
+      "pinned": true,
+      "lat": 22.5877,
+      "lng": 114.2741,
+      "zoom": 15.5,
+      "foundedYear": 1999,
+      "status": "active",
+      "url": "https://en.genomics.cn/",
+      "wiki": "https://en.wikipedia.org/wiki/BGI_Group",
+      "wikiSlug": "BGI_Group",
+      "summary": "One of the world's largest genomics research organizations—major contributor to the Human Genome Project, operator of the China National GeneBank, and developer of nanoscale spatial transcriptomics (Stereo-seq) and global biodiversity genome atlases.",
+      "next": [
+        "gis_singapore",
+        "wellcome_sanger",
+        "broad_institute",
+        "oist_marine_bio"
+      ],
+      "projects": [
+        {
+          "name": "Stereo-seq SpatioTemporal Omics & Cell Atlases",
+          "status": "ongoing",
+          "url": "https://en.genomics.cn/"
+        },
+        {
+          "name": "China National GeneBank & 10KP Plant Genomes",
+          "status": "ongoing",
+          "url": "https://en.genomics.cn/"
+        }
+      ]
+    },
+    {
+      "id": "garvan_sydney",
+      "name": "Garvan Institute of Medical Research",
+      "city": "Sydney, Australia",
+      "country": "Australia",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "genomics_synbio",
+      "pinned": true,
+      "lat": -33.8803,
+      "lng": 151.2216,
+      "zoom": 15.5,
+      "foundedYear": 1963,
+      "status": "active",
+      "url": "https://www.garvan.org.au/",
+      "wiki": "https://en.wikipedia.org/wiki/Garvan_Institute_of_Medical_Research",
+      "wikiSlug": "Garvan_Institute_of_Medical_Research",
+      "summary": "Australia's flagship genomics and precision-medicine institute in Sydney's Darlinghurst precinct—driving population whole-genome sequencing, single-cell cellular genomics, and rare-disease and cancer diagnostics.",
+      "next": [
+        "wehi_melbourne",
+        "weizmann_life",
+        "wellcome_sanger",
+        "broad_institute"
+      ],
+      "projects": [
+        {
+          "name": "Garvan-Weizmann Centre for Cellular Genomics",
+          "status": "ongoing",
+          "url": "https://www.garvan.org.au/research/cellular-genomics"
+        },
+        {
+          "name": "Australian Rare Disease & Cancer Genomics",
+          "status": "ongoing",
+          "url": "https://www.garvan.org.au/research/genomics"
+        }
+      ]
+    },
+    {
+      "id": "mpi_molgen",
+      "name": "Max Planck Institute for Molecular Genetics (MPIMG)",
+      "city": "Berlin, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "genomics_synbio",
+      "pinned": true,
+      "lat": 52.4449,
+      "lng": 13.2775,
+      "zoom": 15.5,
+      "foundedYear": 1964,
+      "status": "active",
+      "url": "https://www.molgen.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Molecular_Genetics",
+      "wikiSlug": "Max_Planck_Institute_for_Molecular_Genetics",
+      "summary": "Berlin-Dahlem genetics flagship that contributed to the Human Genome Project and today leads 3D chromatin architecture, developmental epigenetics, synthetic embryogenesis, and computational gene-regulation modeling.",
+      "next": [
+        "embl_heidelberg",
+        "mpi_biochem",
+        "fritz_haber",
+        "broad_institute"
+      ],
+      "projects": [
+        {
+          "name": "3D Genome Folding & Developmental Epigenetics",
+          "status": "ongoing",
+          "url": "https://www.molgen.mpg.de/research"
+        },
+        {
+          "name": "Computational Molecular Biology & Gene Regulation",
+          "status": "ongoing",
+          "url": "https://www.molgen.mpg.de/research"
+        }
+      ]
+    },
+    {
+      "id": "sainsbury_wellcome",
+      "name": "Sainsbury Wellcome Centre for Neural Circuits and Behaviour (UCL)",
+      "city": "London, United Kingdom",
+      "country": "United Kingdom",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 51.5229,
+      "lng": -0.1366,
+      "zoom": 15.5,
+      "foundedYear": 2016,
+      "status": "active",
+      "url": "https://www.sainsburywellcome.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Sainsbury_Wellcome_Centre_for_Neural_Circuits_and_Behaviour",
+      "wikiSlug": "Sainsbury_Wellcome_Centre_for_Neural_Circuits_and_Behaviour",
+      "summary": "Purpose-built UCL neuroscience institute uniting experimental systems neuroscientists with the Gatsby Computational Neuroscience Unit to dissect how neural circuits compute perception, spatial navigation, and decision-making.",
+      "nobel": "Inaugural Director John O'Keefe won the 2014 Nobel Prize in Physiology or Medicine for discovering hippocampal place cells.",
+      "next": [
+        "francis_crick",
+        "deepmind",
+        "champalimaud",
+        "janelia_hhmi"
+      ],
+      "projects": [
+        {
+          "name": "International Brain Laboratory & Neural Circuit Computation",
+          "status": "ongoing",
+          "url": "https://www.sainsburywellcome.org/web/research"
+        },
+        {
+          "name": "Gatsby-SWC Theoretical & Systems Neuroscience",
+          "status": "ongoing",
+          "url": "https://www.sainsburywellcome.org/web/research"
+        }
+      ]
+    },
+    {
+      "id": "mpi_brain_frankfurt",
+      "name": "Max Planck Institute for Brain Research",
+      "city": "Frankfurt am Main, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 50.1729,
+      "lng": 8.6317,
+      "zoom": 15.5,
+      "foundedYear": 1914,
+      "status": "active",
+      "url": "https://brain.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Brain_Research",
+      "wikiSlug": "Max_Planck_Institute_for_Brain_Research",
+      "summary": "Historic German neuroscience institute on Frankfurt's Riedberg campus investigating local synaptic protein synthesis (Erin Schuman), dense mammalian connectomics (Moritz Helmstaedter), and cerebral cortex evolution and sleep dynamics (Gilles Laurent).",
+      "next": [
+        "ernst_strungmann",
+        "allen_brain",
+        "janelia_hhmi",
+        "mpi_biochem"
+      ],
+      "projects": [
+        {
+          "name": "Dense Mammalian Cortical Connectomics",
+          "status": "ongoing",
+          "url": "https://brain.mpg.de/research"
+        },
+        {
+          "name": "Synaptic Proteome Plasticity & Neural Dynamics",
+          "status": "ongoing",
+          "url": "https://brain.mpg.de/research"
+        }
+      ]
+    },
+    {
+      "id": "kavli_trondheim",
+      "name": "Kavli Institute for Systems Neuroscience (NTNU)",
+      "city": "Trondheim, Norway",
+      "country": "Norway",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 63.4209,
+      "lng": 10.3881,
+      "zoom": 15.5,
+      "foundedYear": 2007,
+      "status": "active",
+      "url": "https://www.ntnu.edu/kavli",
+      "wiki": "https://en.wikipedia.org/wiki/Kavli_Institute_for_Systems_Neuroscience",
+      "wikiSlug": "Kavli_Institute_for_Systems_Neuroscience",
+      "summary": "World-renowned spatial-navigation and episodic-memory center at NTNU in Trondheim—birthplace of grid cells, border cells, and the brain's toroidal internal GPS coordinate system in the entorhinal cortex.",
+      "nobel": "Co-directors May-Britt Moser and Edvard Moser won the 2014 Nobel Prize in Physiology or Medicine (with John O'Keefe) for discovering grid cells.",
+      "next": [
+        "sainsbury_wellcome",
+        "karolinska",
+        "allen_brain",
+        "janelia_hhmi"
+      ],
+      "projects": [
+        {
+          "name": "Entorhinal Grid-Cell Manifolds & Episodic Time Coding",
+          "status": "ongoing",
+          "url": "https://www.ntnu.edu/kavli/research"
+        },
+        {
+          "name": "Centre for Algorithms in the Cortex",
+          "status": "ongoing",
+          "url": "https://www.ntnu.edu/kavli"
+        }
+      ]
+    },
+    {
+      "id": "montreal_neuro",
+      "name": "Montreal Neurological Institute-Hospital (The Neuro)",
+      "city": "Montreal, Canada",
+      "country": "Canada",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 45.5088,
+      "lng": -73.5813,
+      "zoom": 15.5,
+      "foundedYear": 1934,
+      "status": "active",
+      "url": "https://www.mcgill.ca/neuro/",
+      "wiki": "https://en.wikipedia.org/wiki/Montreal_Neurological_Institute_and_Hospital",
+      "wikiSlug": "Montreal_Neurological_Institute_and_Hospital",
+      "summary": "Founded by Wilder Penfield at McGill University—where the cortical sensory-motor homunculus and human memory systems (Brenda Milner & patient H.M.) were mapped, and now the world's first fully Open Science neuroscience institute.",
+      "nobel": "Pioneered cortical functional mapping (Wilder Penfield), memory neuropsychology (Brenda Milner), and the Tanenbaum Open Science Institute.",
+      "next": [
+        "mila_quebec",
+        "allen_brain",
+        "icm_paris_brain",
+        "wu_tsai_neuro"
+      ],
+      "projects": [
+        {
+          "name": "Tanenbaum Open Science Institute & C-BIG Open Biobank",
+          "status": "ongoing",
+          "url": "https://www.mcgill.ca/neuro/open-science"
+        },
+        {
+          "name": "McConnell Brain Imaging Centre & Human Connectomics",
+          "status": "ongoing",
+          "url": "https://www.mcgill.ca/neuro/research"
+        }
+      ]
+    },
+    {
+      "id": "riken_cbs",
+      "name": "RIKEN Center for Brain Science (CBS)",
+      "city": "Wako, Saitama, Japan",
+      "country": "Japan",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 35.7798,
+      "lng": 139.6135,
+      "zoom": 15.5,
+      "foundedYear": 1997,
+      "status": "active",
+      "url": "https://cbs.riken.jp/en/",
+      "wiki": "https://en.wikipedia.org/wiki/RIKEN_Center_for_Brain_Science",
+      "wikiSlug": "RIKEN_Center_for_Brain_Science",
+      "summary": "Japan's flagship neuroscience center on RIKEN's Wako campus—advancing memory engrams, Brain/MINDS marmoset primate brain mapping, neural computation, and molecular mechanisms of neurodegeneration.",
+      "nobel": "Shaped by cerebellar-learning pioneer Masao Ito and 1987 Nobel laureate Susumu Tonegawa's optogenetic memory-engram discoveries.",
+      "next": [
+        "riken",
+        "riken_bdr",
+        "riken_aip",
+        "allen_brain"
+      ],
+      "projects": [
+        {
+          "name": "Brain/MINDS Marmoset Primate Brain Mapping",
+          "status": "ongoing",
+          "url": "https://cbs.riken.jp/en/research/"
+        },
+        {
+          "name": "Neural Circuit Mechanisms of Memory & Cognition",
+          "status": "ongoing",
+          "url": "https://cbs.riken.jp/en/research/"
+        }
+      ]
+    },
+    {
+      "id": "wu_tsai_neuro",
+      "name": "Wu Tsai Neurosciences Institute (Stanford)",
+      "city": "Stanford, CA, USA",
+      "country": "United States",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 37.4317,
+      "lng": -122.1744,
+      "zoom": 15.5,
+      "foundedYear": 2013,
+      "status": "active",
+      "url": "https://neuroscience.stanford.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Stanford_University",
+      "wikiSlug": "Stanford_University",
+      "summary": "Stanford's interdisciplinary hub uniting brain science, neuroengineering, and AI—home to optogenetics and hydrogel tissue clearing (Karl Deisseroth), high-speed speech brain-computer interfaces, and human cortical organoids.",
+      "nobel": "Home to Thomas Südhof (2013 Medicine Nobel, synaptic transmission) and Karl Deisseroth (Lasker & Breakthrough Prize, optogenetics).",
+      "next": [
+        "stanford_hai",
+        "arc_institute",
+        "allen_brain",
+        "janelia_hhmi"
+      ],
+      "projects": [
+        {
+          "name": "Optogenetics & Speech Brain-Computer Interfaces",
+          "status": "ongoing",
+          "url": "https://neuroscience.stanford.edu/research"
+        },
+        {
+          "name": "Knight Initiative for Brain Resilience",
+          "status": "ongoing",
+          "url": "https://neuroscience.stanford.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "ernst_strungmann",
+      "name": "Ernst Strüngmann Institute (ESI) for Neuroscience",
+      "city": "Frankfurt am Main, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 50.0964,
+      "lng": 8.6626,
+      "zoom": 15.5,
+      "foundedYear": 2008,
+      "status": "active",
+      "url": "https://www.esi-frankfurt.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Ernst_Str%C3%BCngmann_Institute",
+      "wikiSlug": "Ernst_Str%C3%BCngmann_Institute",
+      "summary": "Independent neuroscience institute associated with the Max Planck Society investigating high-level cognitive function, neural oscillations, communication-through-coherence, and dynamic multi-area visual attention.",
+      "next": [
+        "mpi_brain_frankfurt",
+        "fmi_basel",
+        "nin_amsterdam",
+        "champalimaud"
+      ],
+      "projects": [
+        {
+          "name": "Neural Oscillations & Communication-Through-Coherence",
+          "status": "ongoing",
+          "url": "https://www.esi-frankfurt.de/research/"
+        },
+        {
+          "name": "Multi-Area Cognitive & Visual Attention Circuits",
+          "status": "ongoing",
+          "url": "https://www.esi-frankfurt.de/research/"
+        }
+      ]
+    },
+    {
+      "id": "nin_amsterdam",
+      "name": "Netherlands Institute for Neuroscience (KNAW)",
+      "city": "Amsterdam, Netherlands",
+      "country": "Netherlands",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 52.2943,
+      "lng": 4.9565,
+      "zoom": 15.5,
+      "foundedYear": 2005,
+      "status": "active",
+      "url": "https://nin.nl/",
+      "wiki": "https://en.wikipedia.org/wiki/Netherlands_Institute_for_Neuroscience",
+      "wikiSlug": "Netherlands_Institute_for_Neuroscience",
+      "summary": "Royal Netherlands Academy (KNAW) neuroscience institute pioneering high-channel cortical visual prostheses for blindness, myelinated axon biophysics, social empathy circuits, and the Netherlands Brain Bank.",
+      "next": [
+        "uva_ellis",
+        "sainsbury_wellcome",
+        "icm_paris_brain",
+        "mpi_brain_frankfurt"
+      ],
+      "projects": [
+        {
+          "name": "High-Channel Cortical Visual Prosthesis (NESTOR)",
+          "status": "ongoing",
+          "url": "https://nin.nl/research/"
+        },
+        {
+          "name": "Netherlands Brain Bank & Consciousness Circuits",
+          "status": "ongoing",
+          "url": "https://nin.nl/research/"
+        }
+      ]
+    },
+    {
+      "id": "icm_paris_brain",
+      "name": "Paris Brain Institute (ICM — Institut du Cerveau)",
+      "city": "Paris, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "neuroscience",
+      "pinned": true,
+      "lat": 48.8384,
+      "lng": 2.3627,
+      "zoom": 15.5,
+      "foundedYear": 2010,
+      "status": "active",
+      "url": "https://parisbraininstitute.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Paris_Brain_Institute",
+      "wikiSlug": "Paris_Brain_Institute",
+      "summary": "Built directly inside Paris's historic Pitié-Salpêtrière Hospital—the birthplace of modern neurology—uniting 700+ researchers in computational neuroscience, clinical brain-computer interfaces, and neurodegenerative therapeutics.",
+      "next": [
+        "institut_pasteur",
+        "institut_curie",
+        "sainsbury_wellcome",
+        "montreal_neuro"
+      ],
+      "projects": [
+        {
+          "name": "Computational Neuroscience & Clinical Brain Interfaces",
+          "status": "ongoing",
+          "url": "https://parisbraininstitute.org/research"
+        },
+        {
+          "name": "Neurodegenerative & Epilepsy Translational Medicine",
+          "status": "ongoing",
+          "url": "https://parisbraininstitute.org/research"
+        }
+      ]
+    },
+    {
+      "id": "dana_farber",
+      "name": "Dana-Farber Cancer Institute",
+      "city": "Boston, MA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "structural_pharma",
+      "pinned": true,
+      "lat": 42.3375,
+      "lng": -71.1082,
+      "zoom": 15.5,
+      "foundedYear": 1947,
+      "status": "active",
+      "url": "https://www.dana-farber.org/",
+      "wiki": "https://en.wikipedia.org/wiki/Dana%E2%80%93Farber_Cancer_Institute",
+      "wikiSlug": "Dana%E2%80%93Farber_Cancer_Institute",
+      "summary": "Harvard-affiliated oncology and structural-therapeutics powerhouse founded by Sidney Farber—leading PD-L1 immune-checkpoint biology, targeted kinase inhibitors, and small-molecule protein-degrader (PROTAC) drug discovery.",
+      "nobel": "Home to Nobel laureates William G. Kaelin Jr. (2019 Medicine, cellular oxygen sensing) and Baruj Benacerraf (1980 Medicine, MHC immunology).",
+      "next": [
+        "broad_institute",
+        "rockefeller_uni",
+        "biontech_mainz",
+        "institut_curie"
+      ],
+      "projects": [
+        {
+          "name": "Targeted Protein Degradation & Cancer Immunotherapy",
+          "status": "ongoing",
+          "url": "https://www.dana-farber.org/research"
+        },
+        {
+          "name": "Structural Oncology & Precision Therapeutics",
+          "status": "ongoing",
+          "url": "https://www.dana-farber.org/research"
+        }
+      ]
+    },
+    {
+      "id": "biontech_mainz",
+      "name": "BioNTech SE",
+      "city": "Mainz, Germany",
+      "country": "Germany",
+      "group": "company",
+      "entityType": "company",
+      "discipline": "bio_med",
+      "branch": "structural_pharma",
+      "pinned": true,
+      "lat": 49.9922,
+      "lng": 8.2489,
+      "zoom": 15.5,
+      "foundedYear": 2008,
+      "status": "active",
+      "url": "https://www.biontech.com/",
+      "wiki": "https://en.wikipedia.org/wiki/BioNTech",
+      "wikiSlug": "BioNTech",
+      "summary": "Immunotherapy and nucleic-acid therapeutics pioneer founded by Uğur Şahin and Özlem Türeci in Mainz—co-developer of the first authorized nucleoside-modified mRNA COVID-19 vaccine and advancing individualized mRNA cancer vaccines.",
+      "nobel": "Former Senior Vice President Katalin Karikó won the 2023 Nobel Prize in Physiology or Medicine (with Drew Weissman) for nucleoside-modified mRNA technology.",
+      "next": [
+        "mpi_polymer",
+        "dana_farber",
+        "isomorphic_labs",
+        "institut_pasteur"
+      ],
+      "projects": [
+        {
+          "name": "Individualized Neoantigen mRNA Cancer Vaccines",
+          "status": "ongoing",
+          "url": "https://www.biontech.com/int/en/home/pipeline-and-products/pipeline.html"
+        },
+        {
+          "name": "Infectious Disease mRNA Therapeutics (Malaria & TB)",
+          "status": "ongoing",
+          "url": "https://www.biontech.com/int/en/home/pipeline-and-products/pipeline.html"
+        }
+      ]
+    },
+    {
+      "id": "wehi_melbourne",
+      "name": "Walter and Eliza Hall Institute of Medical Research (WEHI)",
+      "city": "Melbourne, Australia",
+      "country": "Australia",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "structural_pharma",
+      "pinned": true,
+      "lat": -37.7982,
+      "lng": 144.9562,
+      "zoom": 15.5,
+      "foundedYear": 1915,
+      "status": "active",
+      "url": "https://www.wehi.edu.au/",
+      "wiki": "https://en.wikipedia.org/wiki/Walter_and_Eliza_Hall_Institute_of_Medical_Research",
+      "wikiSlug": "Walter_and_Eliza_Hall_Institute_of_Medical_Research",
+      "summary": "Australia's oldest medical research institute in Melbourne's Parkville biomedical precinct—pioneer of adaptive immunology, colony-stimulating factors (Donald Metcalf), structural virology, and BCL-2 apoptosis therapeutics (venetoclax).",
+      "nobel": "Former director Sir Frank Macfarlane Burnet won the 1960 Nobel Prize in Physiology or Medicine for acquired immunological tolerance.",
+      "next": [
+        "garvan_sydney",
+        "mrc_lmb",
+        "institut_pasteur",
+        "dana_farber"
+      ],
+      "projects": [
+        {
+          "name": "Structural Immunology & BH3-Mimetic Cancer Therapeutics",
+          "status": "ongoing",
+          "url": "https://www.wehi.edu.au/research/"
+        },
+        {
+          "name": "Malaria & Infectious Disease Drug Discovery",
+          "status": "ongoing",
+          "url": "https://www.wehi.edu.au/research/"
+        }
+      ]
+    },
+    {
+      "id": "mpi_animal_behavior",
+      "name": "Max Planck Institute of Animal Behavior (MPI-AB)",
+      "city": "Konstanz, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 47.6908,
+      "lng": 9.1886,
+      "zoom": 15.5,
+      "foundedYear": 2019,
+      "status": "active",
+      "url": "https://www.ab.mpg.de/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_of_Animal_Behavior",
+      "wikiSlug": "Max_Planck_Institute_of_Animal_Behavior",
+      "summary": "Global leader in collective animal behavior (Iain Couzin), quantitative ethology, and space-based wildlife tracking (ICARUS / Movebank), revealing how flocks, swarms, and migrating species sense and navigate a changing biosphere.",
+      "next": [
+        "mpi_eva",
+        "mpi_marine_bremen",
+        "stri_panama",
+        "eth_usys_env"
+      ],
+      "projects": [
+        {
+          "name": "ICARUS Global Animal Tracking & Movebank",
+          "status": "ongoing",
+          "url": "https://www.ab.mpg.de/research"
+        },
+        {
+          "name": "Collective Behaviour & Evolutionary Ecology",
+          "status": "ongoing",
+          "url": "https://www.ab.mpg.de/research"
+        }
+      ]
+    },
+    {
+      "id": "mbl_woods_hole",
+      "name": "Marine Biological Laboratory (MBL)",
+      "city": "Woods Hole, MA, USA",
+      "country": "United States",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 41.5255,
+      "lng": -70.6716,
+      "zoom": 15.5,
+      "foundedYear": 1888,
+      "status": "active",
+      "url": "https://www.mbl.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Marine_Biological_Laboratory",
+      "wikiSlug": "Marine_Biological_Laboratory",
+      "summary": "Historic Cape Cod biology laboratory affiliated with the University of Chicago—birthplace of green fluorescent protein (GFP), squid giant-axon neurophysiology, cyclin discovery, and modern marine comparative genomics and microbiome ecology.",
+      "nobel": "Over 60 Nobel laureates have trained, taught, or made discoveries at MBL, including Osamu Shimomura (GFP, 2008) and Tim Hunt (cell cycle, 2001).",
+      "next": [
+        "whoi",
+        "roscoff_marine",
+        "szn_naples",
+        "cshl"
+      ],
+      "projects": [
+        {
+          "name": "Cephalopod & Marine Model Organism Genomics",
+          "status": "ongoing",
+          "url": "https://www.mbl.edu/research"
+        },
+        {
+          "name": "Ecosystems Center & Microbial Biodiversity",
+          "status": "ongoing",
+          "url": "https://www.mbl.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "stri_panama",
+      "name": "Smithsonian Tropical Research Institute (STRI)",
+      "city": "Panama City, Panama",
+      "country": "Panama",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 8.9628,
+      "lng": -79.5439,
+      "zoom": 15.5,
+      "foundedYear": 1923,
+      "status": "active",
+      "url": "https://stri.si.edu/",
+      "wiki": "https://en.wikipedia.org/wiki/Smithsonian_Tropical_Research_Institute",
+      "wikiSlug": "Smithsonian_Tropical_Research_Institute",
+      "summary": "The Smithsonian's premier tropical biology powerhouse operating Barro Colorado Island and marine stations on both oceans—coordinating the global ForestGEO network tracking over 7 million tropical and temperate trees worldwide.",
+      "next": [
+        "inpa_manaus",
+        "kew_jodrell",
+        "mpi_animal_behavior",
+        "ncbs_bengaluru"
+      ],
+      "projects": [
+        {
+          "name": "ForestGEO Global Forest Observatory Network",
+          "status": "ongoing",
+          "url": "https://forestgeo.si.edu/"
+        },
+        {
+          "name": "Barro Colorado Island Tropical Evolution & Marine Science",
+          "status": "ongoing",
+          "url": "https://stri.si.edu/research"
+        }
+      ]
+    },
+    {
+      "id": "kew_jodrell",
+      "name": "Royal Botanic Gardens, Kew (Jodrell Laboratory)",
+      "city": "London, United Kingdom",
+      "country": "United Kingdom",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 51.4832,
+      "lng": -0.2929,
+      "zoom": 15.5,
+      "foundedYear": 1876,
+      "status": "active",
+      "url": "https://www.kew.org/science",
+      "wiki": "https://en.wikipedia.org/wiki/Jodrell_Laboratory",
+      "wikiSlug": "Jodrell_Laboratory",
+      "summary": "World epicenter of plant and fungal evolutionary genomics, biodiversity systematics, and conservation—stewarding 8.5 million herbarium and fungarium specimens, the Plant and Fungal Trees of Life, and the Millennium Seed Bank.",
+      "next": [
+        "wellcome_sanger",
+        "stri_panama",
+        "uppsala_ebc",
+        "francis_crick"
+      ],
+      "projects": [
+        {
+          "name": "Plant and Fungal Trees of Life (PAFTOL)",
+          "status": "ongoing",
+          "url": "https://www.kew.org/science/our-science/projects/plant-and-fungal-trees-of-life"
+        },
+        {
+          "name": "Millennium Seed Bank Partnership",
+          "status": "ongoing",
+          "url": "https://www.kew.org/wakehurst/whats-at-wakehurst/millennium-seed-bank"
+        }
+      ]
+    },
+    {
+      "id": "roscoff_marine",
+      "name": "Station Biologique de Roscoff (CNRS / Sorbonne)",
+      "city": "Roscoff, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "lab",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 48.7267,
+      "lng": -3.987,
+      "zoom": 15.5,
+      "foundedYear": 1872,
+      "status": "active",
+      "url": "https://www.sb-roscoff.fr/en",
+      "wiki": "https://en.wikipedia.org/wiki/Station_biologique_de_Roscoff",
+      "wikiSlug": "Station_biologique_de_Roscoff",
+      "summary": "Historic French marine biology and oceanography station on the Brittany coast—European leader in marine macroalgal genomics, photosynthetic plankton diversity (Roscoff Culture Collection), and host of the European Marine Biological Resource Centre.",
+      "next": [
+        "tara_ocean",
+        "szn_naples",
+        "ifremer_brest",
+        "mbl_woods_hole"
+      ],
+      "projects": [
+        {
+          "name": "Roscoff Culture Collection & Marine Plankton Genomics",
+          "status": "ongoing",
+          "url": "https://www.sb-roscoff.fr/en/research"
+        },
+        {
+          "name": "EMBRC European Marine Biological Resource Centre",
+          "status": "ongoing",
+          "url": "https://www.embrc.eu/"
+        }
+      ]
+    },
+    {
+      "id": "szn_naples",
+      "name": "Stazione Zoologica Anton Dohrn (SZN)",
+      "city": "Naples, Italy",
+      "country": "Italy",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 40.8331,
+      "lng": 14.2355,
+      "zoom": 15.5,
+      "foundedYear": 1872,
+      "status": "active",
+      "url": "https://www.szn.it/index.php/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Stazione_Zoologica_Anton_Dohrn",
+      "wikiSlug": "Stazione_Zoologica_Anton_Dohrn",
+      "summary": "Founded by Anton Dohrn in 1872 as the world's first international marine research institute—a historic cradle of evolutionary developmental biology (evo-devo) now driving Mediterranean marine genomics and ocean-acidification ecology.",
+      "nobel": "Over 20 Nobel laureates conducted foundational research here, including Otto Warburg, Hans Spemann, Thomas Hunt Morgan, and Rita Levi-Montalcini.",
+      "next": [
+        "roscoff_marine",
+        "mbl_woods_hole",
+        "tara_ocean",
+        "mpi_marine_bremen"
+      ],
+      "projects": [
+        {
+          "name": "Marine Evolutionary Developmental Biology (Evo-Devo)",
+          "status": "ongoing",
+          "url": "https://www.szn.it/index.php/en/research"
+        },
+        {
+          "name": "MareChiara Long-Term Mediterranean Plankton Observatory",
+          "status": "ongoing",
+          "url": "https://www.szn.it/index.php/en/research"
+        }
+      ]
+    },
+    {
+      "id": "tara_ocean",
+      "name": "Tara Ocean Foundation",
+      "city": "Paris, France",
+      "country": "France",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 48.849,
+      "lng": 2.3694,
+      "zoom": 15.5,
+      "foundedYear": 2003,
+      "status": "active",
+      "url": "https://fondationtaraocean.org/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Tara_Expeditions",
+      "wikiSlug": "Tara_Expeditions",
+      "summary": "Open-science ocean-exploration foundation operating the research schooner Tara—transforming marine microbiology by sequencing hundreds of millions of novel ocean genes, viruses, and coral-reef microbiomes across all global basins.",
+      "next": [
+        "embl_heidelberg",
+        "roscoff_marine",
+        "mpi_marine_bremen",
+        "aims_marine_aus"
+      ],
+      "projects": [
+        {
+          "name": "Tara Oceans Global Plankton Metagenomics",
+          "status": "ongoing",
+          "url": "https://fondationtaraocean.org/en/expeditions/"
+        },
+        {
+          "name": "Tara Europa Coastal Microbiome Mission (with EMBL)",
+          "status": "ongoing",
+          "url": "https://fondationtaraocean.org/en/expeditions/"
+        }
+      ]
+    },
+    {
+      "id": "oist_marine_bio",
+      "name": "OIST Marine Genomics & Evolutionary Biology (Okinawa)",
+      "city": "Onna, Okinawa, Japan",
+      "country": "Japan",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 26.4619,
+      "lng": 127.8304,
+      "zoom": 15.5,
+      "foundedYear": 2011,
+      "status": "active",
+      "url": "https://www.oist.jp/",
+      "wiki": "https://en.wikipedia.org/wiki/Okinawa_Institute_of_Science_and_Technology",
+      "wikiSlug": "Okinawa_Institute_of_Science_and_Technology",
+      "summary": "Interdisciplinary English-language graduate university overlooking Okinawa's coral reefs—pioneering marine chordate and coral genomics, symbiosis evolution, cephalopod behavior, and island biodiversity dynamics.",
+      "next": [
+        "aims_marine_aus",
+        "riken_bdr",
+        "bgi_research",
+        "mbl_woods_hole"
+      ],
+      "projects": [
+        {
+          "name": "Marine Genomics & Coral Reef Symbiosis",
+          "status": "ongoing",
+          "url": "https://www.oist.jp/research"
+        },
+        {
+          "name": "Evolutionary Neurobiology & Island Biodiversity",
+          "status": "ongoing",
+          "url": "https://www.oist.jp/research"
+        }
+      ]
+    },
+    {
+      "id": "aims_marine_aus",
+      "name": "Australian Institute of Marine Science (AIMS)",
+      "city": "Townsville, Australia",
+      "country": "Australia",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": -19.2869,
+      "lng": 147.0587,
+      "zoom": 15.5,
+      "foundedYear": 1972,
+      "status": "active",
+      "url": "https://www.aims.gov.au/",
+      "wiki": "https://en.wikipedia.org/wiki/Australian_Institute_of_Marine_Science",
+      "wikiSlug": "Australian_Institute_of_Marine_Science",
+      "summary": "Australia's tropical marine research agency at Cape Ferguson—operating the National Sea Simulator (SeaSim) and research fleet to decode Great Barrier Reef coral genetics, heat-tolerant symbiont evolution, and reef restoration.",
+      "next": [
+        "oist_marine_bio",
+        "aad_hobart",
+        "tara_ocean",
+        "scripps_ocean"
+      ],
+      "projects": [
+        {
+          "name": "National Sea Simulator (SeaSim) & Reef Restoration",
+          "status": "ongoing",
+          "url": "https://www.aims.gov.au/research-topics/featured-projects"
+        },
+        {
+          "name": "Long-Term Great Barrier Reef Monitoring Program",
+          "status": "ongoing",
+          "url": "https://www.aims.gov.au/monitoring-great-barrier-reef"
+        }
+      ]
+    },
+    {
+      "id": "uppsala_ebc",
+      "name": "Uppsala University Evolutionary Biology Centre (EBC)",
+      "city": "Uppsala, Sweden",
+      "country": "Sweden",
+      "group": "uni",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 59.8491,
+      "lng": 17.6249,
+      "zoom": 15.5,
+      "foundedYear": 1999,
+      "status": "active",
+      "url": "https://www.uu.se/en/department/ecology-and-genetics",
+      "wiki": "https://en.wikipedia.org/wiki/Evolutionary_Biology_Centre",
+      "wikiSlug": "Evolutionary_Biology_Centre",
+      "summary": "One of Europe's largest evolutionary-biology centers continuing Carl Linnaeus's Uppsala legacy—leading Darwin's-finch and avian speciation genomics (Leif Andersson), Asgard archaea eukaryotic origins, and ancient DNA.",
+      "next": [
+        "mpi_eva",
+        "karolinska",
+        "kew_jodrell",
+        "uppsala_theo_chem"
+      ],
+      "projects": [
+        {
+          "name": "Speciation Genomics & Adaptive Evolution",
+          "status": "ongoing",
+          "url": "https://www.uu.se/en/department/ecology-and-genetics/research"
+        },
+        {
+          "name": "Microbial Evolution & Origins of Eukaryotes",
+          "status": "ongoing",
+          "url": "https://www.uu.se/en/department/cell-and-molecular-biology/research"
+        }
+      ]
+    },
+    {
+      "id": "mpi_marine_bremen",
+      "name": "Max Planck Institute for Marine Microbiology",
+      "city": "Bremen, Germany",
+      "country": "Germany",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": 53.1092,
+      "lng": 8.8469,
+      "zoom": 15.5,
+      "foundedYear": 1992,
+      "status": "active",
+      "url": "https://www.mpi-bremen.de/en/",
+      "wiki": "https://en.wikipedia.org/wiki/Max_Planck_Institute_for_Marine_Microbiology",
+      "wikiSlug": "Max_Planck_Institute_for_Marine_Microbiology",
+      "summary": "World-leading center for marine microbial ecology and biogeochemistry—pioneering deep-sea chemosynthetic animal-microbe symbioses (Nicole Dubilier), anaerobic methane oxidation, and ocean carbon and nitrogen cycling.",
+      "next": [
+        "awi_bremerhaven",
+        "geomar_kiel",
+        "tara_ocean",
+        "whoi"
+      ],
+      "projects": [
+        {
+          "name": "Deep-Sea Chemosynthetic Symbioses & Microbiomes",
+          "status": "ongoing",
+          "url": "https://www.mpi-bremen.de/en/Research.html"
+        },
+        {
+          "name": "Marine Biogeochemistry & Microbial Carbon Cycling",
+          "status": "ongoing",
+          "url": "https://www.mpi-bremen.de/en/Research.html"
+        }
+      ]
+    },
+    {
+      "id": "inpa_manaus",
+      "name": "National Institute of Amazonian Research (INPA)",
+      "city": "Manaus, Brazil",
+      "country": "Brazil",
+      "group": "lab",
+      "entityType": "institute",
+      "discipline": "bio_med",
+      "branch": "ecology_evo",
+      "pinned": true,
+      "lat": -3.095,
+      "lng": -59.9868,
+      "zoom": 15.5,
+      "foundedYear": 1952,
+      "status": "active",
+      "url": "https://www.gov.br/inpa/pt-br",
+      "wiki": "https://en.wikipedia.org/wiki/National_Institute_of_Amazonian_Research",
+      "wikiSlug": "National_Institute_of_Amazonian_Research",
+      "summary": "Brazil's premier Amazonian biodiversity and rainforest ecology institute in the heart of the basin—co-operating the 325-meter Amazon Tall Tower Observatory (ATTO) and curating the world's richest collections of Amazonian flora and fauna.",
+      "next": [
+        "inpe_brazil",
+        "stri_panama",
+        "kew_jodrell",
+        "ncbs_bengaluru"
+      ],
+      "projects": [
+        {
+          "name": "Amazon Tall Tower Observatory (ATTO) Biosphere Science",
+          "status": "ongoing",
+          "url": "https://www.attoproject.org/"
+        },
+        {
+          "name": "Amazonian Biodiversity, Evolution & Freshwater Ecology",
+          "status": "ongoing",
+          "url": "https://www.gov.br/inpa/pt-br"
+        }
       ]
     }
   ]

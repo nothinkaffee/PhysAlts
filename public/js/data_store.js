@@ -5,7 +5,7 @@
  * domains/subdomains/open materials, and automated verification audit reports.
  */
 
-import { SUBJECT_CONFIG, buildDefaultStages, classifyPhysicsBranch } from "./config.js";
+import { SUBJECT_CONFIG, buildDefaultStages, classifyPhysicsBranch, BRANCH_TO_DISCIPLINE } from "./config.js";
 import { loadLocalCustomNodes } from "./cloud_sync.js";
 import { computeImpactScore, attachImpactScores, sortHubsByRanking } from "./impact_ranking.js";
 import { loadAllOfflinePacks } from "./offline_packs.js";
@@ -66,6 +66,7 @@ export const store = {
 function inferDiscipline(raw, tier) {
   if (raw.discipline) return raw.discipline;
   const br = raw.branch || "";
+  if (BRANCH_TO_DISCIPLINE[br]) return BRANCH_TO_DISCIPLINE[br];
   if (["ai_cs", "math", "bio_med", "chem_materials", "earth_climate", "engineering"].includes(br)) return br;
   return "physics";
 }
@@ -223,7 +224,7 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
 
   const [
     flagships, startups, history, space, domains,
-    stemAiCs, stemMath, stemBioMed, stemChemEarthEng,
+    stemAiCs, stemMath, stemBioMed, stemChemEarthEng, stemEngineering,
     stemTimeline, stemDomains, rabbitTrails, offlinePacks
   ] = await Promise.all([
     fetchJsonSafe(f.flagships),
@@ -235,6 +236,7 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
     fetchJsonSafe(f.stemMath),
     fetchJsonSafe(f.stemBioMed),
     fetchJsonSafe(f.stemChemEarthEng),
+    fetchJsonSafe(f.stemEngineering),
     fetchJsonSafe(f.stemTimeline),
     fetchJsonSafe(f.stemDomains),
     fetchJsonSafe(f.rabbitTrails),
@@ -246,6 +248,7 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
   if (stemMath?.hubs) mergeHubs(stemMath.hubs, "stem");
   if (stemBioMed?.hubs) mergeHubs(stemBioMed.hubs, "stem");
   if (stemChemEarthEng?.hubs) mergeHubs(stemChemEarthEng.hubs, "stem");
+  if (stemEngineering?.hubs) mergeHubs(stemEngineering.hubs, "stem");
   if (startups?.hubs) mergeHubs(startups.hubs, "deeptech");
   const localCustom = loadLocalCustomNodes();
   if (localCustom.length) mergeHubs(localCustom, "custom");

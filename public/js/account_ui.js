@@ -109,17 +109,17 @@ export function openAuthModal(initialTab = "signin", { onSuccess, showToast } = 
     }
     if (sub) {
       sub.textContent = tab === "signup"
-        ? "Save bookmarks, study notes, folders, and your career stage."
+        ? "Save bookmarks, study notes, and custom folders across sessions."
         : tab === "reset"
           ? "Enter your account email for password recovery instructions."
-          : "Access your saved physics hubs, timelines, and space missions.";
+          : "Access your saved science & STEM hubs, timelines, and space missions.";
     }
 
     const tabsHtml = `
-      <div class="grid grid-cols-3 gap-1.5 p-1 rounded-full bg-white/[0.05] border border-white/10">
-        <button type="button" data-auth-tab="signin" class="rounded-full py-2 text-[14px] transition ${tab === "signin" ? "glass-btn-active" : "text-neutral-300 hover:text-white"}">Sign in</button>
-        <button type="button" data-auth-tab="signup" class="rounded-full py-2 text-[14px] transition ${tab === "signup" ? "glass-btn-active" : "text-neutral-300 hover:text-white"}">Create account</button>
-        <button type="button" data-auth-tab="reset" class="rounded-full py-2 text-[14px] transition ${tab === "reset" ? "glass-btn-active" : "text-neutral-300 hover:text-white"}">Reset</button>
+      <div class="grid grid-cols-3 gap-1 p-1 rounded-full bg-white/[0.05] border border-white/10">
+        <button type="button" data-auth-tab="signin" class="rounded-full py-2 text-[13.5px] whitespace-nowrap transition ${tab === "signin" ? "glass-btn-active" : "text-neutral-300 hover:text-white"}">Sign in</button>
+        <button type="button" data-auth-tab="signup" class="rounded-full py-2 text-[13.5px] whitespace-nowrap transition ${tab === "signup" ? "glass-btn-active" : "text-neutral-300 hover:text-white"}">Sign up</button>
+        <button type="button" data-auth-tab="reset" class="rounded-full py-2 text-[13.5px] whitespace-nowrap transition ${tab === "reset" ? "glass-btn-active" : "text-neutral-300 hover:text-white"}">Reset</button>
       </div>
     `;
 
@@ -349,18 +349,18 @@ export function renderAccountWorkspaceModal(bodyEl, {
     const portals = STAGE_PORTALS[st] || STAGE_PORTALS.all;
 
     const navHtml = `
-      <div class="flex items-center gap-2 pb-4 border-b border-white/10 overflow-x-auto no-scrollbar">
-        <button type="button" data-ws-tab="bookmarks" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "bookmarks" ? "glass-btn-active" : "glass-btn"}">
-          Bookmarks (${snap.bookmarks.length})
+      <div class="flex flex-wrap items-center gap-1.5 pb-4 border-b border-white/10">
+        <button type="button" data-ws-tab="bookmarks" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${activeTab === "bookmarks" ? "glass-btn-active" : "glass-btn"}">
+          Saved (${snap.bookmarks.length})
         </button>
-        <button type="button" id="ws-btn-offline" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition glass-btn">
-          Offline Packs
+        <button type="button" id="ws-btn-offline" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition glass-btn">
+          Offline
         </button>
-        <button type="button" data-ws-tab="profile" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "profile" ? "glass-btn-active" : "glass-btn"}">
+        <button type="button" data-ws-tab="profile" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${activeTab === "profile" ? "glass-btn-active" : "glass-btn"}">
           Profile
         </button>
-        <button type="button" data-ws-tab="security" class="px-4 py-2 rounded-full text-[14px] whitespace-nowrap transition ${activeTab === "security" ? "glass-btn-active" : "glass-btn"}">
-          Privacy &amp; Tools
+        <button type="button" data-ws-tab="security" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${activeTab === "security" ? "glass-btn-active" : "glass-btn"}">
+          Tools
         </button>
       </div>
     `;
@@ -395,7 +395,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
 
       const listHtml = filtered.length ? filtered.map(b => {
         const isEditing = editingNoteId === b.id;
-        const kindLabel = b.kind === "space" ? "Space Mission" : b.kind === "timeline" ? "Historical Milestone" : b.kind === "material" ? "Open Material" : "Physics Hub";
+        const kindLabel = b.kind === "space" ? "Space Mission" : b.kind === "timeline" ? "Historical Milestone" : b.kind === "material" ? "Open Material" : "STEM Hub";
         return `
           <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 space-y-3">
             <div class="flex items-start justify-between gap-3">
@@ -418,7 +418,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
                 <textarea data-bm-note-input="${esc(b.id)}" rows="2" placeholder="Add study notes, application deadlines, or advisor names…" class="glass-input text-[14px]">${esc(b.note || "")}</textarea>
                 <div class="flex items-center gap-2">
                   <button type="button" data-bm-save-meta="${esc(b.id)}" class="glass-btn-active rounded-full px-4 py-1.5 text-[14px]">Save note</button>
-                  <button type="button" data-bm-cancel-meta class="glass-btn rounded-full px-3.5 py-1.5 text-[14px]">Cancel</button>
+                  <button type="button" data-bm-cancel-meta class="glass-btn rounded-full px-4 py-1.5 text-[14px]">Cancel</button>
                 </div>
               </div>
             ` : `
@@ -433,7 +433,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
       }).join("") : `
         <div class="rounded-2xl bg-white/[0.03] border border-white/10 p-6 text-center space-y-2">
           <div class="text-[17px] font-medium text-white">${snap.bookmarks.length ? "No bookmarks match this filter" : "No bookmarks yet"}</div>
-          <p class="text-[14px] text-neutral-400">Click <strong class="text-white">+ Bookmark</strong> on any lab, university, startup, milestone, or space mission to save it here.</p>
+          <p class="text-[14px] text-neutral-400">Tap <strong class="text-white">Save</strong> on any lab, university, startup, milestone, or space mission to keep it here.</p>
         </div>
       `;
 

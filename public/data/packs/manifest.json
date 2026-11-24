@@ -1,20 +1,20 @@
 {
   "schemaVersion": "1.0.0",
   "version": "2026-11-24",
-  "generatedAt": "2026-11-24T04:12:32.952Z",
+  "generatedAt": "2026-11-24T08:27:52.369Z",
   "stemDatasetsDetected": true,
   "summary": {
     "totalPacks": 13,
     "disciplinePacks": 6,
     "regionPacks": 6,
     "tilePacks": 1,
-    "totalBytes": 8556044,
-    "totalLabel": "8.16 MB",
-    "indexedHubs": 5509,
-    "indexedEvents": 109,
+    "totalBytes": 9090166,
+    "totalLabel": "8.67 MB",
+    "indexedHubs": 5709,
+    "indexedEvents": 133,
     "indexedMissions": 36,
     "indexedDomains": 14,
-    "indexedTrails": 8
+    "indexedTrails": 14
   },
   "packs": [
     {
@@ -25,15 +25,15 @@
       "version": "2026-11-24",
       "file": "pack_physics.json",
       "url": "./data/packs/pack_physics.json",
-      "sizeBytes": 3775750,
-      "sizeLabel": "3.60 MB",
-      "sha256": "160fc20e7afa782824f0cc247c126fece0a9a5bdfbe99005757aa7ab7db80d6e",
+      "sizeBytes": 3781510,
+      "sizeLabel": "3.61 MB",
+      "sha256": "589a06f9278d6c4f3831f7ed239b84b148547faaceb27d13d91ff31797cefd54",
       "counts": {
-        "hubs": 5364,
-        "events": 69,
+        "hubs": 5362,
+        "events": 71,
         "missions": 36,
         "domains": 8,
-        "trails": 6
+        "trails": 9
       }
     },
     {
@@ -44,15 +44,15 @@
       "version": "2026-11-24",
       "file": "pack_ai_cs.json",
       "url": "./data/packs/pack_ai_cs.json",
-      "sizeBytes": 125859,
-      "sizeLabel": "122.9 KB",
-      "sha256": "3ced2b96b8a1123a761279d5a14405b4bc83904372bd52b0b454f1275f6e3df0",
+      "sizeBytes": 173543,
+      "sizeLabel": "169.5 KB",
+      "sha256": "47becf755c38176fbb9ab16202d602c2368993652aa611ac04584e90efe7fb60",
       "counts": {
-        "hubs": 46,
-        "events": 13,
+        "hubs": 78,
+        "events": 16,
         "missions": 0,
         "domains": 1,
-        "trails": 7
+        "trails": 11
       }
     },
     {
@@ -63,15 +63,15 @@
       "version": "2026-11-24",
       "file": "pack_math.json",
       "url": "./data/packs/pack_math.json",
-      "sizeBytes": 68957,
-      "sizeLabel": "67.3 KB",
-      "sha256": "a3e40f7b9d9861f73d18be7787fc9a461c2a241507499f3d4e40d7c7a7a09212",
+      "sizeBytes": 106508,
+      "sizeLabel": "104.0 KB",
+      "sha256": "7b8202e1a6bc12336fac7b4f1bbd14a929caa6fea738afd1fea4d2169b5bd246",
       "counts": {
-        "hubs": 26,
-        "events": 6,
+        "hubs": 55,
+        "events": 10,
         "missions": 0,
         "domains": 1,
-        "trails": 1
+        "trails": 2
       }
     },
     {
@@ -82,15 +82,15 @@
       "version": "2026-11-24",
       "file": "pack_bio_med.json",
       "url": "./data/packs/pack_bio_med.json",
-      "sizeBytes": 88736,
-      "sizeLabel": "86.7 KB",
-      "sha256": "6cf37215df31775b97b2d25906d5d21700162e581656825adfcca3b5080360e9",
+      "sizeBytes": 138357,
+      "sizeLabel": "135.1 KB",
+      "sha256": "6bda604623ca9d873a1b73e0dc46b2256490e893d58dc9a11ed2e27c661b65b4",
       "counts": {
-        "hubs": 31,
-        "events": 13,
+        "hubs": 59,
+        "events": 16,
         "missions": 0,
-        "domains": 1,
-        "trails": 3
+        "domains": 2,
+        "trails": 4
       }
     },
     {
@@ -101,15 +101,15 @@
       "version": "2026-11-24",
       "file": "pack_chem_earth.json",
       "url": "./data/packs/pack_chem_earth.json",
-      "sizeBytes": 64430,
-      "sizeLabel": "62.9 KB",
-      "sha256": "027aeb90517e0d89702632d7a4541414df471f05927fedeafbf4540f23561ad5",
+      "sizeBytes": 124554,
+      "sizeLabel": "121.6 KB",
+      "sha256": "dc17fc0199c3e4f2da2d4433974508cf1ab3893c75f64434dad8403d4318951e",
       "counts": {
-        "hubs": 22,
-        "events": 4,
+        "hubs": 69,
+        "events": 8,
         "missions": 0,
         "domains": 1,
-        "trails": 4
+        "trails": 6
       }
     },
     {
@@ -120,15 +120,15 @@
       "version": "2026-11-24",
       "file": "pack_engineering.json",
       "url": "./data/packs/pack_engineering.json",
-      "sizeBytes": 66167,
-      "sizeLabel": "64.6 KB",
-      "sha256": "a5b93aea0a6970fcc1154c978e5cb0e1810cfdcdd1f8dd184058f85d2202b027",
+      "sizeBytes": 143166,
+      "sizeLabel": "139.8 KB",
+      "sha256": "086b1e858adf6484b2644edfae919399eb2b8971242a7fbfba4459289eb0908d",
       "counts": {
-        "hubs": 20,
-        "events": 4,
+        "hubs": 86,
+        "events": 12,
         "missions": 0,
-        "domains": 2,
-        "trails": 3
+        "domains": 1,
+        "trails": 7
       }
     },
     {
@@ -139,15 +139,15 @@
       "version": "2026-11-24",
       "file": "region_europe.json",
       "url": "./data/packs/region_europe.json",
-      "sizeBytes": 1509949,
-      "sizeLabel": "1.44 MB",
-      "sha256": "ab61f1eb9cf7c1cd6adb96362cc222915f5587ad9cb170d94df300feaca837f1",
+      "sizeBytes": 1632028,
+      "sizeLabel": "1.56 MB",
+      "sha256": "7fa5f6594648958972dad8ef3c285f35eb544a3451d5d3a38251dc843d767436",
       "counts": {
-        "hubs": 1996,
-        "events": 53,
+        "hubs": 2089,
+        "events": 66,
         "missions": 9,
         "domains": 0,
-        "trails": 8
+        "trails": 14
       }
     },
     {
@@ -158,15 +158,15 @@
       "version": "2026-11-24",
       "file": "region_north_america.json",
       "url": "./data/packs/region_north_america.json",
-      "sizeBytes": 994180,
-      "sizeLabel": "970.9 KB",
-      "sha256": "36d21572849b17ae5565c0543c5a345718783927926dfd9ed5fc3beae3729929",
+      "sizeBytes": 1091342,
+      "sizeLabel": "1.04 MB",
+      "sha256": "e4f3e077f7e7b340a2aa7f8a68219f665915307b5a0a61a13bd158c96c4a5085",
       "counts": {
-        "hubs": 1243,
-        "events": 31,
+        "hubs": 1314,
+        "events": 42,
         "missions": 22,
         "domains": 0,
-        "trails": 8
+        "trails": 14
       }
     },
     {
@@ -177,11 +177,11 @@
       "version": "2026-11-24",
       "file": "region_asia.json",
       "url": "./data/packs/region_asia.json",
-      "sizeBytes": 1295168,
-      "sizeLabel": "1.24 MB",
-      "sha256": "089b91c19aa38fbf5931136e71481066a236eb5f94355eb712538af06d70bfda",
+      "sizeBytes": 1319723,
+      "sizeLabel": "1.26 MB",
+      "sha256": "7267691a89824b8ea94fcc675c8ab48f34d89a5436d3076e975618ce1a4910e4",
       "counts": {
-        "hubs": 1857,
+        "hubs": 1882,
         "events": 15,
         "missions": 3,
         "domains": 0,
@@ -196,11 +196,11 @@
       "version": "2026-11-24",
       "file": "region_south_america.json",
       "url": "./data/packs/region_south_america.json",
-      "sizeBytes": 117632,
-      "sizeLabel": "114.9 KB",
-      "sha256": "c557dca91e70b734d138f9bd606e5fe1dc2ce67e4de20ad9e8179f41a0983465",
+      "sizeBytes": 121007,
+      "sizeLabel": "118.2 KB",
+      "sha256": "85b14a62568856c2228e88e373a9226c121e02793c74e5f468fc0e3a39ce5ae9",
       "counts": {
-        "hubs": 162,
+        "hubs": 165,
         "events": 4,
         "missions": 0,
         "domains": 0,
@@ -215,9 +215,9 @@
       "version": "2026-11-24",
       "file": "region_africa.json",
       "url": "./data/packs/region_africa.json",
-      "sizeBytes": 118557,
+      "sizeBytes": 118573,
       "sizeLabel": "115.8 KB",
-      "sha256": "7d1066d617ec3861d7b78e39f451ba749f40de61c988ab563ef3a237abc9a385",
+      "sha256": "58c5328365d37648af595a644e27674740a8c4b0f98b6ce3a45e1172828dcbd9",
       "counts": {
         "hubs": 166,
         "events": 5,
@@ -234,11 +234,11 @@
       "version": "2026-11-24",
       "file": "region_oceania_antarctica.json",
       "url": "./data/packs/region_oceania_antarctica.json",
-      "sizeBytes": 59001,
-      "sizeLabel": "57.6 KB",
-      "sha256": "b03e7f92ea123a0b071ae42f080bd9814888dfd97393a58b5ed075f9853e528b",
+      "sizeBytes": 68197,
+      "sizeLabel": "66.6 KB",
+      "sha256": "5e1ec975f8fd59d4360ac4ae5650bae8e5dd41e63df097c1561184bfbe040278",
       "counts": {
-        "hubs": 85,
+        "hubs": 93,
         "events": 1,
         "missions": 0,
         "domains": 0,
