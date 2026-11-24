@@ -45,6 +45,7 @@ export const store = {
     selectedId: null,
     activeTrail: null,       // { id, title, stops: [{ hubId, title, bridge }], index: 0 }
     trailHistory: [],        // breadcrumb trail of visited hub IDs
+    rabbitPath: [],          // [{ id, lat, lng }] live curiosity-walk geodesic path
     timeMode: false,         // false = Live Present, true = Time Counter active
     timeYear: 2026,
     timePlaying: false,

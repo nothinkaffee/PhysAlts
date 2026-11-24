@@ -32,6 +32,10 @@ import { isCloudReady, exportUserData, eraseAllUserData } from "./cloud_sync.js"
 import { computeImpactScore, scoreHubForYear } from "./impact_ranking.js";
 import { curateRabbitHoleNodes } from "./rabbit_agent.js";
 import {
+  pickNextRabbitHop, pickNextSpaceHop, getCardRabbitBranches,
+  recordRabbitVisit, getFreeRoamState, stepFreeRoamBack, clearFreeRoamWalk
+} from "./rabbit_engine.js";
+import {
   fetchPackManifest, getDownloadedPackIds, getDownloadedPackMeta,
   downloadPack, deletePack, exportPackToFile, getOfflineStorageStats, formatBytes
 } from "./offline_packs.js";
@@ -678,28 +682,43 @@ function renderRabbitTrailBar() {
   const bar = document.getElementById("rabbit-trail-bar");
   const trail = store.state.activeTrail;
   if (!bar) return;
-  if (!trail || !Array.isArray(trail.stops) || !trail.stops.length) {
-    bar.classList.add("hidden");
-    return;
-  }
-  const idx = Math.max(0, Math.min(trail.stops.length - 1, trail.index || 0));
-  const stop = trail.stops[idx];
+
   const stepEl = document.getElementById("trail-bar-step");
   const titleEl = document.getElementById("trail-bar-title");
   const bridgeEl = document.getElementById("trail-bar-bridge");
   const prevBtn = document.getElementById("btn-trail-prev");
   const nextBtn = document.getElementById("btn-trail-next");
 
-  if (stepEl) stepEl.textContent = `${idx + 1} / ${trail.stops.length}`;
-  if (titleEl) titleEl.textContent = `${trail.title} · ${stop.title || ""}`;
-  if (bridgeEl) bridgeEl.textContent = stop.bridge || trail.tagline || "Curated cross-disciplinary research trail";
-  if (prevBtn) prevBtn.disabled = idx === 0;
-  if (nextBtn) nextBtn.textContent = idx >= trail.stops.length - 1 ? "Finish Trail" : "Next Hop →";
-  bar.classList.remove("hidden");
+  if (trail && Array.isArray(trail.stops) && trail.stops.length) {
+    const idx = Math.max(0, Math.min(trail.stops.length - 1, trail.index || 0));
+    const stop = trail.stops[idx];
+    if (stepEl) stepEl.textContent = `${idx + 1} / ${trail.stops.length}`;
+    if (titleEl) titleEl.textContent = `${trail.title} · ${stop.title || ""}`;
+    if (bridgeEl) bridgeEl.textContent = stop.bridge || trail.tagline || "";
+    if (prevBtn) prevBtn.disabled = idx === 0;
+    if (nextBtn) nextBtn.textContent = idx >= trail.stops.length - 1 ? "Finish" : "Next →";
+    bar.classList.remove("hidden");
+    return;
+  }
+
+  // Free-roam curiosity walk bar (appears only after 2+ hops, whisper-clean 1-line bridge)
+  const free = getFreeRoamState();
+  if (store.state.viewMode === "earth" && !store.state.timeMode && free.history.length >= 2 && free.current) {
+    if (stepEl) stepEl.textContent = `Hop ${free.cursor + 1}`;
+    if (titleEl) titleEl.textContent = free.current.title || "";
+    if (bridgeEl) bridgeEl.textContent = free.current.reason || free.current.city || "";
+    if (prevBtn) prevBtn.disabled = !free.canGoBack;
+    if (nextBtn) nextBtn.textContent = "Next →";
+    bar.classList.remove("hidden");
+    return;
+  }
+
+  bar.classList.add("hidden");
 }
 
 export function startRabbitTrail(trail, startIdx = 0) {
   if (!trail || !Array.isArray(trail.stops) || !trail.stops.length) return;
+  clearFreeRoamWalk();
   store.state.activeTrail = {
     id: trail.id || `trail-${Date.now()}`,
     title: trail.title || "Rabbit Hole Trail",
@@ -714,30 +733,45 @@ export function startRabbitTrail(trail, startIdx = 0) {
   if (stop?.hubId) {
     selectHubNode(stop.hubId, true);
   }
-  showToast(`Trail started: ${trail.title}`);
+  showToast(`Trail · ${trail.title}`);
 }
 
 function stepRabbitTrail(delta) {
   const trail = store.state.activeTrail;
-  if (!trail || !trail.stops?.length) return;
-  const nextIdx = trail.index + delta;
-  if (nextIdx < 0) return;
-  if (nextIdx >= trail.stops.length) {
-    exitRabbitTrail();
-    showToast(`Completed trail: ${trail.title}`);
+  if (trail && trail.stops?.length) {
+    const nextIdx = trail.index + delta;
+    if (nextIdx < 0) return;
+    if (nextIdx >= trail.stops.length) {
+      exitRabbitTrail();
+      showToast(`Completed · ${trail.title}`);
+      return;
+    }
+    trail.index = nextIdx;
+    const stop = trail.stops[nextIdx];
+    renderRabbitTrailBar();
+    if (stop?.hubId) {
+      selectHubNode(stop.hubId, true);
+    }
     return;
   }
-  trail.index = nextIdx;
-  const stop = trail.stops[nextIdx];
-  renderRabbitTrailBar();
-  if (stop?.hubId) {
-    selectHubNode(stop.hubId, true);
+
+  // Free-roam Back / Next
+  if (delta < 0) {
+    const prev = stepFreeRoamBack();
+    if (prev?.id) {
+      selectHubNode(prev.id, true, { skipRecordWalk: true });
+      renderRabbitTrailBar();
+    }
+  } else if (delta > 0) {
+    jumpRabbitHole("walk");
   }
 }
 
 function exitRabbitTrail() {
   store.state.activeTrail = null;
+  clearFreeRoamWalk();
   renderRabbitTrailBar();
+  syncGlobeMarkers();
 }
 
 /**
@@ -822,7 +856,7 @@ function loadWikipediaCardBrief(node) {
 // PLACE / MILESTONE DETAIL CARD
 // =========================================================================
 
-export function selectHubNode(id, fly = true) {
+export function selectHubNode(id, fly = true, opts = {}) {
   const node = getNodeById(id);
   if (!node) return;
   if (store.state.viewMode === "space") setViewMode("earth");
@@ -834,6 +868,12 @@ export function selectHubNode(id, fly = true) {
     store.state.trailHistory.push(node.id);
     if (store.state.trailHistory.length > 24) store.state.trailHistory.shift();
   }
+  if (!opts.skipRecordWalk) {
+    recordRabbitVisit(node, {
+      pushWalk: Boolean(opts.pushWalk),
+      reason: opts.reason || ""
+    });
+  }
 
   const card = document.getElementById("place-card");
   if (!card) return;
@@ -843,6 +883,7 @@ export function selectHubNode(id, fly = true) {
   if (scrollBody) scrollBody.scrollTop = 0;
   if (fly) flyToHub(node, node.tier === "timeline" ? 4.8 : null);
   syncGlobeMarkers();
+  renderRabbitTrailBar();
   const deeperWrap = document.getElementById("card-deeper-wrap");
   deeperWrap?.classList.add("hidden");
   const deeperBtn = document.getElementById("btn-deeper-toggle");
@@ -912,59 +953,35 @@ export function selectHubNode(id, fly = true) {
 
   updateBookmarkButtonUI(node.id);
 
-  // Compact Keep Exploring chips (clean horizontal pills matching IceCube reference!)
+  // 3 Typed Semantic Keep Exploring chips (Deeper · Cross-STEM/Spinout · Space/Wildcard — zero text bloat)
   const rWrap = document.getElementById("card-rabbit-wrap");
   const rLinks = document.getElementById("card-rabbit-links");
   if (rWrap && rLinks) {
-    const hops = [];
-    const seen = new Set([node.id]);
-
-    for (const rl of node.rabbitLinks || []) {
-      const targetId = typeof rl === "string" ? rl : rl?.id;
-      const target = getNodeById(targetId);
-      if (target && !seen.has(target.id)) {
-        hops.push({ node: target, reason: typeof rl === "object" ? rl.reason : "" });
-        seen.add(target.id);
-      }
-    }
-    for (const nextId of node.next || []) {
-      if (hops.length >= 3) break;
-      const target = getNodeById(nextId);
-      if (target && !seen.has(target.id)) {
-        hops.push({ node: target, reason: `${BRANCH_SHORT_LABELS[target.branch] || "STEM"} · ${target.city}` });
-        seen.add(target.id);
-      }
-    }
-    if (hops.length < 3) {
-      const pool = store.hubs.filter(h =>
-        !seen.has(h.id) && (h.tier === "flagship" || h.tier === "stem" || h.tier === "deeptech") &&
-        (h.branch === node.branch || h.discipline === node.discipline || h.country !== node.country)
-      );
-      for (const cand of pool) {
-        if (hops.length >= 3) break;
-        if ((cand.branch === node.branch || cand.discipline === node.discipline) && cand.country !== node.country) {
-          hops.push({ node: cand, reason: `Peer leader in ${BRANCH_SHORT_LABELS[cand.branch] || "STEM"}` });
-          seen.add(cand.id);
-        }
-      }
-      for (const cand of pool) {
-        if (hops.length >= 3) break;
-        if (!seen.has(cand.id)) {
-          hops.push({ node: cand, reason: cand.city });
-          seen.add(cand.id);
-        }
-      }
-    }
-
-    if (hops.length) {
+    const branches = getCardRabbitBranches(node);
+    if (branches.length) {
       rWrap.classList.remove("hidden");
-      rLinks.innerHTML = hops.slice(0, 3).map(({ node: p, reason }) => `
-        <button type="button" data-jump-hub="${esc(p.id)}" title="${esc(reason || p.city)}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-full">
-          ${esc(p.name.split(" (")[0])} →
+      rLinks.innerHTML = branches.map(b => `
+        <button type="button" data-jump-kind="${esc(b.kind)}" data-jump-id="${esc(b.id)}" data-jump-reason="${esc(b.tooltip || "")}" title="${esc(b.tooltip || "")}" class="glass-btn rounded-full px-3 py-1 text-[13px] truncate max-w-full">
+          ${esc(b.label)} ${b.kind === "space" ? "↗" : "→"}
         </button>
       `).join("");
-      rLinks.querySelectorAll("[data-jump-hub]").forEach(btn => {
-        btn.addEventListener("click", () => selectHubNode(btn.dataset.jumpHub, true));
+      rLinks.querySelectorAll("[data-jump-id]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const kind = btn.dataset.jumpKind;
+          const targetId = btn.dataset.jumpId;
+          const reason = btn.dataset.jumpReason || "";
+          if (kind === "space") {
+            setViewMode("space");
+            selectSpaceMission(targetId);
+            showToast(reason ? `${btn.textContent.replace(/[→↗]\s*$/, "").trim()} · ${reason}` : "1 Light-Day");
+          } else {
+            store.state.activeTrail = null;
+            // Seed current node as walk start if this is the first hop
+            const free = getFreeRoamState();
+            if (!free.history.length) recordRabbitVisit(node, { pushWalk: true, reason: "" });
+            selectHubNode(targetId, true, { pushWalk: true, reason });
+          }
+        });
       });
     } else {
       rWrap.classList.add("hidden");
@@ -2435,35 +2452,40 @@ function copyCurrentShareLink() {
   }
 }
 
-const recentRabbitIds = [];
-
-function jumpRabbitHole() {
+function jumpRabbitHole(mode = "walk") {
   closeRabbitPopover();
   if (store.state.viewMode === "space" && store.spaceMissions.length) {
-    const pool = store.spaceMissions.filter(m => !recentRabbitIds.includes(`sp-${m.id}`));
-    const pick = (pool.length ? pool : store.spaceMissions)[Math.floor(Math.random() * (pool.length || store.spaceMissions.length))];
-    if (!pick) return;
-    recentRabbitIds.push(`sp-${pick.id}`);
-    if (recentRabbitIds.length > 24) recentRabbitIds.shift();
-    selectSpaceMission(pick.id);
-    showToast(`Rabbit Hole → ${pick.name}`);
+    const curId = store.state.selectedId?.startsWith("sp-") ? store.state.selectedId.slice(3) : null;
+    const curMission = curId ? store.spaceMissions.find(m => m.id === curId) : null;
+    const next = pickNextSpaceHop(mode === "surprise" ? null : curMission);
+    if (!next?.mission) return;
+    recordRabbitVisit({ id: `sp-${next.mission.id}` });
+    selectSpaceMission(next.mission.id);
+    showToast(`${next.mission.name} · ${next.reason}`);
     return;
   }
 
-  // Curated curiosity pool across ALL STEM: Physics flagships, AI/Math/Bio/Climate/Eng leaders & deep-tech startups
-  const curatedPool = store.hubs.filter(h =>
-    (h.tier === "flagship" || h.tier === "stem" || h.tier === "deeptech") && !recentRabbitIds.includes(h.id)
-  );
-  const fallbackPool = store.hubs.filter(h => !recentRabbitIds.includes(h.id));
-  const pool = curatedPool.length ? curatedPool : (fallbackPool.length ? fallbackPool : store.hubs);
-  if (!pool.length) return;
-  const pick = pool[Math.floor(Math.random() * pool.length)];
-  recentRabbitIds.push(pick.id);
-  if (recentRabbitIds.length > 32) recentRabbitIds.shift();
+  // If following an active preset trail and user clicks Next (not Surprise Me), step the trail
+  if (mode === "walk" && store.state.activeTrail?.stops?.length) {
+    stepRabbitTrail(1);
+    return;
+  }
+
+  if (mode === "surprise") {
+    store.state.activeTrail = null;
+    clearFreeRoamWalk();
+  }
+
+  const currentNode = (mode === "walk" && store.state.selectedId && !store.state.selectedId.startsWith("sp-"))
+    ? getNodeById(store.state.selectedId)
+    : null;
+
+  const hop = pickNextRabbitHop(currentNode, { mode });
+  if (!hop?.node) return;
 
   if (store.state.timeMode) setTimeMode(false);
-  selectHubNode(pick.id, true);
-  showToast(`Rabbit Hole → ${pick.name}`);
+  selectHubNode(hop.node.id, true, { pushWalk: true, reason: hop.reason });
+  showToast(hop.reason ? `${hop.node.name.split(" (")[0]} · ${hop.reason}` : hop.node.name);
 }
 
 // =========================================================================
@@ -2478,11 +2500,11 @@ export function initUI() {
 
   // Prominent Top-Bar Rabbit Hole Button (click opens Rabbit Hole hub; Shift+Click jumps straight in)
   document.getElementById("btn-rabbit-hole")?.addEventListener("click", (e) => {
-    if (e.shiftKey) jumpRabbitHole();
+    if (e.shiftKey) jumpRabbitHole("walk");
     else toggleRabbitPopover();
   });
   document.getElementById("btn-close-rabbit-popover")?.addEventListener("click", closeRabbitPopover);
-  document.getElementById("btn-rabbit-surprise")?.addEventListener("click", jumpRabbitHole);
+  document.getElementById("btn-rabbit-surprise")?.addEventListener("click", () => jumpRabbitHole("surprise"));
   document.getElementById("rabbit-agent-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
     const q = document.getElementById("rabbit-agent-input")?.value?.trim() || "";
@@ -2490,7 +2512,7 @@ export function initUI() {
     openSpotlight();
     runAgentRabbitHole(q || "AlphaFold");
   });
-  document.getElementById("btn-card-rabbit")?.addEventListener("click", jumpRabbitHole);
+  document.getElementById("btn-card-rabbit")?.addEventListener("click", () => jumpRabbitHole("walk"));
 
   // Floating Rabbit Hole Trail Breadcrumb Bar controls
   document.getElementById("btn-trail-prev")?.addEventListener("click", () => stepRabbitTrail(-1));

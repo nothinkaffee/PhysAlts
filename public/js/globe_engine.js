@@ -387,23 +387,47 @@ function buildGeoJSON(nodes) {
 }
 
 function buildArcsGeoJSON() {
-  if (!store.state.arcs || store.state.timeMode) {
-    return { type: "FeatureCollection", features: [] };
-  }
-  const visible = new Map(getVisibleGlobeNodes().map(n => [n.id, n]));
   const features = [];
-  for (const [idA, idB] of COLLABORATION_ARCS) {
-    const a = visible.get(idA) || getNodeById(idA);
-    const b = visible.get(idB) || getNodeById(idB);
-    if (!a || !b) continue;
-    if (store.state.branch !== "all" && a.branch !== store.state.branch && b.branch !== store.state.branch) continue;
-    const focused = (store.state.selectedId === idA || store.state.selectedId === idB) ? 1 : 0;
-    features.push({
-      type: "Feature",
-      geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
-      properties: { focused }
-    });
+  if (store.state.arcs && !store.state.timeMode) {
+    const visible = new Map(getVisibleGlobeNodes().map(n => [n.id, n]));
+    for (const [idA, idB] of COLLABORATION_ARCS) {
+      const a = visible.get(idA) || getNodeById(idA);
+      const b = visible.get(idB) || getNodeById(idB);
+      if (!a || !b) continue;
+      if (store.state.branch !== "all" && a.branch !== store.state.branch && b.branch !== store.state.branch) continue;
+      const focused = (store.state.selectedId === idA || store.state.selectedId === idB) ? 1 : 0;
+      features.push({
+        type: "Feature",
+        geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
+        properties: { focused, rabbit: 0 }
+      });
+    }
   }
+
+  // Live Rabbit Hole curiosity path (free-roam walk or active curated/agent trail)
+  if (!store.state.timeMode) {
+    let pathPts = [];
+    if (store.state.activeTrail?.stops?.length >= 2) {
+      const lim = Math.min(store.state.activeTrail.stops.length - 1, store.state.activeTrail.index || 0);
+      for (let i = 0; i <= lim; i++) {
+        const n = getNodeById(store.state.activeTrail.stops[i]?.hubId);
+        if (n?.lat != null && n?.lng != null) pathPts.push({ lat: n.lat, lng: n.lng });
+      }
+    } else if (store.state.rabbitPath?.length >= 2) {
+      pathPts = store.state.rabbitPath;
+    }
+    for (let i = 0; i + 1 < pathPts.length; i++) {
+      const a = pathPts[i];
+      const b = pathPts[i + 1];
+      if (a.lat === b.lat && a.lng === b.lng) continue;
+      features.push({
+        type: "Feature",
+        geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
+        properties: { focused: 1, rabbit: 1 }
+      });
+    }
+  }
+
   return { type: "FeatureCollection", features };
 }
 
@@ -472,8 +496,17 @@ function setupWebGLVectorLayers() {
     type: "line",
     source: "physics-arcs",
     paint: {
-      "line-color": "rgba(228, 228, 231, 0.14)",
-      "line-width": ["case", ["==", ["get", "focused"], 1], 4.0, 2.0],
+      "line-color": [
+        "case",
+        ["==", ["get", "rabbit"], 1], "rgba(160, 70, 70, 0.36)",
+        "rgba(228, 228, 231, 0.14)"
+      ],
+      "line-width": [
+        "case",
+        ["==", ["get", "rabbit"], 1], 5.0,
+        ["==", ["get", "focused"], 1], 4.0,
+        2.0
+      ],
       "line-blur": 3
     }
   });
@@ -482,8 +515,18 @@ function setupWebGLVectorLayers() {
     type: "line",
     source: "physics-arcs",
     paint: {
-      "line-color": ["case", ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.88)", "rgba(212, 212, 216, 0.36)"],
-      "line-width": ["case", ["==", ["get", "focused"], 1], 1.5, 1.0],
+      "line-color": [
+        "case",
+        ["==", ["get", "rabbit"], 1], "rgba(196, 98, 98, 0.94)",
+        ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.88)",
+        "rgba(212, 212, 216, 0.36)"
+      ],
+      "line-width": [
+        "case",
+        ["==", ["get", "rabbit"], 1], 1.8,
+        ["==", ["get", "focused"], 1], 1.5,
+        1.0
+      ],
       "line-dasharray": [2, 2]
     }
   });
@@ -713,12 +756,13 @@ function initGlobeHudOverlay() {
 
     // 2. Gather visible clusters & unclustered nodes (single source of truth for bubbles, counts, labels & hitboxes)
     if (CANVAS_MARKERS || useMainThreadOverlay) {
-      if (useMainThreadOverlay && store.state.arcs && !store.state.timeMode) {
+      if (useMainThreadOverlay && !store.state.timeMode) {
         const arcs = buildArcsGeoJSON().features || [];
         ctx.save();
         ctx.setLineDash([4, 4]);
         for (const f of arcs) {
           const coords = f.geometry?.coordinates || [];
+          const isRabbit = f.properties?.rabbit === 1;
           const focused = f.properties?.focused === 1;
           ctx.beginPath();
           let started = false;
@@ -729,8 +773,10 @@ function initGlobeHudOverlay() {
             if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
             else ctx.lineTo(pt.x, pt.y);
           }
-          ctx.strokeStyle = focused ? "rgba(255,255,255,0.86)" : "rgba(212,212,216,0.34)";
-          ctx.lineWidth = focused ? 1.5 : 1;
+          ctx.strokeStyle = isRabbit
+            ? "rgba(196, 98, 98, 0.92)"
+            : (focused ? "rgba(255,255,255,0.86)" : "rgba(212,212,216,0.34)");
+          ctx.lineWidth = isRabbit ? 1.8 : (focused ? 1.5 : 1);
           ctx.stroke();
         }
         ctx.restore();
