@@ -702,7 +702,9 @@ body.space-mode #place-card {
   max-height: calc(100dvh - 248px);
 }
 body.space-mode #earth-only-controls,
-body.space-mode #active-filter-pill {
+body.space-mode #active-filter-pill,
+body.space-mode #bottom-dock .dock-type-group,
+body.space-mode #bottom-dock .dock-divider {
   display: none !important;
 }
 body.space-mode #zoom-controls {
@@ -1025,7 +1027,6 @@ body.space-mode #zoom-controls .zoom-divider {
   body.time-open #zoom-controls {
     display: none !important;
   }
-  #space-mission-rail,
   .maplibregl-ctrl-attrib {
     display: none !important;
   }
@@ -1085,16 +1086,6 @@ body.space-mode #zoom-controls .zoom-divider {
   font-variant-numeric: tabular-nums;
 }
 .card-impact-pill.hidden {
-  display: none !important;
-}
-
-.card-wiki-brief {
-  border-left: 2px solid var(--accent-link);
-  background: rgba(255, 255, 255, 0.035);
-  border-radius: 0 14px 14px 0;
-  padding: 10px 13px;
-}
-.card-wiki-brief.hidden {
   display: none !important;
 }
 

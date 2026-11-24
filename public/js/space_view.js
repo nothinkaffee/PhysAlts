@@ -327,18 +327,17 @@ function clampCameraTargets() {
 }
 
 function getViewportMetrics(w, h) {
-  const railEl = document.getElementById("space-mission-rail");
-  const railVisible = Boolean(railEl && railEl.offsetWidth > 0 && window.getComputedStyle(railEl).display !== "none");
+  const railVisible = false;
   const isMobile = w < 768;
   const isTablet = w >= 768 && w < 1024;
 
-  const leftPad = isMobile ? 28 : railVisible ? 54 : 44;
-  const rightPad = railVisible ? 392 : isMobile ? 28 : 48;
+  const leftPad = isMobile ? 28 : 56;
+  const rightPad = isMobile ? 28 : 56;
   const stageLeft = leftPad;
   const stageRight = Math.max(stageLeft + 180, w - rightPad);
   const stageW = stageRight - stageLeft;
 
-  const topSafe = isMobile ? 204 : 196;
+  const topSafe = isMobile ? 204 : 192;
   const bottomSafe = isMobile ? h - 88 : h - 102;
   const axisY = (topSafe + bottomSafe) * 0.51 + camPanY;
 
@@ -387,15 +386,15 @@ function injectHudStyles() {
   style.textContent = `
     #space-pulse-hud {
       position: fixed;
-      top: 154px;
-      right: 374px;
+      top: 150px;
+      right: 24px;
       z-index: 24;
       display: flex;
       align-items: center;
       gap: 6px;
       padding: 5px 6px;
       border-radius: 999px;
-      max-width: calc(100vw - 404px);
+      max-width: calc(100vw - 48px);
       pointer-events: auto;
       transition: opacity 0.2s ease, transform 0.2s ease;
     }
@@ -512,14 +511,6 @@ function injectHudStyles() {
     #space-pulse-hud .sp-zoom-tag.is-visible {
       display: inline-block;
     }
-    @media (max-width: 1280px) and (min-width: 1024px) {
-      body.card-open #space-pulse-hud .sp-zoom-group {
-        display: none !important;
-      }
-      body.card-open #space-pulse-status {
-        max-width: 115px;
-      }
-    }
     @media (max-width: 1180px) {
       #space-pulse-status {
         max-width: 165px;
@@ -527,11 +518,14 @@ function injectHudStyles() {
     }
     @media (max-width: 1023px) and (min-width: 768px) {
       #space-pulse-hud {
-        right: auto;
-        left: calc((100vw - 356px) / 2);
-        transform: translateX(-50%);
-        top: 152px;
-        max-width: calc(100vw - 384px);
+        right: 20px;
+        left: auto;
+        transform: none;
+        top: 150px;
+        max-width: calc(100vw - 40px);
+      }
+      body.card-open #space-pulse-hud .sp-zoom-group {
+        display: none !important;
       }
     }
     @media (max-width: 767px) {
@@ -2079,7 +2073,7 @@ export function setSelectedSpaceMission(id) {
   const w = canvas?.clientWidth || window.innerWidth;
   // On desktop when #place-card is open on the left, shift focus subtly left of centerU so the beacon lands in the unobstructed central viewport
   const desiredZoom = Math.max(targetZoom, w < 768 ? 1.8 : 1.9);
-  const cardShiftU = w >= 1024 ? -0.14 / desiredZoom : 0;
+  const cardShiftU = w >= 1024 ? -0.10 / desiredZoom : 0;
 
   targetZoom = desiredZoom;
   targetCenterU = u + cardShiftU;

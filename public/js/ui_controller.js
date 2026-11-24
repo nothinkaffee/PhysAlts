@@ -225,7 +225,6 @@ function closePlaceCard() {
   document.getElementById("place-card")?.classList.add("hidden");
   document.body.classList.remove("card-open");
   syncGlobeMarkers();
-  if (store.state.viewMode === "space") renderSpaceMissionRail();
 }
 
 function clearExploreDockActive() {
@@ -351,7 +350,6 @@ export function resetCurrentView() {
       setSpaceZone("all");
     }
     renderSpaceZoneBar();
-    renderSpaceMissionRail();
   } else {
     resetGlobeToSpace();
   }
@@ -400,7 +398,6 @@ export function setViewMode(mode) {
     stopTimeTour();
     renderRabbitTrailBar();
     renderSpaceZoneBar();
-    renderSpaceMissionRail();
     startSpaceLoop();
   } else {
     spaceOverlay?.classList.add("space-hidden");
@@ -447,31 +444,7 @@ function renderSpaceZoneBar() {
     btn.addEventListener("click", () => {
       setSpaceZone(btn.dataset.szone);
       renderSpaceZoneBar();
-      renderSpaceMissionRail();
     });
-  });
-}
-
-function renderSpaceMissionRail() {
-  const listEl = document.getElementById("space-mission-list");
-  if (!listEl) return;
-  const zone = getSpaceZone();
-  const missions = store.spaceMissions.filter(m => zone === "all" || m.zoneId === zone);
-  listEl.innerHTML = missions.map(m => {
-    const active = store.state.selectedId === `sp-${m.id}`;
-    return `
-      <button type="button" data-rail-mission="${esc(m.id)}" class="rail-mission w-full text-left rounded-2xl px-4 py-3 transition ${active ? "glass-row-active" : "glass-row"}">
-        <div class="flex items-center justify-between gap-2.5">
-          <span class="text-[14px] font-medium truncate">${esc(m.name)}</span>
-          <span class="text-[14px] shrink-0 ${active ? "text-black/65" : "accent-text"}">${esc(m.lightTimeLabel.split(" (")[0])}</span>
-        </div>
-        <div class="text-[14px] mt-1 truncate ${active ? "text-black/65" : "text-neutral-400"}">${esc(m.body)} · ${esc(m.agency)} · ${m.launchYear}</div>
-      </button>
-    `;
-  }).join("");
-
-  listEl.querySelectorAll(".rail-mission").forEach(btn => {
-    btn.addEventListener("click", () => selectSpaceMission(btn.dataset.railMission));
   });
 }
 
@@ -484,10 +457,10 @@ export function selectSpaceMission(missionId) {
   const fullId = `sp-${m.id}`;
   store.state.selectedId = fullId;
   setSelectedSpaceMission(m.id);
-  renderSpaceMissionRail();
 
   const card = document.getElementById("place-card");
   if (!card) return;
+  document.getElementById("btn-card-stack-back")?.classList.add("hidden");
   card.classList.remove("hidden");
   document.body.classList.add("card-open");
   const scrollBody = document.getElementById("card-scroll-body");
@@ -497,9 +470,7 @@ export function selectSpaceMission(missionId) {
   document.getElementById("card-impact-pill")?.classList.add("hidden");
   document.getElementById("card-title").textContent = m.name;
   document.getElementById("card-sub").textContent = `${m.agency} (${m.country}) · Launched ${m.launchYear} · ${m.distanceAU} AU`;
-  document.getElementById("card-summary").textContent = m.physicsDiscoveries && m.physicsDiscoveries !== m.summary
-    ? `${m.summary} ${m.physicsDiscoveries}`
-    : m.summary;
+  document.getElementById("card-summary").textContent = m.summary || m.physicsDiscoveries || "";
   document.getElementById("card-stage-box")?.classList.add("hidden");
 
   const extra = document.getElementById("card-extra-chips");
@@ -874,12 +845,11 @@ function loadWikipediaCardBrief(node) {
   const photoWrap = document.getElementById("card-photo-wrap");
   const imgEl = document.getElementById("card-photo");
   const fallbackEl = document.getElementById("card-photo-fallback");
-  const briefText = document.getElementById("card-wiki-brief");
+  const summaryEl = document.getElementById("card-summary");
 
   photoWrap?.classList.add("hidden");
   imgEl?.classList.add("opacity-0");
   fallbackEl?.classList.remove("hidden");
-  briefText?.classList.add("hidden");
 
   const reqId = ++activeWikiReq;
   let slug = node.wikiSlug || "";
@@ -890,6 +860,12 @@ function loadWikipediaCardBrief(node) {
       slug = node.wiki.split("/wiki/")[1].split(/[?#]/)[0];
     }
   }
+
+  const curSummary = String(node.summary || "").trim();
+  const isStubSummary = !curSummary
+    || curSummary.length < 48
+    || /^(research institution|university|organization|institution|facility|laboratory|higher education|nonprofit)\s+(in|located in)\b/i.test(curSummary)
+    || /indexed via (openalex|ror)\b/i.test(curSummary);
 
   const applyWikiData = (data) => {
     if (reqId !== activeWikiReq || !data || data.type === "disambiguation") return;
@@ -909,12 +885,13 @@ function loadWikipediaCardBrief(node) {
       imgEl.alt = node.name || "";
     }
 
-    const extract = String(data.extract || "").replace(/\s+/g, " ").trim();
-    const normSummary = String(node.summary || "").toLowerCase().slice(0, 50);
-    if (extract && briefText && !extract.toLowerCase().startsWith(normSummary || "___")) {
-      const clipped = extract.length > 185 ? extract.slice(0, 180).replace(/\s+\S*$/, "") + "…" : extract;
-      briefText.textContent = clipped;
-      briefText.classList.remove("hidden");
+    // Never double-display a second summary paragraph; only enrich bare auto-scraped stubs in-place
+    if (isStubSummary && summaryEl) {
+      const extract = String(data.extract || "").replace(/\s+/g, " ").trim();
+      if (extract) {
+        const clipped = extract.length > 210 ? extract.slice(0, 205).replace(/\s+\S*$/, "") + "…" : extract;
+        summaryEl.textContent = clipped;
+      }
     }
   };
 
