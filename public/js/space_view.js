@@ -1505,17 +1505,18 @@ function drawFrame(now) {
     }
 
     // Landmark label placement (hide non-essential intermediate belt labels on tight mobile overview)
-    const hideOnTightMobile = m.isMobile && camZoom < 1.55 && (lm.type === "belt" || lm.type === "lagrange" || lm.type === "kuiper");
+    const hideOnTightMobile = m.isMobile && camZoom < 1.55 && (lm.type === "belt" || lm.type === "lagrange" || lm.type === "kuiper" || lm.type === "heliopause");
     if (hideOnTightMobile) continue;
-    if (x < 24 || x > maxSafeRight - 20) continue;
+    if (x < 14 || x > maxSafeRight - 6) continue;
 
     const labelY = lm.r > 0 ? m.axisY + lm.r + 19 : m.axisY + 24;
     ctx.font = `500 ${m.isMobile ? 11.5 : 12.5}px ${FONT_FAMILY}`;
     const lw = Math.max(ctx.measureText(lm.label).width, ctx.measureText(lm.sub).width);
+    const labelX = Math.max(lw / 2 + 10, Math.min(maxSafeRight - lw / 2 - 6, x));
     const box = {
-      x1: x - lw / 2 - 5,
+      x1: labelX - lw / 2 - 5,
       y1: labelY - 8,
-      x2: x + lw / 2 + 5,
+      x2: labelX + lw / 2 + 5,
       y2: labelY + 24
     };
 
@@ -1531,13 +1532,13 @@ function drawFrame(now) {
         : lm.subtle || lm.boundary
           ? `rgba(212, 212, 216, ${(0.70 + litBoost * 0.28).toFixed(3)})`
           : `rgba(244, 244, 245, ${(0.90 + litBoost * 0.1).toFixed(3)})`;
-      ctx.fillText(lm.label, x, labelY);
+      ctx.fillText(lm.label, labelX, labelY);
 
       ctx.font = `400 ${m.isMobile ? 10.5 : 11.5}px ${FONT_FAMILY}`;
       ctx.fillStyle = lm.frontier
         ? "rgb(196, 102, 102)"
         : "rgba(161, 161, 170, 0.76)";
-      ctx.fillText(lm.sub, x, labelY + 15);
+      ctx.fillText(lm.sub, labelX, labelY + 15);
     }
   }
   landmarkHitboxes = lmHits;
