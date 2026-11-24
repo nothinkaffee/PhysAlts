@@ -1121,7 +1121,7 @@
         {
           "name": "CSAIL Robotics & Embodied Intelligence",
           "status": "ongoing",
-          "url": "https://www.csail.mit.edu/research/robotics"
+          "url": "https://www.csail.mit.edu/"
         }
       ]
     },
@@ -1351,7 +1351,7 @@
         {
           "name": "GFlowNets for Scientific & Molecular Discovery",
           "status": "ongoing",
-          "url": "https://mila.quebec/en/ai4humanity"
+          "url": "https://mila.quebec/"
         },
         {
           "name": "International Scientific Report on Advanced AI Safety",
@@ -1711,7 +1711,7 @@
       "zoom": 16,
       "foundedYear": 2023,
       "status": "active",
-      "url": "https://www.ellis-institute.de/",
+      "url": "https://tuebingen.ai/",
       "wiki": "https://en.wikipedia.org/wiki/European_Laboratory_for_Learning_and_Intelligent_Systems",
       "wikiSlug": "European_Laboratory_for_Learning_and_Intelligent_Systems",
       "summary": "The flagship physical institute of the pan-European ELLIS network, recruiting world-leading machine learning researchers to advance open foundational AI in Europe.",
@@ -1936,7 +1936,7 @@
       "zoom": 16,
       "foundedYear": 2023,
       "status": "active",
-      "url": "https://www.epfl.ch/research/domains/ai-center/",
+      "url": "https://ai.epfl.ch/",
       "wiki": "https://en.wikipedia.org/wiki/EPFL",
       "wikiSlug": "EPFL",
       "summary": "Unites 60+ EPFL labs on Lake Geneva spanning open foundation models (Swiss AI / Apertus), computational neuroscience, bio-inspired robotics, and privacy-preserving distributed ML.",
@@ -1970,7 +1970,7 @@
         {
           "name": "Swiss AI Open Multilingual & Scientific Models",
           "status": "ongoing",
-          "url": "https://www.epfl.ch/research/domains/ai-center/"
+          "url": "https://ai.epfl.ch/"
         }
       ]
     },
@@ -2023,7 +2023,7 @@
         {
           "name": "Mathematical Foundations of Deep Learning & Tensor Networks",
           "status": "ongoing",
-          "url": "https://aip.riken.jp/labs/"
+          "url": "https://aip.riken.jp/"
         }
       ]
     },
@@ -2201,7 +2201,7 @@
       "zoom": 16,
       "foundedYear": 2017,
       "status": "active",
-      "url": "https://dsai.iitm.ac.in/",
+      "url": "https://rbcdsai.iitm.ac.in/",
       "wiki": "https://en.wikipedia.org/wiki/IIT_Madras",
       "wikiSlug": "IIT_Madras",
       "summary": "India's premier academic center for data science, reinforcement learning, network science, and AI4Bharat multilingual language technologies serving 22+ Indian languages.",
@@ -2288,7 +2288,7 @@
         {
           "name": "Technion Machine Learning & Intelligent Systems Center (MLIS)",
           "status": "ongoing",
-          "url": "https://mlis.technion.ac.il/"
+          "url": "https://www.cs.technion.ac.il/"
         }
       ]
     },
@@ -2341,7 +2341,7 @@
         {
           "name": "AI4Science Lab & Geometric Deep Learning",
           "status": "ongoing",
-          "url": "https://ai4science.uva.nl/"
+          "url": "https://ivi.fnwi.uva.nl/ellis/"
         }
       ]
     },
@@ -3078,7 +3078,7 @@
         {
           "name": "Foundations of Cryptography & Complexity Theory",
           "status": "ongoing",
-          "url": "https://www.weizmann.ac.il/math/research-areas/theoretical-computer-science"
+          "url": "https://www.weizmann.ac.il/math/"
         }
       ]
     },
@@ -3389,7 +3389,7 @@
         {
           "name": "Dynamic 3D Scene Reconstruction & Spatial Computing",
           "status": "ongoing",
-          "url": "https://realitylab.uw.edu/research/"
+          "url": "https://realitylab.uw.edu/"
         }
       ]
     },
@@ -3564,7 +3564,7 @@
         {
           "name": "Topological Qubits, qLDPC Codes & Classical Shadows",
           "status": "ongoing",
-          "url": "https://iqim.caltech.edu/research/"
+          "url": "https://iqim.caltech.edu/"
         }
       ]
     },
@@ -3651,7 +3651,7 @@
       "zoom": 15.5,
       "foundedYear": 2019,
       "status": "active",
-      "url": "https://aws.amazon.com/braket/quantum-computing-center/",
+      "url": "https://aws.amazon.com/braket/",
       "wiki": "https://en.wikipedia.org/wiki/Amazon_Braket",
       "wikiSlug": "Amazon_Braket",
       "summary": "Amazon Web Services' dedicated quantum hardware and theory laboratory on the Caltech campus, pioneering bosonic cat-qubit chips (Ocelot) for hardware-efficient fault-tolerant quantum error correction.",
@@ -3700,7 +3700,7 @@
         {
           "name": "Chicago Quantum Network & Illinois Quantum Park",
           "status": "ongoing",
-          "url": "https://chicagoquantum.org/research"
+          "url": "https://chicagoquantum.org/"
         }
       ]
     },
@@ -3734,7 +3734,7 @@
         {
           "name": "Japanese Superconducting Quantum Cloud & Quantum-HPC Hybrid",
           "status": "ongoing",
-          "url": "https://rqc.riken.jp/en/research/"
+          "url": "https://rqc.riken.jp/"
         }
       ]
     }

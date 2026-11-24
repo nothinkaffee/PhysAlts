@@ -1,6 +1,6 @@
 {
   "appId": "org.worldofphysics.app",
-  "appName": "World of Physics",
+  "appName": "PhysALT",
   "webDir": "public",
   "server": {
     "androidScheme": "https"

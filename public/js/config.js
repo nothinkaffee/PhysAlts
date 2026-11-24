@@ -15,8 +15,8 @@ export function proxyUrl(url) {
 
 export const SUBJECT_CONFIG = {
   id: "physalts",
-  appName: "World of Science",
-  tagline: "World of Physics, AI & STEM",
+  appName: "PhysALT",
+  tagline: "PhysALT",
   storagePrefix: "physalts_v2_",
   dataFiles: {
     flagships: "./data/curated_flagships.json",

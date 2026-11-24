@@ -1176,7 +1176,6 @@
       "lng": 24.8364,
       "zoom": 16.2,
       "url": "https://www.meetiqm.com/",
-      "wiki": "https://en.wikipedia.org/wiki/IQM_Quantum_Computers",
       "wikiSlug": "IQM_Quantum_Computers",
       "summary": "Europe's superconducting quantum hardware builder, spun out of Aalto University's world-renowned low-temperature labs.",
       "nobel": "Built on Nordic milli-kelvin cryogenics and superconducting qubit physics.",
@@ -2445,7 +2444,7 @@
       "lat": 40.2016,
       "lng": 44.4872,
       "zoom": 16,
-      "url": "https://www.aanl.am/",
+      "url": "https://www.sci.am/",
       "wiki": "https://en.wikipedia.org/wiki/Yerevan_Physics_Institute",
       "wikiSlug": "Yerevan_Physics_Institute",
       "summary": "Founded by Abram and Artem Alikhanian in 1943; pioneered high-altitude Mount Aragats cosmic-ray stations, transition radiation detectors, and theoretical physics.",
@@ -2463,7 +2462,7 @@
         {
           "name": "Aragats Space Environmental Center (ASEC) Cosmic-Ray Network",
           "status": "ongoing",
-          "url": "https://www.aanl.am/"
+          "url": "https://www.sci.am/"
         }
       ],
       "next": [

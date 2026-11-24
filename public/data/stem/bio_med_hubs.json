@@ -464,7 +464,7 @@
         {
           "name": "Harnessing Plants Initiative (Salk Ideal Plants for Carbon Capture)",
           "status": "ongoing",
-          "url": "https://www.salk.edu/science/research-centers/harnessing-plants-initiative/"
+          "url": "https://www.salk.edu/"
         },
         {
           "name": "BRAIN Initiative Mammalian Brain Cell Atlas",
@@ -527,7 +527,7 @@
         {
           "name": "4D Cellular Physiology & Advanced Optical Microscopy",
           "status": "ongoing",
-          "url": "https://www.janelia.org/research-areas"
+          "url": "https://www.janelia.org/"
         }
       ]
     },
@@ -633,7 +633,7 @@
         {
           "name": "Calibr-Skaggs Translational Drug Discovery & Universal Vaccines",
           "status": "ongoing",
-          "url": "https://www.scripps.edu/science-and-medicine/"
+          "url": "https://www.scripps.edu/"
         }
       ]
     },
@@ -902,7 +902,7 @@
         {
           "name": "Tabula Sapiens Single-Cell Atlas & OpenCell Proteome Map",
           "status": "ongoing",
-          "url": "https://www.czbiohub.org/sf/projects/"
+          "url": "https://www.czbiohub.org/"
         }
       ]
     },
@@ -1008,7 +1008,7 @@
         {
           "name": "Visual Proteomics via Cryo-Electron Tomography & MaxQuant",
           "status": "ongoing",
-          "url": "https://www.biochem.mpg.de/research"
+          "url": "https://www.biochem.mpg.de/"
         }
       ]
     },
@@ -1379,7 +1379,7 @@
         {
           "name": "International Brain Laboratory (IBL) & Bonsai Open Neuro-Software",
           "status": "ongoing",
-          "url": "https://www.fchampalimaud.org/research"
+          "url": "https://www.fchampalimaud.org/"
         }
       ]
     },
@@ -1538,7 +1538,7 @@
         {
           "name": "Simons Centre for the Study of Living Machines & Indian Biodiversity Genomics",
           "status": "ongoing",
-          "url": "https://theory.ncbs.res.in/"
+          "url": "https://www.ncbs.res.in/"
         }
       ]
     },
@@ -1697,7 +1697,7 @@
         {
           "name": "Bacterial Anti-Phage Immune Discovery & Synthetic Embryo Models",
           "status": "ongoing",
-          "url": "https://www.weizmann.ac.il/pages/research-areas"
+          "url": "https://www.weizmann.ac.il/"
         }
       ]
     },
@@ -1731,7 +1731,7 @@
         {
           "name": "Minimal Synthetic Cell (JCVI-syn3A)",
           "status": "ongoing",
-          "url": "https://www.jcvi.org/research/minimal-cell"
+          "url": "https://www.jcvi.org/"
         },
         {
           "name": "Global Ocean Sampling Metagenomics",
@@ -1812,7 +1812,7 @@
         {
           "name": "Australian Rare Disease & Cancer Genomics",
           "status": "ongoing",
-          "url": "https://www.garvan.org.au/research/genomics"
+          "url": "https://www.garvan.org.au/"
         }
       ]
     },
@@ -1845,12 +1845,12 @@
         {
           "name": "3D Genome Folding & Developmental Epigenetics",
           "status": "ongoing",
-          "url": "https://www.molgen.mpg.de/research"
+          "url": "https://www.molgen.mpg.de/"
         },
         {
           "name": "Computational Molecular Biology & Gene Regulation",
           "status": "ongoing",
-          "url": "https://www.molgen.mpg.de/research"
+          "url": "https://www.molgen.mpg.de/"
         }
       ]
     },
@@ -1922,12 +1922,12 @@
         {
           "name": "Dense Mammalian Cortical Connectomics",
           "status": "ongoing",
-          "url": "https://brain.mpg.de/research"
+          "url": "https://brain.mpg.de/"
         },
         {
           "name": "Synaptic Proteome Plasticity & Neural Dynamics",
           "status": "ongoing",
-          "url": "https://brain.mpg.de/research"
+          "url": "https://brain.mpg.de/"
         }
       ]
     },
@@ -2039,12 +2039,12 @@
         {
           "name": "Brain/MINDS Marmoset Primate Brain Mapping",
           "status": "ongoing",
-          "url": "https://cbs.riken.jp/en/research/"
+          "url": "https://cbs.riken.jp/en/"
         },
         {
           "name": "Neural Circuit Mechanisms of Memory & Cognition",
           "status": "ongoing",
-          "url": "https://cbs.riken.jp/en/research/"
+          "url": "https://cbs.riken.jp/en/"
         }
       ]
     },
@@ -2192,12 +2192,12 @@
         {
           "name": "Computational Neuroscience & Clinical Brain Interfaces",
           "status": "ongoing",
-          "url": "https://parisbraininstitute.org/research"
+          "url": "https://parisbraininstitute.org/"
         },
         {
           "name": "Neurodegenerative & Epilepsy Translational Medicine",
           "status": "ongoing",
-          "url": "https://parisbraininstitute.org/research"
+          "url": "https://parisbraininstitute.org/"
         }
       ]
     },
@@ -2577,12 +2577,12 @@
         {
           "name": "Tara Oceans Global Plankton Metagenomics",
           "status": "ongoing",
-          "url": "https://fondationtaraocean.org/en/expeditions/"
+          "url": "https://fondationtaraocean.org/en/"
         },
         {
           "name": "Tara Europa Coastal Microbiome Mission (with EMBL)",
           "status": "ongoing",
-          "url": "https://fondationtaraocean.org/en/expeditions/"
+          "url": "https://fondationtaraocean.org/en/"
         }
       ]
     },

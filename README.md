@@ -1,6 +1,6 @@
-# PhysAlts — World of Physics
+# PhysALT
 
-**PhysAlts** (`org.physalts.app`) is an interactive, privacy-first **3D global atlas of physics** — mapping **4,000+ physics university departments, national laboratories, particle colliders, observatories, fusion facilities, and research hubs across 156 countries**, paired with historical breakthroughs, cosmic scale visualization, and 7-stage academic career pathways.
+**PhysALT** is an interactive, privacy-first **3D global STEM & physics atlas** — mapping **5,700+ universities, national laboratories, deep-tech startups, particle colliders, observatories, and research hubs across 158 countries**, paired with historical breakthroughs (1800 BCE–2045), Rabbit Hole curiosity trails, offline packs, and a 1 Light-Day space frontier visualizer.
 
 Built as a **static-first PWA + Capacitor 6 mobile app (iOS & Android)** and engineered as the reference blueprint for a reusable **Multi-Subject Atlas Engine** (`Physics → AI → All Sciences`).
 
@@ -25,7 +25,7 @@ flowchart LR
         VERIFY --> REPORT
     end
 
-    subgraph APP["PhysAlts 3D Atlas Engine (Web · PWA · Capacitor iOS/Android)"]
+    subgraph APP["PhysALT 3D Atlas Engine (Web · PWA · Capacitor iOS/Android)"]
         GL["MapLibre GL 3D Satellite Globe<br/>(Esri Imagery · Hemisphere Culling)"]
         UI["Subject Adapter · Time Counter<br/>Scale Engine · 7-Stage Pathways"]
         PRIV["Privacy & Data Controls<br/>(1-Click GDPR Export & Erase)"]
@@ -97,7 +97,7 @@ Open **`http://localhost:5173`** in your browser.
 
 ## Mobile Packaging (Android & iOS via Capacitor 6)
 
-PhysAlts ships preconfigured for **Capacitor 6** (`org.physalts.app` in `capacitor.config.json`):
+PhysALT ships preconfigured for **Capacitor 6** (`org.physalts.app` in `capacitor.config.json`):
 
 ```bash
 # Add native platforms (first time)
@@ -119,7 +119,7 @@ For full signing instructions (Android Upload Keystore & AAB, adaptive icons, sa
 
 ## Security, Compliance & CI Quality Gates
 
-PhysAlts embeds security and privacy controls directly into the repository and CI/CD pipeline:
+PhysALT embeds security and privacy controls directly into the repository and CI/CD pipeline:
 
 - **Hardened Firestore Rules ([`firestore.rules`](./firestore.rules)):** Whitelisted document keys, coordinate bounds (`-90..90`, `-180..180`), HTTPS-only URL enforcement, immutable public community nodes, and explicit owner-only `delete` supporting GDPR Article 17 (Right to Erasure).
 - **GDPR Privacy & Open Data Policy ([`public/privacy.html`](./public/privacy.html)):** Transparent GDPR Articles 13–17 notice, sub-processor register, and nominative fair-use attribution.
@@ -131,7 +131,7 @@ PhysAlts embeds security and privacy controls directly into the repository and C
 
 ## Reusable Multi-Subject Atlas Engine ("Physics → AI → All Sciences")
 
-PhysAlts is built so you can clone the engine and launch a new global atlas for another field — starting with **AI Atlas (`aialts`)** — in **1 day** by swapping the Subject Adapter (`config.js`), Time Counter epochs, Scale axis (e.g., Training Compute `10³ → 10²⁶+ FLOP`), and open-registry ETL queries.
+PhysALT is built so you can clone the engine and launch a new global atlas for another field — starting with **AI Atlas (`aialts`)** — in **1 day** by swapping the Subject Adapter (`config.js`), Time Counter epochs, Scale axis (e.g., Training Compute `10³ → 10²⁶+ FLOP`), and open-registry ETL queries.
 
 Read the complete architectural blueprint and hour-by-hour AI Atlas cloning guide:
 - [`docs/ATLAS_ENGINE_PLAYBOOK.md`](./docs/ATLAS_ENGINE_PLAYBOOK.md)
@@ -146,4 +146,4 @@ Read the complete architectural blueprint and hour-by-hour AI Atlas cloning guid
 - **Wikimedia REST API / Wikipedia** — CC BY-SA 4.0
 - **Esri World Imagery** — Satellite basemap tiles (Esri attribution)
 
-University, national laboratory, and observatory names are listed for factual educational directory purposes under nominative fair use. PhysAlts is an independent open-science platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.
+University, national laboratory, and observatory names are listed for factual educational directory purposes under nominative fair use. PhysALT is an independent open-science platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.

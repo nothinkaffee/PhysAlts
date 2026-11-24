@@ -112,7 +112,7 @@
         {
           "name": "Asymmetric Organocatalysis & ORCA Quantum Chemistry Suite",
           "status": "ongoing",
-          "url": "https://www.kofo.mpg.de/en/research"
+          "url": "https://www.kofo.mpg.de/"
         }
       ]
     },
@@ -165,7 +165,7 @@
         {
           "name": "Precision Nanographenes & Sustainable Soft Matter",
           "status": "ongoing",
-          "url": "https://www.mpip-mainz.mpg.de/en/research"
+          "url": "https://www.mpip-mainz.mpg.de/"
         }
       ]
     },
@@ -218,7 +218,7 @@
         {
           "name": "Liquid Sunlight Alliance (Solar Fuels) & Directed Enzyme Evolution",
           "status": "ongoing",
-          "url": "https://beckmaninstitute.caltech.edu/research"
+          "url": "https://beckmaninstitute.caltech.edu/"
         }
       ]
     },
@@ -271,7 +271,7 @@
         {
           "name": "MIT.nano & Materials Project / Clean Energy Storage",
           "status": "ongoing",
-          "url": "https://dmse.mit.edu/research/"
+          "url": "https://chemistry.mit.edu/"
         }
       ]
     },
@@ -344,7 +344,7 @@
       "foundedYear": 2007,
       "status": "active",
       "url": "https://www.icems.kyoto-u.ac.jp/en/",
-      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Integrated_Cell-Material_Sciences",
+      "wiki": "https://en.wikipedia.org/wiki/Kyoto_University",
       "wikiSlug": "Institute_for_Integrated_Cell-Material_Sciences",
       "summary": "Japan's flagship WPI institute fusing porous materials chemistry with living cell biology—led by MOF pioneer Susumu Kitagawa (2025 Chemistry Nobel laureate) and closely linked to Shinya Yamanaka's iPS cell institute.",
       "nobel": "Distinguished Professor Susumu Kitagawa won the 2025 Nobel Prize in Chemistry (with Richard Robson & Omar Yaghi) for metal-organic frameworks (MOFs); co-founded with 2012 Medicine laureate Shinya Yamanaka.",
@@ -377,7 +377,7 @@
         {
           "name": "Porous Coordination Polymers (MOFs) for CO2 & Water Capture",
           "status": "ongoing",
-          "url": "https://www.icems.kyoto-u.ac.jp/en/research/"
+          "url": "https://www.icems.kyoto-u.ac.jp/en/"
         }
       ]
     },
@@ -430,7 +430,7 @@
         {
           "name": "Dalian Coherent Light Source (VUV FEL) & Single-Atom Catalysis",
           "status": "ongoing",
-          "url": "https://english.dicp.cas.cn/rh/"
+          "url": "https://english.dicp.cas.cn/"
         }
       ]
     },
@@ -661,12 +661,12 @@
         {
           "name": "Reticular Chemistry (MOFs & COFs) for Carbon & Water Capture",
           "status": "ongoing",
-          "url": "https://chemistry.berkeley.edu/research"
+          "url": "https://chemistry.berkeley.edu/"
         },
         {
           "name": "Catalytic Organic Synthesis & Green Chemical Engineering",
           "status": "ongoing",
-          "url": "https://chemistry.berkeley.edu/research"
+          "url": "https://chemistry.berkeley.edu/"
         }
       ]
     },
@@ -739,12 +739,12 @@
         {
           "name": "Constitutional Dynamic Chemistry & Self-Assembly",
           "status": "ongoing",
-          "url": "https://isis.unistra.fr/research/"
+          "url": "https://isis.unistra.fr/"
         },
         {
           "name": "Polaritonic Cavity Chemistry & Molecular Machines",
           "status": "ongoing",
-          "url": "https://isis.unistra.fr/research/"
+          "url": "https://isis.unistra.fr/"
         }
       ]
     },
@@ -801,8 +801,8 @@
       "zoom": 15.5,
       "foundedYear": 1926,
       "status": "active",
-      "url": "https://www.kuicr.kyoto-u.ac.jp/index_E.html",
-      "wiki": "https://en.wikipedia.org/wiki/Institute_for_Chemical_Research,_Kyoto_University",
+      "url": "https://www.kuicr.kyoto-u.ac.jp/",
+      "wiki": "https://en.wikipedia.org/wiki/Kyoto_University",
       "wikiSlug": "Institute_for_Chemical_Research,_Kyoto_University",
       "summary": "Nearly century-old Kyoto University chemical powerhouse on the Uji campus—leading precision organometallic catalysis, synthetic carbon nanobelts, perovskite photovoltaics, and chemical bioinformatics (KEGG database).",
       "next": [
@@ -815,7 +815,7 @@
         {
           "name": "Precision Organometallic Catalysis & Carbon Nanobelts",
           "status": "ongoing",
-          "url": "https://www.kuicr.kyoto-u.ac.jp/index_E.html"
+          "url": "https://www.kuicr.kyoto-u.ac.jp/"
         },
         {
           "name": "Perovskite Solar Materials & KEGG Chemical Database",
@@ -932,12 +932,12 @@
         {
           "name": "Solid-State Ionics & Nanoscale Battery Materials",
           "status": "ongoing",
-          "url": "https://www.fkf.mpg.de/en/research"
+          "url": "https://www.fkf.mpg.de/en"
         },
         {
           "name": "2D Photocatalytic Frameworks & Quantum Oxides",
           "status": "ongoing",
-          "url": "https://www.fkf.mpg.de/en/research"
+          "url": "https://www.fkf.mpg.de/en"
         }
       ]
     },
@@ -1013,7 +1013,7 @@
         {
           "name": "ReLiB Circular Lithium-Ion Battery Recycling",
           "status": "ongoing",
-          "url": "https://www.faraday.ac.uk/research/recycling-and-reuse/"
+          "url": "https://www.faraday.ac.uk/"
         }
       ]
     },
@@ -1084,12 +1084,12 @@
         {
           "name": "Solid-State Battery Prototyping & Sodium-Ion Electrodes",
           "status": "ongoing",
-          "url": "https://cicenergigune.com/en/electrochemical-energy-storage"
+          "url": "https://cicenergigune.com/en"
         },
         {
           "name": "Thermal Energy Storage & Industrial Decarbonization",
           "status": "ongoing",
-          "url": "https://cicenergigune.com/en/thermal-energy-storage"
+          "url": "https://cicenergigune.com/en"
         }
       ]
     },
@@ -1108,7 +1108,7 @@
       "zoom": 15.5,
       "foundedYear": 2013,
       "status": "active",
-      "url": "https://www.chalmers.se/en/centres/graphene-centre/",
+      "url": "https://www.chalmers.se/en/research/centres/2d-tech/",
       "wiki": "https://en.wikipedia.org/wiki/Graphene_Flagship",
       "wikiSlug": "Graphene_Flagship",
       "summary": "Coordinator of the European Union's €1 billion Graphene Flagship—driving wafer-scale 2D semiconductor integration, spintronics, high-frequency graphene electronics, and structural carbon-composite batteries.",
@@ -1127,7 +1127,7 @@
         {
           "name": "2D Spintronics & Structural Battery Composites",
           "status": "ongoing",
-          "url": "https://www.chalmers.se/en/centres/graphene-centre/"
+          "url": "https://www.chalmers.se/en/research/centres/2d-tech/"
         }
       ]
     },
@@ -1161,12 +1161,12 @@
         {
           "name": "Biomolecular Molecular Dynamics & Ultrafast Kinetics",
           "status": "ongoing",
-          "url": "https://www.mpinat.mpg.de/en/research"
+          "url": "https://www.mpinat.mpg.de/en"
         },
         {
           "name": "MINFLUX Nanometer-Scale Fluorescence Spectroscopy",
           "status": "ongoing",
-          "url": "https://www.mpinat.mpg.de/en/research"
+          "url": "https://www.mpinat.mpg.de/en"
         }
       ]
     },
@@ -1204,7 +1204,7 @@
         {
           "name": "Machine-Learned Interatomic Potentials Workshops",
           "status": "ongoing",
-          "url": "https://www.cecam.org/workshops"
+          "url": "https://www.cecam.org/"
         }
       ]
     },
@@ -1224,7 +1224,6 @@
       "foundedYear": 2016,
       "status": "active",
       "url": "https://molssi.org/",
-      "wiki": "https://en.wikipedia.org/wiki/Molecular_Sciences_Software_Institute",
       "wikiSlug": "Molecular_Sciences_Software_Institute",
       "summary": "NSF-funded hub transforming computational molecular science software infrastructure—building open quantum-chemistry ecosystems (QCArchive, QCEngine), biomolecular simulation interoperability, and training for computational chemists worldwide.",
       "next": [
@@ -1261,7 +1260,7 @@
       "zoom": 15.5,
       "foundedYear": 1955,
       "status": "active",
-      "url": "https://www.uu.se/en/department/chemistry-angstrom",
+      "url": "https://www.uu.se/en",
       "wiki": "https://en.wikipedia.org/wiki/Uppsala_University",
       "wikiSlug": "Uppsala_University",
       "summary": "Birthplace of modern Swedish quantum chemistry under Per-Olov Löwdin—today advancing X-ray and attosecond photochemistry simulations, non-adiabatic excited-state dynamics, and computational battery-electrolyte modeling at the Ångström Laboratory.",
@@ -1275,12 +1274,12 @@
         {
           "name": "Theoretical Photochemistry & X-Ray Spectroscopy Modeling",
           "status": "ongoing",
-          "url": "https://www.uu.se/en/department/chemistry-angstrom/research"
+          "url": "https://www.uu.se/en"
         },
         {
           "name": "Ångström Advanced Battery Centre Computational Electrochemistry",
           "status": "ongoing",
-          "url": "https://www.uu.se/en/department/chemistry-angstrom/research"
+          "url": "https://www.uu.se/en"
         }
       ]
     },
@@ -1337,7 +1336,7 @@
       "zoom": 15.5,
       "foundedYear": 1957,
       "status": "active",
-      "url": "https://phys.chem.ethz.ch/",
+      "url": "https://chab.ethz.ch/en/research/institutes/IMPS.html",
       "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
       "wikiSlug": "ETH_Zurich",
       "summary": "World-renowned center for ultrafast molecular physics, high-resolution spectroscopy, and quantum dynamics—where Richard Ernst invented Fourier-transform NMR and modern labs capture attosecond electron motion in chiral liquids and molecules.",
@@ -1352,12 +1351,12 @@
         {
           "name": "Attosecond Molecular Spectroscopy & Chiral Electron Dynamics",
           "status": "ongoing",
-          "url": "https://phys.chem.ethz.ch/research.html"
+          "url": "https://chab.ethz.ch/en/research/institutes/IMPS.html"
         },
         {
           "name": "Quantum Molecular Dynamics & High-Field EPR/NMR",
           "status": "ongoing",
-          "url": "https://phys.chem.ethz.ch/research.html"
+          "url": "https://chab.ethz.ch/en/research/institutes/IMPS.html"
         }
       ]
     },
@@ -1376,7 +1375,7 @@
       "zoom": 15.5,
       "foundedYear": 2013,
       "status": "active",
-      "url": "https://www.riken.jp/en/research/labs/cpr/theor_mol_sci/",
+      "url": "https://www.riken.jp/en/research/labs/chief/theor_mol_sci/",
       "wiki": "https://en.wikipedia.org/wiki/RIKEN",
       "wikiSlug": "RIKEN",
       "summary": "Japan's hub for ab-initio quantum chemistry, large-scale biomolecular simulation (GENESIS on the Fugaku supercomputer), and excited-state photochemistry—bridging relativistic electron-correlation theory with cellular crowding dynamics.",
@@ -1390,12 +1389,12 @@
         {
           "name": "GENESIS Biomolecular Molecular Dynamics on Fugaku",
           "status": "ongoing",
-          "url": "https://www.r-ccs.riken.jp/labs/cbrt/"
+          "url": "https://www.r-ccs.riken.jp/en/"
         },
         {
           "name": "Ab-Initio Relativistic Quantum Chemistry & Photodynamics",
           "status": "ongoing",
-          "url": "https://www.riken.jp/en/research/labs/cpr/theor_mol_sci/"
+          "url": "https://www.riken.jp/en/research/labs/chief/theor_mol_sci/"
         }
       ]
     },
@@ -1414,7 +1413,7 @@
       "zoom": 15.5,
       "foundedYear": 2005,
       "status": "active",
-      "url": "https://pulse.stanford.edu/",
+      "url": "https://ultrafast.stanford.edu/",
       "wiki": "https://en.wikipedia.org/wiki/SLAC_National_Accelerator_Laboratory",
       "wikiSlug": "SLAC_National_Accelerator_Laboratory",
       "summary": "Joint Stanford–SLAC ultrafast chemical-physics institute harnessing the LCLS X-ray free-electron laser to film chemical bonds breaking, conical intersections, and attosecond charge migration in real time.",
@@ -1428,12 +1427,12 @@
         {
           "name": "Ultrafast X-Ray Photochemistry at LCLS-II",
           "status": "ongoing",
-          "url": "https://pulse.stanford.edu/research"
+          "url": "https://ultrafast.stanford.edu/"
         },
         {
           "name": "Attosecond Molecular Science & Quantum Control",
           "status": "ongoing",
-          "url": "https://pulse.stanford.edu/research"
+          "url": "https://ultrafast.stanford.edu/"
         }
       ]
     },
@@ -1452,7 +1451,7 @@
       "zoom": 15.5,
       "foundedYear": 1993,
       "status": "active",
-      "url": "https://www.fysik.dtu.dk/english/research/camd",
+      "url": "https://physics.dtu.dk/",
       "wiki": "https://en.wikipedia.org/wiki/Technical_University_of_Denmark",
       "wikiSlug": "Technical_University_of_Denmark",
       "summary": "Global powerhouse of computational catalysis and quantum-materials theory built on Jens Nørskov's CatTheory legacy—creator of the Atomic Simulation Environment (ASE), GPAW DFT code, and the C2DB 2D-materials database.",
@@ -1827,7 +1826,7 @@
         {
           "name": "RV Polarstern Expeditions, MOSAiC & Deep-Sea FRAM Observatory",
           "status": "ongoing",
-          "url": "https://www.awi.de/en/science.html"
+          "url": "https://www.awi.de/"
         }
       ]
     },
@@ -2058,7 +2057,7 @@
       "zoom": 15.8,
       "foundedYear": 1977,
       "status": "active",
-      "url": "https://www.nrel.gov/",
+      "url": "https://www.nlr.gov/",
       "wiki": "https://en.wikipedia.org/wiki/National_Renewable_Energy_Laboratory",
       "wikiSlug": "National_Renewable_Energy_Laboratory",
       "summary": "The US Department of Energy's flagship renewable energy and energy-efficiency laboratory—maintaining the world-standard Best Research-Cell Solar Efficiency Chart alongside breakthroughs in perovskite-silicon tandems, wind aerodynamics, and grid-scale storage.",
@@ -2092,7 +2091,7 @@
         {
           "name": "Best Research-Cell Solar Efficiency Chart & Perovskite Tandems",
           "status": "ongoing",
-          "url": "https://www.nrel.gov/pv/cell-efficiency.html"
+          "url": "https://www.nlr.gov/"
         }
       ]
     },
@@ -2165,12 +2164,12 @@
         {
           "name": "ICON Kilometer-Scale Global Climate Model & nextGEMS",
           "status": "ongoing",
-          "url": "https://mpimet.mpg.de/en/science/models"
+          "url": "https://mpimet.mpg.de/en/"
         },
         {
           "name": "Climate Variability & Cloud-Circulation Coupling",
           "status": "ongoing",
-          "url": "https://mpimet.mpg.de/en/science"
+          "url": "https://mpimet.mpg.de/en/"
         }
       ]
     },
@@ -2189,7 +2188,7 @@
       "zoom": 15.5,
       "foundedYear": 1990,
       "status": "active",
-      "url": "https://www.metoffice.gov.uk/research/climate/climate-science",
+      "url": "https://www.metoffice.gov.uk/research/climate/understanding-climate",
       "wiki": "https://en.wikipedia.org/wiki/Met_Office_Hadley_Centre",
       "wikiSlug": "Met_Office_Hadley_Centre",
       "summary": "The UK's national climate research center in Exeter—co-producer of the foundational HadCRUT global surface temperature dataset since 1850, the Unified Model / UKESM Earth-system suite, and seasonal-to-decadal climate predictions.",
@@ -2342,7 +2341,7 @@
       "foundedYear": 1971,
       "status": "active",
       "url": "https://www.iceandclimate.nbi.ku.dk/",
-      "wiki": "https://en.wikipedia.org/wiki/Centre_for_Ice_and_Climate",
+      "wiki": "https://en.wikipedia.org/wiki/Niels_Bohr_Institute",
       "wikiSlug": "Centre_for_Ice_and_Climate",
       "summary": "World epicenter of Greenland ice-core paleoclimatology founded on Willi Dansgaard's oxygen-isotope thermometer—discoverer of abrupt Dansgaard-Oeschger climate shifts and leader of the EastGRIP ice-stream drilling project.",
       "next": [
@@ -2360,7 +2359,7 @@
         {
           "name": "Greenland Ice Core Archive & Abrupt Climate Transitions",
           "status": "ongoing",
-          "url": "https://www.iceandclimate.nbi.ku.dk/research/"
+          "url": "https://nbi.ku.dk/english/"
         }
       ]
     },
@@ -2456,7 +2455,7 @@
       "foundedYear": 1921,
       "status": "active",
       "url": "https://www.ipgp.fr/en/",
-      "wiki": "https://en.wikipedia.org/wiki/Institut_de_physique_du_globe_de_Paris",
+      "wiki": "https://en.wikipedia.org/wiki/Institut_de_Physique_du_Globe_de_Paris",
       "wikiSlug": "Institut_de_physique_du_globe_de_Paris",
       "summary": "France's flagship solid-Earth and planetary geophysics institute—designer of the ultra-sensitive SEIS seismometer that measured Mars's core aboard NASA InSight, and operator of active volcano observatories on Réunion, Guadeloupe, and Martinique.",
       "next": [
@@ -2474,7 +2473,7 @@
         {
           "name": "Volcanological & Seismological Observatories",
           "status": "ongoing",
-          "url": "https://www.ipgp.fr/en/observatories/"
+          "url": "https://www.ipgp.fr/en/"
         }
       ]
     },
@@ -2626,7 +2625,7 @@
         {
           "name": "Coriolis Global Argo Data & Deep-Sea Geosciences",
           "status": "ongoing",
-          "url": "https://www.ifremer.fr/en/research"
+          "url": "https://www.ifremer.fr/en"
         }
       ]
     },
@@ -2740,7 +2739,7 @@
         {
           "name": "Juno Jupiter & Europa Clipper Science Instruments",
           "status": "ongoing",
-          "url": "https://www.swri.org/space-science-engineering"
+          "url": "https://www.boulder.swri.edu/"
         }
       ]
     },

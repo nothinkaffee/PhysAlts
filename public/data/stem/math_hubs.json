@@ -65,7 +65,7 @@
         {
           "name": "IHÉS Annual Summer Schools in Math & Physics",
           "status": "ongoing",
-          "url": "https://www.ihes.fr/en/summer-schools/"
+          "url": "https://www.ihes.fr/"
         }
       ]
     },
@@ -339,7 +339,7 @@
         {
           "name": "IMPRS Moduli Spaces & Perfectoid Arithmetic Geometry",
           "status": "ongoing",
-          "url": "https://www.mpim-bonn.mpg.de/imprs"
+          "url": "https://www.mpim-bonn.mpg.de/"
         }
       ]
     },
@@ -559,7 +559,7 @@
         {
           "name": "RIMS International Joint Usage/Research Center",
           "status": "ongoing",
-          "url": "https://www.kurims.kyoto-u.ac.jp/en/joint-01.html"
+          "url": "https://www.kurims.kyoto-u.ac.jp/en/"
         }
       ]
     },
@@ -612,7 +612,7 @@
         {
           "name": "Hausdorff Research Institute for Mathematics (HIM) Trimesters",
           "status": "ongoing",
-          "url": "https://www.him.uni-bonn.de/"
+          "url": "https://www.mathematics.uni-bonn.de/hcm"
         }
       ]
     },
@@ -684,7 +684,7 @@
       "zoom": 16.2,
       "foundedYear": 1945,
       "status": "active",
-      "url": "https://www.math.tifr.res.in/",
+      "url": "https://www.tifr.res.in/",
       "wiki": "https://en.wikipedia.org/wiki/Tata_Institute_of_Fundamental_Research",
       "wikiSlug": "Tata_Institute_of_Fundamental_Research",
       "summary": "India's premier school of pure mathematics—founded by Homi Bhabha and K. Chandrasekharan—famous for the Narasimhan-Seshadri theorem on vector bundles, Lie groups, algebraic geometry, and number theory.",
@@ -718,7 +718,7 @@
         {
           "name": "TIFR Lecture Notes in Mathematics & CAM Applied Math",
           "status": "ongoing",
-          "url": "https://www.math.tifr.res.in/publications/"
+          "url": "https://www.tifr.res.in/"
         }
       ]
     },
@@ -1055,7 +1055,7 @@
       "zoom": 16.2,
       "foundedYear": 2008,
       "status": "active",
-      "url": "https://scgp.stonybrook.edu/",
+      "url": "https://www.stonybrook.edu/",
       "wiki": "https://en.wikipedia.org/wiki/Simons_Center_for_Geometry_and_Physics",
       "wikiSlug": "Simons_Center_for_Geometry_and_Physics",
       "summary": "Endowed by geometer-philanthropist Jim Simons at Stony Brook University (where he and C.N. Yang sparked gauge-bundle unification), dedicated strictly to the fertile interface of geometry and theoretical physics.",
@@ -1089,7 +1089,7 @@
         {
           "name": "Geometry & Quantum Field Theory Programs",
           "status": "ongoing",
-          "url": "https://scgp.stonybrook.edu/science/programs"
+          "url": "https://www.stonybrook.edu/science/programs"
         }
       ]
     },
@@ -1199,7 +1199,7 @@
         {
           "name": "Bonn International Graduate School in Mathematics (BIGS)",
           "status": "ongoing",
-          "url": "https://www.bigs-math.uni-bonn.de/"
+          "url": "https://www.mathematics.uni-bonn.de/"
         }
       ]
     },
@@ -1366,7 +1366,7 @@
         {
           "name": "Forschungsinstitut für Mathematik (FIM) & ETH-ITS",
           "status": "ongoing",
-          "url": "https://fim.math.ethz.ch/"
+          "url": "https://math.ethz.ch/fim"
         }
       ]
     },
@@ -1510,7 +1510,7 @@
       "zoom": 15.5,
       "foundedYear": 1810,
       "status": "active",
-      "url": "https://www.crm.sns.it/",
+      "url": "https://www.sns.it/en",
       "wiki": "https://en.wikipedia.org/wiki/Scuola_Normale_Superiore_di_Pisa",
       "wikiSlug": "Scuola_Normale_Superiore_di_Pisa",
       "summary": "Italy's elite graduate university and Centro di Ricerca Matematica Ennio De Giorgi in Pisa—legendary incubator of algebraic geometry, Diophantine number theory, calculus of variations, and optimal transport.",
@@ -1525,7 +1525,7 @@
         {
           "name": "Centro De Giorgi Intensive Research Periods",
           "status": "ongoing",
-          "url": "https://www.crm.sns.it/events/"
+          "url": "https://www.sns.it/en"
         }
       ]
     },
@@ -1661,7 +1661,7 @@
         {
           "name": "IHP Thematic Trimesters & Maison Poincaré Museum",
           "status": "ongoing",
-          "url": "https://www.ihp.fr/en/scientific-programs"
+          "url": "https://www.ihp.fr/en"
         }
       ]
     },
@@ -1695,7 +1695,7 @@
         {
           "name": "Statistical Learning, Conformal Prediction & Compressed Sensing",
           "status": "ongoing",
-          "url": "https://icme.stanford.edu/research"
+          "url": "https://statistics.stanford.edu/"
         }
       ]
     },
@@ -1782,7 +1782,7 @@
       "zoom": 15.5,
       "foundedYear": 1973,
       "status": "active",
-      "url": "https://stat.math.ethz.ch/",
+      "url": "https://math.ethz.ch/sfs",
       "wiki": "https://en.wikipedia.org/wiki/ETH_Zurich",
       "wikiSlug": "ETH_Zurich",
       "summary": "Continental Europe's foremost center for mathematical statistics and causal inference within ETH D-MATH, advancing high-dimensional statistics, robust estimation, distributional robustness, and statistical learning theory.",
@@ -1797,7 +1797,7 @@
         {
           "name": "Causal Inference & High-Dimensional Statistical Learning",
           "status": "ongoing",
-          "url": "https://stat.math.ethz.ch/research.html"
+          "url": "https://math.ethz.ch/sfs"
         }
       ]
     },
@@ -1986,7 +1986,7 @@
       "zoom": 15.5,
       "foundedYear": 1929,
       "status": "active",
-      "url": "https://www.kth.se/math/divisions/mathstat",
+      "url": "https://www.kth.se/math",
       "wiki": "https://en.wikipedia.org/wiki/Harald_Cram%C3%A9r",
       "wikiSlug": "Harald_Cramér",
       "summary": "Continues Harald Cramér's historic Stockholm school of probability and mathematical statistics—advancing stochastic processes, spatial statistics, actuarial risk theory, epidemic modeling, and mathematical machine learning.",
@@ -2001,7 +2001,7 @@
         {
           "name": "Stochastic Processes, Epidemic Modeling & Risk Theory",
           "status": "ongoing",
-          "url": "https://www.kth.se/math/divisions/mathstat"
+          "url": "https://www.kth.se/math"
         }
       ]
     },
@@ -2123,7 +2123,7 @@
       "foundedYear": 1995,
       "status": "active",
       "url": "https://www.logic.univie.ac.at/",
-      "wiki": "https://en.wikipedia.org/wiki/Kurt_G%C3%B6del_Research_Center",
+      "wiki": "https://en.wikipedia.org/wiki/Kurt_G%C3%B6del",
       "wikiSlug": "Kurt_Gödel_Research_Center",
       "summary": "University of Vienna research institute honoring Kurt Gödel's incompleteness breakthroughs, dedicated to set theory, large cardinals, forcing, descriptive set theory, and the foundations of mathematics.",
       "nobel": "Located in the city where Kurt Gödel proved his 1931 Incompleteness Theorems; a premier global node for set-theoretic logic.",
@@ -2156,7 +2156,7 @@
       "zoom": 15.5,
       "foundedYear": 2021,
       "status": "active",
-      "url": "https://www.cmu.edu/hoskinson-center/",
+      "url": "https://www.cmu.edu/dietrich/philosophy/",
       "wiki": "https://en.wikipedia.org/wiki/Carnegie_Mellon_University",
       "wikiSlug": "Carnegie_Mellon_University",
       "summary": "Carnegie Mellon research center led by Jeremy Avigad advancing machine-checked formal mathematics in Lean 4, homotopy type theory, automated reasoning, and open educational libraries for formal proof.",
@@ -2171,7 +2171,7 @@
         {
           "name": "Formal Mathematics in Lean 4 & Automated Reasoning",
           "status": "ongoing",
-          "url": "https://www.cmu.edu/hoskinson-center/research/index.html"
+          "url": "https://www.cmu.edu/dietrich/philosophy/"
         }
       ]
     },
@@ -2239,7 +2239,7 @@
         {
           "name": "Graph Theory, Algebraic Combinatorics & Post-Quantum Crypto",
           "status": "ongoing",
-          "url": "https://uwaterloo.ca/combinatorics-and-optimization/research"
+          "url": "https://uwaterloo.ca/combinatorics-and-optimization/"
         }
       ]
     },

@@ -455,10 +455,14 @@ function probeWorkerSupport(workerUrl) {
   });
 }
 
-function shortGlobeName(name) {
+function shortGlobeName(name, maxLen = 28) {
   if (!name) return "";
   const clean = String(name).replace(/\s*\([^)]*\)\s*$/, "").trim();
-  return clean.length > 24 ? clean.slice(0, 22).trimEnd() + "…" : clean;
+  if (clean.length <= maxLen) return clean;
+  const cut = clean.slice(0, maxLen - 1);
+  const sp = cut.lastIndexOf(" ");
+  const trimmed = sp >= Math.floor(maxLen * 0.58) ? cut.slice(0, sp) : cut;
+  return trimmed.replace(/[,;:\-–—]+$/, "").trimEnd() + "…";
 }
 
 function fmtCount(n) {
@@ -679,11 +683,19 @@ function initGlobeHudOverlay() {
     if (!force && now - lastUiZonesAt < 180) return cachedUiZones;
     lastUiZonesAt = now;
     const zones = [];
-    for (const id of ["dynamic-island", "bottom-dock", "earth-only-controls", "zoom-controls", "place-card", "time-bar"]) {
+    for (const id of [
+      "dynamic-island", "bottom-dock", "earth-only-controls", "zoom-controls",
+      "place-card", "cluster-sheet", "time-bar", "rabbit-trail-bar", "active-filter-pill"
+    ]) {
       const el = document.getElementById(id);
       if (!el || el.classList.contains("hidden")) continue;
       const r = el.getBoundingClientRect();
       if (r.width > 0 && r.height > 0) zones.push(r);
+    }
+    const attribEl = document.querySelector(".maplibregl-ctrl-attrib");
+    if (attribEl) {
+      const ar = attribEl.getBoundingClientRect();
+      if (ar.width > 0 && ar.height > 0) zones.push(ar);
     }
     cachedUiZones = zones;
     return zones;
@@ -973,7 +985,8 @@ function initGlobeHudOverlay() {
           } else {
             hits.push({ type: "cluster", key: cKey, x, y, r: radius + 10, lng: item.lng, lat: item.lat, span: item.span });
             if (isHov && item.top) {
-              clusterHint = { name: `${shortGlobeName(item.top.name)} + ${fmtCount(count - 1)} more`, x, y, r: radius };
+              const hoverMax = w >= 1024 ? 36 : w >= 640 ? 28 : 22;
+              clusterHint = { name: `${shortGlobeName(item.top.name, hoverMax)} + ${fmtCount(count - 1)} more`, x, y, r: radius };
             }
           }
         } else {
@@ -1009,9 +1022,11 @@ function initGlobeHudOverlay() {
           placedRects.push([x - radius - 1, y - radius - 1, (radius + 1) * 2, (radius + 1) * 2]);
           hits.push({ type: "node", key: `n:${n.id}`, id: n.id, name: n.name, x, y, r: Math.max(radius + 16, 22) });
 
+          const normalLabelMax = w >= 1024 ? 34 : w >= 640 ? 28 : 22;
+          const emphasisLabelMax = w >= 1024 ? 44 : w >= 640 ? 36 : 28;
           const cand = {
             id: n.id,
-            name: shortGlobeName(n.name),
+            name: shortGlobeName(n.name, selected || isHov ? emphasisLabelMax : normalLabelMax),
             x, y,
             dotR: radius,
             selected,
@@ -1045,6 +1060,9 @@ function initGlobeHudOverlay() {
       let lx = c.x + c.dotR + 10;
       if (lx + pillW > safeRight) {
         lx = c.x - c.dotR - 10 - pillW;
+      }
+      if (isEmphasis) {
+        lx = Math.max(safeLeft, Math.min(safeRight - pillW, lx));
       }
       const ly = c.y - pillH / 2;
 
@@ -1495,6 +1513,11 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
   window.addEventListener("resize", syncViewportBounds, { passive: true });
 
   map.on("style.load", () => {
+    const attrib = map.getContainer()?.querySelector(".maplibregl-ctrl-attrib");
+    if (attrib) {
+      attrib.classList.remove("maplibregl-compact-show");
+      attrib.removeAttribute("open");
+    }
     if (!useMainThreadOverlay) {
       setupWebGLVectorLayers();
     } else {

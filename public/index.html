@@ -6,12 +6,12 @@
   <meta name="theme-color" content="#050506" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="World of Science" />
-  <meta name="description" content="Interactive 3D atlas of global Physics, AI, Math, Biology, Chemistry, Climate & Engineering labs, universities, startups, historical discoveries (1800 BCE–2045), offline packs, and space missions to 1 light-day." />
+  <meta name="apple-mobile-web-app-title" content="PhysALT" />
+  <meta name="description" content="PhysALT — Interactive 3D atlas of global Physics, AI, Math, Biology, Chemistry, Climate & Engineering labs, universities, startups, historical discoveries (1800 BCE–2045), offline packs, and space missions to 1 light-day." />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="World of Science — Global STEM & Physics Atlas" />
+  <meta property="og:title" content="PhysALT" />
   <meta property="og:description" content="Explore official STEM & AI labs, universities, startups, ShanghaiRanking-inspired impact leaders, historical milestones, offline packages, and space missions out to 1 light-day." />
-  <title>World of Science — Physics, AI &amp; STEM Atlas</title>
+  <title>PhysALT</title>
   <link rel="manifest" href="./manifest.json" />
   <link rel="icon" type="image/svg+xml" href="./favicon.svg?v=2" />
   <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32.png?v=2" />
@@ -96,8 +96,8 @@
   </header>
 
   <!-- Sleek Rabbit Hole Popover (Surprise Me, Official Deep Research & Curated STEM Trails) -->
-  <section id="rabbit-popover" role="dialog" aria-label="Rabbit Hole Explorer" class="hidden atlas-popover atlas-popover-rabbit liquid-glass scroll-clean">
-    <div class="flex items-center justify-between gap-2">
+  <section id="rabbit-popover" role="dialog" aria-label="Rabbit Hole Explorer" class="hidden atlas-popover atlas-popover-rabbit liquid-glass">
+    <div class="flex items-center justify-between gap-2 shrink-0">
       <div class="text-[15px] font-semibold text-white">Rabbit Hole</div>
       <div class="flex items-center gap-2">
         <button id="btn-rabbit-surprise" type="button" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px] inline-flex items-center gap-1.5">
@@ -108,25 +108,25 @@
       </div>
     </div>
 
-    <form id="rabbit-agent-form" class="flex items-center gap-2">
+    <form id="rabbit-agent-form" class="flex items-center gap-2 shrink-0">
       <input id="rabbit-agent-input" type="text" autocomplete="off" placeholder="Topic to curate (e.g. AlphaFold, CRISPR)…" class="glass-input py-2 text-[13.5px] flex-1 min-w-0" />
       <button type="submit" class="accent-chip rounded-full px-3.5 py-2 text-[13px] font-medium shrink-0 cursor-pointer">Curate →</button>
     </form>
 
-    <div class="space-y-1.5">
-      <div class="section-label">Curated Journeys</div>
-      <div id="rabbit-popover-trails" class="space-y-1.5 max-h-[280px] scroll-clean pr-0.5"></div>
+    <div class="flex flex-col gap-1.5 flex-1 min-h-0">
+      <div class="section-label shrink-0">Curated Journeys</div>
+      <div id="rabbit-popover-trails" class="space-y-1.5 flex-1 min-h-0 scroll-clean pr-0.5"></div>
     </div>
   </section>
 
   <!-- Precision Multi-Filter Popover (non-blocking, live-filters the 3D globe) -->
   <section id="filter-popover" role="dialog" aria-label="Filter STEM Institutions" class="hidden atlas-popover atlas-popover-filter liquid-glass scroll-clean">
-    <div class="flex items-center justify-between gap-3">
+    <div class="flex items-center justify-between gap-2">
       <div class="min-w-0">
-        <div class="text-[15px] font-semibold text-white">Filters</div>
-        <div id="filter-live-count" class="text-[12.5px] text-neutral-400">Showing all institutions</div>
+        <div class="text-[15px] font-semibold text-white leading-tight">Filters</div>
+        <div id="filter-live-count" class="text-[12.5px] text-neutral-400 whitespace-nowrap truncate">Showing all institutions</div>
       </div>
-      <div class="flex items-center gap-2 shrink-0">
+      <div class="flex items-center gap-1.5 shrink-0">
         <button id="btn-filter-offline" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1.5" title="Download Organic-Maps style offline STEM & region packages (O)">
           <i data-lucide="download" class="w-3.5 h-3.5 accent-text shrink-0"></i>
           <span>Offline</span>
@@ -350,14 +350,14 @@
     </section>
   </div>
 
-  <!-- Clean Bottom-Left Globe Controls (wide desktop only, clear of centered dock) -->
-  <div id="earth-only-controls" class="hidden min-[1360px]:flex fixed bottom-5 left-5 z-[35] liquid-pill rounded-full p-1.5 items-center gap-1">
+  <!-- Clean Bottom-Left Globe Controls (desktop & laptops >=1024px, controlled in app.css) -->
+  <div id="earth-only-controls" class="z-[35] liquid-pill rounded-full p-1.5 items-center gap-1">
     <button id="btn-arcs" type="button" class="glass-btn-active rounded-full px-3 py-1.5 text-[14px]">Arcs</button>
     <button id="btn-labels" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[14px]">Labels</button>
     <button id="btn-tilt" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[14px]">3D</button>
   </div>
 
-  <!-- Symmetrical Bottom Floating Dock (Desktop Two-Half Capsule / Mobile Equal-Width Tab Bar) -->
+  <!-- Symmetrical Bottom Floating Dock (Desktop Two-Half Capsule / Mobile Sculpted Capsule Tab Bar) -->
   <nav id="bottom-dock" aria-label="Primary atlas navigation" class="liquid-pill">
     <div class="dock-type-group" role="group" aria-label="Filter by institution type">
       <button type="button" data-group-tab="all" class="glass-btn-active dock-btn">All</button>
@@ -396,7 +396,7 @@
   </nav>
 
   <!-- Vertical Zoom & Reset View Capsule positioned cleanly ABOVE Esri attribution -->
-  <div id="zoom-controls" class="fixed bottom-[56px] right-5 z-[35] liquid-pill rounded-full p-1.5 flex flex-col items-center gap-1.5">
+  <div id="zoom-controls" class="fixed bottom-[58px] right-5 z-[35] liquid-pill rounded-full p-1.5 flex flex-col items-center gap-1.5">
     <button id="btn-zoom-in" type="button" class="glass-btn zoom-btn rounded-full w-9 h-9 flex items-center justify-center text-[17px]" title="Zoom In" aria-label="Zoom In">+</button>
     <button id="btn-zoom-out" type="button" class="glass-btn zoom-btn rounded-full w-9 h-9 flex items-center justify-center text-[17px]" title="Zoom Out" aria-label="Zoom Out">−</button>
     <div class="zoom-divider" aria-hidden="true"></div>

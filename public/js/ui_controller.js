@@ -476,14 +476,14 @@ export function selectSpaceMission(missionId) {
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
     extra.innerHTML = (m.instruments || []).slice(0, 2).map(inst =>
-      `<span class="px-3 py-1 rounded-full text-[14px] bg-white/[0.07] border border-white/12 text-neutral-200 truncate max-w-full inline-block">${esc(inst)}</span>`
+      `<span class="px-3 py-1 rounded-full text-[13px] bg-white/[0.07] border border-white/12 text-neutral-200 truncate max-w-full inline-block">${esc(inst)}</span>`
     ).join("");
   }
 
   const linksEl = document.getElementById("card-links");
   const links = [];
-  if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-4 py-2 text-[14px] inline-flex items-center gap-1.5">Official Mission Site ↗</a>`);
-  if (m.wikiUrl) links.push(`<a href="${esc(m.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link px-3 py-2 text-[14px]">Wikipedia ↗</a>`);
+  if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1 whitespace-nowrap">Official Mission Site ↗</a>`);
+  if (m.wikiUrl) links.push(`<a href="${esc(m.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Wikipedia ↗</a>`);
   if (linksEl) linksEl.innerHTML = links.join("");
 
   document.getElementById("card-deeper-wrap")?.classList.add("hidden");
@@ -751,7 +751,7 @@ function renderRabbitTrailBar() {
   const prevBtn = document.getElementById("btn-trail-prev");
   const nextBtn = document.getElementById("btn-trail-next");
 
-  if (trail && Array.isArray(trail.stops) && trail.stops.length) {
+  if (store.state.viewMode === "earth" && !store.state.timeMode && trail && Array.isArray(trail.stops) && trail.stops.length) {
     const idx = Math.max(0, Math.min(trail.stops.length - 1, trail.index || 0));
     const stop = trail.stops[idx];
     if (stepEl) stepEl.textContent = `${idx + 1} / ${trail.stops.length}`;
@@ -760,6 +760,7 @@ function renderRabbitTrailBar() {
     if (prevBtn) prevBtn.disabled = idx === 0;
     if (nextBtn) nextBtn.textContent = idx >= trail.stops.length - 1 ? "Finish" : "Next →";
     bar.classList.remove("hidden");
+    document.body.classList.add("trail-open");
     return;
   }
 
@@ -772,10 +773,12 @@ function renderRabbitTrailBar() {
     if (prevBtn) prevBtn.disabled = !free.canGoBack;
     if (nextBtn) nextBtn.textContent = "Next →";
     bar.classList.remove("hidden");
+    document.body.classList.add("trail-open");
     return;
   }
 
   bar.classList.add("hidden");
+  document.body.classList.remove("trail-open");
 }
 
 export function startRabbitTrail(trail, startIdx = 0) {
@@ -2214,27 +2217,27 @@ function renderAuditAndPrivacyModal(bodyEl) {
 
   document.getElementById("btn-exp-json")?.addEventListener("click", () => {
     downloadBlob(JSON.stringify({
-      meta: { name: "Global Physics Atlas Dataset", exportedAt: new Date().toISOString() },
+      meta: { name: "PhysALT Dataset", exportedAt: new Date().toISOString() },
       hubs: store.hubs,
       timelineEvents: store.timelineEvents,
       spaceMissions: store.spaceMissions
-    }, null, 2), "physics_atlas_dataset.json", "application/json");
-    showToast("Exported physics_atlas_dataset.json");
+    }, null, 2), "physalt_dataset.json", "application/json");
+    showToast("Exported physalt_dataset.json");
   });
 
   document.getElementById("btn-exp-kml")?.addEventListener("click", () => {
     const nodes = getVisibleGlobeNodes();
     const marks = nodes.map(n => `\n    <Placemark><name>${esc(n.name)}</name><description>${esc(n.summary)}</description><Point><coordinates>${n.lng},${n.lat},0</coordinates></Point></Placemark>`).join("");
-    const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>World of Physics</name>${marks}\n</Document></kml>`;
-    downloadBlob(kml, "world_of_physics.kml", "application/vnd.google-earth.kml+xml");
-    showToast("Exported world_of_physics.kml");
+    const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>PhysALT</name>${marks}\n</Document></kml>`;
+    downloadBlob(kml, "physalt.kml", "application/vnd.google-earth.kml+xml");
+    showToast("Exported physalt.kml");
   });
 
   document.getElementById("btn-exp-csv")?.addEventListener("click", () => {
     const header = "name,city,country,entityType,branch,lat,lng,url";
     const rows = store.hubs.map(h => [h.name, h.city, h.country, h.entityType, h.branch, h.lat, h.lng, h.url].map(v => `"${String(v || "").replace(/"/g, '""')}"`).join(","));
-    downloadBlob([header, ...rows].join("\n"), "world_of_physics_hubs.csv", "text/csv");
-    showToast("Exported world_of_physics_hubs.csv");
+    downloadBlob([header, ...rows].join("\n"), "physalt_hubs.csv", "text/csv");
+    showToast("Exported physalt_hubs.csv");
   });
 
   document.getElementById("btn-gdpr-export")?.addEventListener("click", () => {
@@ -2316,8 +2319,9 @@ export function renderFilterPopover() {
 
   const liveEl = document.getElementById("filter-live-count");
   if (liveEl) {
+    const compact = window.innerWidth < 420;
     liveEl.textContent = matchedCount === totalCount
-      ? `${totalCount.toLocaleString()} institutions`
+      ? `${totalCount.toLocaleString()} ${compact ? "hubs" : "institutions"}`
       : `${matchedCount.toLocaleString()} of ${totalCount.toLocaleString()}`;
   }
 
@@ -2350,6 +2354,8 @@ export function renderFilterPopover() {
   const branchBox = document.getElementById("filter-branch-chips");
   if (branchBox) {
     const curDisc = store.state.discipline || "all";
+    branchBox.classList.toggle("filter-branch-rail", curDisc === "all");
+    branchBox.classList.toggle("no-scrollbar", curDisc === "all");
     const visibleBranches = curDisc === "all"
       ? FILTER_BRANCHES.filter(b => ALL_STEM_FEATURED_BRANCHES.includes(b.id) || store.state.branch === b.id)
       : FILTER_BRANCHES.filter(b => b.id === "all" || b.disc === curDisc);
@@ -2404,8 +2410,9 @@ export function renderFilterPopover() {
       `<option value="all">All Countries (${allCountryCount.toLocaleString()})</option>`,
       ...sortedCountries.map(c => {
         const cnt = getFilteredHubs({ countryFilter: c, skipSort: true }).length;
+        if (cnt === 0 && store.state.countryFilter !== c) return "";
         return `<option value="${esc(c)}">${esc(c)} (${cnt.toLocaleString()})</option>`;
-      })
+      }).filter(Boolean)
     ];
     countrySel.innerHTML = opts.join("");
     countrySel.value = store.state.countryFilter || "all";

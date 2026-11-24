@@ -323,7 +323,7 @@ function clampCameraTargets() {
   const minC = Math.min(0.5, Math.max(0.0, halfSpan - 0.04));
   const maxC = Math.max(0.5, Math.min(1.0, 1.0 - halfSpan + 0.04));
   targetCenterU = Math.max(minC, Math.min(maxC, targetCenterU));
-  targetPanY = Math.max(-68, Math.min(68, targetPanY));
+  targetPanY = Math.max(-135, Math.min(88, targetPanY));
 }
 
 function getViewportMetrics(w, h) {
@@ -337,7 +337,7 @@ function getViewportMetrics(w, h) {
   const stageRight = Math.max(stageLeft + 180, w - rightPad);
   const stageW = stageRight - stageLeft;
 
-  const topSafe = isMobile ? 204 : 192;
+  const topSafe = isMobile ? 176 : 206;
   const bottomSafe = isMobile ? h - 88 : h - 102;
   const axisY = (topSafe + bottomSafe) * 0.51 + camPanY;
 
@@ -386,15 +386,17 @@ function injectHudStyles() {
   style.textContent = `
     #space-pulse-hud {
       position: fixed;
-      top: 150px;
-      right: 24px;
+      top: 152px;
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
       z-index: 24;
       display: flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 6px;
+      padding: 5px;
       border-radius: 999px;
-      max-width: calc(100vw - 48px);
+      max-width: calc(100vw - 40px);
       pointer-events: auto;
       transition: opacity 0.2s ease, transform 0.2s ease;
     }
@@ -511,6 +513,11 @@ function injectHudStyles() {
     #space-pulse-hud .sp-zoom-tag.is-visible {
       display: inline-block;
     }
+    #space-pulse-hud .sp-zoom-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
     @media (max-width: 1180px) {
       #space-pulse-status {
         max-width: 165px;
@@ -518,24 +525,30 @@ function injectHudStyles() {
     }
     @media (max-width: 1023px) and (min-width: 768px) {
       #space-pulse-hud {
-        right: 20px;
-        left: auto;
-        transform: none;
-        top: 150px;
+        top: 152px;
+        left: 50%;
+        right: auto;
+        transform: translateX(-50%);
         max-width: calc(100vw - 40px);
       }
-      body.card-open #space-pulse-hud .sp-zoom-group {
+      body.card-open #space-pulse-hud {
+        left: auto;
+        right: 20px;
+        transform: none;
+      }
+      body.card-open #space-pulse-hud .sp-zoom-group,
+      body.card-open #space-pulse-status {
         display: none !important;
       }
     }
     @media (max-width: 767px) {
       #space-pulse-hud {
-        top: calc(116px + env(safe-area-inset-top, 0px));
+        top: calc(var(--island-bottom) + 52px);
         right: auto;
         left: 50%;
         transform: translateX(-50%);
         max-width: calc(100vw - 20px);
-        padding: 4px 5px;
+        padding: 4px;
         gap: 4px;
       }
       #space-pulse-hud .sp-pulse-btn {
@@ -548,10 +561,10 @@ function injectHudStyles() {
       }
       #space-pulse-status {
         font-size: 12px;
-        max-width: 130px;
+        max-width: 124px;
       }
       #space-pulse-hud .sp-zoom-group {
-        display: none;
+        display: none !important;
       }
     }
   `;
@@ -582,7 +595,7 @@ function ensureSpaceHud() {
       <span id="space-pulse-status">Departing Earth · LEO</span>
     </div>
     <span class="sp-divider sp-zoom-group" aria-hidden="true"></span>
-    <span class="sp-zoom-group" style="display:inline-flex;align-items:center;gap:4px;">
+    <span class="sp-zoom-group sp-zoom-controls">
       <button id="btn-space-zoom-out" type="button" class="glass-btn sp-mini-btn" title="Zoom out space scale" aria-label="Zoom out space scale">−</button>
       <span id="space-zoom-tag" class="sp-zoom-tag">1.0×</span>
       <button id="btn-space-zoom-in" type="button" class="glass-btn sp-mini-btn" title="Zoom in space scale" aria-label="Zoom in space scale">+</button>
@@ -1372,17 +1385,20 @@ function drawFrame(now) {
     ctx.stroke();
     ctx.restore();
 
-    // Curved spherical photon wavefront arc while actively propagating
+    // Curved spherical photon wavefront arc blooming symmetrically out of Earth
     if (pulse.active && frontX > -40 && frontX < w + 40) {
-      const waveH = Math.min(180, arcHalfH * 0.72);
-      const bow = 22;
+      const launchScale = Math.min(1, pulse.u / 0.08);
+      const waveH = Math.min(180, arcHalfH * 0.72) * (0.12 + 0.88 * launchScale);
+      const maxBow = Math.max(0, Math.min(22 * launchScale, frontX - spineLeft));
+      const tipX = frontX - maxBow;
+      const ctrlX = frontX + maxBow * 0.28;
 
-      // Chromatic crimson trailing sheath
-      ctx.strokeStyle = "rgba(160, 70, 70, 0.32)";
+      // Chromatic crimson trailing sheath (exact symmetry around m.axisY)
+      ctx.strokeStyle = "rgba(160, 70, 70, 0.34)";
       ctx.lineWidth = 5.5;
       ctx.beginPath();
-      ctx.moveTo(frontX - bow - 4, m.axisY - waveH);
-      ctx.quadraticCurveTo(frontX + 2, m.axisY, frontX - bow - 4, m.axisY + waveH);
+      ctx.moveTo(Math.max(spineLeft, tipX - 3 * launchScale), m.axisY - waveH);
+      ctx.quadraticCurveTo(ctrlX - 1.5 * launchScale, m.axisY, Math.max(spineLeft, tipX - 3 * launchScale), m.axisY + waveH);
       ctx.stroke();
 
       // Razor-bright white photon wavefront edge
@@ -1395,8 +1411,8 @@ function drawFrame(now) {
       ctx.strokeStyle = wfGrad;
       ctx.lineWidth = 2.0;
       ctx.beginPath();
-      ctx.moveTo(frontX - bow, m.axisY - waveH);
-      ctx.quadraticCurveTo(frontX + 6, m.axisY, frontX - bow, m.axisY + waveH);
+      ctx.moveTo(tipX, m.axisY - waveH);
+      ctx.quadraticCurveTo(ctrlX, m.axisY, tipX, m.axisY + waveH);
       ctx.stroke();
 
       // Luminous photon spark at spine intersection
@@ -1418,7 +1434,7 @@ function drawFrame(now) {
       const th = 24;
       const maxTagRight = m.railVisible ? w - 372 : w - 16;
       const tx = Math.max(14, Math.min(maxTagRight - tw, frontX - tw / 2));
-      const ty = Math.max(m.topSafe + 4, m.axisY - waveH * 0.58 - 18);
+      const ty = Math.max(m.topSafe + 6, m.axisY - Math.max(waveH * 0.72, 134) - 24);
 
       ctx.fillStyle = "rgba(14, 14, 16, 0.88)";
       ctx.strokeStyle = "rgba(160, 70, 70, 0.62)";
@@ -2063,7 +2079,11 @@ export function getSpaceZone() {
 
 export function setSelectedSpaceMission(id) {
   selectedMissionId = id || null;
-  if (!selectedMissionId) return;
+  if (!selectedMissionId) {
+    targetPanY = 0;
+    clampCameraTargets();
+    return;
+  }
 
   const list = Array.isArray(store.spaceMissions) ? store.spaceMissions : [];
   const mission = list.find(ms => ms.id === selectedMissionId);
@@ -2071,13 +2091,13 @@ export function setSelectedSpaceMission(id) {
 
   const u = lightTimeToU(mission.lightTimeSec);
   const w = canvas?.clientWidth || window.innerWidth;
-  // On desktop when #place-card is open on the left, shift focus subtly left of centerU so the beacon lands in the unobstructed central viewport
+  const h = canvas?.clientHeight || window.innerHeight;
   const desiredZoom = Math.max(targetZoom, w < 768 ? 1.8 : 1.9);
-  const cardShiftU = w >= 1024 ? -0.10 / desiredZoom : 0;
+  const cardShiftU = w >= 768 ? (w >= 1024 ? -0.10 : -0.15) / desiredZoom : 0;
 
   targetZoom = desiredZoom;
   targetCenterU = u + cardShiftU;
-  targetPanY = 0;
+  targetPanY = w < 768 ? -Math.min(120, Math.round(h * 0.16)) : 0;
   clampCameraTargets();
   syncHudControls();
 }
