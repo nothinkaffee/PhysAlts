@@ -309,6 +309,7 @@ export function setViewMode(mode) {
     timeBar?.classList.add("hidden");
     document.body.classList.remove("time-open");
     stopTimeTour();
+    renderRabbitTrailBar();
     renderSpaceZoneBar();
     renderSpaceMissionRail();
     startSpaceLoop();
@@ -327,6 +328,7 @@ export function setViewMode(mode) {
       document.body.classList.add("time-open");
     }
     stopSpaceLoop();
+    renderRabbitTrailBar();
     syncGlobeMarkers();
   }
 }
@@ -2200,7 +2202,9 @@ export function renderFilterPopover() {
 
   const liveEl = document.getElementById("filter-live-count");
   if (liveEl) {
-    liveEl.textContent = `Showing ${matchedCount.toLocaleString()} of ${totalCount.toLocaleString()} STEM institutions`;
+    liveEl.textContent = matchedCount === totalCount
+      ? `${totalCount.toLocaleString()} institutions`
+      : `${matchedCount.toLocaleString()} of ${totalCount.toLocaleString()}`;
   }
 
   refreshOfflinePackBadge();
@@ -2485,7 +2489,10 @@ function jumpRabbitHole(mode = "walk") {
 
   if (store.state.timeMode) setTimeMode(false);
   selectHubNode(hop.node.id, true, { pushWalk: true, reason: hop.reason });
-  showToast(hop.reason ? `${hop.node.name.split(" (")[0]} · ${hop.reason}` : hop.node.name);
+  const trailBarVisible = !document.getElementById("rabbit-trail-bar")?.classList.contains("hidden");
+  if (!trailBarVisible) {
+    showToast(hop.reason ? `${hop.node.name.split(" (")[0]} · ${hop.reason}` : hop.node.name);
+  }
 }
 
 // =========================================================================

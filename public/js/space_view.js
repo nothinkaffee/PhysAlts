@@ -536,11 +536,11 @@ function injectHudStyles() {
     }
     @media (max-width: 767px) {
       #space-pulse-hud {
-        top: 146px;
+        top: calc(116px + env(safe-area-inset-top, 0px));
         right: auto;
         left: 50%;
         transform: translateX(-50%);
-        max-width: calc(100vw - 24px);
+        max-width: calc(100vw - 20px);
         padding: 4px 5px;
         gap: 4px;
       }

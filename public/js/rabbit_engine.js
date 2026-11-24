@@ -32,6 +32,7 @@ const STOP_WORDS = new Set([
   "model", "models", "method", "methods", "theory", "applied", "experimental", "theoretical",
   "top", "premier", "anchored", "medal", "renowned", "elite", "prestigious", "flagship",
   "cutting", "edge", "key", "core", "best", "prime", "great", "notable", "historic", "historical",
+  "upgrade", "upgrades", "station", "stations", "complex", "network", "networks",
   "united", "states", "kingdom", "republic", "north", "south", "east", "west", "central",
   "city", "region", "country", "campus", "site", "official", "wikipedia", "nobel", "prize",
   "laureate", "laureates", "awarded", "won", "years", "year", "century", "era"

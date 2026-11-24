@@ -838,7 +838,7 @@ body.space-mode #zoom-controls .zoom-divider {
   }
 }
 
-/* Mobile Dynamic Island (<640px): true symmetrical 6-icon fit for 390px screens */
+/* Mobile Dynamic Island (<640px): true symmetrical 6-icon fit for 360-430px screens */
 @media (max-width: 639px) {
   #dynamic-island {
     top: calc(10px + env(safe-area-inset-top, 0px));
@@ -864,21 +864,48 @@ body.space-mode #zoom-controls .zoom-divider {
     display: none !important;
   }
   .island-btn {
+    position: relative;
     height: 36px;
     width: 36px;
     min-width: 36px;
     padding: 0;
     gap: 0;
   }
+  .island-count-badge {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    border: 1.5px solid #0b0b0d;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+    pointer-events: none;
+  }
   .island-mode-track {
     height: 36px;
-    padding: 2px;
+    padding: 1px;
     gap: 2px;
   }
   .island-mode-btn {
-    height: 30px;
-    width: 34px;
+    height: 32px;
+    width: 32px;
     padding: 0;
+  }
+  #active-filter-pill {
+    top: calc(66px + env(safe-area-inset-top, 0px)) !important;
+  }
+  body.card-open #active-filter-pill {
+    display: none !important;
+  }
+  #space-zone-bar {
+    top: calc(66px + env(safe-area-inset-top, 0px)) !important;
+  }
+  #toast {
+    top: calc(66px + env(safe-area-inset-top, 0px)) !important;
   }
   .filter-bottom-grid {
     grid-template-columns: 1fr;
@@ -888,9 +915,34 @@ body.space-mode #zoom-controls .zoom-divider {
 /* Mobile Bottom Nav Bar & Bottom-Sheet Place Card (<768px) */
 @media (max-width: 767px) {
   .atlas-popover {
-    top: calc(68px + env(safe-area-inset-top, 0px));
-    max-height: calc(100dvh - 160px);
-    padding: 16px;
+    top: calc(66px + env(safe-area-inset-top, 0px));
+    max-height: calc(100dvh - 154px);
+    padding: 14px;
+  }
+  #spotlight-backdrop {
+    padding: calc(64px + env(safe-area-inset-top, 0px)) 10px 16px !important;
+  }
+  #spotlight-modal {
+    max-height: calc(100dvh - 96px) !important;
+    border-radius: 22px !important;
+  }
+  #spotlight-modal > div:first-child {
+    padding: 12px 14px !important;
+    gap: 8px !important;
+  }
+  #search-input {
+    font-size: 15px !important;
+  }
+  #btn-spotlight-agent {
+    padding: 6px 10px !important;
+    font-size: 12.5px !important;
+  }
+  #drawer-backdrop {
+    padding: 10px !important;
+  }
+  #drawer-modal {
+    max-height: calc(100dvh - 36px) !important;
+    border-radius: 24px !important;
   }
   .card-sheet-handle {
     display: block;
@@ -977,6 +1029,7 @@ body.space-mode #zoom-controls .zoom-divider {
     left: 10px !important;
     right: 10px !important;
     width: auto !important;
+    padding: 14px !important;
     bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
   }
   #rabbit-trail-bar {
@@ -984,9 +1037,11 @@ body.space-mode #zoom-controls .zoom-divider {
     right: 10px !important;
     width: auto !important;
     transform: none !important;
-    bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
-    border-radius: 20px !important;
-    padding: 10px 12px !important;
+    top: calc(66px + env(safe-area-inset-top, 0px)) !important;
+    bottom: auto !important;
+    border-radius: 18px !important;
+    padding: 7px 9px 7px 12px !important;
+    gap: 8px !important;
   }
   #card-photo-wrap {
     height: 112px !important;
