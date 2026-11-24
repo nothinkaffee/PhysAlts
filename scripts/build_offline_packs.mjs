@@ -1072,7 +1072,7 @@ async function main() {
         name: "ShanghaiRanking 2026 & Collaborations",
         category: "discipline",
         description:
-          "Complete official ARWU 2026 Top 1,000 + all 57 GRAS 2026 academic subjects (19,650 subject rows across 1,972 universities), 1,126 geocoded ranked campuses, and 150 verified University–Lab–Company collaborations."
+          "Complete official ARWU 2026 Top 1,000 + all 57 GRAS 2026 academic subjects (19,650 subject rows across 1,972 universities), 1,126 geocoded ranked campuses, and 176 verified University–Lab–Company–Polar collaborations."
       },
       {
         hubs: shanghaiExtraHubs || [],
@@ -1087,6 +1087,41 @@ async function main() {
           subjects: srSubjCount,
           collaborations: collabCount
         }
+      }
+    );
+    manifestPacks.push(entry);
+  }
+
+  // 0B. Dedicated Polar Frontier Pack (All 75 Arctic, Svalbard, Greenland & Antarctic Bases + Polar Trails)
+  const polarRaw = await readJsonSafe(path.join(STEM_DIR, "polar_frontier.json"));
+  const polarHubs = extractArray(polarRaw, ["hubs", "items"]).map((h) => ({
+    ...h,
+    tier: h.tier || "stem",
+    discipline: classifyItemDiscipline(h, "chem_earth")
+  }));
+  if (polarHubs.length) {
+    const polarIdSet = new Set(polarHubs.map((h) => h.id));
+    const polarCollabs = (collaborationsRaw?.collaborations || []).filter(
+      (c) => polarIdSet.has(c.from) || polarIdSet.has(c.to)
+    );
+    const polarTrailIds = new Set(["polar_arctic_svalbard", "polar_antarctica_frontier", "listening_to_earth_climate_system"]);
+    const polarTrails = allTrails.filter(t => polarTrailIds.has(t.id));
+    const entry = await writePackFile(
+      {
+        id: "pack_polar_frontier",
+        name: "Arctic, Svalbard & Antarctica Bases",
+        category: "region",
+        description:
+          "75 off-grid polar research bases, Svalbard & Greenland observatories, South Pole neutrino/CMB arrays, 1.5M-year ice-core camps, zero-emission stations, and historic expeditions."
+      },
+      {
+        hubs: polarHubs,
+        events: [],
+        missions: [],
+        domains: [],
+        trails: polarTrails,
+        collaborations: { collaborations: polarCollabs },
+        extraCounts: { collaborations: polarCollabs.length }
       }
     );
     manifestPacks.push(entry);

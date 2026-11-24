@@ -32,6 +32,7 @@ export const SUBJECT_CONFIG = {
     stemBioMed: "./data/stem/bio_med_hubs.json",
     stemChemEarthEng: "./data/stem/chem_earth_eng_hubs.json",
     stemEngineering: "./data/stem/engineering_hubs.json",
+    stemPolar: "./data/stem/polar_frontier.json",
     stemTimeline: "./data/stem/stem_timeline.json",
     stemDomains: "./data/stem/stem_domains.json",
     rabbitTrails: "./data/stem/rabbit_trails.json",

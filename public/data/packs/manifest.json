@@ -1,36 +1,36 @@
 {
   "schemaVersion": "1.0.0",
   "version": "2026-11-24",
-  "generatedAt": "2026-11-24T22:38:10.422Z",
+  "generatedAt": "2026-11-24T22:52:11.128Z",
   "stemDatasetsDetected": true,
   "summary": {
-    "totalPacks": 14,
+    "totalPacks": 15,
     "disciplinePacks": 7,
-    "regionPacks": 6,
+    "regionPacks": 7,
     "tilePacks": 1,
-    "totalBytes": 13062294,
-    "totalLabel": "12.46 MB",
-    "indexedHubs": 6834,
+    "totalBytes": 13237803,
+    "totalLabel": "12.62 MB",
+    "indexedHubs": 6909,
     "indexedEvents": 133,
     "indexedMissions": 36,
     "indexedDomains": 14,
-    "indexedTrails": 14,
+    "indexedTrails": 16,
     "rankedUniversities": 1972,
     "rankedSubjects": 57,
-    "collaborations": 150
+    "collaborations": 176
   },
   "packs": [
     {
       "id": "pack_shanghai_2026",
       "name": "ShanghaiRanking 2026 & Collaborations",
       "category": "discipline",
-      "description": "Complete official ARWU 2026 Top 1,000 + all 57 GRAS 2026 academic subjects (19,650 subject rows across 1,972 universities), 1,126 geocoded ranked campuses, and 150 verified University–Lab–Company collaborations.",
+      "description": "Complete official ARWU 2026 Top 1,000 + all 57 GRAS 2026 academic subjects (19,650 subject rows across 1,972 universities), 1,126 geocoded ranked campuses, and 176 verified University–Lab–Company–Polar collaborations.",
       "version": "2026-11-24",
       "file": "pack_shanghai_2026.json",
       "url": "./data/packs/pack_shanghai_2026.json",
-      "sizeBytes": 2711738,
+      "sizeBytes": 2717205,
       "sizeLabel": "2.59 MB",
-      "sha256": "66594bc93e2c315c696e8f87db7b16b01d66df97b1c22cee77d000f6e20ae171",
+      "sha256": "7da1c3591c7fb09f9ebf739b4d9dc82705d26d395bfe91c44fbaacef49f09394",
       "counts": {
         "hubs": 1126,
         "events": 0,
@@ -39,7 +39,27 @@
         "trails": 0,
         "rankedUniversities": 1972,
         "subjects": 57,
-        "collaborations": 150
+        "collaborations": 176
+      }
+    },
+    {
+      "id": "pack_polar_frontier",
+      "name": "Arctic, Svalbard & Antarctica Bases",
+      "category": "region",
+      "description": "75 off-grid polar research bases, Svalbard & Greenland observatories, South Pole neutrino/CMB arrays, 1.5M-year ice-core camps, zero-emission stations, and historic expeditions.",
+      "version": "2026-11-24",
+      "file": "pack_polar_frontier.json",
+      "url": "./data/packs/pack_polar_frontier.json",
+      "sizeBytes": 52852,
+      "sizeLabel": "51.6 KB",
+      "sha256": "ddbc39b6c47416b91cd22ac4e773709e8ebb30cdbe48b8d81903f1f2e45d07ea",
+      "counts": {
+        "hubs": 75,
+        "events": 0,
+        "missions": 0,
+        "domains": 0,
+        "trails": 3,
+        "collaborations": 0
       }
     },
     {
@@ -50,15 +70,15 @@
       "version": "2026-11-24",
       "file": "pack_physics.json",
       "url": "./data/packs/pack_physics.json",
-      "sizeBytes": 3791839,
-      "sizeLabel": "3.62 MB",
-      "sha256": "26dd96d2d8708ea9fb981aae7085bafdbbec9002e22cbb056578f7cce5196337",
+      "sizeBytes": 3818305,
+      "sizeLabel": "3.64 MB",
+      "sha256": "20fa4fb69308b928e6f7d1d888b8dc75a909d8f3c4cd5aa442d8f4f7726ba096",
       "counts": {
-        "hubs": 5383,
+        "hubs": 5419,
         "events": 71,
         "missions": 36,
         "domains": 8,
-        "trails": 9
+        "trails": 11
       }
     },
     {
@@ -71,7 +91,7 @@
       "url": "./data/packs/pack_ai_cs.json",
       "sizeBytes": 185346,
       "sizeLabel": "181.0 KB",
-      "sha256": "6389c2e647fc268b271cc5d0d1f1d539c2988427b4a9282fb6b1124db3145cac",
+      "sha256": "c83b155939802a37cd8c3051e53891b13c23ac57a8ae568fc70eee87ca1fa34c",
       "counts": {
         "hubs": 99,
         "events": 16,
@@ -90,7 +110,7 @@
       "url": "./data/packs/pack_math.json",
       "sizeBytes": 176495,
       "sizeLabel": "172.4 KB",
-      "sha256": "47ea4d56744e3c3afae4494e0744cc5a886d0e24dbdede9184d5cc1d1cdad248",
+      "sha256": "ebcbbcb82481747dbd54282e943e2497648cd64f306ebc71bd77daf70296e4e5",
       "counts": {
         "hubs": 186,
         "events": 10,
@@ -107,15 +127,15 @@
       "version": "2026-11-24",
       "file": "pack_bio_med.json",
       "url": "./data/packs/pack_bio_med.json",
-      "sizeBytes": 425412,
-      "sizeLabel": "415.4 KB",
-      "sha256": "6fb76c6bce537ec4cd27fc37d4ca5d53b15e23b7f2e6eea5382ffcb9b7bc8ad8",
+      "sizeBytes": 431207,
+      "sizeLabel": "421.1 KB",
+      "sha256": "c02233c6e61d0c201ab9502c63b0415860dc167978bd5e63f1f3ae080e36493a",
       "counts": {
-        "hubs": 572,
+        "hubs": 578,
         "events": 16,
         "missions": 0,
         "domains": 2,
-        "trails": 4
+        "trails": 5
       }
     },
     {
@@ -126,15 +146,15 @@
       "version": "2026-11-24",
       "file": "pack_chem_earth.json",
       "url": "./data/packs/pack_chem_earth.json",
-      "sizeBytes": 123978,
-      "sizeLabel": "121.1 KB",
-      "sha256": "4f18558305a4b0471443aa69af35cdd1ac4599880740cf47cdb9ad0bbaea6399",
+      "sizeBytes": 143517,
+      "sizeLabel": "140.2 KB",
+      "sha256": "06418074a296f66dc2c815ef4e0672c6854399e3fb97c45f453d2fe62772baa8",
       "counts": {
-        "hubs": 69,
+        "hubs": 93,
         "events": 8,
         "missions": 0,
         "domains": 1,
-        "trails": 6
+        "trails": 8
       }
     },
     {
@@ -145,15 +165,15 @@
       "version": "2026-11-24",
       "file": "pack_engineering.json",
       "url": "./data/packs/pack_engineering.json",
-      "sizeBytes": 394764,
-      "sizeLabel": "385.5 KB",
-      "sha256": "7e3cd8b13b8405c0f73f4592173232c1a7e1b528dc989d41862210c15d28895d",
+      "sizeBytes": 404942,
+      "sizeLabel": "395.5 KB",
+      "sha256": "7d0e7bca48d49f7b1417b809247d17424664fef0d3a178483496d2809a73ca7b",
       "counts": {
-        "hubs": 525,
+        "hubs": 534,
         "events": 12,
         "missions": 0,
         "domains": 1,
-        "trails": 7
+        "trails": 9
       }
     },
     {
@@ -164,15 +184,15 @@
       "version": "2026-11-24",
       "file": "region_europe.json",
       "url": "./data/packs/region_europe.json",
-      "sizeBytes": 1823094,
-      "sizeLabel": "1.74 MB",
-      "sha256": "5a4608fdeb768dc247186894d5e145371bfd3be27a60a06f620c8fd559a8e15d",
+      "sizeBytes": 1836175,
+      "sizeLabel": "1.75 MB",
+      "sha256": "afda90f9185a5bca5aed46fc3d98b4c75b5dda34db249d008c9e87c093e59655",
       "counts": {
-        "hubs": 2436,
+        "hubs": 2454,
         "events": 66,
         "missions": 9,
         "domains": 0,
-        "trails": 14
+        "trails": 15
       }
     },
     {
@@ -183,15 +203,15 @@
       "version": "2026-11-24",
       "file": "region_north_america.json",
       "url": "./data/packs/region_north_america.json",
-      "sizeBytes": 1178496,
-      "sizeLabel": "1.12 MB",
-      "sha256": "8c6507251a53030c86d2bfd72fc16ef4c11632b11dddc84494e3036485c2d3f5",
+      "sizeBytes": 1189390,
+      "sizeLabel": "1.13 MB",
+      "sha256": "3e3e0b7607909cbb45f89fe47a405d4c9423ee779fa1951f74770849878f5733",
       "counts": {
-        "hubs": 1467,
+        "hubs": 1481,
         "events": 42,
         "missions": 22,
         "domains": 0,
-        "trails": 14
+        "trails": 15
       }
     },
     {
@@ -202,15 +222,15 @@
       "version": "2026-11-24",
       "file": "region_asia.json",
       "url": "./data/packs/region_asia.json",
-      "sizeBytes": 1610136,
+      "sizeBytes": 1615415,
       "sizeLabel": "1.54 MB",
-      "sha256": "83c9e32e38c19c3db05d0d80ca4246f0cdb11b28b9493d3620235d62f44be51b",
+      "sha256": "884efbe3fcbf55fbac268c108aa514663c56c6513878cccc9a5243d9393613ee",
       "counts": {
-        "hubs": 2393,
+        "hubs": 2398,
         "events": 15,
         "missions": 3,
         "domains": 0,
-        "trails": 1
+        "trails": 2
       }
     },
     {
@@ -223,7 +243,7 @@
       "url": "./data/packs/region_south_america.json",
       "sizeBytes": 146684,
       "sizeLabel": "143.2 KB",
-      "sha256": "1149993f4592ed39a17e1ceabec52ca7869ea75d09f5e71a6e6b9390036e023b",
+      "sha256": "fa1b4cc196682d04bf12adba25e03d407adaac6012f18157dbaf60abe0ac5224",
       "counts": {
         "hubs": 212,
         "events": 4,
@@ -242,7 +262,7 @@
       "url": "./data/packs/region_africa.json",
       "sizeBytes": 141020,
       "sizeLabel": "137.7 KB",
-      "sha256": "fe16ad949e2b0019ada9ad22c031d2cebf47f3921ff290cdf81a846941bc9f22",
+      "sha256": "0c787340e48bd83984342c7debdabd7297fa36b7a5048637c06f7d8bcd064166",
       "counts": {
         "hubs": 209,
         "events": 5,
@@ -259,15 +279,15 @@
       "version": "2026-11-24",
       "file": "region_oceania_antarctica.json",
       "url": "./data/packs/region_oceania_antarctica.json",
-      "sizeBytes": 81634,
-      "sizeLabel": "79.7 KB",
-      "sha256": "4bc17e6f76c47e0a967efe2deb94ba9e902dcb6e00023a29df6d8ab8886343ab",
+      "sizeBytes": 107592,
+      "sizeLabel": "105.1 KB",
+      "sha256": "ad7277d55493f283267465d2d9fb60a20a41baff5daf00e3cb73c5c6e15c0cc0",
       "counts": {
-        "hubs": 117,
+        "hubs": 155,
         "events": 1,
         "missions": 0,
         "domains": 0,
-        "trails": 0
+        "trails": 1
       }
     },
     {

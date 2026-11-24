@@ -255,7 +255,7 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
 
   const [
     flagships, startups, history, space, domains,
-    stemAiCs, stemMath, stemBioMed, stemChemEarthEng, stemEngineering,
+    stemAiCs, stemMath, stemBioMed, stemChemEarthEng, stemEngineering, stemPolar,
     stemTimeline, stemDomains, rabbitTrails, offlinePacks
   ] = await Promise.all([
     fetchJsonSafe(f.flagships),
@@ -268,6 +268,7 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
     fetchJsonSafe(f.stemBioMed),
     fetchJsonSafe(f.stemChemEarthEng),
     fetchJsonSafe(f.stemEngineering),
+    fetchJsonSafe(f.stemPolar),
     fetchJsonSafe(f.stemTimeline),
     fetchJsonSafe(f.stemDomains),
     fetchJsonSafe(f.rabbitTrails),
@@ -280,6 +281,7 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
   if (stemBioMed?.hubs) mergeHubs(stemBioMed.hubs, "stem");
   if (stemChemEarthEng?.hubs) mergeHubs(stemChemEarthEng.hubs, "stem");
   if (stemEngineering?.hubs) mergeHubs(stemEngineering.hubs, "stem");
+  if (stemPolar?.hubs) mergeHubs(stemPolar.hubs, "stem");
   if (startups?.hubs) mergeHubs(startups.hubs, "deeptech");
   const localCustom = loadLocalCustomNodes();
   if (localCustom.length) mergeHubs(localCustom, "custom");
