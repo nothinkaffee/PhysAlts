@@ -11,7 +11,7 @@ import { initCloudSync, loadLocalPrefs } from "./cloud_sync.js";
 import { refreshAccountHeader } from "./account_ui.js";
 import {
   initUI, refreshDbBadge, renderStageMenu,
-  selectHubNode, selectSpaceMission, closeDropdown, applyDeepLinkFromUrl
+  selectHubNode, openClusterSheet, selectSpaceMission, closeDropdown, applyDeepLinkFromUrl
 } from "./ui_controller.js";
 
 async function boot() {
@@ -45,6 +45,7 @@ async function boot() {
     }),
     initGlobe({
       onSelectNode: (id, fly) => selectHubNode(id, fly),
+      onSelectStack: (stack) => openClusterSheet(stack),
       onBackgroundClick: () => closeDropdown()
     }).catch((err) => {
       console.error("Globe init error:", err);

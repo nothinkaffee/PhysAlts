@@ -239,6 +239,94 @@ function closeModal() {
   clearExploreDockActive();
 }
 
+let activeStackContext = null;
+
+export function closeClusterSheet() {
+  const sheet = document.getElementById("cluster-sheet");
+  if (!sheet || sheet.classList.contains("hidden")) return;
+  sheet.classList.add("hidden");
+  if (document.getElementById("place-card")?.classList.contains("hidden")) {
+    document.body.classList.remove("card-open");
+  }
+}
+
+export function openClusterSheet(stack) {
+  if (!stack || !Array.isArray(stack.nodes) || !stack.nodes.length) return;
+  activeStackContext = stack;
+  closeAllSurfaces("stack");
+
+  const sheet = document.getElementById("cluster-sheet");
+  const titleEl = document.getElementById("cluster-sheet-title");
+  const subEl = document.getElementById("cluster-sheet-sub");
+  const filterInp = document.getElementById("cluster-sheet-filter");
+  const listEl = document.getElementById("cluster-sheet-list");
+  if (!sheet || !listEl) return;
+
+  if (titleEl) titleEl.textContent = stack.title || "Nearby Institutions";
+  if (subEl) subEl.textContent = `${stack.nodes.length.toLocaleString()} institutions here · Ranked by Impact`;
+
+  if (filterInp) {
+    filterInp.value = "";
+    filterInp.placeholder = `Filter ${stack.nodes.length} here…`;
+    filterInp.classList.toggle("hidden", stack.nodes.length <= 8);
+  }
+
+  const renderRows = (q = "") => {
+    const query = q.trim().toLowerCase();
+    const matched = query
+      ? stack.nodes.filter(n =>
+          `${n.name} ${BRANCH_SHORT_LABELS[n.branch] || ""} ${n.sector || ""} ${n.entityType || ""}`
+            .toLowerCase()
+            .includes(query)
+        )
+      : stack.nodes;
+
+    if (!matched.length) {
+      listEl.innerHTML = `<div class="text-center text-[13.5px] text-neutral-400 py-6">No matching institutions here</div>`;
+      return;
+    }
+
+    listEl.innerHTML = matched.slice(0, 120).map(n => {
+      const br = BRANCH_SHORT_LABELS[n.branch] || n.sector || "STEM";
+      const kind = n.entityType === "startup" || n.entityType === "company" ? "Company"
+        : n.entityType === "lab" ? "Lab"
+        : n.entityType === "institute" ? "Institute"
+        : "University";
+      const imp = n.impactScore ? `<span class="text-[12px] text-neutral-400 tabular-nums shrink-0">${n.impactScore}</span>` : "";
+      const isCur = n.tier === "flagship" || n.tier === "stem";
+      return `
+        <button type="button" data-stack-hub="${esc(n.id)}" class="glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-3">
+          <div class="min-w-0">
+            <div class="text-[14px] ${isCur ? "font-semibold text-white" : "font-medium text-neutral-200"} truncate">${esc(n.name)}</div>
+            <div class="text-[12px] text-neutral-400 truncate mt-0.5">${esc(br)} · ${esc(kind)}</div>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            ${imp}
+            <span class="accent-text text-[13px]">→</span>
+          </div>
+        </button>
+      `;
+    }).join("");
+
+    listEl.querySelectorAll("[data-stack-hub]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectHubNode(btn.dataset.stackHub, false, { fromStack: stack });
+      });
+    });
+  };
+
+  renderRows("");
+  if (filterInp) {
+    filterInp.oninput = () => renderRows(filterInp.value);
+  }
+  const closeBtn = document.getElementById("btn-close-cluster-sheet");
+  if (closeBtn) closeBtn.onclick = () => closeClusterSheet();
+
+  sheet.classList.remove("hidden");
+  document.body.classList.add("card-open");
+  listEl.scrollTop = 0;
+}
+
 /**
  * Single-Surface Mutual Exclusion State Machine:
  * Guarantees overlay surfaces never stack awkwardly — accepts a single key or array of keys to keep open.
@@ -249,6 +337,7 @@ function closeAllSurfaces(except = null) {
   if (!keep.has("modal")) closeModal();
   if (!keep.has("auth")) closeAuthModal();
   if (!keep.has("card")) closePlaceCard();
+  if (!keep.has("stack")) closeClusterSheet();
   if (!keep.has("rabbit")) closeRabbitPopover();
   if (!keep.has("filter")) closeFilterPopover();
 }
@@ -879,6 +968,17 @@ export function selectHubNode(id, fly = true, opts = {}) {
 
   const card = document.getElementById("place-card");
   if (!card) return;
+  const backStackBtn = document.getElementById("btn-card-stack-back");
+  if (backStackBtn) {
+    if (opts.fromStack?.nodes?.length) {
+      backStackBtn.textContent = `← ${opts.fromStack.title || "Nearby"} (${opts.fromStack.nodes.length})`;
+      backStackBtn.classList.remove("hidden");
+      backStackBtn.onclick = () => openClusterSheet(opts.fromStack);
+    } else {
+      backStackBtn.classList.add("hidden");
+      backStackBtn.onclick = null;
+    }
+  }
   card.classList.remove("hidden");
   document.body.classList.add("card-open");
   const scrollBody = document.getElementById("card-scroll-body");

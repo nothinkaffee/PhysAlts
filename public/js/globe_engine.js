@@ -110,6 +110,7 @@ const REDUCED_MOTION = typeof window !== "undefined" && Boolean(window.matchMedi
 let hoveredKey = null;
 let drawHudFn = () => {};
 let onSelectNodeCb = () => {};
+let onSelectStackCb = () => {};
 let onBackgroundClickCb = () => {};
 
 // Multi-tier tile cache (RAM ArrayBuffer + Cache Storage API) for instant globe loads
@@ -624,16 +625,21 @@ function findHitAt(px, py) {
   // 2. Nearest unclustered node within generous padded radius (min 22px radius = 44px diameter)
   let bestNode = null;
   let bestNodeDist = Infinity;
+  let bestStack = null;
+  let bestStackDist = Infinity;
   let bestCluster = null;
   let bestClusterDist = Infinity;
 
   for (const h of interactiveHits) {
-    if (h.type === "pill") continue;
+    if (h.type === "pill" || h.rect) continue;
     const dx = px - h.x;
     const dy = py - h.y;
     const d2 = dx * dx + dy * dy;
     if (d2 <= h.r * h.r) {
-      if (h.type === "node" && d2 < bestNodeDist) {
+      if (h.type === "stack" && d2 < bestStackDist) {
+        bestStackDist = d2;
+        bestStack = h;
+      } else if (h.type === "node" && d2 < bestNodeDist) {
         bestNodeDist = d2;
         bestNode = h;
       } else if (h.type === "cluster" && d2 < bestClusterDist) {
@@ -643,7 +649,9 @@ function findHitAt(px, py) {
     }
   }
 
+  if (bestStack && (!bestNode || bestStackDist <= bestNodeDist + 144)) return bestStack;
   if (bestNode) return bestNode;
+  if (bestStack) return bestStack;
   if (bestCluster) return bestCluster;
   return null;
 }
@@ -812,13 +820,15 @@ function initGlobeHudOverlay() {
 
       let kept = [];
       if (zoom >= 9.5) {
-        // Spiderfy co-located nodes (within 18px) into neat radial rings around their city pin
+        // Group co-located nodes (within 22px):
+        // - 2..6 nodes: neat breathable mini spiderfy ring
+        // - >6 nodes: NEVER draw an unreadable 80-dot dandelion wheel! Collapse into a crisp tappable Stack Hub badge!
         const groups = [];
         for (const p of projected) {
           let g = null;
           for (const cand of groups) {
             const dx = cand.x - p.x, dy = cand.y - p.y;
-            if (dx * dx + dy * dy < 18 * 18) { g = cand; break; }
+            if (dx * dx + dy * dy < 22 * 22) { g = cand; break; }
           }
           if (g) g.items.push(p);
           else groups.push({ x: p.x, y: p.y, items: [p] });
@@ -829,16 +839,50 @@ function initGlobeHudOverlay() {
             continue;
           }
           const n = g.items.length;
-          const ringR = Math.min(72, Math.max(24, n * 5.5));
-          g.items.forEach((p, idx) => {
-            const ang = -Math.PI / 2 + (idx * Math.PI * 2) / n;
-            p.anchorX = g.x;
-            p.anchorY = g.y;
-            p.x = g.x + Math.cos(ang) * ringR;
-            p.y = g.y + Math.sin(ang) * ringR;
-            p.spiderfied = true;
-            kept.push(p);
-          });
+          if (n <= 6) {
+            const ringR = Math.max(24, n * 6.5);
+            g.items.forEach((p, idx) => {
+              const ang = -Math.PI / 2 + (idx * Math.PI * 2) / n;
+              p.anchorX = g.x;
+              p.anchorY = g.y;
+              p.x = g.x + Math.cos(ang) * ringR;
+              p.y = g.y + Math.sin(ang) * ringR;
+              p.spiderfied = true;
+              kept.push(p);
+            });
+          } else {
+            const members = g.items
+              .map(it => it.node || it.top)
+              .filter(Boolean)
+              .sort((a, b) => {
+                const pa = (a.tier === "flagship" || a.tier === "stem" ? 1 : 0);
+                const pb = (b.tier === "flagship" || b.tier === "stem" ? 1 : 0);
+                return (pb - pa) || ((b.impactScore || 0) - (a.impactScore || 0)) || a.name.localeCompare(b.name);
+              });
+            const avgLat = g.items.reduce((s, it) => s + it.lat, 0) / n;
+            const avgLng = g.items.reduce((s, it) => s + it.lng, 0) / n;
+            const top = members[0] || g.items[0].top;
+            const cityRaw = (top?.city || "").split(",")[0].trim();
+            kept.push({
+              isCluster: true,
+              isStack: true,
+              node: null,
+              top,
+              stackNodes: members,
+              stackTitle: cityRaw || top?.country || "Nearby Institutions",
+              lat: avgLat,
+              lng: avgLng,
+              x: g.x,
+              y: g.y,
+              anchorX: g.x,
+              anchorY: g.y,
+              spiderfied: false,
+              count: members.length,
+              span: 0,
+              selected: g.items.some(it => it.selected),
+              stableKey: `stack:${top?.id || Math.round(avgLat * 1000)}`
+            });
+          }
         }
       } else {
         for (const p of projected) {
@@ -879,18 +923,23 @@ function initGlobeHudOverlay() {
           if (underUi(x, y, radius)) continue;
           const cKey = `c:${item.top?.id || ""}:${Math.round(item.lat * 100)}:${Math.round(item.lng * 100)}`;
           const isHov = hoveredKey === cKey;
+          const isStack = Boolean(item.isStack);
 
           ctx.beginPath();
-          ctx.arc(x, y, radius + (isHov ? 7 : 5), 0, Math.PI * 2);
-          ctx.fillStyle = isHov ? "rgba(255, 255, 255, 0.22)" : "rgba(228, 228, 231, 0.13)";
+          ctx.arc(x, y, radius + (isHov ? 8 : 5), 0, Math.PI * 2);
+          ctx.fillStyle = isStack
+            ? (isHov ? "rgba(196, 98, 98, 0.34)" : "rgba(160, 70, 70, 0.24)")
+            : (isHov ? "rgba(255, 255, 255, 0.22)" : "rgba(228, 228, 231, 0.13)");
           ctx.fill();
 
           ctx.beginPath();
           ctx.arc(x, y, radius, 0, Math.PI * 2);
-          ctx.fillStyle = "rgba(16, 16, 18, 0.86)";
+          ctx.fillStyle = isStack ? "rgba(12, 12, 14, 0.92)" : "rgba(16, 16, 18, 0.86)";
           ctx.fill();
-          ctx.lineWidth = isHov ? 2 : 1.35;
-          ctx.strokeStyle = isHov ? "#ffffff" : "rgba(255, 255, 255, 0.72)";
+          ctx.lineWidth = isHov ? 2.2 : isStack ? 1.85 : 1.35;
+          ctx.strokeStyle = isStack
+            ? (isHov ? "#ffffff" : "rgba(196, 98, 98, 0.92)")
+            : (isHov ? "#ffffff" : "rgba(255, 255, 255, 0.72)");
           ctx.stroke();
 
           ctx.fillStyle = "#f4f4f5";
@@ -900,9 +949,32 @@ function initGlobeHudOverlay() {
           ctx.fillText(fmtCount(count), x, y + 0.5);
 
           placedRects.push([x - radius - 2, y - radius - 2, (radius + 2) * 2, (radius + 2) * 2]);
-          hits.push({ type: "cluster", key: cKey, x, y, r: radius + 10, lng: item.lng, lat: item.lat, span: item.span });
-          if (isHov && item.top) {
-            clusterHint = { name: `${shortGlobeName(item.top.name)} + ${fmtCount(count - 1)} more`, x, y, r: radius };
+          if (isStack) {
+            hits.push({
+              type: "stack",
+              key: cKey,
+              x, y,
+              r: radius + 12,
+              lng: item.lng,
+              lat: item.lat,
+              title: item.stackTitle,
+              nodes: item.stackNodes
+            });
+            priorityLabels.push({
+              id: cKey,
+              name: `${item.stackTitle} · ${count}`,
+              x, y,
+              dotR: radius,
+              selected: item.selected,
+              hovered: isHov,
+              priority: 75,
+              stackHit: { title: item.stackTitle, lat: item.lat, lng: item.lng, nodes: item.stackNodes }
+            });
+          } else {
+            hits.push({ type: "cluster", key: cKey, x, y, r: radius + 10, lng: item.lng, lat: item.lat, span: item.span });
+            if (isHov && item.top) {
+              clusterHint = { name: `${shortGlobeName(item.top.name)} + ${fmtCount(count - 1)} more`, x, y, r: radius };
+            }
           }
         } else {
           const n = item.node;
@@ -1006,7 +1078,18 @@ function initGlobeHudOverlay() {
       ctx.fillStyle = isEmphasis ? "#ffffff" : "rgba(244, 244, 245, 0.94)";
       ctx.fillText(c.name, lx + padX, ly + pillH / 2 + 0.5);
 
-      hits.push({
+      hits.push(c.stackHit ? {
+        type: "stack",
+        key: c.id,
+        title: c.stackHit.title,
+        lat: c.stackHit.lat,
+        lng: c.stackHit.lng,
+        nodes: c.stackHit.nodes,
+        x: c.x,
+        y: c.y,
+        r: 0,
+        rect
+      } : {
         type: "node",
         key: `n:${c.id}`,
         id: c.id,
@@ -1115,12 +1198,17 @@ function initGlobeHudOverlay() {
       return;
     }
 
+    if (hit.type === "stack" && hit.nodes?.length) {
+      onSelectStackCb({ title: hit.title, lat: hit.lat, lng: hit.lng, nodes: hit.nodes });
+      return;
+    }
+
     if (hit.type === "cluster") {
       const cur = map.getZoom();
       const spanDeg = hit.span || 0;
       let targetZoom;
       if (spanDeg < 0.015) {
-        // Co-located / same-city institutions: jump straight to unclustered spiderfy zoom
+        // Co-located / same-city institutions: zoom cleanly and let stack hub badge show or open directly
         targetZoom = Math.max(cur + 2.0, 10.6);
       } else {
         // Spread cluster members comfortably across ~360px on screen, guaranteeing a visible split
@@ -1145,8 +1233,9 @@ function initGlobeHudOverlay() {
   drawHudFn();
 }
 
-export async function initGlobe({ onSelectNode, onBackgroundClick }) {
+export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick }) {
   onSelectNodeCb = onSelectNode || (() => {});
+  onSelectStackCb = onSelectStack || (() => {});
   onBackgroundClickCb = onBackgroundClick || (() => {});
 
   if (typeof window.maplibregl === "undefined") {

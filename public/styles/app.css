@@ -958,7 +958,8 @@ body.space-mode #zoom-controls .zoom-divider {
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.55);
     pointer-events: none;
   }
-  #place-card {
+  #place-card,
+  #cluster-sheet {
     left: 10px !important;
     right: 10px !important;
     width: auto !important;
@@ -967,6 +968,9 @@ body.space-mode #zoom-controls .zoom-divider {
     bottom: calc(84px + env(safe-area-inset-bottom, 0px)) !important;
     max-height: 54dvh !important;
     border-radius: 24px !important;
+  }
+  #cluster-sheet > div:nth-child(2) {
+    padding-top: 20px;
   }
   #bottom-dock {
     left: 12px !important;
@@ -1049,7 +1053,8 @@ body.space-mode #zoom-controls .zoom-divider {
 }
 
 /* Clean Editorial Overview Card, Rabbit Hole Trail Bar & Offline Packs */
-#place-card {
+#place-card,
+#cluster-sheet {
   width: clamp(318px, 27vw, 368px);
   max-width: calc(100vw - 24px);
   max-height: calc(100dvh - 178px);
