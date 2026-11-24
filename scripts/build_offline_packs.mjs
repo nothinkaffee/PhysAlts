@@ -836,6 +836,22 @@ async function loadAllSources() {
     // public/data/stem does not exist yet — completely expected before STEM build
   }
 
+  const [
+    shanghaiExtraRaw,
+    shanghai2026Raw,
+    collaborationsRaw
+  ] = await Promise.all([
+    readJsonSafe(path.join(DATA_DIR, "shanghai_extra_hubs.json")),
+    readJsonSafe(path.join(DATA_DIR, "shanghai_2026.json")),
+    readJsonSafe(path.join(DATA_DIR, "collaborations.json"))
+  ]);
+
+  const shanghaiExtraHubs = extractArray(shanghaiExtraRaw, ["hubs", "items"]).map((h) => ({
+    ...h,
+    tier: h.tier || "shanghai",
+    discipline: classifyItemDiscipline(h, "engineering")
+  }));
+
   const allHubs = dedupeHubs([
     ...physicsCuratedHubs,
     ...aiCsHubs,
@@ -843,7 +859,8 @@ async function loadAllSources() {
     ...bioMedHubs,
     ...chemEarthEngHubs,
     ...extraStemHubs,
-    ...physicsScrapedHubs
+    ...physicsScrapedHubs,
+    ...shanghaiExtraHubs
   ]);
 
   // Timeline events
@@ -888,6 +905,9 @@ async function loadAllSources() {
 
   return {
     allHubs,
+    shanghaiExtraHubs,
+    shanghai2026Raw,
+    collaborationsRaw,
     allEvents,
     eras,
     allMissions,
@@ -963,7 +983,8 @@ async function writePackFile(packSpec, payloadBody) {
     events: payloadBody.events.length,
     missions: payloadBody.missions.length,
     domains: payloadBody.domains.length,
-    trails: payloadBody.trails.length
+    trails: payloadBody.trails.length,
+    ...(payloadBody.extraCounts || {})
   };
 
   const packJson = {
@@ -982,7 +1003,9 @@ async function writePackFile(packSpec, payloadBody) {
     events: payloadBody.events,
     missions: payloadBody.missions,
     domains: payloadBody.domains,
-    trails: payloadBody.trails
+    trails: payloadBody.trails,
+    ...(payloadBody.shanghai2026 ? { shanghai2026: payloadBody.shanghai2026 } : {}),
+    ...(payloadBody.collaborations ? { collaborations: payloadBody.collaborations } : {})
   };
 
   // Compact minified JSON for fast mobile / offline download
@@ -1015,6 +1038,9 @@ async function main() {
 
   const {
     allHubs,
+    shanghaiExtraHubs,
+    shanghai2026Raw,
+    collaborationsRaw,
     allEvents,
     eras,
     allMissions,
@@ -1034,6 +1060,37 @@ async function main() {
   }
 
   const manifestPacks = [];
+
+  // 0. Dedicated ShanghaiRanking 2026 + Verified Collaborations Pack (complete offline rankings & ecosystem!)
+  if (shanghai2026Raw) {
+    const collabCount = collaborationsRaw?.collaborations?.length || 0;
+    const srUnivCount = shanghai2026Raw?.meta?.totalUniversities || Object.keys(shanghai2026Raw.universities || {}).length;
+    const srSubjCount = shanghai2026Raw?.meta?.subjectCount || (shanghai2026Raw.subjects || []).length;
+    const entry = await writePackFile(
+      {
+        id: "pack_shanghai_2026",
+        name: "ShanghaiRanking 2026 & Collaborations",
+        category: "discipline",
+        description:
+          "Complete official ARWU 2026 Top 1,000 + all 57 GRAS 2026 academic subjects (19,650 subject rows across 1,972 universities), 1,126 geocoded ranked campuses, and 150 verified University–Lab–Company collaborations."
+      },
+      {
+        hubs: shanghaiExtraHubs || [],
+        events: [],
+        missions: [],
+        domains: [],
+        trails: [],
+        shanghai2026: shanghai2026Raw,
+        collaborations: collaborationsRaw || { collaborations: [] },
+        extraCounts: {
+          rankedUniversities: srUnivCount,
+          subjects: srSubjCount,
+          collaborations: collabCount
+        }
+      }
+    );
+    manifestPacks.push(entry);
+  }
 
   // 1. Discipline Packs
   for (const def of DISCIPLINE_PACK_DEFS) {
@@ -1114,7 +1171,10 @@ async function main() {
       indexedEvents: allEvents.length,
       indexedMissions: allMissions.length,
       indexedDomains: allDomains.length,
-      indexedTrails: allTrails.length
+      indexedTrails: allTrails.length,
+      rankedUniversities: shanghai2026Raw?.meta?.totalUniversities || 0,
+      rankedSubjects: shanghai2026Raw?.meta?.subjectCount || 0,
+      collaborations: collaborationsRaw?.collaborations?.length || 0
     },
     packs: manifestPacks
   };

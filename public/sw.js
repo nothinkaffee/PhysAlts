@@ -5,12 +5,26 @@
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v20";
+const APP_CACHE = "world-physics-app-v21";
 const TILE_CACHE = "world-physics-tiles-v1";
+
+const PRECACHE_TILES = (() => {
+  const urls = [];
+  for (let z = 0; z <= 2; z++) {
+    const dim = 1 << z;
+    for (let y = 0; y < dim; y++) {
+      for (let x = 0; x < dim; x++) {
+        urls.push(`./tiles/bluemarble/${z}/${y}/${x}.jpg`);
+      }
+    }
+  }
+  return urls;
+})();
 
 const PRECACHE_APP = [
   "./",
   "./index.html",
+  "./manifest.json",
   "./styles/app.css",
   "./vendor/inter-var.woff2",
   "./vendor/tailwind.css",
@@ -18,12 +32,24 @@ const PRECACHE_APP = [
   "./vendor/maplibre-gl-csp.js",
   "./vendor/maplibre-gl-csp-worker.js",
   "./vendor/lucide.min.js",
-  "./tiles/bluemarble/0/0/0.jpg",
-  "./tiles/bluemarble/1/0/0.jpg",
-  "./tiles/bluemarble/1/0/1.jpg",
-  "./tiles/bluemarble/1/1/0.jpg",
-  "./tiles/bluemarble/1/1/1.jpg",
+  "./js/app.js",
+  "./js/config.js",
+  "./js/data_store.js",
+  "./js/globe_engine.js",
+  "./js/ui_controller.js",
+  "./js/shanghai_engine.js",
+  "./js/shanghai_ui.js",
+  "./js/custom_select.js",
+  "./js/impact_ranking.js",
+  "./js/offline_packs.js",
+  "./js/rabbit_agent.js",
+  "./js/rabbit_engine.js",
+  "./js/space_view.js",
+  "./js/account_ui.js",
+  "./js/auth_service.js",
+  "./js/cloud_sync.js",
   "./data/curated_flagships.json",
+  "./data/physics_hubs.json",
   "./data/private_startups.json",
   "./data/history_timeline.json",
   "./data/space_frontier.json",
@@ -55,9 +81,10 @@ function isGlobeTileRequest(url) {
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(APP_CACHE)
-      .then((cache) => cache.addAll(PRECACHE_APP).catch(() => {}))
-      .then(() => self.skipWaiting())
+    Promise.all([
+      caches.open(APP_CACHE).then((cache) => cache.addAll(PRECACHE_APP).catch(() => {})),
+      caches.open(TILE_CACHE).then((cache) => cache.addAll(PRECACHE_TILES).catch(() => {}))
+    ]).then(() => self.skipWaiting())
   );
 });
 
@@ -75,11 +102,11 @@ self.addEventListener("fetch", (event) => {
   if (req.method !== "GET") return;
   const url = new URL(req.url);
 
-  // Cache-First for all 3D Earth satellite tiles (matches preloaded tiles by URL string!)
+  // Cache-First for all 3D Earth satellite tiles (checks TILE_CACHE & APP_CACHE!)
   if (isGlobeTileRequest(url)) {
     event.respondWith(
       caches.open(TILE_CACHE).then(async (cache) => {
-        const cached = (await cache.match(req.url)) || (await cache.match(req));
+        const cached = (await cache.match(req.url)) || (await cache.match(req)) || (await caches.match(req));
         if (cached) return cached;
         try {
           const res = await fetch(req);
@@ -110,7 +137,7 @@ self.addEventListener("fetch", (event) => {
           if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
           return res;
         } catch {
-          return (await cache.match(req)) || Response.error();
+          return (await cache.match(req)) || (req.mode === "navigate" ? await cache.match("./index.html") : null) || Response.error();
         }
       })
     );
@@ -119,7 +146,7 @@ self.addEventListener("fetch", (event) => {
 
   event.respondWith(
     caches.open(APP_CACHE).then(async (cache) => {
-      const cached = await cache.match(req);
+      const cached = (await cache.match(req)) || (req.mode === "navigate" ? await cache.match("./index.html", { ignoreSearch: true }) : null);
       const networkPromise = fetch(req).then((res) => {
         if (res && res.ok) cache.put(req, res.clone()).catch(() => {});
         return res;

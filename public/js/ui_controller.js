@@ -1686,6 +1686,9 @@ async function renderOfflinePacksModal(bodyEl) {
       const isDownloading = pct !== undefined;
       const counts = p.counts || {};
       const statParts = [];
+      if (counts.rankedUniversities) statParts.push(`${counts.rankedUniversities.toLocaleString()} ranked unis`);
+      if (counts.subjects) statParts.push(`${counts.subjects} GRAS subjects`);
+      if (counts.collaborations) statParts.push(`${counts.collaborations} collabs`);
       if (counts.hubs) statParts.push(`${counts.hubs.toLocaleString()} hubs`);
       if (counts.events) statParts.push(`${counts.events} milestones`);
       if (counts.missions) statParts.push(`${counts.missions} space missions`);
@@ -1722,16 +1725,26 @@ async function renderOfflinePacksModal(bodyEl) {
       `;
     };
 
+    const missingPacks = packs.filter(p => !installedIds.has(p.id));
+    const missingBytes = missingPacks.reduce((s, p) => s + (Number(p.sizeBytes) || 0), 0);
+    const anyDownloading = activeDownloads.size > 0;
+
     bodyEl.innerHTML = `
       <div class="space-y-5">
         <div class="rounded-2xl bg-white/[0.045] border border-white/10 p-4 flex flex-wrap items-center justify-between gap-3">
-          <div class="space-y-0.5">
+          <div class="space-y-0.5 min-w-0 flex-1">
             <div class="text-[15px] font-semibold text-white">Local Offline Storage</div>
             <div class="text-[13.5px] text-neutral-400">
               <strong class="text-white">${stats.packCount}</strong> of ${packs.length} packages installed · <strong class="text-white">${esc(stats.totalLabel)}</strong> on device · SHA-256 verified
             </div>
           </div>
-          <span class="text-[12.5px] px-3 py-1 rounded-full bg-white/[0.07] text-neutral-200">${navigator.onLine ? "Online · Ready to sync" : "Offline Mode Active"}</span>
+          <div class="flex items-center gap-2 shrink-0">
+            ${missingPacks.length > 0 ? `
+              <button type="button" id="btn-download-all-packs" ${anyDownloading ? "disabled" : ""} class="glass-btn-active rounded-full px-3.5 py-1.5 text-[12.5px] cursor-pointer">
+                ${anyDownloading ? "Downloading…" : `Download All (${formatBytes(missingBytes)})`}
+              </button>
+            ` : `<span class="text-[12.5px] px-3 py-1 rounded-full bg-[rgba(160,70,70,0.20)] border border-[rgba(208,110,110,0.40)] text-white font-medium">✓ 100% Offline Ready</span>`}
+          </div>
         </div>
         ${groups.map(g => {
           const items = packs.filter(p => p.category === g.key);
@@ -1749,31 +1762,44 @@ async function renderOfflinePacksModal(bodyEl) {
       </div>
     `;
 
+    const installSinglePack = async (packMeta, silent = false) => {
+      activeDownloads.set(packMeta.id, 5);
+      render();
+      try {
+        const payload = await downloadPack(packMeta, (pct) => {
+          activeDownloads.set(packMeta.id, pct);
+          render();
+        });
+        activeDownloads.delete(packMeta.id);
+        if (payload && packMeta.category !== "tiles") {
+          mergeOfflinePackPayload(payload);
+          syncGlobeMarkers();
+          if (isFilterPopoverOpen()) renderFilterPopover();
+        }
+        render();
+        if (!silent) showToast(`Installed offline: ${packMeta.name}`);
+        return true;
+      } catch (err) {
+        activeDownloads.delete(packMeta.id);
+        render();
+        if (!silent) showToast(err?.message || `Download failed for ${packMeta.name}`);
+        return false;
+      }
+    };
+
+    bodyEl.querySelector("#btn-download-all-packs")?.addEventListener("click", async () => {
+      let okCount = 0;
+      for (const pm of missingPacks) {
+        const ok = await installSinglePack(pm, true);
+        if (ok) okCount++;
+      }
+      showToast(okCount === missingPacks.length ? `All ${packs.length} offline packages installed & verified` : `Installed ${okCount} of ${missingPacks.length} packages`);
+    });
+
     bodyEl.querySelectorAll("[data-pack-download]").forEach(btn => {
       btn.addEventListener("click", async () => {
-        const packId = btn.dataset.packDownload;
-        const packMeta = packs.find(x => x.id === packId);
-        if (!packMeta) return;
-        activeDownloads.set(packId, 5);
-        render();
-        try {
-          const payload = await downloadPack(packMeta, (pct) => {
-            activeDownloads.set(packId, pct);
-            render();
-          });
-          activeDownloads.delete(packId);
-          if (payload && packMeta.category !== "tiles") {
-            mergeOfflinePackPayload(payload);
-            syncGlobeMarkers();
-            if (isFilterPopoverOpen()) renderFilterPopover();
-          }
-          render();
-          showToast(`Installed offline: ${packMeta.name}`);
-        } catch (err) {
-          activeDownloads.delete(packId);
-          render();
-          showToast(err?.message || `Download failed for ${packMeta.name}`);
-        }
+        const packMeta = packs.find(x => x.id === btn.dataset.packDownload);
+        if (packMeta) await installSinglePack(packMeta, false);
       });
     });
 

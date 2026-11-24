@@ -197,9 +197,17 @@ export function mergeOfflinePackPayload(pack) {
   let added = 0;
   if (Array.isArray(pack.hubs)) {
     const curated = pack.hubs.filter(h => h.tier === "flagship" || h.tier === "stem" || h.tier === "deeptech" || h.pinned);
-    const rest = pack.hubs.filter(h => !curated.includes(h));
+    const shanghaiExtra = pack.hubs.filter(h => h.tier === "shanghai" && !curated.includes(h));
+    const rest = pack.hubs.filter(h => !curated.includes(h) && !shanghaiExtra.includes(h));
     added += mergeHubs(curated, "stem");
+    added += mergeHubs(shanghaiExtra, "shanghai");
     added += mergeHubs(rest, "scraped");
+  }
+  if (Array.isArray(pack.meta?.eras) && !store.eras.length) {
+    store.eras = pack.meta.eras.slice();
+  }
+  if (Array.isArray(pack.meta?.spaceZones) && !store.spaceZones.length) {
+    store.spaceZones = pack.meta.spaceZones.slice();
   }
   if (Array.isArray(pack.events)) mergeTimelineEvents(pack.events);
   if (Array.isArray(pack.domains)) mergeDomains(pack.domains);
@@ -208,6 +216,19 @@ export function mergeOfflinePackPayload(pack) {
     store.spaceMissions = pack.missions.slice().sort((a, b) => a.lightTimeSec - b.lightTimeSec);
   }
   rebuildIndexes();
+  if (pack.shanghai2026 && pack.shanghai2026.universities) {
+    initShanghaiData(pack.shanghai2026);
+    for (const h of store.hubs) {
+      const sr = getShanghaiRecord(h.id);
+      if (sr) {
+        h._sr = sr;
+        if (sr.arwu?.r && !h.shanghai) h.shanghai = `ARWU 2026 #${sr.arwu.r}`;
+      }
+    }
+  }
+  if (pack.collaborations) {
+    initCollaborationsData(pack.collaborations, store.hubsById);
+  }
   return added;
 }
 
