@@ -9,6 +9,7 @@
  */
 
 import { COLLABORATION_ARCS } from "./config.js";
+import { getHubContextualRank } from "./shanghai_engine.js";
 
 const arcDegreeCache = new Map();
 function getArcDegree(hubId) {
@@ -164,7 +165,7 @@ export function attachImpactScores(hubs) {
   return hubs;
 }
 
-export function sortHubsByRanking(hubs, sortBy = "impact", year = null) {
+export function sortHubsByRanking(hubs, sortBy = "shanghai", year = null, rankCtx = {}) {
   const arr = hubs.slice();
   if (sortBy === "citations") {
     return arr.sort((a, b) => (b._impact?.citations || 0) - (a._impact?.citations || 0) || (b.impactScore || 0) - (a.impactScore || 0));
@@ -175,7 +176,31 @@ export function sortHubsByRanking(hubs, sortBy = "impact", year = null) {
   if (sortBy === "name") {
     return arr.sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
   }
-  // Default: ShanghaiRanking-inspired Impact Score (era-weighted if year provided)
+  if (sortBy === "shanghai" && year == null) {
+    return arr.sort((a, b) => {
+      const ra = getHubContextualRank(a, rankCtx);
+      const rb = getHubContextualRank(b, rankCtx);
+      const hasA = ra != null;
+      const hasB = rb != null;
+      if (hasA && hasB) {
+        if (ra.rankNum !== rb.rankNum) return ra.rankNum - rb.rankNum;
+        if ((rb.score ?? -1) !== (ra.score ?? -1)) return (rb.score ?? -1) - (ra.score ?? -1);
+      } else if (hasA !== hasB) {
+        // When filtering explicitly by a Shanghai subject or Universities, ranked universities come first;
+        // otherwise keep flagship non-university labs (CERN, ASML, imec, JPL) competitive alongside top unis!
+        const strictUni = rankCtx.shanghaiSubject && rankCtx.shanghaiSubject !== "all";
+        if (strictUni || rankCtx.groupFilter === "uni") return hasA ? -1 : 1;
+        // For mixed views (e.g., Engineering -> Semiconductors with All types), rank top-50 GRAS unis & flagship labs seamlessly
+        const scoreA = hasA ? Math.max(40, 102 - Math.min(60, Math.log2(ra.rankNum + 1) * 9)) : (a.impactScore || 0);
+        const scoreB = hasB ? Math.max(40, 102 - Math.min(60, Math.log2(rb.rankNum + 1) * 9)) : (b.impactScore || 0);
+        if (Math.abs(scoreB - scoreA) > 0.01) return scoreB - scoreA;
+      }
+      const sa = a.impactScore ?? computeImpactScore(a).total;
+      const sb = b.impactScore ?? computeImpactScore(b).total;
+      return sb - sa || (b._impact?.citations || 0) - (a._impact?.citations || 0);
+    });
+  }
+  // Default / Era-weighted Research Impact Score
   return arr.sort((a, b) => {
     const sa = year != null ? scoreHubForYear(a, year) : (a.impactScore ?? computeImpactScore(a).total);
     const sb = year != null ? scoreHubForYear(b, year) : (b.impactScore ?? computeImpactScore(b).total);

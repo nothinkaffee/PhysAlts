@@ -9,9 +9,15 @@ import { SUBJECT_CONFIG, buildDefaultStages, classifyPhysicsBranch, BRANCH_TO_DI
 import { loadLocalCustomNodes } from "./cloud_sync.js";
 import { computeImpactScore, attachImpactScores, sortHubsByRanking } from "./impact_ranking.js";
 import { loadAllOfflinePacks } from "./offline_packs.js";
+import {
+  initShanghaiData,
+  initCollaborationsData,
+  getShanghaiRecord,
+  matchesShanghaiFilter
+} from "./shanghai_engine.js";
 
 export const store = {
-  // Primary geo-indexed hubs (physics flagships + STEM/AI hubs + startups + scraped global + custom)
+  // Primary geo-indexed hubs (physics flagships + STEM/AI hubs + startups + scraped global + ShanghaiRanking 2026 + custom)
   hubs: [],
   hubsById: new Map(),
   // Timeline events (1800 BCE → 2045+ across Physics & STEM/AI)
@@ -37,8 +43,9 @@ export const store = {
     discipline: "all",       // "all" | "physics" | "ai_cs" | "math" | "bio_med" | "chem_materials" | "earth_climate" | "engineering"
     groupFilter: "all",      // "all" | "lab" | "institute" | "uni" | "company" | "history"
     branch: "all",
+    shanghaiSubject: "all",  // "all" | "ARWU" | "AS0202" | ... (57 GRAS 2026 subjects)
     countryFilter: "all",
-    sortBy: "impact",        // "impact" | "citations" | "founded" | "name"
+    sortBy: "shanghai",      // "shanghai" | "impact" | "citations" | "founded" | "name"
     curatedOnly: false,
     stageOnly: false,
     stage: "undergrad",
@@ -219,6 +226,9 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
 
   // Stage 1: Instant core load (flagships + all STEM/AI hubs + startups + timelines + space + domains + rabbit trails)
   const scrapedPromise = fetchJsonSafe(f.scrapedHubs);
+  const shanghaiPromise = fetchJsonSafe(f.shanghai2026);
+  const shanghaiExtraPromise = fetchJsonSafe(f.shanghaiExtraHubs);
+  const collabsPromise = fetchJsonSafe(f.collaborations);
   const auditPromise = fetchJsonSafe(f.verificationReport);
   const ledgerPromise = fetchJsonSafe(f.provenanceLedger);
 
@@ -276,14 +286,26 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
   rebuildIndexes();
   onCoreReady?.();
 
-  // Stage 2: Merge full 155-country index + verification ledger seamlessly
-  const [scraped, audit, ledger] = await Promise.all([scrapedPromise, auditPromise, ledgerPromise]);
+  // Stage 2: Merge full 155-country index + ShanghaiRanking 2026 (ARWU + 57 GRAS subjects) + verified collaborations
+  const [scraped, shanghaiData, shanghaiExtra, collabsData, audit, ledger] = await Promise.all([
+    scrapedPromise, shanghaiPromise, shanghaiExtraPromise, collabsPromise, auditPromise, ledgerPromise
+  ]);
   if (scraped?.hubs) mergeHubs(scraped.hubs, "scraped");
+  if (shanghaiExtra?.hubs) mergeHubs(shanghaiExtra.hubs, "shanghai");
+  if (shanghaiData) initShanghaiData(shanghaiData);
   if (audit) store.verificationReport = audit;
   if (ledger) store.provenanceLedger = ledger;
 
   attachImpactScores(store.hubs);
   rebuildIndexes();
+  for (const h of store.hubs) {
+    const sr = getShanghaiRecord(h.id);
+    if (sr) {
+      h._sr = sr;
+      if (sr.arwu?.r && !h.shanghai) h.shanghai = `ARWU 2026 #${sr.arwu.r}`;
+    }
+  }
+  initCollaborationsData(collabsData, store.hubsById);
   return {
     totalHubs: store.hubs.length,
     totalCountries: store.countries.size,
@@ -353,6 +375,7 @@ export function getFilteredHubs(overrides = {}) {
   const discipline = overrides.discipline !== undefined ? overrides.discipline : s.discipline;
   const groupFilter = overrides.groupFilter !== undefined ? overrides.groupFilter : s.groupFilter;
   const branch = overrides.branch !== undefined ? overrides.branch : s.branch;
+  const shanghaiSubject = overrides.shanghaiSubject !== undefined ? overrides.shanghaiSubject : s.shanghaiSubject;
   const countryFilter = overrides.countryFilter !== undefined ? overrides.countryFilter : s.countryFilter;
   const curatedOnly = overrides.curatedOnly !== undefined ? overrides.curatedOnly : s.curatedOnly;
   const stageOnly = overrides.stageOnly !== undefined ? overrides.stageOnly : s.stageOnly;
@@ -360,16 +383,38 @@ export function getFilteredHubs(overrides = {}) {
   const sortBy = overrides.sortBy !== undefined ? overrides.sortBy : s.sortBy;
 
   const filtered = store.hubs.filter(h => {
-    if (discipline !== "all" && h.discipline !== discipline) return false;
     if (groupFilter !== "all" && !matchesGroup(h, groupFilter)) return false;
-    if (branch !== "all" && h.branch !== branch) return false;
     if (countryFilter !== "all" && h.country !== countryFilter) return false;
     if (curatedOnly && h.tier !== "flagship" && h.tier !== "stem" && h.tier !== "deeptech") return false;
     if (stageOnly && stage !== "all" && !h.stages) return false;
+
+    // Explicit ShanghaiRanking 2026 subject or ARWU Top 1,000 filter
+    if (shanghaiSubject && shanghaiSubject !== "all") {
+      return matchesShanghaiFilter(h, { shanghaiSubject });
+    }
+
+    // Discipline & Subfield filter: matches native STEM classification OR official GRAS 2026 subject membership!
+    if (discipline !== "all") {
+      const nativeDisc = h.discipline === discipline;
+      const srDisc = matchesShanghaiFilter(h, { discipline });
+      if (!nativeDisc && !srDisc) return false;
+    }
+    if (branch !== "all") {
+      const nativeBranch = h.branch === branch;
+      const srBranch = matchesShanghaiFilter(h, { branch });
+      if (!nativeBranch && !srBranch) return false;
+    }
     return true;
   });
 
-  return overrides.skipSort ? filtered : sortHubsByRanking(filtered, sortBy, s.timeMode ? s.timeYear : null);
+  return overrides.skipSort
+    ? filtered
+    : sortHubsByRanking(filtered, sortBy, s.timeMode ? s.timeYear : null, {
+        shanghaiSubject,
+        discipline,
+        branch,
+        groupFilter
+      });
 }
 
 function matchesGroup(h, groupFilter) {

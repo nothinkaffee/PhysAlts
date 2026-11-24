@@ -127,12 +127,16 @@
         <div id="filter-live-count" class="text-[12.5px] text-neutral-400 whitespace-nowrap truncate">Showing all institutions</div>
       </div>
       <div class="flex items-center gap-1.5 shrink-0">
-        <button id="btn-filter-offline" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1.5" title="Download Organic-Maps style offline STEM & region packages (O)">
+        <button id="btn-filter-rankings" type="button" class="accent-chip rounded-full px-2.5 py-1.5 text-[12.5px] inline-flex items-center gap-1 cursor-pointer" title="Browse full ShanghaiRanking 2026 (ARWU + 57 GRAS subjects)">
+          <i data-lucide="award" class="w-3.5 h-3.5 shrink-0"></i>
+          <span>Rankings</span>
+        </button>
+        <button id="btn-filter-offline" type="button" class="glass-btn rounded-full px-2.5 py-1.5 text-[12.5px] inline-flex items-center gap-1" title="Download Organic-Maps style offline STEM & region packages (O)">
           <i data-lucide="download" class="w-3.5 h-3.5 accent-text shrink-0"></i>
           <span>Offline</span>
           <span id="offline-pack-count" class="hidden filter-chip-count">0</span>
         </button>
-        <button id="btn-filter-reset" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px]">Reset</button>
+        <button id="btn-filter-reset" type="button" class="glass-btn rounded-full px-2.5 py-1.5 text-[12.5px]">Reset</button>
         <button id="btn-close-filter-popover" type="button" aria-label="Close filters" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]">✕</button>
       </div>
     </div>
@@ -148,7 +152,14 @@
       <div class="section-label">Type</div>
       <div id="filter-type-chips" class="flex flex-wrap gap-1.5"></div>
     </div>
-    <div class="filter-bottom-grid border-t border-white/10 pt-3">
+    <div class="space-y-1 border-t border-white/10 pt-3 min-w-0">
+      <div class="flex items-center justify-between gap-2">
+        <label for="filter-shanghai-select" class="section-label block">ShanghaiRanking 2026 Subject</label>
+        <button id="btn-open-shanghai-table" type="button" class="text-[12px] accent-link bg-transparent border-0 p-0 cursor-pointer">Full Table →</button>
+      </div>
+      <select id="filter-shanghai-select" class="filter-select"></select>
+    </div>
+    <div class="filter-bottom-grid pt-1">
       <div class="space-y-1 min-w-0">
         <label for="filter-country-select" class="section-label block">Country</label>
         <select id="filter-country-select" class="filter-select"></select>
@@ -156,7 +167,8 @@
       <div class="space-y-1 min-w-0">
         <label for="filter-sort-select" class="section-label block">Rank By</label>
         <select id="filter-sort-select" class="filter-select">
-          <option value="impact">Research Impact (ARWU)</option>
+          <option value="shanghai">ShanghaiRanking 2026</option>
+          <option value="impact">PhysALT Impact Index</option>
           <option value="citations">OpenAlex Citations</option>
           <option value="founded">Oldest Founded</option>
           <option value="name">Alphabetical (A → Z)</option>
@@ -184,8 +196,8 @@
           id="search-input"
           type="text"
           autocomplete="off"
-          aria-label="Search STEM labs, countries, eras, space missions, or research topic"
-          placeholder="Search CERN, DeepMind, AlphaFold, Euclid, Voyager…"
+          aria-label="Search STEM labs, countries, eras, space missions, ShanghaiRanking subjects, or research topic"
+          placeholder="Search MIT, Semiconductors, ASML, ShanghaiRanking, Voyager…"
           class="bg-transparent border-0 outline-none text-[16px] text-white placeholder-neutral-500 flex-1 min-w-0"
         />
         <button id="btn-spotlight-agent" type="button" title="Curate official reference nodes, papers & fun facts for a deep rabbit hole" class="accent-chip rounded-full px-3 py-1.5 text-[13px] font-medium inline-flex items-center gap-1.5 shrink-0 cursor-pointer">
@@ -223,6 +235,12 @@
       <!-- Official Primary Doors -->
       <div id="card-links" class="flex flex-wrap items-center gap-x-2.5 gap-y-2 pt-0.5"></div>
 
+      <!-- Official ShanghaiRanking 2026 (ARWU & GRAS Subject Rankings) -->
+      <div id="card-shanghai-wrap" class="hidden space-y-2 pt-1 min-w-0"></div>
+
+      <!-- Verified Collaborations & Nearby Labs / Companies Ecosystem -->
+      <div id="card-ecosystem-wrap" class="hidden space-y-2.5 pt-1 min-w-0"></div>
+
       <!-- Compact Keep Exploring Chips -->
       <div id="card-rabbit-wrap" class="hidden space-y-2 pt-1 min-w-0">
         <div class="section-label text-[13px]">Keep Exploring</div>
@@ -234,7 +252,7 @@
       <!-- Optional Expanded Research Details -->
       <div id="card-deeper-wrap" class="hidden space-y-4 border-t border-white/10 pt-3.5">
         <div id="deeper-impact-wrap" class="hidden">
-          <div class="section-label mb-2 text-[13px]">Research Impact (ARWU-Inspired)</div>
+          <div class="section-label mb-2 text-[13px]">ShanghaiRanking 2026 & Research Impact</div>
           <div id="deeper-impact" class="space-y-2"></div>
         </div>
         <div>

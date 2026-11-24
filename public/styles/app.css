@@ -432,6 +432,13 @@ select option,
   background: #141416;
   color: #f4f4f5;
 }
+select optgroup,
+.filter-select optgroup {
+  background: #0d0d10;
+  color: #a1a1aa;
+  font-style: normal;
+  font-weight: 600;
+}
 
 .filter-chip {
   display: inline-flex;

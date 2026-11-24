@@ -39,6 +39,13 @@ import {
   fetchPackManifest, getDownloadedPackIds, getDownloadedPackMeta,
   downloadPack, deletePack, exportPackToFile, getOfflineStorageStats, formatBytes
 } from "./offline_packs.js";
+import {
+  getShanghaiState, getSubjectMeta, getHubContextualRank
+} from "./shanghai_engine.js";
+import {
+  renderShanghaiCardSection, renderEcosystemCardSection,
+  renderShanghaiDeeperBreakdown, renderRankingsModal
+} from "./shanghai_ui.js";
 
 let activeWikiReq = 0;
 let activeAgentReq = 0;
@@ -472,6 +479,8 @@ export function selectSpaceMission(missionId) {
   document.getElementById("card-sub").textContent = `${m.agency} (${m.country}) · Launched ${m.launchYear} · ${m.distanceAU} AU`;
   document.getElementById("card-summary").textContent = m.summary || m.physicsDiscoveries || "";
   document.getElementById("card-stage-box")?.classList.add("hidden");
+  document.getElementById("card-shanghai-wrap")?.classList.add("hidden");
+  document.getElementById("card-ecosystem-wrap")?.classList.add("hidden");
 
   const extra = document.getElementById("card-extra-chips");
   if (extra) {
@@ -994,34 +1003,20 @@ export function selectHubNode(id, fly = true, opts = {}) {
   if (node.tier !== "timeline") {
     const imp = node._impact || computeImpactScore(node);
     const eraScore = store.state.timeMode ? scoreHubForYear(node, store.state.timeYear) : imp.total;
-    impactSuffix = ` · Impact ${eraScore}`;
+    const ctxRank = !store.state.timeMode ? getHubContextualRank(node, {
+      shanghaiSubject: store.state.shanghaiSubject,
+      discipline: store.state.discipline,
+      branch: store.state.branch
+    }) : null;
+    if (ctxRank) {
+      impactSuffix = ctxRank.isArwu
+        ? ` · ARWU #${ctxRank.rankLabel}`
+        : ` · GRAS #${ctxRank.rankLabel}`;
+    } else {
+      impactSuffix = ` · Impact ${eraScore}`;
+    }
     if (deeperImpactWrap && deeperImpactEl) {
-      const b = imp.breakdown || {};
-      const pillars = [
-        { label: "Laureates & Awards", val: b.awards || 0, max: 30 },
-        { label: "Citation Volume", val: b.output || 0, max: 25 },
-        { label: "Impact per Work", val: b.cnci || 0, max: 20 },
-        { label: "Infrastructure", val: b.infra || 0, max: 15 },
-        { label: "Collaboration", val: b.collab || 0, max: 10 }
-      ];
-      deeperImpactEl.innerHTML = `
-        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-3.5 space-y-2">
-          <div class="flex items-center justify-between text-[13px]">
-            <span class="font-medium text-white">${esc(imp.tierLabel)}</span>
-            <span class="accent-text font-semibold tabular-nums">${eraScore} / 100</span>
-          </div>
-          ${pillars.map(p => `
-            <div class="space-y-1">
-              <div class="flex items-center justify-between text-[12px] text-neutral-400">
-                <span>${p.label}</span>
-                <span class="tabular-nums text-neutral-300">${p.val}/${p.max}</span>
-              </div>
-              <div class="impact-bar-track"><div class="impact-bar-fill" style="width:${Math.round((p.val / p.max) * 100)}%"></div></div>
-            </div>
-          `).join("")}
-          ${node.nobel ? `<div class="text-[12px] text-neutral-300 pt-1 border-t border-white/10">${esc(node.nobel)}</div>` : ""}
-        </div>
-      `;
+      deeperImpactEl.innerHTML = renderShanghaiDeeperBreakdown(node, imp, eraScore);
       deeperImpactWrap.classList.remove("hidden");
     }
   } else {
@@ -1034,6 +1029,16 @@ export function selectHubNode(id, fly = true, opts = {}) {
   document.getElementById("card-summary").textContent = node.summary;
 
   updateBookmarkButtonUI(node.id);
+
+  // Official ShanghaiRanking 2026 Profile (ARWU + GRAS 57 subjects + 5-indicator breakdown)
+  renderShanghaiCardSection(node, {
+    onOpenSubjectTable: (subjCode) => openModal("rankings", subjCode)
+  });
+
+  // Verified Research Collaborations & Nearby Labs/Companies Ecosystem
+  renderEcosystemCardSection(node, {
+    onSelectHub: (targetId) => selectHubNode(targetId, true)
+  });
 
   // 3 Typed Semantic Keep Exploring chips (Deeper · Cross-STEM/Spinout · Space/Wildcard — zero text bloat)
   const rWrap = document.getElementById("card-rabbit-wrap");
@@ -1312,7 +1317,9 @@ function renderSearchDropdown(query) {
       <div class="px-2 pb-2 space-y-2.5">
         <div class="section-label">Jump straight to</div>
         <div class="flex flex-wrap gap-1.5">
-          ${["CERN", "DeepMind", "Broad Institute", "IHÉS", "IceCube", "Voyager 1", "AlphaFold", "ITER"].map(tag => `
+          <button type="button" data-pick-sr="AS0202" class="accent-chip rounded-full px-3 py-1.5 text-[13.5px] cursor-pointer">ShanghaiRanking 2026 · Semiconductors / EEE</button>
+          <button type="button" data-pick-sr="ARWU" class="glass-btn rounded-full px-3 py-1.5 text-[13.5px] cursor-pointer">ARWU 2026 Top 1,000</button>
+          ${["CERN", "ASML", "imec", "DeepMind", "Broad Institute", "Voyager 1", "ITER"].map(tag => `
             <button type="button" data-spot-chip="${esc(tag)}" class="glass-btn rounded-full px-3 py-1.5 text-[13.5px]">${esc(tag)}</button>
           `).join("")}
         </div>
@@ -1328,6 +1335,43 @@ function renderSearchDropdown(query) {
         <span class="accent-text text-[13px] font-semibold shrink-0">Curate →</span>
       </button>
     `);
+
+    // Match official ShanghaiRanking 2026 subjects (including semiconductor/chip aliases!)
+    const sh = getShanghaiState();
+    if (sh.loaded) {
+      const ql = q.toLowerCase();
+      const isSemiQuery = /semiconductor|chip|lithograph|euv|vlsi|photonic|fab|microelectron/i.test(ql);
+      const isShanghaiQuery = /shanghai|arwu|gras|rank/i.test(ql);
+      const matchedSubjs = sh.subjects.filter(s => {
+        if (s.name.toLowerCase().includes(ql) || s.category.toLowerCase().includes(ql)) return true;
+        if (isSemiQuery && ["AS0202", "AS0214", "AS0206", "AS0207"].includes(s.code)) return true;
+        return false;
+      }).slice(0, 4);
+
+      if (isShanghaiQuery || matchedSubjs.length) {
+        parts.push(`<div class="section-label px-2 pt-2 pb-1">ShanghaiRanking 2026 Subject Rankings</div>`);
+        if (isShanghaiQuery) {
+          parts.push(`
+            <button type="button" data-pick-sr="ARWU" class="spot-row pick-sr w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
+              <div class="min-w-0">
+                <div class="text-[14.5px] font-medium text-white truncate">ARWU 2026 — Academic Ranking of World Universities</div>
+                <div class="text-[13px] text-neutral-400 truncate mt-0.5">All 1,000 ranked universities · 6 official indicators</div>
+              </div>
+              <span class="text-[13px] accent-text font-medium shrink-0">Open Table →</span>
+            </button>
+          `);
+        }
+        parts.push(matchedSubjs.map(s => `
+          <button type="button" data-pick-sr="${esc(s.code)}" class="spot-row pick-sr w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
+            <div class="min-w-0">
+              <div class="text-[14.5px] font-medium text-white truncate">GRAS 2026 · ${esc(s.name)}</div>
+              <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(s.category)} · ${s.count} ranked universities</div>
+            </div>
+            <span class="text-[13px] accent-text font-medium shrink-0">Rankings →</span>
+          </button>
+        `).join(""));
+      }
+    }
   }
 
   const { hubs, events, missions, subdomains, trails } = universalSearch(q, 8);
@@ -1469,6 +1513,12 @@ function renderSearchDropdown(query) {
       openModal("domains", btn.dataset.pickSub);
     });
   });
+  box.querySelectorAll("[data-pick-sr]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      closeSpotlight();
+      openModal("rankings", btn.dataset.pickSr);
+    });
+  });
 }
 
 // =========================================================================
@@ -1484,13 +1534,14 @@ export function openModal(mode, focusId = null) {
 
   backdrop.classList.remove("hidden");
   clearExploreDockActive();
-  if (mode === "domains") document.getElementById("btn-open-domains")?.classList.add("glass-btn-active");
+  if (mode === "domains" || mode === "rankings") document.getElementById("btn-open-domains")?.classList.add("glass-btn-active");
   if (mode === "countries") document.getElementById("btn-open-countries")?.classList.add("glass-btn-active");
   if (mode === "pathways" || mode === "account" || mode === "offline") {
     document.getElementById("btn-open-pathways")?.classList.add("glass-btn-active");
   }
   const titles = {
     domains: "STEM Domains, Trails & Open Materials",
+    rankings: "ShanghaiRanking 2026 (ARWU & 57 GRAS Subjects)",
     countries: "Countries & Continents",
     live: "Live Open-Science Registry Search",
     offline: "Offline Packages (Organic Maps Style)",
@@ -1503,6 +1554,35 @@ export function openModal(mode, focusId = null) {
   titleEl.textContent = titles[mode] || "Explore";
 
   if (mode === "domains") renderDomainsModal(bodyEl, focusId);
+  if (mode === "rankings") {
+    renderRankingsModal(bodyEl, focusId, {
+      onSelectHub: (hubId, subjectCode) => {
+        closeModal();
+        if (subjectCode && subjectCode !== "all") {
+          store.state.shanghaiSubject = subjectCode;
+          store.state.sortBy = "shanghai";
+          syncGlobeMarkers();
+          updateActiveFiltersPill();
+        }
+        selectHubNode(hubId, true);
+      },
+      onMapSubjectOnGlobe: (subjectCode, country) => {
+        closeModal();
+        if (store.state.viewMode === "space") setViewMode("earth");
+        store.state.discipline = "all";
+        store.state.branch = "all";
+        store.state.shanghaiSubject = subjectCode || "ARWU";
+        store.state.countryFilter = country || "all";
+        store.state.sortBy = "shanghai";
+        syncGlobeMarkers();
+        updateActiveFiltersPill();
+        const topHub = getFilteredHubs()[0];
+        if (topHub) flyToHub(topHub, country && country !== "all" ? 4.8 : 2.5);
+        const sMeta = subjectCode === "ARWU" ? "ARWU 2026 Top 1,000" : (getSubjectMeta(subjectCode)?.name || subjectCode);
+        showToast(`Mapped ShanghaiRanking 2026: ${sMeta}`);
+      }
+    });
+  }
   if (mode === "countries") renderCountriesModal(bodyEl);
   if (mode === "live") renderLiveSearchModal(bodyEl);
   if (mode === "offline") renderOfflinePacksModal(bodyEl);
@@ -1822,6 +1902,13 @@ function renderDomainsModal(bodyEl, focusDomainId = null, focusDiscipline = null
 
   bodyEl.innerHTML = `
     <div class="space-y-5">
+      <button type="button" id="btn-dom-open-rankings" class="glass-row w-full text-left rounded-2xl p-4 flex items-center justify-between gap-3 cursor-pointer border border-[rgba(160,70,70,0.38)] bg-[rgba(160,70,70,0.10)]">
+        <div class="min-w-0">
+          <div class="text-[14.5px] font-semibold text-white">ShanghaiRanking 2026 — ARWU &amp; 57 Subject Rankings</div>
+          <div class="text-[12.5px] text-neutral-300 mt-0.5">Explore all 1,972 ranked universities by subject (Semiconductors/EEE, AI, Robotics, Aerospace, Physics &amp; more) + nearby labs &amp; collabs</div>
+        </div>
+        <span class="accent-chip rounded-full px-3 py-1.5 text-[12.5px] font-medium shrink-0">Open Rankings →</span>
+      </button>
       <div class="space-y-2.5">
         <div class="section-label">Filter Globe by Discipline &amp; Branch</div>
         <div class="flex flex-wrap gap-1.5">${discPills}</div>
@@ -1835,6 +1922,10 @@ function renderDomainsModal(bodyEl, focusDomainId = null, focusDiscipline = null
       ${trailsHtml ? `<div class="border-t border-white/10 pt-4">${trailsHtml}</div>` : ""}
     </div>
   `;
+
+  bodyEl.querySelector("#btn-dom-open-rankings")?.addEventListener("click", () => {
+    openModal("rankings");
+  });
 
   bodyEl.querySelectorAll("[data-dom-trail]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -2319,10 +2410,10 @@ export function renderFilterPopover() {
 
   const liveEl = document.getElementById("filter-live-count");
   if (liveEl) {
-    const compact = window.innerWidth < 420;
+    const compact = window.innerWidth < 430;
     liveEl.textContent = matchedCount === totalCount
-      ? `${totalCount.toLocaleString()} ${compact ? "hubs" : "institutions"}`
-      : `${matchedCount.toLocaleString()} of ${totalCount.toLocaleString()}`;
+      ? (compact ? totalCount.toLocaleString() : `${totalCount.toLocaleString()} institutions`)
+      : `${matchedCount.toLocaleString()} / ${totalCount.toLocaleString()}`;
   }
 
   refreshOfflinePackBadge();
@@ -2343,6 +2434,7 @@ export function renderFilterPopover() {
       btn.addEventListener("click", () => {
         store.state.discipline = btn.dataset.fdisc;
         store.state.branch = "all";
+        store.state.shanghaiSubject = "all";
         if (store.state.viewMode === "space") setViewMode("earth");
         syncGlobeMarkers();
         renderFilterPopover();
@@ -2360,7 +2452,7 @@ export function renderFilterPopover() {
       ? FILTER_BRANCHES.filter(b => ALL_STEM_FEATURED_BRANCHES.includes(b.id) || store.state.branch === b.id)
       : FILTER_BRANCHES.filter(b => b.id === "all" || b.disc === curDisc);
     branchBox.innerHTML = visibleBranches.map(b => {
-      const count = getFilteredHubs({ branch: b.id, skipSort: true }).length;
+      const count = getFilteredHubs({ branch: b.id, shanghaiSubject: "all", skipSort: true }).length;
       if (b.id !== "all" && count === 0 && store.state.branch !== b.id) return "";
       const active = store.state.branch === b.id;
       return `
@@ -2373,6 +2465,7 @@ export function renderFilterPopover() {
     branchBox.querySelectorAll("[data-fbranch]").forEach(btn => {
       btn.addEventListener("click", () => {
         store.state.branch = btn.dataset.fbranch;
+        store.state.shanghaiSubject = "all";
         if (store.state.viewMode === "space") setViewMode("earth");
         syncGlobeMarkers();
         renderFilterPopover();
@@ -2402,6 +2495,26 @@ export function renderFilterPopover() {
     });
   }
 
+  const srSel = document.getElementById("filter-shanghai-select");
+  if (srSel) {
+    const sh = getShanghaiState();
+    const opts = [`<option value="all">All Subjects (Auto-match subfield)</option>`];
+    if (sh.loaded) {
+      opts.push(`<option value="ARWU">ARWU 2026 — World Top 1,000 (${sh.arwuOrder.length})</option>`);
+      for (const cat of sh.categories) {
+        const subjs = cat.subjects.map(c => sh.subjectsByCode.get(c)).filter(Boolean);
+        if (!subjs.length) continue;
+        opts.push(
+          `<optgroup label="${esc(cat.name)} (${subjs.length})">` +
+          subjs.map(s => `<option value="${esc(s.code)}">${esc(s.name)} (${s.count})</option>`).join("") +
+          `</optgroup>`
+        );
+      }
+    }
+    srSel.innerHTML = opts.join("");
+    srSel.value = store.state.shanghaiSubject || "all";
+  }
+
   const countrySel = document.getElementById("filter-country-select");
   if (countrySel) {
     const allCountryCount = getFilteredHubs({ countryFilter: "all", skipSort: true }).length;
@@ -2419,7 +2532,7 @@ export function renderFilterPopover() {
   }
 
   const sortSel = document.getElementById("filter-sort-select");
-  if (sortSel) sortSel.value = store.state.sortBy || "impact";
+  if (sortSel) sortSel.value = store.state.sortBy || "shanghai";
 
   const curatedToggle = document.getElementById("toggle-curated-only");
   if (curatedToggle) curatedToggle.checked = Boolean(store.state.curatedOnly);
@@ -2428,9 +2541,10 @@ export function renderFilterPopover() {
 function resetAllFilters() {
   store.state.discipline = "all";
   store.state.branch = "all";
+  store.state.shanghaiSubject = "all";
   store.state.groupFilter = "all";
   store.state.countryFilter = "all";
-  store.state.sortBy = "impact";
+  store.state.sortBy = "shanghai";
   store.state.curatedOnly = false;
   store.state.stageOnly = false;
 
@@ -2444,7 +2558,7 @@ function resetAllFilters() {
   const curatedToggle = document.getElementById("toggle-curated-only");
   if (curatedToggle) curatedToggle.checked = false;
   const sortSel = document.getElementById("filter-sort-select");
-  if (sortSel) sortSel.value = "impact";
+  if (sortSel) sortSel.value = "shanghai";
 
   syncGlobeMarkers();
   if (isFilterPopoverOpen()) renderFilterPopover();
@@ -2468,6 +2582,7 @@ function getActiveFilterCount() {
   let n = 0;
   if (store.state.discipline !== "all") n++;
   if (store.state.branch !== "all") n++;
+  if (store.state.shanghaiSubject !== "all") n++;
   if (store.state.groupFilter !== "all") n++;
   if (store.state.countryFilter !== "all") n++;
   if (store.state.curatedOnly) n++;
@@ -2503,6 +2618,12 @@ function updateActiveFiltersPill() {
   }
 
   const labels = [];
+  if (store.state.shanghaiSubject !== "all") {
+    const sLbl = store.state.shanghaiSubject === "ARWU"
+      ? "ARWU 2026"
+      : `GRAS: ${getSubjectMeta(store.state.shanghaiSubject)?.name || store.state.shanghaiSubject}`;
+    labels.push(sLbl);
+  }
   if (store.state.discipline !== "all") {
     labels.push(STEM_DISCIPLINES.find(d => d.id === store.state.discipline)?.short || store.state.discipline);
   }
@@ -2525,7 +2646,7 @@ function updateActiveFiltersPill() {
 }
 
 // =========================================================================
-// SHAREABLE DEEP LINKS (?hub=, ?space=, ?era=, ?domain=, ?country=, ?auth=)
+// SHAREABLE DEEP LINKS (?hub=, ?space=, ?era=, ?domain=, ?shanghai=, ?country=, ?auth=)
 // =========================================================================
 
 export function applyDeepLinkFromUrl() {
@@ -2537,6 +2658,8 @@ export function applyDeepLinkFromUrl() {
       selectSpaceMission(params.get("space"));
     } else if (params.get("hub")) {
       selectHubNode(params.get("hub"), true);
+    } else if (params.get("shanghai")) {
+      openModal("rankings", params.get("shanghai"));
     } else if (params.get("trail")) {
       const tr = store.rabbitTrails.find(t => t.id === params.get("trail"));
       if (tr) startRabbitTrail(tr, 0);
@@ -2711,8 +2834,33 @@ export function initUI() {
   document.getElementById("btn-open-filters")?.addEventListener("click", toggleFilterPopover);
   document.getElementById("btn-mobile-filters")?.addEventListener("click", toggleFilterPopover);
   document.getElementById("btn-close-filter-popover")?.addEventListener("click", closeFilterPopover);
+  document.getElementById("btn-filter-rankings")?.addEventListener("click", () => {
+    openModal("rankings", store.state.shanghaiSubject !== "all" ? store.state.shanghaiSubject : null);
+  });
+  document.getElementById("btn-open-shanghai-table")?.addEventListener("click", () => {
+    openModal("rankings", store.state.shanghaiSubject !== "all" ? store.state.shanghaiSubject : null);
+  });
   document.getElementById("btn-filter-offline")?.addEventListener("click", () => openModal("offline"));
   document.getElementById("btn-filter-reset")?.addEventListener("click", resetAllFilters);
+  document.getElementById("filter-shanghai-select")?.addEventListener("change", (e) => {
+    const val = e.target.value || "all";
+    store.state.shanghaiSubject = val;
+    if (val !== "all") {
+      store.state.discipline = "all";
+      store.state.branch = "all";
+      store.state.sortBy = "shanghai";
+    }
+    if (store.state.viewMode === "space") setViewMode("earth");
+    syncGlobeMarkers();
+    renderFilterPopover();
+    updateActiveFiltersPill();
+    if (val !== "all") {
+      const topHub = getFilteredHubs()[0];
+      if (topHub) flyToHub(topHub, 2.8);
+      const sName = val === "ARWU" ? "ARWU 2026 World Top 1,000" : (getSubjectMeta(val)?.name || val);
+      showToast(`ShanghaiRanking 2026: ${sName}`);
+    }
+  });
   document.getElementById("filter-country-select")?.addEventListener("change", (e) => {
     const val = e.target.value || "all";
     store.state.countryFilter = val;

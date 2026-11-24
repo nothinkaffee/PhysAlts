@@ -34,7 +34,10 @@ export const SUBJECT_CONFIG = {
     stemEngineering: "./data/stem/engineering_hubs.json",
     stemTimeline: "./data/stem/stem_timeline.json",
     stemDomains: "./data/stem/stem_domains.json",
-    rabbitTrails: "./data/stem/rabbit_trails.json"
+    rabbitTrails: "./data/stem/rabbit_trails.json",
+    shanghai2026: "./data/shanghai_2026.json",
+    shanghaiExtraHubs: "./data/shanghai_extra_hubs.json",
+    collaborations: "./data/collaborations.json"
   }
 };
 

@@ -9,6 +9,7 @@
 
 import { USE_DEV_PROXY, COLLABORATION_ARCS } from "./config.js";
 import { store, getVisibleGlobeNodes, getNodeById } from "./data_store.js";
+import { getSelectedEcosystemArcs, getHubContextualRank } from "./shanghai_engine.js";
 
 const FONT_STACK = "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif";
 const TILE_CACHE_NAME = "world-physics-tiles-v1";
@@ -391,17 +392,42 @@ function buildArcsGeoJSON() {
   const features = [];
   if (store.state.arcs && !store.state.timeMode) {
     const visible = new Map(getVisibleGlobeNodes().map(n => [n.id, n]));
+    const seen = new Set();
     for (const [idA, idB] of COLLABORATION_ARCS) {
       const a = visible.get(idA) || getNodeById(idA);
       const b = visible.get(idB) || getNodeById(idB);
       if (!a || !b) continue;
       if (store.state.branch !== "all" && a.branch !== store.state.branch && b.branch !== store.state.branch) continue;
       const focused = (store.state.selectedId === idA || store.state.selectedId === idB) ? 1 : 0;
+      const key = idA < idB ? `${idA}|${idB}` : `${idB}|${idA}`;
+      seen.add(key);
       features.push({
         type: "Feature",
         geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
-        properties: { focused, rabbit: 0 }
+        properties: { focused, rabbit: 0, eco: 0 }
       });
+    }
+
+    // Live selected institution ecosystem: verified collaborations (crimson) + nearby labs & companies (silver)
+    if (store.state.selectedId && !store.state.selectedId.startsWith("sp-") && !store.state.selectedId.startsWith("tl-")) {
+      const sel = getNodeById(store.state.selectedId);
+      if (sel) {
+        const ecoArcs = getSelectedEcosystemArcs(sel, store.hubs, store.hubsById);
+        for (const ea of ecoArcs) {
+          const key = ea.a.id < ea.b.id ? `${ea.a.id}|${ea.b.id}` : `${ea.b.id}|${ea.a.id}`;
+          if (ea.kind === "collab" && seen.has(key)) continue;
+          seen.add(key);
+          features.push({
+            type: "Feature",
+            geometry: { type: "LineString", coordinates: greatCircleCoords(ea.a.lng, ea.a.lat, ea.b.lng, ea.b.lat) },
+            properties: {
+              focused: 1,
+              rabbit: 0,
+              eco: ea.kind === "collab" ? 2 : 1
+            }
+          });
+        }
+      }
     }
   }
 
@@ -424,7 +450,7 @@ function buildArcsGeoJSON() {
       features.push({
         type: "Feature",
         geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
-        properties: { focused: 1, rabbit: 1 }
+        properties: { focused: 1, rabbit: 1, eco: 0 }
       });
     }
   }
@@ -504,12 +530,14 @@ function setupWebGLVectorLayers() {
       "line-color": [
         "case",
         ["==", ["get", "rabbit"], 1], "rgba(160, 70, 70, 0.36)",
+        ["==", ["get", "eco"], 2], "rgba(180, 82, 82, 0.38)",
         "rgba(228, 228, 231, 0.14)"
       ],
       "line-width": [
         "case",
         ["==", ["get", "rabbit"], 1], 5.0,
-        ["==", ["get", "focused"], 1], 4.0,
+        ["==", ["get", "eco"], 2], 4.6,
+        ["==", ["get", "focused"], 1], 3.8,
         2.0
       ],
       "line-blur": 3
@@ -523,13 +551,15 @@ function setupWebGLVectorLayers() {
       "line-color": [
         "case",
         ["==", ["get", "rabbit"], 1], "rgba(196, 98, 98, 0.94)",
-        ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.88)",
+        ["==", ["get", "eco"], 2], "rgba(208, 110, 110, 0.92)",
+        ["==", ["get", "focused"], 1], "rgba(255, 255, 255, 0.84)",
         "rgba(212, 212, 216, 0.36)"
       ],
       "line-width": [
         "case",
         ["==", ["get", "rabbit"], 1], 1.8,
-        ["==", ["get", "focused"], 1], 1.5,
+        ["==", ["get", "eco"], 2], 1.7,
+        ["==", ["get", "focused"], 1], 1.4,
         1.0
       ],
       "line-dasharray": [2, 2]
@@ -783,6 +813,7 @@ function initGlobeHudOverlay() {
         for (const f of arcs) {
           const coords = f.geometry?.coordinates || [];
           const isRabbit = f.properties?.rabbit === 1;
+          const isCollab = f.properties?.eco === 2;
           const focused = f.properties?.focused === 1;
           ctx.beginPath();
           let started = false;
@@ -795,8 +826,10 @@ function initGlobeHudOverlay() {
           }
           ctx.strokeStyle = isRabbit
             ? "rgba(196, 98, 98, 0.92)"
-            : (focused ? "rgba(255,255,255,0.86)" : "rgba(212,212,216,0.34)");
-          ctx.lineWidth = isRabbit ? 1.8 : (focused ? 1.5 : 1);
+            : isCollab
+              ? "rgba(208, 110, 110, 0.90)"
+              : (focused ? "rgba(255,255,255,0.82)" : "rgba(212,212,216,0.34)");
+          ctx.lineWidth = isRabbit ? 1.8 : isCollab ? 1.7 : (focused ? 1.4 : 1);
           ctx.stroke();
         }
         ctx.restore();
@@ -1024,18 +1057,30 @@ function initGlobeHudOverlay() {
 
           const normalLabelMax = w >= 1024 ? 34 : w >= 640 ? 28 : 22;
           const emphasisLabelMax = w >= 1024 ? 44 : w >= 640 ? 36 : 28;
+          const showRankBadge = !store.state.timeMode && (
+            store.state.shanghaiSubject !== "all" ||
+            (store.state.sortBy === "shanghai" && (store.state.branch !== "all" || store.state.discipline !== "all"))
+          );
+          const ctxRank = showRankBadge ? getHubContextualRank(n, {
+            shanghaiSubject: store.state.shanghaiSubject,
+            discipline: store.state.discipline,
+            branch: store.state.branch
+          }) : null;
+          const rankPrefix = (ctxRank && ctxRank.rankNum <= 50) ? `#${ctxRank.rankLabel} ` : "";
+          const baseName = shortGlobeName(n.name, selected || isHov ? emphasisLabelMax : normalLabelMax);
+          const rankPriority = ctxRank ? (ctxRank.rankNum <= 10 ? 68 : ctxRank.rankNum <= 30 ? 58 : ctxRank.rankNum <= 100 ? 44 : 26) : 0;
           const cand = {
             id: n.id,
-            name: shortGlobeName(n.name, selected || isHov ? emphasisLabelMax : normalLabelMax),
+            name: `${rankPrefix}${baseName}`,
             x, y,
             dotR: radius,
             selected,
             hovered: isHov,
-            priority: store.state.timeMode ? 70 : n.pinned ? 60 : curated ? 50 : 20
+            priority: store.state.timeMode ? 70 : Math.max(rankPriority, n.pinned ? 60 : curated ? 50 : 20)
           };
           if (selected || isHov) {
             priorityLabels.push(cand);
-          } else if (store.state.timeMode || n.pinned || (curated && zoom >= 2.3) || zoom >= 3.8) {
+          } else if (store.state.timeMode || n.pinned || (ctxRank && ctxRank.rankNum <= 25 && zoom >= 1.7) || (curated && zoom >= 2.3) || zoom >= 3.8) {
             normalLabels.push(cand);
           }
         }
