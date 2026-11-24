@@ -4,11 +4,11 @@
   "schemaVersion": "2.0.0",
   "jsonSchemaDraft": "https://json-schema.org/draft/2020-12/schema",
   "schemaRef": "physalts_schema.json",
-  "generatedAt": "2026-11-23T23:06:38.249Z",
-  "merkleRootSha256": "e2bf5a40c7f860466a6b567db5ca64bfbff7a07c237e6ca929e38f1f7c9a46c6",
+  "generatedAt": "2026-11-24T04:12:32.911Z",
+  "merkleRootSha256": "0aad26c1da3f2d816877cd33b09343ebe6f05fa24b928d88aef82adde3beaf00",
   "summary": {
     "totalSourceFiles": 7,
-    "totalSourceBytes": 3649131,
+    "totalSourceBytes": 3649028,
     "totalUnifiedRecords": 5531,
     "totalDistinctCountries": 166,
     "byRecordType": {
@@ -36,7 +36,7 @@
       "license": "Curated Nominative Fair Use + CC-BY-SA Reference Metadata",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T23:05:34.712Z"
+      "modifiedAt": "2026-11-24T04:11:42.507Z"
     },
     {
       "file": "domains_catalog.json",
@@ -55,7 +55,7 @@
       "license": "Curated Taxonomy + CC0/CC-BY-SA References",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T23:05:34.712Z"
+      "modifiedAt": "2026-11-24T04:11:42.508Z"
     },
     {
       "file": "history_timeline.json",
@@ -73,12 +73,12 @@
       "license": "Curated Factual Chronology + CC-BY-SA Reference Links",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T23:05:34.712Z"
+      "modifiedAt": "2026-11-24T04:11:42.508Z"
     },
     {
       "file": "physics_hubs.json",
-      "sha256": "eb9130464307f769090f29df48d0712e0034d023e9d07431be107806ba39a1c5",
-      "byteSize": 3238680,
+      "sha256": "a611f26e3693edaff9e28d2771e159ec36c7474ecf38d06ca9de077c38ae4a23",
+      "byteSize": 3238577,
       "recordType": "Hub",
       "tier": "global_index",
       "recordCount": 5248,
@@ -90,7 +90,7 @@
       "license": "CC0 (OpenAlex, ROR v2)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-23T23:06:38.015Z"
+      "modifiedAt": "2026-11-24T04:12:32.695Z"
     },
     {
       "file": "private_startups.json",
@@ -109,7 +109,7 @@
       "license": "Curated Nominative Fair Use",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T23:05:34.755Z"
+      "modifiedAt": "2026-11-24T04:11:42.545Z"
     },
     {
       "file": "space_frontier.json",
@@ -130,7 +130,7 @@
       "license": "Public Domain Agency Facts + CC-BY-SA Reference Links",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-23T23:05:34.755Z"
+      "modifiedAt": "2026-11-24T04:11:42.545Z"
     },
     {
       "file": "verification_report.json",
@@ -146,7 +146,7 @@
       "license": "CC0 (Generated Audit Telemetry)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-23T23:05:34.757Z"
+      "modifiedAt": "2026-11-24T04:11:42.547Z"
     }
   ],
   "generatedArtifacts": {
@@ -157,8 +157,8 @@
     },
     "unifiedNdjson": {
       "file": "physalts_unified.ndjson",
-      "sha256": "a92cda42083005e8684a3d86e349ee10e592e8e8f37c115c0fbdf410b8bc0660",
-      "byteSize": 4730791,
+      "sha256": "a6e0175f15aa7bf57919eb563f8dac4cdaa08b5fa117e1c2f14af46df08e9a91",
+      "byteSize": 4730688,
       "rowCount": 5531
     }
   }
