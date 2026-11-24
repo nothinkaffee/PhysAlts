@@ -46,6 +46,7 @@ import {
   renderShanghaiCardSection, renderEcosystemCardSection,
   renderShanghaiDeeperBreakdown, renderRankingsModal
 } from "./shanghai_ui.js";
+import { initCustomSelects, closeCustomSelect } from "./custom_select.js";
 
 let activeWikiReq = 0;
 let activeAgentReq = 0;
@@ -173,6 +174,7 @@ function toggleRabbitPopover() {
 }
 
 function closeFilterPopover() {
+  closeCustomSelect();
   const pop = document.getElementById("filter-popover");
   const btn = document.getElementById("btn-open-filters");
   const mobBtn = document.getElementById("btn-mobile-filters");
@@ -241,6 +243,7 @@ function clearExploreDockActive() {
 }
 
 function closeModal() {
+  closeCustomSelect();
   document.getElementById("drawer-backdrop")?.classList.add("hidden");
   clearExploreDockActive();
 }
@@ -2885,10 +2888,14 @@ export function initUI() {
     updateActiveFiltersPill();
   });
 
+  // Upgrade all native <select> dropdowns to sculpted liquid-glass pickers (Desktop popover + Mobile bottom sheet)
+  initCustomSelects();
+
   // Dismiss Rabbit Hole / Filter popovers on outside click
   document.addEventListener("pointerdown", (e) => {
     const target = e.target;
     if (!(target instanceof Element)) return;
+    if (target.closest("#physalt-select-portal")) return;
     if (isRabbitPopoverOpen()) {
       const pop = document.getElementById("rabbit-popover");
       if (pop && !pop.contains(target) && !target.closest("#btn-rabbit-hole")) {

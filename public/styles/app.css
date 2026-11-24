@@ -440,6 +440,342 @@ select optgroup,
   font-weight: 600;
 }
 
+/* Bespoke Liquid-Glass Custom Select & Mobile Bottom-Sheet Picker */
+.cselect-wrap {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+}
+.cselect-native-hidden {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+.cselect-trigger {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 12px 0 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #f4f4f5;
+  font-size: 13.5px;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.cselect-compact .cselect-trigger {
+  height: 38px;
+  border-radius: 12px;
+}
+.cselect-trigger:hover {
+  background: rgba(255, 255, 255, 0.095);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.cselect-wrap.is-open .cselect-trigger,
+.cselect-trigger:focus-visible {
+  outline: none;
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(208, 110, 110, 0.65);
+  box-shadow: 0 0 0 3px rgba(160, 70, 70, 0.18);
+}
+.cselect-trigger-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-weight: 450;
+}
+.cselect-trigger-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.cselect-trigger-cnt {
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #a1a1aa;
+}
+.cselect-chevron {
+  width: 15px;
+  height: 15px;
+  color: #a1a1aa;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), color 0.15s ease;
+}
+.cselect-wrap.is-open .cselect-chevron {
+  transform: rotate(180deg);
+  color: #f4f4f5;
+}
+.cselect-chevron svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* Portal Container (always above modals & popovers) */
+.cselect-portal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  pointer-events: none;
+}
+.cselect-backdrop {
+  position: fixed;
+  inset: 0;
+  pointer-events: auto;
+}
+.cselect-backdrop.is-desktop {
+  background: transparent;
+}
+.cselect-backdrop.is-mobile {
+  background: rgba(3, 3, 5, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  animation: cselectFadeIn 0.18s ease-out;
+}
+.cselect-panel {
+  position: fixed;
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: rgba(13, 13, 16, 0.98) !important;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.82), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.cselect-popover {
+  border-radius: 18px;
+  animation: cselectPopIn 0.14s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cselect-sheet {
+  left: 8px;
+  right: 8px;
+  bottom: max(8px, env(safe-area-inset-bottom, 0px));
+  max-height: min(76dvh, 620px);
+  border-radius: 26px;
+  animation: cselectSheetUp 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.cselect-handle {
+  width: 38px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.22);
+  margin: 10px auto 2px;
+  flex-shrink: 0;
+}
+.cselect-head {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.09);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.cselect-head-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.cselect-title {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+.cselect-close {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12.5px;
+  flex-shrink: 0;
+}
+.cselect-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.cselect-search-ico {
+  position: absolute;
+  left: 12px;
+  width: 15px;
+  height: 15px;
+  color: #71717a;
+  pointer-events: none;
+}
+.cselect-search {
+  width: 100%;
+  height: 38px;
+  padding: 0 34px 0 36px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.065);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  color: #f4f4f5;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.cselect-search::placeholder {
+  color: #71717a;
+}
+.cselect-search:focus {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(208, 110, 110, 0.62);
+}
+.cselect-search-clear {
+  position: absolute;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 0;
+  color: #d4d4d8;
+  font-size: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.cselect-search-clear.hidden {
+  display: none !important;
+}
+.cselect-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.cselect-group-hdr {
+  position: sticky;
+  top: -8px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 10px 6px;
+  margin-top: 4px;
+  background: rgba(14, 14, 17, 0.96);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #a1a1aa;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.cselect-group-hdr:first-child {
+  margin-top: 0;
+}
+.cselect-group-cnt {
+  font-variant-numeric: tabular-nums;
+  font-size: 11px;
+  color: #71717a;
+}
+.cselect-opt {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 13px;
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(244, 244, 245, 0.92);
+  font-size: 14px;
+  line-height: 1.3;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+}
+.cselect-sheet .cselect-opt {
+  padding: 12px 13px;
+  font-size: 14.5px;
+}
+.cselect-opt:hover,
+.cselect-opt.is-focused {
+  background: rgba(255, 255, 255, 0.075);
+  border-color: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+}
+.cselect-opt.is-selected {
+  background: rgba(160, 70, 70, 0.22);
+  border-color: rgba(208, 110, 110, 0.48);
+  color: #ffffff;
+  font-weight: 500;
+}
+.cselect-opt-label {
+  flex: 1 1 auto;
+  min-width: 0;
+  word-break: break-word;
+}
+.cselect-opt-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.cselect-opt-cnt {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.07);
+  color: #a1a1aa;
+}
+.cselect-opt.is-selected .cselect-opt-cnt {
+  background: rgba(208, 110, 110, 0.22);
+  color: #f4f4f5;
+}
+.cselect-check {
+  width: 16px;
+  height: 16px;
+  color: var(--accent-link);
+  flex-shrink: 0;
+}
+.cselect-empty {
+  padding: 24px 12px;
+  text-align: center;
+  font-size: 13.5px;
+  color: #71717a;
+}
+@keyframes cselectFadeIn {
+  from { opacity: 0.6; }
+  to { opacity: 1; }
+}
+@keyframes cselectPopIn {
+  from { opacity: 0.96; transform: translateY(-4px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes cselectSheetUp {
+  from { opacity: 0.96; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .filter-chip {
   display: inline-flex;
   align-items: center;
