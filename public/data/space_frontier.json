@@ -307,7 +307,7 @@
       "launchYear": 2027,
       "status": "upcoming",
       "branch": "applied",
-      "summary": "Crewed lunar return and humanity's first deep-space orbital station in cislunar space, enabling next-generation lunar seismology, solar-wind radiation monitoring, and far-side cosmology precursors.",
+      "summary": "Following Artemis II's historic April 2026 crewed lunar flyby, Artemis III and Lunar Gateway establish humanity's first deep-space orbital station in cislunar space for lunar seismology, radiation monitoring, and far-side cosmology.",
       "physicsDiscoveries": "Will measure deep-space solar energetic particles outside Earth's magnetosphere (HERMES & ERSA) and deploy updated single-prism retroreflectors for sub-millimeter gravity tests.",
       "instruments": [
         "HERMES Heliophysics Suite",
@@ -517,7 +517,7 @@
       "launchYear": 2018,
       "status": "active",
       "branch": "gravity",
-      "summary": "Dual-orbiter European-Japanese mission (MPO & Mio) entering Mercury orbit in November 2026 to map its huge iron core, active dynamo magnetosphere, and perform precision tests of general relativity.",
+      "summary": "Dual-orbiter European-Japanese mission (MPO & Mio) that entered Mercury orbit on November 21, 2026 via weak stability capture to map its huge iron core, active dynamo magnetosphere, and perform precision tests of general relativity.",
       "physicsDiscoveries": "Will measure Mercury's relativistic perihelion advance and Shapiro time delay to test the PPN gravity parameters γ and β while probing solar-wind magnetosphere coupling.",
       "instruments": [
         "MORE Radio Science Relativity Experiment",

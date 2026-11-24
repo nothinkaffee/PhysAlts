@@ -1112,7 +1112,7 @@ async function main() {
         name: "Arctic, Svalbard & Antarctica Bases",
         category: "region",
         description:
-          "75 off-grid polar research bases, Svalbard & Greenland observatories, South Pole neutrino/CMB arrays, 1.5M-year ice-core camps, zero-emission stations, and historic expeditions."
+          "75 off-grid polar research bases, Svalbard & Greenland observatories, South Pole neutrino/CMB arrays, >1.2M-year ice-core camps, zero-emission stations, and historic expeditions."
       },
       {
         hubs: polarHubs,

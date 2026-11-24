@@ -496,7 +496,7 @@
         {
           "hubId": "awi_bremerhaven",
           "title": "Alfred Wegener Institute (AWI)",
-          "bridge": "Operates icebreaker RV Polarstern and leads the Beyond EPICA campaign drilling 1.5-million-year-old Antarctic ice to decode Earth's ancient glacial rhythm."
+          "bridge": "Operates icebreaker RV Polarstern and leads the Beyond EPICA campaign drilling >1.2-million-year-old Antarctic ice to decode Earth's ancient glacial rhythm."
         },
         {
           "hubId": "whoi",
@@ -614,7 +614,7 @@
     {
       "id": "polar_antarctica_frontier",
       "title": "Antarctica: South Pole, Ice Cores & Extreme Observatories",
-      "tagline": "Cross the white continent from Ross Island and South Pole neutrino/CMB arrays to 1.5-million-year Oldest Ice camps and zero-emission bases.",
+      "tagline": "Cross the white continent from Ross Island and South Pole neutrino/CMB arrays to >1.2-million-year Oldest Ice camps and zero-emission bases.",
       "disciplines": ["physics", "earth_climate", "engineering"],
       "stops": [
         {
@@ -640,7 +640,7 @@
         {
           "hubId": "concordia_dome_c",
           "title": "Concordia Station & Beyond EPICA (Dome C)",
-          "bridge": "At -80°C winter isolation, Europe's Little Dome C drill reaches 2,800 m bedrock to recover continuous 1.5-million-year-old ancient air bubbles."
+          "bridge": "At -80°C winter isolation, Europe's Little Dome C drill reaches 2,800 m bedrock to recover continuous >1.2-million-year-old ancient air bubbles."
         },
         {
           "hubId": "vostok_station",

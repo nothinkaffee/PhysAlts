@@ -152,7 +152,7 @@
       "status": "active",
       "url": "https://hornsund.igf.edu.pl/en/",
       "wiki": "https://en.wikipedia.org/wiki/Polish_Polar_Station,_Hornsund",
-      "summary": "Year-round off-grid geophysical, glaciological, and seismic station in southern Spitsbergen operated continuously by the Polish Academy of Sciences since the 1957 International Geophysical Year."
+      "summary": "Year-round off-grid geophysical, glaciological, and seismic station in southern Spitsbergen established in 1957 for the International Geophysical Year and operated year-round continuously by the Polish Academy of Sciences since 1978."
     },
     {
       "id": "himadri_arctic",
@@ -225,7 +225,7 @@
       "status": "active",
       "url": "https://eastgrip.org/",
       "wiki": "https://en.wikipedia.org/wiki/EastGRIP",
-      "summary": "International deep ice-core drilling camp positioned directly atop the fast-flowing Northeast Greenland Ice Stream (NEGIS), reaching 2,668 m bedrock to decode ice-stream dynamics."
+      "summary": "International deep ice-core drilling camp positioned directly atop the fast-flowing Northeast Greenland Ice Stream (NEGIS), reaching 2,668 m bedrock in 2023 to decode ice-stream dynamics."
     },
     {
       "id": "greenland_telescope",
@@ -462,11 +462,11 @@
       "lat": 69.3403,
       "lng": 20.3133,
       "zoom": 14.2,
-      "foundedYear": 2025,
+      "foundedYear": 2026,
       "status": "upcoming",
-      "url": "https://eiscat.se/",
+      "url": "https://eiscat.se/eiscat_3d/",
       "wiki": "https://en.wikipedia.org/wiki/EISCAT",
-      "summary": "Next-generation multistatic 3D volumetric phased-array radar (10,000+ antennas across Norway, Sweden & Finland) imaging space weather, auroral currents, and orbital debris in real time."
+      "summary": "Next-generation multistatic 3D volumetric phased-array radar (10,000+ antennas across Norway, Sweden & Finland; currently in commissioning) built to image space weather, auroral currents, and orbital debris in real time."
     },
     {
       "id": "andoya_space",
@@ -609,10 +609,10 @@
       "lng": 20,
       "zoom": 8,
       "foundedYear": 2002,
-      "status": "active",
+      "status": "historic",
       "url": "https://en.wikipedia.org/wiki/Barneo",
       "wiki": "https://en.wikipedia.org/wiki/Barneo",
-      "summary": "Temporary spring drifting sea-ice logistics and oceanography base established annually on pack ice ~100 km from the Geographic North Pole and staged out of Longyearbyen, Svalbard."
+      "summary": "Seasonal drifting sea-ice logistics and oceanography base historically established each April on pack ice ~100 km from the Geographic North Pole out of Longyearbyen, Svalbard (operations suspended since 2019)."
     },
     {
       "id": "mosaic_arctic",
@@ -645,11 +645,11 @@
       "lat": 83.5,
       "lng": 120,
       "zoom": 7.5,
-      "foundedYear": 2025,
-      "status": "upcoming",
+      "foundedYear": 2026,
+      "status": "active",
       "url": "https://fondationtaraocean.org/en/schooner/tara-polar-station/",
       "wiki": "https://en.wikipedia.org/wiki/Tara_expedition",
-      "summary": "Next-generation ice-locked drifting polar laboratory (2026–2046) engineered to survive -52°C Arctic winter pack ice for 10 consecutive 18-month multidisciplinary drifts."
+      "summary": "French ice-locked drifting polar laboratory that began its inaugural 18-month Central Arctic drift in July–September 2026 (first of 10 multidisciplinary missions through 2045) engineered to survive -52°C polar winter pack ice."
     },
     {
       "id": "fram_expedition",
@@ -761,7 +761,7 @@
       "status": "active",
       "url": "https://www.nsf.gov/geo/opp/support/mcmurdo.jsp",
       "wiki": "https://en.wikipedia.org/wiki/McMurdo_Station",
-      "summary": "Antarctica's largest research & logistics hub (Crary Science Lab) and launch site for NASA's Long-Duration Stratospheric Balloons (PUEO, GUSTO, SuperBIT, COSI) circling the pole."
+      "summary": "Antarctica's largest research & logistics hub (Crary Science Lab) and launch site for NASA's Long-Duration Stratospheric Balloons (ANITA, PUEO, GUSTO, SPIDER, SuperTIGER) circling the South Pole."
     },
     {
       "id": "scott_base_nz",
@@ -784,7 +784,7 @@
     {
       "id": "concordia_dome_c",
       "name": "Concordia Station (Dome C)",
-      "city": "Dome Circe, East Antarctic Plateau, Antarctica",
+      "city": "Dome C, East Antarctic Plateau, Antarctica",
       "country": "Antarctica",
       "group": "lab",
       "entityType": "lab",
@@ -802,7 +802,7 @@
     },
     {
       "id": "beyond_epica_ldc",
-      "name": "Beyond EPICA — Little Dome C Camp (New)",
+      "name": "Beyond EPICA — Little Dome C Camp",
       "city": "Little Dome C, East Antarctica",
       "country": "Antarctica",
       "group": "lab",
@@ -817,7 +817,7 @@
       "status": "active",
       "url": "https://www.beyondepica.eu/",
       "wiki": "https://en.wikipedia.org/wiki/European_Project_for_Ice_Coring_in_Antarctica",
-      "summary": "Major 12-institute European deep-drilling field camp 34 km from Concordia recovering a continuous 2,800 m bedrock ice core spanning 1.5 million years of Earth's atmosphere."
+      "summary": "Major 12-institute European deep-drilling field camp 34 km from Concordia that reached bedrock at 2,800 m in January 2025, recovering continuous ice spanning over 1.2 million years of Earth's atmospheric and climate history."
     },
     {
       "id": "vostok_station",
@@ -892,7 +892,7 @@
       "status": "active",
       "url": "https://www.bas.ac.uk/polar-operations/sites-and-facilities/facility/halley/",
       "wiki": "https://en.wikipedia.org/wiki/Halley_Research_Station",
-      "summary": "Iconic ski-mounted, hydraulically relocatable British Antarctic Survey station on the floating Brunt Ice Shelf where the Antarctic Ozone Hole was discovered in 1985."
+      "summary": "Iconic ski-mounted, hydraulically relocatable British Antarctic Survey station on the floating Brunt Ice Shelf (where the Ozone Hole was discovered in 1985); relocated 23 km inland in 2017 and operating summer-only with autonomous micro-turbine winter observatories."
     },
     {
       "id": "rothera_station",
