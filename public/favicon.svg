@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .ring { stroke: #18181b; }
+    .core { fill: #18181b; }
+    .dot  { fill: #b04848; }
+    @media (prefers-color-scheme: dark) {
+      .ring { stroke: #f4f4f5; }
+      .core { fill: #f4f4f5; }
+      .dot  { fill: #d06262; }
+    }
+  </style>
+  <!-- Outer bold globe meridian ring -->
+  <circle class="ring" cx="32" cy="32" r="20" fill="none" stroke-width="4.5" />
+  <!-- Bold tilted orbital ellipse (clean, readable at 16px) -->
+  <ellipse class="ring" cx="32" cy="32" rx="28" ry="11.5" transform="rotate(-28 32 32)" fill="none" stroke-width="4.2" stroke-linecap="round" />
+  <!-- Crisp central singularity / Earth core -->
+  <circle class="core" cx="32" cy="32" r="6" />
+  <!-- Signature crimson orbiting beacon -->
+  <circle class="dot" cx="53.5" cy="20.5" r="5" />
+</svg>
