@@ -428,28 +428,28 @@ export function renderRankingsModal(bodyEl, initialSubject = null, { onSelectHub
             const collabCount = getHubCollaborations(r.hubId, store.hubsById).length;
             const hubObj = getNodeById(r.hubId);
             const nearbyCount = hubObj ? getNearbyEcosystem(hubObj, store.hubs, { maxKm: 60, limit: 6 }).length : 0;
-            const indLabels = isArwu ? arwuInds.map(x => x.label) : grasInds.map(x => x.short);
+            const indLabels = isArwu ? arwuInds.map(x => x.label) : ["Faculty", "Output", "Q1", "Impact", "Collab"];
             return `
               <button type="button" data-sr-row-hub="${esc(r.hubId)}" class="glass-row w-full text-left rounded-2xl p-3.5 transition cursor-pointer space-y-2">
-                <div class="flex items-start justify-between gap-3">
-                  <div class="flex items-start gap-3 min-w-0">
-                    <span class="min-w-[54px] text-center px-2 py-1 rounded-full ${r.rankNum <= 10 ? "accent-chip font-semibold" : "bg-white/[0.08] text-neutral-200 font-medium"} text-[12.5px] tabular-nums shrink-0">
+                <div class="flex items-center justify-between gap-2.5">
+                  <div class="flex items-center gap-2.5 min-w-0 flex-1">
+                    <span class="min-w-[46px] text-center px-2 py-0.5 rounded-full ${r.rankNum <= 10 ? "accent-chip font-semibold" : "bg-white/[0.08] text-neutral-200 font-medium"} text-[12px] tabular-nums shrink-0">
                       #${esc(r.rankLabel)}
                     </span>
-                    <div class="min-w-0">
-                      <div class="text-[14.5px] font-semibold text-white truncate">${esc(r.name)}</div>
-                      <div class="text-[12.5px] text-neutral-400 flex flex-wrap items-center gap-x-2 gap-y-0.5 mt-0.5">
-                        <span>${esc(r.country)}</span>
-                        ${collabCount ? `<span class="accent-text">· ${collabCount} collab${collabCount > 1 ? "s" : ""}</span>` : ""}
-                        ${nearbyCount ? `<span class="text-neutral-400">· ${nearbyCount} nearby labs/cos</span>` : ""}
-                      </div>
-                    </div>
+                    <div class="text-[14.5px] font-semibold text-white truncate min-w-0 flex-1">${esc(r.name)}</div>
                   </div>
                   <div class="text-right shrink-0">
-                    ${r.score != null ? `<div class="text-[14px] font-semibold text-white tabular-nums">${r.score}</div><div class="text-[10.5px] text-neutral-500">Score</div>` : `<span class="accent-text text-[12.5px]">Inspect →</span>`}
+                    ${r.score != null ? `<div class="text-[14px] font-semibold text-white tabular-nums leading-none">${r.score}</div><div class="text-[10px] text-neutral-500 mt-0.5">Score</div>` : `<span class="accent-text text-[12.5px]">Inspect →</span>`}
                   </div>
                 </div>
-                <div class="grid ${isArwu ? "grid-cols-6" : "grid-cols-5"} gap-1.5 pt-1 border-t border-white/[0.06]">
+                <div class="flex items-center justify-between gap-2 min-w-0">
+                  <span class="text-[12px] text-neutral-400 truncate">${esc(r.country)}</span>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    ${collabCount ? `<span class="text-[11px] px-2 py-0.5 rounded-full bg-[rgba(160,70,70,0.18)] border border-[rgba(208,110,110,0.34)] accent-text font-medium whitespace-nowrap tabular-nums">${collabCount} collab${collabCount > 1 ? "s" : ""}</span>` : ""}
+                    ${nearbyCount ? `<span class="text-[11px] px-2 py-0.5 rounded-full bg-white/[0.06] border border-white/10 text-neutral-300 whitespace-nowrap tabular-nums" title="${nearbyCount} nearby labs &amp; companies (&lt;60 km)">${nearbyCount} nearby</span>` : ""}
+                  </div>
+                </div>
+                <div class="grid ${isArwu ? "grid-cols-6" : "grid-cols-5"} gap-1.5 pt-1.5 border-t border-white/[0.06]">
                   ${indLabels.map((lbl, i) => `
                     <div class="text-center min-w-0">
                       <div class="text-[10px] text-neutral-500 truncate">${esc(lbl)}</div>
