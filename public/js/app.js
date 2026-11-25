@@ -4,6 +4,7 @@
  */
 
 import { store, loadAllDatasets, mergeHubs } from "./data_store.js";
+import { hydrateSavedDiscoveredHubs } from "./deep_research.js";
 import { initGlobe, syncGlobeMarkers } from "./globe_engine.js";
 import { initSpaceFrontierView } from "./space_view.js";
 import { initAuth, onAuthChange } from "./auth_service.js";
@@ -39,6 +40,7 @@ async function boot() {
     initAuth(),
     loadAllDatasets({
       onCoreReady: () => {
+        hydrateSavedDiscoveredHubs();
         refreshDbBadge();
         syncGlobeMarkers();
       }
@@ -55,6 +57,7 @@ async function boot() {
     })
   ]);
 
+  hydrateSavedDiscoveredHubs();
   refreshDbBadge();
   refreshAccountHeader();
   syncGlobeMarkers();

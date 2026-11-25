@@ -42,6 +42,8 @@ import {
 import {
   getShanghaiState, getSubjectMeta, getHubContextualRank
 } from "./shanghai_engine.js";
+import { fetchArxivAlphaXivPapers } from "./deep_research.js";
+import { renderDeepResearchModal } from "./deep_research_ui.js";
 import {
   renderShanghaiCardSection, renderEcosystemCardSection,
   renderShanghaiDeeperBreakdown, renderRankingsModal
@@ -496,7 +498,16 @@ export function selectSpaceMission(missionId) {
   const links = [];
   if (m.officialUrl) links.push(`<a href="${esc(m.officialUrl)}" target="_blank" rel="noopener noreferrer" class="glass-btn-active rounded-full px-3 py-1.5 text-[13px] inline-flex items-center gap-1 whitespace-nowrap">Official Mission Site ↗</a>`);
   if (m.wikiUrl) links.push(`<a href="${esc(m.wikiUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Wikipedia ↗</a>`);
-  if (linksEl) linksEl.innerHTML = links.join("");
+  links.push(`<button type="button" id="btn-card-deep-research" class="accent-chip rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer">Deep Research</button>`);
+  if (linksEl) {
+    linksEl.innerHTML = links.join("");
+    linksEl.querySelector("#btn-card-deep-research")?.addEventListener("click", () => {
+      openModal("research", {
+        query: `${m.name} latest discoveries, instruments & arXiv papers`,
+        hubContext: null
+      });
+    });
+  }
 
   document.getElementById("card-deeper-wrap")?.classList.add("hidden");
   document.getElementById("btn-deeper-toggle")?.classList.add("hidden");
@@ -1100,12 +1111,21 @@ export function selectHubNode(id, fly = true, opts = {}) {
   }
   const gEarth = `https://earth.google.com/web/@${node.lat},${node.lng},500a,2500d,35y,0h,45t,0r`;
   links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Google Earth ↗</a>`);
-  if (linksEl) linksEl.innerHTML = links.join("");
+  links.push(`<button type="button" id="btn-card-deep-research" class="accent-chip rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer">Deep Research</button>`);
+  if (linksEl) {
+    linksEl.innerHTML = links.join("");
+    linksEl.querySelector("#btn-card-deep-research")?.addEventListener("click", () => {
+      openModal("research", {
+        query: `${node.name} active projects, collaborators & recent arXiv papers`,
+        hubContext: node
+      });
+    });
+  }
 
   // Load IceCube-style Wikimedia Hero Photo + Wikipedia Brief Excerpt (200-only fallback, zero 404s)
   const reqId = loadWikipediaCardBrief(node);
 
-  // Discipline-aware live OpenAlex papers & researchers
+  // Discipline-aware live arXiv / alphaXiv preprints + OpenAlex papers & researchers
   const topicTerm = node.discipline === "ai_cs" ? "artificial intelligence"
     : node.discipline === "math" ? "mathematics"
     : node.discipline === "bio_med" ? "biology"
@@ -1116,24 +1136,46 @@ export function selectHubNode(id, fly = true, opts = {}) {
 
   const papersEl = document.getElementById("deeper-papers");
   if (papersEl) {
-    papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Loading recent papers…</div>`;
-    fetch(proxyUrl(`https://api.openalex.org/works?search=${encodeURIComponent(node.name + " " + topicTerm)}&sort=publication_date:desc&per-page=3`))
-      .then(r => r.ok ? r.json() : null)
-      .then(data => {
-        if (reqId !== activeWikiReq) return;
-        if (!data?.results?.length) {
-          papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">No recent papers returned.</div>`;
-          return;
-        }
-        papersEl.innerHTML = data.results.map(w => `
-          <a href="${esc(w.doi || w.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 p-3.5 transition">
-            <div class="text-[14px] text-white leading-snug line-clamp-2">${esc(w.title || "Research Publication")}</div>
-            <div class="text-[14px] accent-text mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
+    papersEl.innerHTML = `<div class="text-neutral-400 text-[13.5px]">Loading arXiv, alphaXiv &amp; OpenAlex papers…</div>`;
+    Promise.all([
+      fetchArxivAlphaXivPapers(`${node.name} ${topicTerm}`, { limit: 3 }).catch(() => []),
+      fetch(proxyUrl(`https://api.openalex.org/works?search=${encodeURIComponent(node.name + " " + topicTerm)}&sort=publication_date:desc&per-page=3`))
+        .then(r => r.ok ? r.json() : null)
+        .catch(() => null)
+    ]).then(([arxivList, oaData]) => {
+      if (reqId !== activeWikiReq) return;
+      const cards = [];
+
+      for (const p of arxivList || []) {
+        cards.push(`
+          <div class="rounded-2xl bg-white/[0.05] border border-white/10 p-3 space-y-1.5">
+            <div class="flex items-center gap-1.5 text-[11.5px] text-neutral-400">
+              <span class="dr-badge dr-badge-accent">arXiv:${esc(p.arxivId)}</span>
+              ${p.year ? `<span>${esc(p.year)}</span>` : ""}
+            </div>
+            <div class="text-[13.5px] text-white leading-snug line-clamp-2">${esc(p.title)}</div>
+            <div class="flex flex-wrap items-center gap-2 pt-0.5">
+              <a href="${esc(p.alphaXivUrl)}" target="_blank" rel="noopener noreferrer" class="accent-link text-[12px] font-medium">alphaXiv ↗</a>
+              <a href="${esc(p.arxivUrl)}" target="_blank" rel="noopener noreferrer" class="text-[12px] text-neutral-300 hover:text-white">arXiv ↗</a>
+              <a href="${esc(p.pdfUrl)}" target="_blank" rel="noopener noreferrer" class="text-[12px] text-neutral-400 hover:text-white">PDF ↗</a>
+            </div>
+          </div>
+        `);
+      }
+
+      for (const w of (oaData?.results || []).slice(0, 2)) {
+        cards.push(`
+          <a href="${esc(w.doi || w.id || "https://openalex.org/")}" target="_blank" rel="noopener noreferrer" class="block rounded-2xl bg-white/[0.05] hover:bg-white/10 border border-white/10 p-3 transition">
+            <div class="text-[13.5px] text-white leading-snug line-clamp-2">${esc(w.title || "Research Publication")}</div>
+            <div class="text-[12.5px] accent-text mt-1">${esc(w.publication_year || "")} · ${(w.cited_by_count ?? 0).toLocaleString()} citations ↗</div>
           </a>
-        `).join("");
-      }).catch(() => {
-        if (reqId === activeWikiReq) papersEl.innerHTML = `<div class="text-neutral-400 text-[14px]">Papers unavailable right now.</div>`;
-      });
+        `);
+      }
+
+      papersEl.innerHTML = cards.length
+        ? cards.join("")
+        : `<div class="text-neutral-400 text-[13.5px]">No recent papers returned right now.</div>`;
+    });
   }
 
   const authorsEl = document.getElementById("deeper-authors");
@@ -1545,6 +1587,7 @@ export function openModal(mode, focusId = null) {
   const titles = {
     domains: "STEM Domains, Trails & Open Materials",
     rankings: "ShanghaiRanking 2026 (ARWU & 57 GRAS Subjects)",
+    research: "Deep Research Studio",
     countries: "Countries & Continents",
     live: "Live Open-Science Registry Search",
     offline: "Offline Packages (Organic Maps Style)",
@@ -1556,6 +1599,29 @@ export function openModal(mode, focusId = null) {
   };
   titleEl.textContent = titles[mode] || "Explore";
 
+  if (mode === "research") {
+    renderDeepResearchModal(bodyEl, focusId, {
+      onToast: (msg) => showToast(msg),
+      onPlotHub: (hub) => {
+        if (!hub) return;
+        mergeHubs([hub], "custom");
+        closeModal();
+        if (store.state.viewMode === "space") setViewMode("earth");
+        refreshDbBadge();
+        syncGlobeMarkers();
+        selectHubNode(hub.id, true);
+        showToast(`Plotted "${hub.name}" on 3D Globe`);
+      },
+      onPlotAllHubs: (hubs) => {
+        if (!Array.isArray(hubs) || !hubs.length) return;
+        const added = mergeHubs(hubs, "custom");
+        if (store.state.viewMode === "space") setViewMode("earth");
+        refreshDbBadge();
+        syncGlobeMarkers();
+        showToast(added > 0 ? `Plotted ${added} new institutions on the 3D Globe` : `Synced ${hubs.length} institutions on the 3D Globe`);
+      }
+    });
+  }
   if (mode === "domains") renderDomainsModal(bodyEl, focusId);
   if (mode === "rankings") {
     renderRankingsModal(bodyEl, focusId, {
@@ -2784,6 +2850,11 @@ export function initUI() {
     else toggleRabbitPopover();
   });
   document.getElementById("btn-close-rabbit-popover")?.addEventListener("click", closeRabbitPopover);
+  document.getElementById("btn-rabbit-deep-research")?.addEventListener("click", () => {
+    const q = document.getElementById("rabbit-agent-input")?.value?.trim() || "";
+    closeRabbitPopover();
+    openModal("research", { query: q, hubContext: null, autoRun: Boolean(q) });
+  });
   document.getElementById("btn-rabbit-surprise")?.addEventListener("click", () => jumpRabbitHole("surprise"));
   document.getElementById("rabbit-agent-form")?.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -2804,6 +2875,11 @@ export function initUI() {
   document.getElementById("btn-close-spotlight")?.addEventListener("click", closeSpotlight);
   document.getElementById("spotlight-backdrop")?.addEventListener("click", (e) => {
     if (e.target.id === "spotlight-backdrop") closeSpotlight();
+  });
+  document.getElementById("btn-spotlight-deep-research")?.addEventListener("click", () => {
+    const q = document.getElementById("search-input")?.value?.trim() || "";
+    closeSpotlight();
+    openModal("research", { query: q, hubContext: null, autoRun: Boolean(q) });
   });
   document.getElementById("btn-spotlight-agent")?.addEventListener("click", () => {
     const q = document.getElementById("search-input")?.value || "";

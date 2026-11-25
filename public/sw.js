@@ -5,7 +5,7 @@
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v24";
+const APP_CACHE = "world-physics-app-v25";
 const TILE_CACHE = "world-physics-tiles-v1";
 
 const PRECACHE_TILES = (() => {
@@ -40,6 +40,8 @@ const PRECACHE_APP = [
   "./js/shanghai_engine.js",
   "./js/shanghai_ui.js",
   "./js/custom_select.js",
+  "./js/deep_research.js",
+  "./js/deep_research_ui.js",
   "./js/impact_ranking.js",
   "./js/offline_packs.js",
   "./js/rabbit_agent.js",

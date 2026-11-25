@@ -99,10 +99,14 @@
   <section id="rabbit-popover" role="dialog" aria-label="Rabbit Hole Explorer" class="hidden atlas-popover atlas-popover-rabbit liquid-glass">
     <div class="flex items-center justify-between gap-2 shrink-0">
       <div class="text-[15px] font-semibold text-white">Rabbit Hole</div>
-      <div class="flex items-center gap-2">
-        <button id="btn-rabbit-surprise" type="button" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px] inline-flex items-center gap-1.5">
+      <div class="flex items-center gap-1.5">
+        <button id="btn-rabbit-deep-research" type="button" title="Open Deep Research Studio (arXiv, alphaXiv & Gemini Agent)" class="accent-chip rounded-full px-3 py-1.5 text-[12.5px] font-medium inline-flex items-center gap-1 cursor-pointer">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 shrink-0"></i>
+          <span>Research</span>
+        </button>
+        <button id="btn-rabbit-surprise" type="button" class="glass-btn-active rounded-full px-3 py-1.5 text-[12.5px] inline-flex items-center gap-1.5">
           <i data-lucide="shuffle" class="w-3.5 h-3.5 shrink-0"></i>
-          <span>Surprise Me</span>
+          <span>Surprise</span>
         </button>
         <button id="btn-close-rabbit-popover" type="button" aria-label="Close Rabbit Hole" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px] shrink-0">✕</button>
       </div>
@@ -200,11 +204,15 @@
           placeholder="Search MIT, Semiconductors, ASML, ShanghaiRanking, Voyager…"
           class="bg-transparent border-0 outline-none text-[16px] text-white placeholder-neutral-500 flex-1 min-w-0"
         />
-        <button id="btn-spotlight-agent" type="button" title="Curate official reference nodes, papers & fun facts for a deep rabbit hole" class="accent-chip rounded-full px-3 py-1.5 text-[13px] font-medium inline-flex items-center gap-1.5 shrink-0 cursor-pointer">
-          <i data-lucide="compass" class="w-3.5 h-3.5 shrink-0"></i>
-          <span>Curate Trail</span>
+        <button id="btn-spotlight-deep-research" type="button" title="Launch Deep Research Studio (arXiv, alphaXiv, ROR & Gemini Deep Research)" class="accent-chip rounded-full px-3 py-1.5 text-[13px] font-medium inline-flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 shrink-0"></i>
+          <span>Deep Research</span>
         </button>
-        <button id="btn-spotlight-live" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[13px] shrink-0 hidden sm:inline-flex">Live Registry</button>
+        <button id="btn-spotlight-agent" type="button" title="Curate official reference nodes, papers & fun facts for a deep rabbit hole" class="glass-btn rounded-full px-3 py-1.5 text-[13px] font-medium hidden sm:inline-flex items-center gap-1.5 shrink-0 cursor-pointer">
+          <i data-lucide="compass" class="w-3.5 h-3.5 shrink-0"></i>
+          <span>Trail</span>
+        </button>
+        <button id="btn-spotlight-live" type="button" class="hidden" aria-hidden="true">Live Registry</button>
         <button id="btn-close-spotlight" type="button" aria-label="Close search" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[14px] shrink-0">✕</button>
       </div>
       <div id="search-dropdown" class="p-4 scroll-clean flex-1 space-y-2"></div>
