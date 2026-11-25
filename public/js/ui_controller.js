@@ -147,12 +147,9 @@ function renderRabbitPopover() {
     return;
   }
   box.innerHTML = trails.map(tr => `
-    <button type="button" data-pop-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-start justify-between gap-3">
-      <div class="min-w-0">
-        <div class="text-[13.5px] font-medium text-white leading-snug">${esc(tr.title)}</div>
-        <div class="text-[12px] text-neutral-400 leading-snug line-clamp-2 mt-0.5">${esc(tr.tagline)}</div>
-      </div>
-      <span class="text-[12.5px] accent-text shrink-0 pt-0.5">${(tr.stops || []).length} stops →</span>
+    <button type="button" data-pop-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-3">
+      <div class="text-[13.5px] font-medium text-white leading-snug min-w-0">${esc(tr.title)}</div>
+      <span class="text-[12.5px] accent-text shrink-0">${(tr.stops || []).length} stops →</span>
     </button>
   `).join("");
   box.querySelectorAll("[data-pop-trail]").forEach(btn => {
