@@ -1636,140 +1636,121 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
     }
   });
 
-  // Google-Earth-style 3D celestial sphere backdrop (crisp granular Milky Way + Great Rift + 3,800 sharp stars)
-  // Rotates in true 3D with live globe lng, lat, bearing, pitch & zoom at 60fps — ZERO blurry fog!
+  // Real 4K ESO Photographic Milky Way Panorama (eso0932a · CC BY 4.0 · ESO/S. Brunier)
+  // Rendered via a native WebGL1 3D spherical skybox shader synced 1:1 with live globe lng, lat, bearing, pitch & zoom!
   (function initDeepSpaceBackdrop() {
     const bg = document.getElementById("space-bg-canvas");
     if (!bg) return;
-    const bctx = bg.getContext("2d");
-    if (!bctx) return;
 
-    // Deterministic PRNG for realistic astronomical starfield & fine Milky Way structure
-    let seed = 42197;
-    const rand = () => {
-      seed = (seed * 1664525 + 1013904223) >>> 0;
-      return seed / 4294967296;
-    };
-    const gauss = () => (rand() + rand() + rand() - 1.5) * 0.66;
+    const gl = bg.getContext("webgl", { alpha: false, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true })
+      || bg.getContext("experimental-webgl", { alpha: false, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });
+    if (!gl) return;
 
-    // Subtle, tightly-focused radial sprites for fine galactic dust wisps (low opacity — NO blurry white blobs!)
-    const makeCloudSprite = (r, g, b, innerAlpha, midAlpha) => {
-      const c = document.createElement("canvas");
-      c.width = 96;
-      c.height = 96;
-      const gctx = c.getContext("2d");
-      const gr = gctx.createRadialGradient(48, 48, 0, 48, 48, 48);
-      gr.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${innerAlpha})`);
-      gr.addColorStop(0.45, `rgba(${r}, ${g}, ${b}, ${midAlpha})`);
-      gr.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
-      gctx.fillStyle = gr;
-      gctx.fillRect(0, 0, 96, 96);
-      return c;
-    };
-    const warmDustSprite = makeCloudSprite(152, 140, 128, 0.085, 0.032);
-    const coolDustSprite = makeCloudSprite(118, 138, 174, 0.075, 0.028);
-    const coreDustSprite = makeCloudSprite(188, 170, 146, 0.11, 0.042);
-    const riftSprite = makeCloudSprite(1, 2, 4, 0.56, 0.24);
-
-    // Galactic plane tilted ~58 deg to Earth's equator
-    const G_TILT = 58 * Math.PI / 180;
-    const cosT = Math.cos(G_TILT);
-    const sinT = Math.sin(G_TILT);
-    const G_YAW = 26 * Math.PI / 180;
-    const cosY = Math.cos(G_YAW);
-    const sinY = Math.sin(G_YAW);
-
-    const galacticToUnit = (glon, glat) => {
-      const cl = Math.cos(glat);
-      const gx = cl * Math.cos(glon);
-      const gy = Math.sin(glat);
-      const gz = cl * Math.sin(glon);
-      const x1 = gx * cosT - gy * sinT;
-      const y1 = gx * sinT + gy * cosT;
-      const z1 = gz;
-      return [
-        x1 * cosY + z1 * sinY,
-        y1,
-        -x1 * sinY + z1 * cosY
-      ];
-    };
-
-    // 1. Tight, delicate Milky Way dust wisps (compact radii so it looks structured, never smeared!)
-    const clouds = [];
-    for (let i = 0; i < 110; i++) {
-      const glon = (i / 110) * Math.PI * 2 + (rand() - 0.5) * 0.06;
-      const coreDist = Math.abs(Math.atan2(Math.sin(glon - 0.42), Math.cos(glon - 0.42)));
-      const coreBoost = Math.exp(-coreDist * coreDist * 1.6);
-      const glat = gauss() * (0.055 + coreBoost * 0.035);
-      const [x, y, z] = galacticToUnit(glon, glat);
-      const sprite = coreBoost > 0.52 && rand() > 0.35
-        ? coreDustSprite
-        : (rand() > 0.46 ? warmDustSprite : coolDustSprite);
-      clouds.push({
-        x, y, z,
-        size: 0.055 + rand() * 0.065 + coreBoost * 0.03,
-        alpha: 0.40 + rand() * 0.35 + coreBoost * 0.25,
-        sprite
-      });
-    }
-
-    // 2. Crisp dark Great Rift dust absorption lanes carving fine photographic structure down the Milky Way
-    const rifts = [];
-    for (let i = 0; i < 48; i++) {
-      const glon = (i / 48) * Math.PI * 2 + (rand() - 0.5) * 0.05;
-      const glat = gauss() * 0.022;
-      const [x, y, z] = galacticToUnit(glon, glat);
-      rifts.push({
-        x, y, z,
-        size: 0.038 + rand() * 0.042,
-        alpha: 0.52 + rand() * 0.32,
-        sprite: riftSprite
-      });
-    }
-
-    // 3. 3,800 razor-sharp pinpoint stars:
-    //    - 2,350 dense fine Milky Way star-dust grains (making the galaxy shimmer with crisp pinpoint granularity!)
-    //    - 1,450 isotropic background constellations across the whole celestial sphere
-    const stars = [];
-    const totalStars = 3800;
-    for (let i = 0; i < totalStars; i++) {
-      let x, y, z;
-      const isBandDust = i < 2350;
-      if (isBandDust) {
-        const glon = rand() * Math.PI * 2;
-        const coreDist = Math.abs(Math.atan2(Math.sin(glon - 0.42), Math.cos(glon - 0.42)));
-        const coreBoost = Math.exp(-coreDist * coreDist * 1.6);
-        // Tight band + subtle rift avoidance for natural Milky Way granularity
-        let glat = gauss() * (0.095 + coreBoost * 0.045);
-        if (Math.abs(glat) < 0.016 && rand() < 0.45) glat += (glat >= 0 ? 0.022 : -0.022);
-        [x, y, z] = galacticToUnit(glon, glat);
-      } else {
-        const u = rand() * 2 - 1;
-        const phi = rand() * Math.PI * 2;
-        const s = Math.sqrt(Math.max(0, 1 - u * u));
-        x = s * Math.cos(phi);
-        y = u;
-        z = s * Math.sin(phi);
+    const vertSrc = `
+      attribute vec2 aPos;
+      void main() {
+        gl_Position = vec4(aPos, 0.0, 1.0);
       }
-      const mag = rand();
-      const bright = !isBandDust ? (mag > 0.968) : (mag > 0.992);
-      const med = !bright && (!isBandDust ? mag > 0.80 : mag > 0.88);
-      const r = bright ? (1.15 + rand() * 0.55) : med ? (0.78 + rand() * 0.34) : (0.55 + rand() * 0.30);
-      const a = bright ? (0.82 + rand() * 0.18) : med ? (0.44 + rand() * 0.32) : (0.14 + rand() * 0.24);
-      const temp = rand();
-      const rgb = temp > 0.72 ? "208, 226, 255" : temp > 0.26 ? "246, 248, 252" : "252, 230, 202";
-      stars.push({ x, y, z, r, a, rgb, bright, pinpoint: !bright && !med });
-    }
+    `;
+    const fragSrc = `
+      precision highp float;
+      uniform sampler2D uSky;
+      uniform vec2 uRes;
+      uniform float uFov;
+      uniform mat3 uMat;
+      const float PI = 3.14159265359;
+      const float TAU = 6.28318530718;
+      void main() {
+        vec2 p = (gl_FragCoord.xy - 0.5 * uRes) / uFov;
+        vec3 ray = normalize(vec3(p.x, p.y, 1.0));
+        vec3 d = uMat * ray;
+        float lon = atan(d.x, d.z);
+        float lat = asin(clamp(d.y, -1.0, 1.0));
+        vec2 uv = vec2(lon / TAU + 0.5, 0.5 - lat / PI);
+        vec3 col = texture2D(uSky, uv).rgb;
+        // Crisp Google-Earth cosmic contrast: deep pitch-black void with clear Milky Way dust & sharp stars
+        col = max(vec3(0.0), col - vec3(0.018));
+        col = pow(col, vec3(1.18)) * 0.88;
+        gl_FragColor = vec4(col, 1.0);
+      }
+    `;
 
-    let w = 0, h = 0;
+    const compile = (type, src) => {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
+    };
+    const prog = gl.createProgram();
+    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vertSrc));
+    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fragSrc));
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const aPos = gl.getAttribLocation(prog, "aPos");
+    gl.enableVertexAttribArray(aPos);
+    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+    const uSkyLoc = gl.getUniformLocation(prog, "uSky");
+    const uResLoc = gl.getUniformLocation(prog, "uRes");
+    const uFovLoc = gl.getUniformLocation(prog, "uFov");
+    const uMatLoc = gl.getUniformLocation(prog, "uMat");
+
+    const tex = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, tex);
+    // 1x1 deep-space black placeholder until the 4K panorama finishes decoding (~15ms)
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([1, 2, 4, 255]));
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.uniform1i(uSkyLoc, 0);
+
+    let texReady = false;
     let dirty = true;
+    const skyImg = new Image();
+    skyImg.decoding = "async";
+    skyImg.onload = () => {
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, tex);
+      gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
+      gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, skyImg);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+      texReady = true;
+      dirty = true;
+    };
+    skyImg.src = "./assets/milky_way_eso_4k.jpg";
+
+    // Multiply two 3x3 row-major matrices A * B
+    const mul3 = (a, b) => [
+      a[0]*b[0] + a[1]*b[3] + a[2]*b[6], a[0]*b[1] + a[1]*b[4] + a[2]*b[7], a[0]*b[2] + a[1]*b[5] + a[2]*b[8],
+      a[3]*b[0] + a[4]*b[3] + a[5]*b[6], a[3]*b[1] + a[4]*b[4] + a[5]*b[7], a[3]*b[2] + a[4]*b[5] + a[5]*b[8],
+      a[6]*b[0] + a[7]*b[3] + a[8]*b[6], a[6]*b[1] + a[7]*b[4] + a[8]*b[7], a[6]*b[2] + a[7]*b[5] + a[8]*b[8]
+    ];
+    const rotX = (t) => { const c = Math.cos(t), s = Math.sin(t); return [1, 0, 0, 0, c, -s, 0, s, c]; };
+    const rotY = (t) => { const c = Math.cos(t), s = Math.sin(t); return [c, 0, s, 0, 1, 0, -s, 0, c]; };
+    const rotZ = (t) => { const c = Math.cos(t), s = Math.sin(t); return [c, -s, 0, s, c, 0, 0, 0, 1]; };
+
+    // Constant galactic-to-equatorial orientation (authentic ~60 deg galactic tilt framed behind Earth)
+    const galBase = mul3(rotY(-0.34), mul3(rotX(-0.18), rotZ(0.96)));
+
+    let w = 0, h = 0, pxW = 0, pxH = 0;
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = bg.clientWidth || window.innerWidth;
       h = bg.clientHeight || window.innerHeight;
-      bg.width = Math.round(w * dpr);
-      bg.height = Math.round(h * dpr);
-      bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pxW = Math.max(1, Math.round(w * dpr));
+      pxH = Math.max(1, Math.round(h * dpr));
+      bg.width = pxW;
+      bg.height = pxH;
+      gl.viewport(0, 0, pxW, pxH);
       dirty = true;
     };
     resize();
@@ -1782,103 +1763,33 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
         const z = map.getZoom?.() ?? initialZoom;
         const bearing = map.getBearing?.() ?? 0;
         const pitch = map.getPitch?.() ?? 0;
-        const key = `${c.lng.toFixed(3)}|${c.lat.toFixed(3)}|${z.toFixed(3)}|${bearing.toFixed(2)}|${pitch.toFixed(2)}|${w}x${h}`;
+        const key = `${c.lng.toFixed(3)}|${c.lat.toFixed(3)}|${z.toFixed(3)}|${bearing.toFixed(2)}|${pitch.toFixed(2)}|${pxW}x${pxH}|${texReady ? 1 : 0}`;
 
         if (dirty || key !== lastKey) {
           dirty = false;
           lastKey = key;
 
-          // Deep-space pure crisp cosmic black
-          bctx.fillStyle = "#010204";
-          bctx.fillRect(0, 0, w, h);
+          // Live 3D sky orientation coupled directly to globe camera (lng, lat, bearing, pitch)
+          const camMat = mul3(
+            rotY(c.lng * Math.PI / 180),
+            mul3(
+              rotX((-c.lat * 0.92 - pitch * 0.72) * Math.PI / 180),
+              rotZ(bearing * Math.PI / 180)
+            )
+          );
+          const m = mul3(galBase, camMat);
+          // Transpose row-major -> WebGL column-major mat3
+          const colMajor = new Float32Array([
+            m[0], m[3], m[6],
+            m[1], m[4], m[7],
+            m[2], m[5], m[8]
+          ]);
 
-          // Live 3D celestial sphere rotation coupled directly to globe lng, lat, bearing & pitch
-          const yaw = -c.lng * Math.PI / 180;
-          const latRad = (c.lat * 0.92 + pitch * 0.72) * Math.PI / 180;
-          const roll = -bearing * Math.PI / 180;
-
-          const cy = Math.cos(yaw), sy = Math.sin(yaw);
-          const cx = Math.cos(latRad), sx = Math.sin(latRad);
-          const cr = Math.cos(roll), sr = Math.sin(roll);
-
-          const m00 = cy,       m01 = 0,  m02 = sy;
-          const m10 = sx * sy,  m11 = cx, m12 = -sx * cy;
-          const m20 = -cx * sy, m21 = sx, m22 = cx * cy;
-
-          const r00 = cr * m00 - sr * m10, r01 = cr * m01 - sr * m11, r02 = cr * m02 - sr * m12;
-          const r10 = sr * m00 + cr * m10, r11 = sr * m01 + cr * m11, r12 = sr * m02 + cr * m12;
-          const r20 = m20,                 r21 = m21,                 r22 = m22;
-
-          const fov = Math.max(w, h) * (0.76 + Math.min(z, 6) * 0.035);
-          const halfW = w * 0.5;
-          const halfH = h * 0.5;
-
-          // Pass 1: Delicate, tight Milky Way galactic dust sheen (never smeared!)
-          bctx.save();
-          bctx.globalCompositeOperation = "screen";
-          for (let i = 0; i < clouds.length; i++) {
-            const cl = clouds[i];
-            const cz = r20 * cl.x + r21 * cl.y + r22 * cl.z;
-            if (cz < 0.14) continue;
-            const cxp = r00 * cl.x + r01 * cl.y + r02 * cl.z;
-            const cyp = r10 * cl.x + r11 * cl.y + r12 * cl.z;
-            const inv = fov / cz;
-            const sxp = halfW + cxp * inv;
-            const syp = halfH - cyp * inv;
-            const rad = cl.size * inv;
-            if (sxp + rad < 0 || sxp - rad > w || syp + rad < 0 || syp - rad > h) continue;
-            bctx.globalAlpha = cl.alpha * Math.min(1, (cz - 0.14) * 2.5);
-            bctx.drawImage(cl.sprite, sxp - rad, syp - rad, rad * 2, rad * 2);
-          }
-          bctx.restore();
-
-          // Pass 2: Sharp dark Great Rift dust absorption lanes
-          bctx.save();
-          for (let i = 0; i < rifts.length; i++) {
-            const rf = rifts[i];
-            const cz = r20 * rf.x + r21 * rf.y + r22 * rf.z;
-            if (cz < 0.16) continue;
-            const cxp = r00 * rf.x + r01 * rf.y + r02 * rf.z;
-            const cyp = r10 * rf.x + r11 * rf.y + r12 * rf.z;
-            const inv = fov / cz;
-            const sxp = halfW + cxp * inv;
-            const syp = halfH - cyp * inv;
-            const rad = rf.size * inv;
-            if (sxp + rad < 0 || sxp - rad > w || syp + rad < 0 || syp - rad > h) continue;
-            bctx.globalAlpha = rf.alpha * Math.min(1, (cz - 0.16) * 2.5);
-            bctx.drawImage(rf.sprite, sxp - rad, syp - rad, rad * 2, rad * 2);
-          }
-          bctx.restore();
-
-          // Pass 3: 3,800 razor-sharp pinpoint stars & granular Milky Way starlight
-          for (let i = 0; i < stars.length; i++) {
-            const st = stars[i];
-            const cz = r20 * st.x + r21 * st.y + r22 * st.z;
-            if (cz < 0.12) continue;
-            const cxp = r00 * st.x + r01 * st.y + r02 * st.z;
-            const cyp = r10 * st.x + r11 * st.y + r12 * st.z;
-            const inv = fov / cz;
-            const sxp = halfW + cxp * inv;
-            const syp = halfH - cyp * inv;
-            if (sxp < -4 || sxp > w + 4 || syp < -4 || syp > h + 4) continue;
-            const edgeFade = Math.min(1, (cz - 0.12) * 3.5);
-            if (st.pinpoint) {
-              // Razor-sharp 1px pinpoint star-dust grain (zero anti-alias blur!)
-              bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * edgeFade).toFixed(3)})`;
-              bctx.fillRect(sxp, syp, st.r, st.r);
-            } else {
-              if (st.bright) {
-                bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * 0.22 * edgeFade).toFixed(3)})`;
-                bctx.beginPath();
-                bctx.arc(sxp, syp, st.r * 2.2, 0, Math.PI * 2);
-                bctx.fill();
-              }
-              bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * edgeFade).toFixed(3)})`;
-              bctx.beginPath();
-              bctx.arc(sxp, syp, st.r, 0, Math.PI * 2);
-              bctx.fill();
-            }
-          }
+          const fovPx = Math.max(pxW, pxH) * (0.78 + Math.min(z, 6) * 0.032);
+          gl.uniform2f(uResLoc, pxW, pxH);
+          gl.uniform1f(uFovLoc, fovPx);
+          gl.uniformMatrix3fv(uMatLoc, false, colMajor);
+          gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
         }
       }
       requestAnimationFrame(draw);

@@ -1,57 +1,8 @@
 # PhysALT
 
-**PhysALT** is an interactive, privacy-first **3D global STEM & physics atlas** — mapping **5,700+ universities, national laboratories, deep-tech startups, particle colliders, observatories, and research hubs across 158 countries**, paired with historical breakthroughs (1800 BCE–2045), Rabbit Hole curiosity trails, offline packs, and a 1 Light-Day space frontier visualizer.
+**PhysALT** is an interactive, privacy-first **3D global STEM & physics atlas** — mapping **6,926 verified universities, national laboratories, polar off-grid stations, deep-tech startups, particle colliders, and observatories across 166 countries**, paired with **ShanghaiRanking 2026 (ARWU + 57 GRAS subjects)**, **176 verified research collaborations**, **16 Rabbit Hole journeys**, **15 SHA-256 offline packs**, **Deep Research Studio (arXiv / alphaXiv / ROR / Gemini)**, historical breakthroughs (`1800 BCE–2045`), and **36 Space Frontier missions out to 1 Light-Day**.
 
-Built as a **static-first PWA + Capacitor 6 mobile app (iOS & Android)** and engineered as the reference blueprint for a reusable **Multi-Subject Atlas Engine** (`Physics → AI → All Sciences`).
-
----
-
-## Architecture Overview
-
-```mermaid
-flowchart LR
-    subgraph ETL["Open-Science ETL & Audit Pipeline (CI / Weekly)"]
-        OA["OpenAlex API (CC0)<br/>Field 31: Physics & Astro"]
-        ROR["ROR v2 API (CC0)<br/>Labs & Observatories"]
-        SCRAPE["scripts/scrape_physics.mjs"]
-        VERIFY["scripts/verify_and_audit.mjs --strict"]
-        DATA["public/data/physics_hubs.json<br/>(4,000+ Hubs · 156 Countries)"]
-        REPORT["public/data/verification_report.json"]
-
-        OA --> SCRAPE
-        ROR --> SCRAPE
-        SCRAPE --> DATA
-        DATA --> VERIFY
-        VERIFY --> REPORT
-    end
-
-    subgraph APP["PhysALT 3D Atlas Engine (Web · PWA · Capacitor iOS/Android)"]
-        GL["MapLibre GL 3D Satellite Globe<br/>(Esri Imagery · Hemisphere Culling)"]
-        UI["Subject Adapter · Time Counter<br/>Scale Engine · 7-Stage Pathways"]
-        PRIV["Privacy & Data Controls<br/>(1-Click GDPR Export & Erase)"]
-        LIVE["Live Read-Only Enrichment<br/>(OpenAlex · ROR · INSPIRE-HEP · Wikipedia)"]
-    end
-
-    subgraph CLOUD["Optional Cloud Sync (Zero-PII)"]
-        FB["Firebase Anonymous Auth + Firestore<br/>(Hardened firestore.rules)"]
-    end
-
-    DATA -->|"<200ms Static Preload"| GL
-    GL <--> UI
-    UI --> LIVE
-    UI <--> PRIV
-    PRIV <-->|"Anonymous UID Only"| FB
-```
-
-```text
-OpenAlex + ROR v2 ──▶ scrape_physics.mjs ──▶ physics_hubs.json ──▶ verify_and_audit.mjs (--strict)
-                                                    │
-                                                    ▼
-                     Web / PWA / Capacitor 6 (3D Globe + Time Counter + Scale View)
-                                       │                           │
-                        Direct Read-Only APIs            Optional Anonymous Sync
-                   (INSPIRE-HEP · Wikimedia · Esri)     (Firebase + firestore.rules)
-```
+Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.1.0 / Build 31)** with 100% shared web/native parity.
 
 ---
 
@@ -59,82 +10,68 @@ OpenAlex + ROR v2 ──▶ scrape_physics.mjs ──▶ physics_hubs.json ─�
 
 | Capability | Description |
 |---|---|
-| **3D Interactive Satellite Globe** | MapLibre GL CSP WebGL globe with Esri World Imagery, hemisphere culling, rAF-throttled clustering, and 3D geodesic collaboration arcs. |
-| **Global Open-Science Index** | 4,000+ physics universities, national labs, synchrotrons, observatories, institutes, and deep-tech hubs across 156 countries preloaded in `<200 ms` from `public/data/physics_hubs.json`. |
-| **Time Counter (Historical Epochs)** | Step chronologically across landmark eras of physics discoveries and see where breakthroughs happened on the globe. |
-| **Space / Scale Engine** | Transition beyond terrestrial facilities to explore physical & cosmic frontier scales. |
-| **7-Stage Career Pathways** | Tailored guidance & fellowships from **High School** → **Undergrad** → **Master's** → **PhD** → **Postdoc** → **Associate Prof** → **Full Professor**, with bookmarkable shortlists. |
-| **Live Open-Science Enrichment** | On-demand read-only lookups to OpenAlex, ROR v2, INSPIRE-HEP, and Wikimedia REST API. |
-| **Privacy-First & GDPR Controls** | Zero PII, zero GPS tracking, zero ad SDKs, zero third-party cookies, plus in-app **Privacy & Data Controls** (1-click JSON export & local + cloud erasure). |
-| **Cross-Platform Delivery** | Works offline-capable as a Web PWA and packages natively for **Android (AAB)** and **iOS (IPA / TestFlight)** via **Capacitor 6**. |
+| **3D Satellite Globe & 4K Milky Way Sky** | MapLibre GL CSP WebGL globe with Esri World Imagery + NASA Blue Marble, true 3D camera horizon occlusion, **4K ESO Photographic Milky Way WebGL skybox** (`eso0932a`) synced 1:1 with live globe rotation, and toggleable **3D Orbital Sun Lighting (`Sun`)**. |
+| **Global & Polar Open-Science Index** | **6,926 unique verified STEM hubs across 166 countries** — including **75 Polar Frontier off-grid Arctic, Svalbard, Greenland, Siberia & Antarctic stations** — preloaded from static open-registry JSON bundles. |
+| **Deep Research Studio (Free + BYOK Gemini)** | Free zero-key agentic discovery across **arXiv & alphaXiv** (via DataCite `10.48550`), **INSPIRE-HEP**, **ROR v2** (110k+ geocoded institutions), **OpenAlex**, and **Wikipedia**, plus optional **BYOK Gemini 2.5 Flash Grounded Search**, **Gemini Deep Research Interactions API**, 1-tap **Gemini App** handoff, and live **Plot & Fly →** globe pins. |
+| **ShanghaiRanking 2026 Integration** | Full ARWU & 57 GRAS subject tables, contextual institution badges, and 5-pillar impact breakdowns. |
+| **Rabbit Hole Trails & Time Counter** | **16 curated cross-STEM journeys** with clean full-text floating cards and 1-tap stop switchers, plus a chronological **1800 BCE → 2045** breakthrough timeline. |
+| **15 SHA-256 Offline Packs** | Modular downloadable discipline, region, Polar Frontier, and base Earth tile packs verified with SHA-256 into IndexedDB & Cache Storage. |
+| **1 Light-Day Space Frontier** | Interactive solar-to-interstellar visualizer with **36 verified space missions** from LEO out to Voyager 1 (`24h · 173.1 AU`). |
+| **Cross-Platform Parity (Web · iOS · Android)** | Byte-identical Web PWA + **Capacitor 6** native Android (`APK`/`AAB`) & iOS (`IPA`) builds (`org.worldofphysics.app`), automated in GitHub Actions. |
 
 ---
 
 ## Quickstart
 
 ### Prerequisites
-- **Node.js 20+** and `npm`
+- **Node.js 22+** and `npm`
 
 ### Run Locally
 ```bash
 # 1. Install dependencies
 npm install
 
-# 2. (Optional) Refresh global dataset from OpenAlex & ROR v2
+# 2. (Optional) Refresh global dataset & provenance ledger
 npm run scrape
+npm run build:db
 
 # 3. Run strict schema, hygiene & live link verification audit
 npm run verify
-# (or directly: node scripts/verify_and_audit.mjs --strict)
 
 # 4. Launch local dev server with CORS-safe API/tile proxy
 npm run dev
 ```
 
-Open **`http://localhost:5173`** in your browser.
-
 ---
 
 ## Mobile Packaging (Android & iOS via Capacitor 6)
 
-PhysALT ships preconfigured for **Capacitor 6** (`org.physalts.app` in `capacitor.config.json`):
+PhysALT ships preconfigured for **Capacitor 6** (`org.worldofphysics.app` in `capacitor.config.json`, `v2.1.0` / Build `31`):
 
 ```bash
-# Add native platforms (first time)
-npm run cap:add:android
-npm run cap:add:ios
-
-# Sync web assets (public/) into native projects
-npm run cap:sync
+# Sync web assets (public/) into Android & iOS native projects
+npx cap sync android
+npx cap sync ios
 
 # Open native IDEs
 npm run cap:android   # Android Studio
 npm run cap:ios       # Xcode (macOS)
 ```
 
-For full signing instructions (Android Upload Keystore & AAB, adaptive icons, safe-area layout, iOS Xcode signing, **Codemagic CI/CD for Linux/Ubuntu developers without a Mac**, and **public Firebase Hosting + Firestore deployment from a private GitHub repo** using Google AI Pro credits + `firebase.json`), see:
-- [`docs/MOBILE_RELEASE_GUIDE.md`](./docs/MOBILE_RELEASE_GUIDE.md)
+GitHub Actions (`.github/workflows/build-mobile-apps.yml`) automatically builds and uploads both **Android (`APK` + `AAB`)** and **iOS (`macOS-15` Xcode Archive + unsigned `IPA`)** artifacts on every push to `main`.
+
+See [`docs/MOBILE_RELEASE_GUIDE.md`](./docs/MOBILE_RELEASE_GUIDE.md) and [`store_submission/STORE_LISTING.md`](./store_submission/STORE_LISTING.md) for signing and store submission steps.
 
 ---
 
 ## Security, Compliance & CI Quality Gates
 
-PhysALT embeds security and privacy controls directly into the repository and CI/CD pipeline:
-
-- **Hardened Firestore Rules ([`firestore.rules`](./firestore.rules)):** Whitelisted document keys, coordinate bounds (`-90..90`, `-180..180`), HTTPS-only URL enforcement, immutable public community nodes, and explicit owner-only `delete` supporting GDPR Article 17 (Right to Erasure).
-- **GDPR Privacy & Open Data Policy ([`public/privacy.html`](./public/privacy.html)):** Transparent GDPR Articles 13–17 notice, sub-processor register, and nominative fair-use attribution.
-- **Automated Security & QA Workflow ([`.github/workflows/security-and-qa.yml`](./.github/workflows/security-and-qa.yml)):** Runs on every `push` and `pull_request` to `main` — executes `node scripts/verify_and_audit.mjs --strict`, `npm audit --audit-level=high`, secret-leak scanning, `firestore.rules` structural validation, and uploads `public/data/verification_report.json` as a 30-day audit artifact.
-- **Weekly Refresh & Deployment ([`.github/workflows/update-and-deploy.yml`](./.github/workflows/update-and-deploy.yml)):** Automated weekly OpenAlex/ROR dataset refresh and GitHub Pages deployment.
-- **SOC 2 Readiness & GDPR Blueprint ([`docs/COMPLIANCE_SOC2_GDPR.md`](./docs/COMPLIANCE_SOC2_GDPR.md)):** Full SOC 2 Trust Services Criteria (CC1–CC9, Availability, Processing Integrity, Confidentiality, Privacy) mapping, honest distinction between technical readiness controls and external CPA audits, GDPR checklist, and exact Apple App Store Privacy Nutrition Label & Google Play Data Safety answers.
-
----
-
-## Reusable Multi-Subject Atlas Engine ("Physics → AI → All Sciences")
-
-PhysALT is built so you can clone the engine and launch a new global atlas for another field — starting with **AI Atlas (`aialts`)** — in **1 day** by swapping the Subject Adapter (`config.js`), Time Counter epochs, Scale axis (e.g., Training Compute `10³ → 10²⁶+ FLOP`), and open-registry ETL queries.
-
-Read the complete architectural blueprint and hour-by-hour AI Atlas cloning guide:
-- [`docs/ATLAS_ENGINE_PLAYBOOK.md`](./docs/ATLAS_ENGINE_PLAYBOOK.md)
+- **Hardened Firestore Rules ([`firestore.rules`](./firestore.rules)):** Whitelisted keys, coordinate bounds, HTTPS-only URLs, and owner-only erasure (`GDPR Art. 17`).
+- **Privacy & Open Data Policy ([`public/privacy.html`](./public/privacy.html)):** Zero ads, zero GPS tracking, 1-click JSON/CSV export (`GDPR Art. 20`), and permanent local + cloud erasure.
+- **Automated CI Workflows:**
+  - [`.github/workflows/security-and-qa.yml`](./.github/workflows/security-and-qa.yml) — Schema & live link verification, `npm audit`, secret scan, and `firestore.rules` validation.
+  - [`.github/workflows/update-and-deploy.yml`](./.github/workflows/update-and-deploy.yml) — Automated GitHub Pages deployment (`https://nothinkaffee.github.io/PhysAlts/`).
+  - [`.github/workflows/build-mobile-apps.yml`](./.github/workflows/build-mobile-apps.yml) — Automated Android (`APK`/`AAB`) and iOS (`IPA`) builds.
 
 ---
 
@@ -143,7 +80,9 @@ Read the complete architectural blueprint and hour-by-hour AI Atlas cloning guid
 - **OpenAlex** (`api.openalex.org`) — CC0 1.0 Public Domain
 - **Research Organization Registry (ROR v2)** (`api.ror.org`) — CC0 1.0 Public Domain
 - **INSPIRE-HEP** (`inspirehep.net`) — CC0 1.0 Public Domain
+- **arXiv / alphaXiv via DataCite** (`api.datacite.org`) — Open scholarly metadata
 - **Wikimedia REST API / Wikipedia** — CC BY-SA 4.0
-- **Esri World Imagery** — Satellite basemap tiles (Esri attribution)
+- **ESO / Serge Brunier Milky Way Panorama (`eso0932a`)** — CC BY 4.0
+- **NASA Blue Marble & Esri World Imagery** — Global satellite basemap imagery
 
-University, national laboratory, and observatory names are listed for factual educational directory purposes under nominative fair use. PhysALT is an independent open-science platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.
+Institution names are listed for factual educational directory purposes under nominative fair use. PhysALT is an independent open-science platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.

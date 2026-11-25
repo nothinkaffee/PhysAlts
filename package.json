@@ -1,6 +1,6 @@
 {
   "name": "physalts",
-  "version": "1.0.0",
+  "version": "2.1.0",
   "private": true,
   "description": "PhysAlts — Global 3D interactive atlas of physics departments, national labs, mega-experiments, and academic career pathways.",
   "type": "module",
