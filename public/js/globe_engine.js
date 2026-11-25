@@ -455,6 +455,36 @@ function buildArcsGeoJSON() {
     }
   }
 
+  // Chronological Timeline Discovery Path (subtle historical lineage + luminous active jump arc)
+  if (store.state.timeMode && store.timelineEvents?.length >= 2) {
+    const events = store.timelineEvents;
+    let activeIdx = store.state.activeTimelineId
+      ? events.findIndex(e => e.id === store.state.activeTimelineId)
+      : -1;
+    if (activeIdx < 0) {
+      const curYear = store.state.timeYear;
+      activeIdx = 0;
+      let bestDist = Infinity;
+      for (let i = 0; i < events.length; i++) {
+        const d = Math.abs(events[i].year - curYear);
+        if (d < bestDist) { bestDist = d; activeIdx = i; }
+      }
+    }
+    const startIdx = Math.max(0, activeIdx - 10);
+    for (let i = startIdx; i < activeIdx; i++) {
+      const a = events[i];
+      const b = events[i + 1];
+      if (!a || !b || !Number.isFinite(a.lat) || !Number.isFinite(b.lat)) continue;
+      if (Math.abs(a.lat - b.lat) < 0.05 && Math.abs(a.lng - b.lng) < 0.05) continue;
+      const isCurrentJump = (i === activeIdx - 1);
+      features.push({
+        type: "Feature",
+        geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
+        properties: { focused: isCurrentJump ? 1 : 0, rabbit: isCurrentJump ? 1 : 0, eco: 0 }
+      });
+    }
+  }
+
   return { type: "FeatureCollection", features };
 }
 
@@ -938,7 +968,7 @@ function initGlobeHudOverlay() {
 
     // 2. Gather visible clusters & unclustered nodes (single source of truth for bubbles, counts, labels & hitboxes)
     if (CANVAS_MARKERS || useMainThreadOverlay) {
-      if (useMainThreadOverlay && !store.state.timeMode) {
+      if (useMainThreadOverlay || store.state.timeMode) {
         const arcs = buildArcsGeoJSON().features || [];
         ctx.save();
         ctx.setLineDash([4, 4]);
@@ -956,14 +986,49 @@ function initGlobeHudOverlay() {
             else ctx.lineTo(pt.x, pt.y);
           }
           ctx.strokeStyle = isRabbit
-            ? "rgba(196, 98, 98, 0.92)"
+            ? "rgba(208, 110, 110, 0.94)"
             : isCollab
               ? "rgba(208, 110, 110, 0.90)"
               : (focused ? "rgba(255,255,255,0.82)" : "rgba(212,212,216,0.34)");
-          ctx.lineWidth = isRabbit ? 1.8 : isCollab ? 1.7 : (focused ? 1.4 : 1);
+          ctx.lineWidth = isRabbit ? 2.0 : isCollab ? 1.7 : (focused ? 1.4 : 1.0);
           ctx.stroke();
         }
         ctx.restore();
+      }
+
+      // Active Timeline discovery beacon ring so the user's eye locks immediately onto the current milestone
+      if (store.state.timeMode && store.timelineEvents?.length) {
+        let activeEv = store.state.activeTimelineId
+          ? store.timelineEvents.find(ev => ev.id === store.state.activeTimelineId)
+          : null;
+        if (!activeEv) {
+          activeEv = store.timelineEvents[0];
+          let bestDist = Infinity;
+          for (const ev of store.timelineEvents) {
+            const d = Math.abs(ev.year - store.state.timeYear);
+            if (d < bestDist) { bestDist = d; activeEv = ev; }
+          }
+        }
+        if (activeEv && Number.isFinite(activeEv.lat) && Number.isFinite(activeEv.lng)) {
+          const pt = projectVisible3D(activeEv.lng, activeEv.lat, { allowEdge: true });
+          if (pt) {
+            ctx.save();
+            const grad = ctx.createRadialGradient(pt.x, pt.y, 4, pt.x, pt.y, 34);
+            grad.addColorStop(0, "rgba(208, 110, 110, 0.44)");
+            grad.addColorStop(0.55, "rgba(208, 110, 110, 0.15)");
+            grad.addColorStop(1, "rgba(208, 110, 110, 0)");
+            ctx.fillStyle = grad;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 34, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = "rgba(240, 198, 198, 0.88)";
+            ctx.lineWidth = 1.6;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, 13, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
       }
 
       // Pass 1: project nodes & clusters with true 3D horizon culling + perspective depth scaling.
@@ -2038,7 +2103,25 @@ export function flyToHub(node, zoomOverride = null) {
     center: [node.lng, node.lat],
     zoom: Math.min(targetZoom, 14.5),
     pitch: store.state.tilted ? 48 : 0,
+    padding: { top: 0, bottom: 0, left: 0, right: 0 },
     duration: 620,
+    easing: (t) => 1 - Math.pow(1 - t, 3),
+    essential: true
+  });
+}
+
+export function flyToTimelineEvent(ev, isTour = false) {
+  if (!map || !ev || !Number.isFinite(ev.lat) || !Number.isFinite(ev.lng)) return;
+  const isMobile = (window.innerWidth || 1280) < 768;
+  const targetZoom = isMobile ? 3.5 : 4.25;
+  const targetPitch = store.state.tilted ? 44 : (isTour ? 22 : 12);
+  map.easeTo({
+    center: [ev.lng, ev.lat],
+    zoom: targetZoom,
+    pitch: targetPitch,
+    bearing: 0,
+    padding: { top: 72, bottom: isMobile ? 260 : 240, left: 0, right: 0 },
+    duration: isTour ? 1350 : 850,
     easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true
   });
@@ -2061,6 +2144,7 @@ export function resetGlobeToSpace(center = RESTING_GLOBE_CENTER, zoom = null) {
     zoom: targetZoom,
     pitch: 0,
     bearing: 0,
+    padding: { top: 0, bottom: 0, left: 0, right: 0 },
     duration: 750,
     easing: (t) => 1 - Math.pow(1 - t, 3),
     essential: true

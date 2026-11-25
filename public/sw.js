@@ -5,7 +5,7 @@
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v32";
+const APP_CACHE = "world-physics-app-v33";
 const TILE_CACHE = "world-physics-tiles-v1";
 
 const PRECACHE_TILES = (() => {

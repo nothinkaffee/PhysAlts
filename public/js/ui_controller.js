@@ -14,7 +14,7 @@ import {
   mergeHubs, mergeOfflinePackPayload
 } from "./data_store.js";
 import {
-  syncGlobeMarkers, flyToHub, resetGlobeToSpace,
+  syncGlobeMarkers, flyToHub, flyToTimelineEvent, resetGlobeToSpace,
   setGlobeLabels, setGlobeTilt, zoomInGlobe, zoomOutGlobe
 } from "./globe_engine.js";
 import * as spaceView from "./space_view.js";
@@ -589,14 +589,102 @@ function percentToYear(pct) {
   return Math.round(2026 + ((p - 88) / 12) * 24);
 }
 
+const TIME_TOUR_SPEEDS = [
+  { label: "1×", dwellMs: 5200 },
+  { label: "1.5×", dwellMs: 3200 },
+  { label: "0.5×", dwellMs: 8000 }
+];
+let timeTourSpeedIdx = 0;
+let timeTourRaf = null;
+let timeTourElapsedMs = 0;
+let timeTourLastTs = 0;
+let timeTourHoverPaused = false;
+
+function updateTimeTourControlsUI() {
+  const bar = document.getElementById("time-bar");
+  const btn = document.getElementById("btn-time-play");
+  const icon = document.getElementById("time-play-icon");
+  const label = document.getElementById("time-play-label");
+  const speedBtn = document.getElementById("btn-time-speed");
+  const playing = Boolean(store.state.timePlaying);
+  bar?.classList.toggle("is-playing", playing);
+  bar?.classList.toggle("is-hover-paused", playing && timeTourHoverPaused);
+  if (btn) {
+    btn.classList.toggle("glass-btn-active", playing);
+    btn.classList.toggle("glass-btn", !playing);
+  }
+  if (icon) icon.textContent = playing ? "❚❚" : "▶";
+  if (label) label.textContent = playing ? "Pause" : "Play Tour";
+  if (speedBtn) speedBtn.textContent = TIME_TOUR_SPEEDS[timeTourSpeedIdx].label;
+}
+
+function setTimeTourProgressPct(pct) {
+  const fill = document.getElementById("time-tour-progress-bar");
+  if (fill) fill.style.width = `${Math.max(0, Math.min(100, pct)).toFixed(2)}%`;
+}
+
 function stopTimeTour() {
   store.state.timePlaying = false;
+  timeTourHoverPaused = false;
+  timeTourElapsedMs = 0;
+  timeTourLastTs = 0;
   if (timeTourTimer) {
     clearInterval(timeTourTimer);
     timeTourTimer = null;
   }
-  const btn = document.getElementById("btn-time-play");
-  if (btn) btn.textContent = "Play Tour";
+  if (timeTourRaf) {
+    cancelAnimationFrame(timeTourRaf);
+    timeTourRaf = null;
+  }
+  setTimeTourProgressPct(0);
+  updateTimeTourControlsUI();
+}
+
+function tickTimeTour(ts) {
+  if (!store.state.timePlaying || !store.state.timeMode) {
+    timeTourRaf = null;
+    return;
+  }
+  if (!timeTourLastTs) timeTourLastTs = ts;
+  const dt = Math.min(120, Math.max(0, ts - timeTourLastTs));
+  timeTourLastTs = ts;
+
+  const dwellMs = TIME_TOUR_SPEEDS[timeTourSpeedIdx].dwellMs;
+  if (!timeTourHoverPaused) {
+    timeTourElapsedMs += dt;
+    setTimeTourProgressPct((timeTourElapsedMs / dwellMs) * 100);
+    if (timeTourElapsedMs >= dwellMs) {
+      timeTourElapsedMs = 0;
+      if (activeTimelineIdx >= store.timelineEvents.length - 1) {
+        stopTimeTour();
+        showToast("Completed Timeline Tour · 1800 BCE → 2045");
+        return;
+      }
+      jumpToTimelineIndex(activeTimelineIdx + 1, false, true);
+    }
+  }
+  timeTourRaf = requestAnimationFrame(tickTimeTour);
+}
+
+function startTimeTour() {
+  if (!store.timelineEvents.length) return;
+  closePlaceCard();
+  store.state.timePlaying = true;
+  timeTourHoverPaused = false;
+  timeTourElapsedMs = 0;
+  timeTourLastTs = 0;
+  if (activeTimelineIdx >= store.timelineEvents.length - 1) {
+    activeTimelineIdx = -1;
+  }
+  updateTimeTourControlsUI();
+  jumpToTimelineIndex(activeTimelineIdx < 0 ? 0 : activeTimelineIdx + 1, false, true);
+  if (timeTourRaf) cancelAnimationFrame(timeTourRaf);
+  timeTourRaf = requestAnimationFrame(tickTimeTour);
+}
+
+function toggleTimeTour() {
+  if (store.state.timePlaying) stopTimeTour();
+  else startTimeTour();
 }
 
 function findNearestTimelineIndex(year) {
@@ -613,13 +701,14 @@ function findNearestTimelineIndex(year) {
   return bestIdx;
 }
 
-function renderTimelineUI(flyToActive = false) {
+function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = false) {
   const y = store.state.timeYear;
   const pct = yearToPercent(y);
   const era = store.eras.find(e => y >= e.startYear && y <= e.endYear) || store.eras[0];
 
   const yearEl = document.getElementById("time-year-display");
   const eraTitleEl = document.getElementById("time-era-title");
+  const stepEl = document.getElementById("time-step-counter");
   const countEl = document.getElementById("time-visible-count");
   const fillEl = document.getElementById("timeline-fill");
   const needleEl = document.getElementById("timeline-needle");
@@ -631,13 +720,35 @@ function renderTimelineUI(flyToActive = false) {
   if (needleEl) needleEl.style.left = `${pct.toFixed(2)}%`;
   if (rulerEl) rulerEl.setAttribute("aria-valuenow", String(y));
 
+  if (!preserveIdx || !store.timelineEvents[activeTimelineIdx]) {
+    activeTimelineIdx = findNearestTimelineIndex(y);
+  }
+  const activeEv = store.timelineEvents[activeTimelineIdx];
+  store.state.activeTimelineId = activeEv?.id || null;
+  if (stepEl && store.timelineEvents.length) {
+    stepEl.textContent = `${activeTimelineIdx + 1} / ${store.timelineEvents.length}`;
+  }
+
+  // Live Documentary Breakthrough Spotlight inside #time-bar
+  const storyTitle = document.getElementById("time-story-title");
+  const storyMeta = document.getElementById("time-story-meta");
+  const storyText = document.getElementById("time-story-text");
+  if (activeEv) {
+    if (storyTitle) storyTitle.textContent = activeEv.title || "";
+    if (storyMeta) {
+      const parts = [activeEv.figure, activeEv.location].filter(Boolean);
+      storyMeta.textContent = parts.join(" · ");
+    }
+    if (storyText) storyText.textContent = activeEv.summary || activeEv.impact || "";
+  }
+
   const tabsEl = document.getElementById("time-era-tabs");
   if (tabsEl && store.eras.length) {
     tabsEl.innerHTML = store.eras.map(e => {
       const act = era && era.id === e.id;
       const shortLabel = e.label.split(" (")[0];
       return `
-        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3.5 py-1.5 rounded-full text-[14px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
+        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3 py-1 rounded-full text-[13px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
           ${esc(shortLabel)}
         </button>
       `;
@@ -649,37 +760,37 @@ function renderTimelineUI(flyToActive = false) {
         if (!targetEra) return;
         const firstInEra = store.timelineEvents.findIndex(ev => ev.eraId === targetEra.id);
         if (firstInEra >= 0) {
-          jumpToTimelineIndex(firstInEra, true);
+          jumpToTimelineIndex(firstInEra, false);
         } else {
           store.state.timeYear = targetEra.startYear;
           renderTimelineUI(false);
         }
       });
     });
+    const activeEraBtn = tabsEl.querySelector(".glass-btn-active");
+    activeEraBtn?.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
   }
 
   const dotsEl = document.getElementById("timeline-dots");
   if (dotsEl && store.timelineEvents.length) {
-    activeTimelineIdx = findNearestTimelineIndex(y);
     dotsEl.innerHTML = store.timelineEvents.map((ev, idx) => {
       const ep = yearToPercent(ev.year);
       const isAct = idx === activeTimelineIdx;
-      return `<span class="timeline-dot ${isAct ? "active" : ""}" style="left:${ep.toFixed(2)}%" title="${esc(formatYear(ev.year))}"></span>`;
+      return `<span class="timeline-dot ${isAct ? "active" : ""}" style="left:${ep.toFixed(2)}%" title="${esc(formatYear(ev.year))}: ${esc(ev.title || "")}"></span>`;
     }).join("");
   }
 
-  // Pure Date-Only Timeline Ticks (zero duplicated card text!)
+  // Date ticks for quick hopping inside the active era
   const stripEl = document.getElementById("timeline-event-strip");
   if (stripEl && store.timelineEvents.length) {
     const eraEvents = era
       ? store.timelineEvents.filter(ev => ev.eraId === era.id)
       : store.timelineEvents.slice(Math.max(0, activeTimelineIdx - 3), activeTimelineIdx + 5);
-    const activeEv = store.timelineEvents[activeTimelineIdx];
 
     stripEl.innerHTML = eraEvents.map(ev => {
       const isSel = activeEv && ev.id === activeEv.id;
       return `
-        <button type="button" data-tl-card="${esc(ev.id)}" class="tl-card shrink-0 rounded-full px-4 py-2 text-[14px] font-medium tabular-nums whitespace-nowrap transition ${isSel ? "glass-btn-active" : "glass-btn"}">
+        <button type="button" data-tl-card="${esc(ev.id)}" title="${esc(ev.title || "")}" class="tl-card shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium tabular-nums whitespace-nowrap transition ${isSel ? "glass-btn-active" : "glass-btn"}">
           ${formatYear(ev.year)}
         </button>
       `;
@@ -689,7 +800,7 @@ function renderTimelineUI(flyToActive = false) {
       btn.addEventListener("click", () => {
         stopTimeTour();
         const idx = store.timelineEvents.findIndex(e => e.id === btn.dataset.tlCard);
-        if (idx >= 0) jumpToTimelineIndex(idx, true);
+        if (idx >= 0) jumpToTimelineIndex(idx, false);
       });
     });
 
@@ -701,19 +812,21 @@ function renderTimelineUI(flyToActive = false) {
   if (countEl) countEl.textContent = `${visible.length.toLocaleString()} in view`;
   syncGlobeMarkers();
 
-  if (flyToActive && store.timelineEvents[activeTimelineIdx]) {
-    const ev = store.timelineEvents[activeTimelineIdx];
-    flyToHub({ lat: ev.lat, lng: ev.lng, zoom: 4.2 }, 4.2);
+  if (flyToActive && activeEv) {
+    flyToTimelineEvent(activeEv, isTourFly);
   }
 }
 
-function jumpToTimelineIndex(idx, openCard = false) {
+function jumpToTimelineIndex(idx, openCard = false, isTourFly = false) {
   if (!store.timelineEvents.length) return;
   const clamped = Math.max(0, Math.min(store.timelineEvents.length - 1, idx));
   activeTimelineIdx = clamped;
   const ev = store.timelineEvents[clamped];
   store.state.timeYear = ev.year;
-  renderTimelineUI(true);
+  store.state.activeTimelineId = ev.id;
+  timeTourElapsedMs = 0;
+  setTimeTourProgressPct(0);
+  renderTimelineUI(true, isTourFly, true);
   if (openCard) selectHubNode(`tl-${ev.id}`, false);
 }
 
@@ -749,6 +862,24 @@ function bindTimelineRuler() {
   };
   ruler.addEventListener("pointerup", endDrag);
   ruler.addEventListener("pointercancel", endDrag);
+
+  // Hover-to-pause while reading a milestone during active Play Tour
+  const timeBar = document.getElementById("time-bar");
+  if (timeBar) {
+    timeBar.addEventListener("pointerenter", () => {
+      if (store.state.timePlaying) {
+        timeTourHoverPaused = true;
+        updateTimeTourControlsUI();
+      }
+    });
+    timeBar.addEventListener("pointerleave", () => {
+      if (timeTourHoverPaused) {
+        timeTourHoverPaused = false;
+        timeTourLastTs = 0;
+        updateTimeTourControlsUI();
+      }
+    });
+  }
 }
 
 export function setTimeMode(enabled, jumpYear = null) {
@@ -767,7 +898,8 @@ export function setTimeMode(enabled, jumpYear = null) {
     document.body.classList.add("time-open");
     btn?.classList.add("glass-btn-active");
     if (jumpYear !== null) store.state.timeYear = jumpYear;
-    else if (store.state.timeYear === 2026) store.state.timeYear = -580;
+    else if (store.state.timeYear === 2026) store.state.timeYear = store.timelineEvents[0]?.year ?? -1800;
+    updateTimeTourControlsUI();
     renderTimelineUI(true);
   } else {
     bar?.classList.add("hidden");
@@ -3157,7 +3289,7 @@ export function initUI() {
   });
 
   document.getElementById("btn-toggle-time")?.addEventListener("click", () => {
-    setTimeMode(!store.state.timeMode, store.state.timeMode ? null : -580);
+    setTimeMode(!store.state.timeMode, store.state.timeMode ? null : (store.timelineEvents[0]?.year ?? -1800));
   });
   document.getElementById("btn-open-domains")?.addEventListener("click", () => openModal("domains"));
   document.getElementById("btn-open-countries")?.addEventListener("click", () => openModal("countries"));
@@ -3165,28 +3297,22 @@ export function initUI() {
 
   document.getElementById("btn-time-prev")?.addEventListener("click", () => {
     stopTimeTour();
-    jumpToTimelineIndex(activeTimelineIdx - 1, true);
+    jumpToTimelineIndex(activeTimelineIdx - 1, false);
   });
   document.getElementById("btn-time-next")?.addEventListener("click", () => {
     stopTimeTour();
-    jumpToTimelineIndex(activeTimelineIdx + 1, true);
+    jumpToTimelineIndex(activeTimelineIdx + 1, false);
   });
-  document.getElementById("btn-time-play")?.addEventListener("click", (e) => {
-    if (store.state.timePlaying) {
-      stopTimeTour();
-    } else {
-      store.state.timePlaying = true;
-      e.currentTarget.textContent = "Pause Tour";
-      if (activeTimelineIdx >= store.timelineEvents.length - 1) activeTimelineIdx = -1;
-      jumpToTimelineIndex(activeTimelineIdx + 1, false);
-      timeTourTimer = setInterval(() => {
-        if (activeTimelineIdx >= store.timelineEvents.length - 1) {
-          stopTimeTour();
-          return;
-        }
-        jumpToTimelineIndex(activeTimelineIdx + 1, false);
-      }, 2400);
-    }
+  document.getElementById("btn-time-play")?.addEventListener("click", toggleTimeTour);
+  document.getElementById("btn-time-speed")?.addEventListener("click", () => {
+    timeTourSpeedIdx = (timeTourSpeedIdx + 1) % TIME_TOUR_SPEEDS.length;
+    updateTimeTourControlsUI();
+    showToast(`Tour pace: ${TIME_TOUR_SPEEDS[timeTourSpeedIdx].label}`);
+  });
+  document.getElementById("btn-time-details")?.addEventListener("click", () => {
+    stopTimeTour();
+    const ev = store.timelineEvents[activeTimelineIdx];
+    if (ev) selectHubNode(`tl-${ev.id}`, false);
   });
   document.getElementById("btn-time-close")?.addEventListener("click", () => setTimeMode(false));
 
@@ -3243,6 +3369,27 @@ export function initUI() {
     }
     if (typing) return;
 
+    // Dedicated Timeline Tour controls (Space = Play/Pause, Arrows = Step)
+    if (store.state.timeMode && !isModalOpen() && !isSpotlightOpen()) {
+      if (e.key === " " || e.code === "Space") {
+        e.preventDefault();
+        toggleTimeTour();
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        e.preventDefault();
+        stopTimeTour();
+        jumpToTimelineIndex(activeTimelineIdx + 1, false);
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        e.preventDefault();
+        stopTimeTour();
+        jumpToTimelineIndex(activeTimelineIdx - 1, false);
+        return;
+      }
+    }
+
     if (e.key === "/") {
       e.preventDefault();
       openSpotlight();
@@ -3262,7 +3409,7 @@ export function initUI() {
     } else if (e.key === "2") {
       setViewMode("space");
     } else if (e.key.toLowerCase() === "t") {
-      setTimeMode(!store.state.timeMode, store.state.timeMode ? null : -580);
+      setTimeMode(!store.state.timeMode, store.state.timeMode ? null : (store.timelineEvents[0]?.year ?? -1800));
     } else if (e.key.toLowerCase() === "b") {
       openModal("account", "bookmarks");
     } else if (e.key === "?") {

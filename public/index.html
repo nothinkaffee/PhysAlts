@@ -329,32 +329,53 @@
     <div id="trail-bar-stops" class="trail-bar-stops hidden"></div>
   </div>
 
-  <!-- Centered Chronological Timeline (1800 BCE → 2045 CE) -->
-  <section id="time-bar" class="hidden fixed bottom-[96px] inset-x-0 mx-auto z-[36] w-[min(860px,calc(100vw-32px))] liquid-glass rounded-[26px] p-5 space-y-3.5" aria-label="Chronological Physics Timeline">
-    <div class="flex flex-wrap items-center justify-between gap-3">
-      <div class="flex items-baseline gap-3.5 min-w-0">
-        <span id="time-year-display" class="text-[24px] font-semibold text-white tabular-nums tracking-tight shrink-0">580 BCE</span>
-        <span id="time-era-title" class="text-[15px] font-medium accent-text truncate">Pre-Classical &amp; Ancient Foundations</span>
+  <!-- Centered Chronological Timeline Tour (1800 BCE → 2045 CE) -->
+  <section id="time-bar" class="hidden fixed bottom-[88px] inset-x-0 mx-auto z-[36] w-[min(860px,calc(100vw-32px))] liquid-glass rounded-[24px] px-5 pt-4 pb-4 space-y-3 overflow-hidden" aria-label="Chronological Physics Timeline">
+    <div id="time-tour-progress-track" class="time-tour-progress-track" aria-hidden="true">
+      <div id="time-tour-progress-bar" class="time-tour-progress-bar"></div>
+    </div>
+
+    <div class="flex flex-wrap items-center justify-between gap-2.5">
+      <div class="flex items-baseline gap-3 min-w-0">
+        <span id="time-year-display" class="text-[22px] font-semibold text-white tabular-nums tracking-tight shrink-0">1800 BCE</span>
+        <span id="time-era-title" class="text-[14px] font-medium accent-text truncate">Pre-Classical &amp; Ancient Foundations</span>
+        <span id="time-step-counter" class="text-[12px] text-neutral-400 tabular-nums shrink-0 hidden sm:inline">1 / 65</span>
         <span id="time-visible-count" class="hidden"></span>
       </div>
-      <div class="flex items-center gap-2 shrink-0">
-        <button id="btn-time-prev" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[15px]" title="Previous">←</button>
-        <button id="btn-time-play" type="button" class="glass-btn rounded-full px-4 py-1.5 text-[14px] font-medium">Play Tour</button>
-        <button id="btn-time-next" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[15px]" title="Next">→</button>
-        <button id="btn-time-close" type="button" class="glass-btn rounded-full w-9 h-9 flex items-center justify-center text-[15px] ml-1" aria-label="Close timeline">✕</button>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="btn-time-prev" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[14px]" title="Previous milestone (←)" aria-label="Previous milestone">←</button>
+        <button id="btn-time-play" type="button" class="glass-btn rounded-full px-3.5 py-1.5 text-[13.5px] font-medium inline-flex items-center gap-1.5" title="Play or pause tour (Space)">
+          <span id="time-play-icon" aria-hidden="true">▶</span>
+          <span id="time-play-label">Play Tour</span>
+        </button>
+        <button id="btn-time-speed" type="button" class="glass-btn rounded-full px-2.5 py-1.5 text-[12px] font-medium tabular-nums" title="Change tour speed">1×</button>
+        <button id="btn-time-next" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[14px]" title="Next milestone (→)" aria-label="Next milestone">→</button>
+        <button id="btn-time-close" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px] ml-0.5" aria-label="Close timeline">✕</button>
       </div>
     </div>
 
-    <div id="time-era-tabs" class="flex items-center gap-2 overflow-x-auto no-scrollbar"></div>
-
-    <div id="timeline-ruler" class="timeline-ruler" role="slider" aria-label="Chronological Year Ruler" aria-valuemin="-1800" aria-valuemax="2045" aria-valuenow="-580">
-      <div class="timeline-track"></div>
-      <div id="timeline-fill" class="timeline-fill" style="width: 12%"></div>
-      <div id="timeline-dots"></div>
-      <div id="timeline-needle" class="timeline-needle" style="left: 12%"></div>
+    <!-- Live Breakthrough Spotlight (unobstructed documentary story while globe flies between milestones) -->
+    <div id="time-active-story" class="time-story-card">
+      <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-baseline gap-x-2.5 gap-y-0.5">
+          <h4 id="time-story-title" class="text-[14px] font-semibold text-white leading-snug"></h4>
+          <span id="time-story-meta" class="text-[12px] text-neutral-400 truncate"></span>
+        </div>
+        <p id="time-story-text" class="text-[12.5px] text-neutral-300 leading-relaxed line-clamp-2 mt-1"></p>
+      </div>
+      <button id="btn-time-details" type="button" class="glass-btn rounded-full px-3 py-1.5 text-[12px] font-medium shrink-0 self-center">Details →</button>
     </div>
 
-    <div id="timeline-event-strip" class="flex items-stretch gap-2.5 overflow-x-auto no-scrollbar pb-1"></div>
+    <div id="time-era-tabs" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar"></div>
+
+    <div id="timeline-ruler" class="timeline-ruler" role="slider" aria-label="Chronological Year Ruler" aria-valuemin="-1800" aria-valuemax="2045" aria-valuenow="-1800">
+      <div class="timeline-track"></div>
+      <div id="timeline-fill" class="timeline-fill" style="width: 2%"></div>
+      <div id="timeline-dots"></div>
+      <div id="timeline-needle" class="timeline-needle" style="left: 2%"></div>
+    </div>
+
+    <div id="timeline-event-strip" class="flex items-stretch gap-2 overflow-x-auto no-scrollbar pb-0.5"></div>
   </section>
 
   <!-- CENTERED WORKSPACE WINDOW -->
