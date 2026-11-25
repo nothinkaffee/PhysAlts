@@ -1636,8 +1636,9 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
     }
   });
 
-  // Real 4K ESO Photographic Milky Way Panorama (eso0932a · CC BY 4.0 · ESO/S. Brunier)
-  // Rendered via a native WebGL1 3D spherical skybox shader synced 1:1 with live globe lng, lat, bearing, pitch & zoom!
+  // Real ESO Photographic Milky Way Dust (eso0932a · CC BY 4.0) + 3,200 Razor-Sharp Native-Retina WebGL Stars
+  // Pass 1 renders subtle, faded galactic dust (keeping Earth the hero); Pass 2 renders mathematically crisp 1px–2px
+  // native-resolution gl.POINTS stars locked 1:1 to the exact same 3D spherical rotation matrix — ZERO upscaling blur!
   (function initDeepSpaceBackdrop() {
     const bg = document.getElementById("space-bg-canvas");
     if (!bg) return;
@@ -1646,13 +1647,20 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
       || bg.getContext("experimental-webgl", { alpha: false, antialias: false, depth: false, stencil: false, preserveDrawingBuffer: true });
     if (!gl) return;
 
-    const vertSrc = `
+    const compile = (type, src) => {
+      const sh = gl.createShader(type);
+      gl.shaderSource(sh, src);
+      gl.compileShader(sh);
+      return sh;
+    };
+
+    // --- Program 1: Faded ESO Milky Way Dust Skybox (smooth star-free nebula & Great Rift, zero blurry photo stars) ---
+    const skyProg = gl.createProgram();
+    gl.attachShader(skyProg, compile(gl.VERTEX_SHADER, `
       attribute vec2 aPos;
-      void main() {
-        gl_Position = vec4(aPos, 0.0, 1.0);
-      }
-    `;
-    const fragSrc = `
+      void main() { gl_Position = vec4(aPos, 0.0, 1.0); }
+    `));
+    gl.attachShader(skyProg, compile(gl.FRAGMENT_SHADER, `
       precision highp float;
       uniform sampler2D uSky;
       uniform vec2 uRes;
@@ -1668,47 +1676,32 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
         float lat = asin(clamp(d.y, -1.0, 1.0));
         vec2 uv = vec2(lon / TAU + 0.5, 0.5 - lat / PI);
         vec3 col = texture2D(uSky, uv).rgb;
-        // Crisp Google-Earth cosmic contrast: deep pitch-black void with clear Milky Way dust & sharp stars
-        col = max(vec3(0.0), col - vec3(0.018));
-        col = pow(col, vec3(1.18)) * 0.88;
-        gl_FragColor = vec4(col, 1.0);
+        // Calm, faded galactic dust glow so Earth stays the bright hero highlight
+        col = max(vec3(0.0), col - vec3(0.014));
+        col = pow(col, vec3(1.12)) * 0.44;
+        gl_FragColor = vec4(col + vec3(0.004, 0.005, 0.009), 1.0);
       }
-    `;
+    `));
+    gl.linkProgram(skyProg);
 
-    const compile = (type, src) => {
-      const sh = gl.createShader(type);
-      gl.shaderSource(sh, src);
-      gl.compileShader(sh);
-      return sh;
-    };
-    const prog = gl.createProgram();
-    gl.attachShader(prog, compile(gl.VERTEX_SHADER, vertSrc));
-    gl.attachShader(prog, compile(gl.FRAGMENT_SHADER, fragSrc));
-    gl.linkProgram(prog);
-    gl.useProgram(prog);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    const quadBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-    const aPos = gl.getAttribLocation(prog, "aPos");
-    gl.enableVertexAttribArray(aPos);
-    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-    const uSkyLoc = gl.getUniformLocation(prog, "uSky");
-    const uResLoc = gl.getUniformLocation(prog, "uRes");
-    const uFovLoc = gl.getUniformLocation(prog, "uFov");
-    const uMatLoc = gl.getUniformLocation(prog, "uMat");
+    const skyAPos = gl.getAttribLocation(skyProg, "aPos");
+    const uSkyLoc = gl.getUniformLocation(skyProg, "uSky");
+    const uResLoc = gl.getUniformLocation(skyProg, "uRes");
+    const uFovLoc = gl.getUniformLocation(skyProg, "uFov");
+    const uMatLoc = gl.getUniformLocation(skyProg, "uMat");
 
     const tex = gl.createTexture();
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, tex);
-    // 1x1 deep-space black placeholder until the 4K panorama finishes decoding (~15ms)
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([1, 2, 4, 255]));
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.REPEAT);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-    gl.uniform1i(uSkyLoc, 0);
 
     let texReady = false;
     let dirty = true;
@@ -1726,9 +1719,108 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
       texReady = true;
       dirty = true;
     };
-    skyImg.src = "./assets/milky_way_eso_4k.jpg";
+    skyImg.src = "./assets/milky_way_dust.jpg";
 
-    // Multiply two 3x3 row-major matrices A * B
+    // --- Program 2: 3,200 Razor-Sharp Native-Retina 3D gl.POINTS Stars (locked to the exact same 3D sky matrix) ---
+    const starProg = gl.createProgram();
+    gl.attachShader(starProg, compile(gl.VERTEX_SHADER, `
+      attribute vec3 aDir;
+      attribute vec4 aCol;
+      attribute float aSize;
+      uniform mat3 uInvMat;
+      uniform vec2 uRes;
+      uniform float uFov;
+      uniform float uDpr;
+      varying vec4 vCol;
+      void main() {
+        vec3 v = uInvMat * aDir;
+        if (v.z <= 0.12) {
+          gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+          gl_PointSize = 0.0;
+          vCol = vec4(0.0);
+          return;
+        }
+        vec2 ndc = (v.xy / v.z) * (uFov / (0.5 * uRes));
+        gl_Position = vec4(ndc, 0.0, 1.0);
+        gl_PointSize = aSize * uDpr;
+        float edgeFade = clamp((v.z - 0.12) * 3.5, 0.0, 1.0);
+        vCol = vec4(aCol.rgb, aCol.a * edgeFade);
+      }
+    `));
+    gl.attachShader(starProg, compile(gl.FRAGMENT_SHADER, `
+      precision mediump float;
+      varying vec4 vCol;
+      void main() {
+        vec2 c = gl_PointCoord - vec2(0.5);
+        float d = length(c) * 2.0;
+        if (d > 1.0) discard;
+        // Tack-sharp optical star core (zero blurry halo smear!)
+        float core = pow(1.0 - d, 1.6);
+        gl_FragColor = vec4(vCol.rgb, vCol.a * core);
+      }
+    `));
+    gl.linkProgram(starProg);
+
+    // Deterministic astronomical star catalog in galactic coordinates (matches milky_way_dust.jpg equator!)
+    let seed = 42197;
+    const rand = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed / 4294967296;
+    };
+    const gauss = () => (rand() + rand() + rand() - 1.5) * 0.66;
+
+    const STAR_COUNT = 3200;
+    // Stride = 8 floats: x, y, z, r, g, b, a, size
+    const starData = new Float32Array(STAR_COUNT * 8);
+    for (let i = 0; i < STAR_COUNT; i++) {
+      let x, y, z;
+      const inBand = i < STAR_COUNT * 0.52;
+      if (inBand) {
+        const glon = rand() * Math.PI * 2;
+        const coreDist = Math.abs(Math.atan2(Math.sin(glon), Math.cos(glon)));
+        const coreBoost = Math.exp(-coreDist * coreDist * 1.5);
+        const glat = gauss() * (0.14 + coreBoost * 0.07);
+        const cl = Math.cos(glat);
+        x = cl * Math.sin(glon);
+        y = Math.sin(glat);
+        z = cl * Math.cos(glon);
+      } else {
+        const u = rand() * 2 - 1;
+        const phi = rand() * Math.PI * 2;
+        const s = Math.sqrt(Math.max(0, 1 - u * u));
+        x = s * Math.cos(phi);
+        y = u;
+        z = s * Math.sin(phi);
+      }
+      const mag = rand();
+      const bright = mag > 0.978;
+      const med = !bright && mag > 0.84;
+      // Tack-sharp sizes (1.1px–2.5px) and calm, faded alpha so Earth stays the clear highlight
+      const size = bright ? (2.1 + rand() * 0.7) : med ? (1.45 + rand() * 0.45) : (1.05 + rand() * 0.35);
+      const alpha = bright ? (0.64 + rand() * 0.22) : med ? (0.34 + rand() * 0.22) : (0.14 + rand() * 0.18);
+      const temp = rand();
+      let cr = 0.96, cg = 0.97, cb = 1.0;
+      if (temp > 0.72) { cr = 0.80; cg = 0.89; cb = 1.0; }       // subtle O/B blue-white
+      else if (temp < 0.25) { cr = 1.0; cg = 0.90; cb = 0.78; }  // subtle K/M warm ivory
+      const o = i * 8;
+      starData[o] = x; starData[o + 1] = y; starData[o + 2] = z;
+      starData[o + 3] = cr; starData[o + 4] = cg; starData[o + 5] = cb; starData[o + 6] = alpha;
+      starData[o + 7] = size;
+    }
+
+    const starBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, starBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, starData, gl.STATIC_DRAW);
+
+    const starADir = gl.getAttribLocation(starProg, "aDir");
+    const starACol = gl.getAttribLocation(starProg, "aCol");
+    const starASize = gl.getAttribLocation(starProg, "aSize");
+    const starUInvMat = gl.getUniformLocation(starProg, "uInvMat");
+    const starURes = gl.getUniformLocation(starProg, "uRes");
+    const starUFov = gl.getUniformLocation(starProg, "uFov");
+    const starUDpr = gl.getUniformLocation(starProg, "uDpr");
+
+    // 3x3 row-major rotation matrix helpers
     const mul3 = (a, b) => [
       a[0]*b[0] + a[1]*b[3] + a[2]*b[6], a[0]*b[1] + a[1]*b[4] + a[2]*b[7], a[0]*b[2] + a[1]*b[5] + a[2]*b[8],
       a[3]*b[0] + a[4]*b[3] + a[5]*b[6], a[3]*b[1] + a[4]*b[4] + a[5]*b[7], a[3]*b[2] + a[4]*b[5] + a[5]*b[8],
@@ -1738,16 +1830,16 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
     const rotY = (t) => { const c = Math.cos(t), s = Math.sin(t); return [c, 0, s, 0, 1, 0, -s, 0, c]; };
     const rotZ = (t) => { const c = Math.cos(t), s = Math.sin(t); return [c, -s, 0, s, c, 0, 0, 0, 1]; };
 
-    // Constant galactic-to-equatorial orientation (authentic ~60 deg galactic tilt framed behind Earth)
+    // Constant galactic-to-equatorial orientation (authentic ~60 deg galactic tilt framed subtly behind Earth)
     const galBase = mul3(rotY(-0.34), mul3(rotX(-0.18), rotZ(0.96)));
 
-    let w = 0, h = 0, pxW = 0, pxH = 0;
+    let w = 0, h = 0, pxW = 0, pxH = 0, curDpr = 1;
     const resize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      curDpr = Math.min(window.devicePixelRatio || 1, 2);
       w = bg.clientWidth || window.innerWidth;
       h = bg.clientHeight || window.innerHeight;
-      pxW = Math.max(1, Math.round(w * dpr));
-      pxH = Math.max(1, Math.round(h * dpr));
+      pxW = Math.max(1, Math.round(w * curDpr));
+      pxH = Math.max(1, Math.round(h * curDpr));
       bg.width = pxW;
       bg.height = pxH;
       gl.viewport(0, 0, pxW, pxH);
@@ -1769,7 +1861,6 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
           dirty = false;
           lastKey = key;
 
-          // Live 3D sky orientation coupled directly to globe camera (lng, lat, bearing, pitch)
           const camMat = mul3(
             rotY(c.lng * Math.PI / 180),
             mul3(
@@ -1778,18 +1869,55 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
             )
           );
           const m = mul3(galBase, camMat);
-          // Transpose row-major -> WebGL column-major mat3
-          const colMajor = new Float32Array([
+          // m is orthogonal: col-major(m) transforms view->galactic, col-major(transpose(m)) = row-major(m) transforms galactic->view!
+          const matColMajor = new Float32Array([
             m[0], m[3], m[6],
             m[1], m[4], m[7],
             m[2], m[5], m[8]
           ]);
+          const invMatColMajor = new Float32Array([
+            m[0], m[1], m[2],
+            m[3], m[4], m[5],
+            m[6], m[7], m[8]
+          ]);
 
           const fovPx = Math.max(pxW, pxH) * (0.78 + Math.min(z, 6) * 0.032);
+
+          // Pass 1: Faded ESO Milky Way galactic dust backdrop
+          gl.disable(gl.BLEND);
+          gl.useProgram(skyProg);
+          gl.activeTexture(gl.TEXTURE0);
+          gl.bindTexture(gl.TEXTURE_2D, tex);
+          gl.uniform1i(uSkyLoc, 0);
           gl.uniform2f(uResLoc, pxW, pxH);
           gl.uniform1f(uFovLoc, fovPx);
-          gl.uniformMatrix3fv(uMatLoc, false, colMajor);
+          gl.uniformMatrix3fv(uMatLoc, false, matColMajor);
+          gl.bindBuffer(gl.ARRAY_BUFFER, quadBuf);
+          gl.enableVertexAttribArray(skyAPos);
+          gl.vertexAttribPointer(skyAPos, 2, gl.FLOAT, false, 0, 0);
           gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+          gl.disableVertexAttribArray(skyAPos);
+
+          // Pass 2: 3,200 tack-sharp native-resolution gl.POINTS stars locked 1:1 to the exact same sky sphere
+          gl.enable(gl.BLEND);
+          gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+          gl.useProgram(starProg);
+          gl.uniformMatrix3fv(starUInvMat, false, invMatColMajor);
+          gl.uniform2f(starURes, pxW, pxH);
+          gl.uniform1f(starUFov, fovPx);
+          gl.uniform1f(starUDpr, curDpr);
+          gl.bindBuffer(gl.ARRAY_BUFFER, starBuf);
+          const stride = 8 * 4;
+          gl.enableVertexAttribArray(starADir);
+          gl.vertexAttribPointer(starADir, 3, gl.FLOAT, false, stride, 0);
+          gl.enableVertexAttribArray(starACol);
+          gl.vertexAttribPointer(starACol, 4, gl.FLOAT, false, stride, 3 * 4);
+          gl.enableVertexAttribArray(starASize);
+          gl.vertexAttribPointer(starASize, 1, gl.FLOAT, false, stride, 7 * 4);
+          gl.drawArrays(gl.POINTS, 0, STAR_COUNT);
+          gl.disableVertexAttribArray(starADir);
+          gl.disableVertexAttribArray(starACol);
+          gl.disableVertexAttribArray(starASize);
         }
       }
       requestAnimationFrame(draw);
