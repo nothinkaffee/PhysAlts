@@ -129,12 +129,12 @@ function renderRabbitPopover() {
     return;
   }
   box.innerHTML = trails.map(tr => `
-    <button type="button" data-pop-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-center justify-between gap-3">
+    <button type="button" data-pop-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-3.5 py-2.5 flex items-start justify-between gap-3">
       <div class="min-w-0">
-        <div class="text-[13.5px] font-medium text-white truncate">${esc(tr.title)}</div>
-        <div class="text-[12px] text-neutral-400 truncate mt-0.5">${esc(tr.tagline)}</div>
+        <div class="text-[13.5px] font-medium text-white leading-snug">${esc(tr.title)}</div>
+        <div class="text-[12px] text-neutral-400 leading-snug line-clamp-2 mt-0.5">${esc(tr.tagline)}</div>
       </div>
-      <span class="text-[12.5px] accent-text shrink-0">${(tr.stops || []).length} stops →</span>
+      <span class="text-[12.5px] accent-text shrink-0 pt-0.5">${(tr.stops || []).length} stops →</span>
     </button>
   `).join("");
   box.querySelectorAll("[data-pop-trail]").forEach(btn => {
@@ -483,6 +483,7 @@ export function selectSpaceMission(missionId) {
   document.getElementById("card-title").textContent = m.name;
   document.getElementById("card-sub").textContent = `${m.agency} (${m.country}) · Launched ${m.launchYear} · ${m.distanceAU} AU`;
   document.getElementById("card-summary").textContent = m.summary || m.physicsDiscoveries || "";
+  syncCardSummaryExpand();
   document.getElementById("card-stage-box")?.classList.add("hidden");
   document.getElementById("card-shanghai-wrap")?.classList.add("hidden");
   document.getElementById("card-ecosystem-wrap")?.classList.add("hidden");
@@ -763,6 +764,42 @@ export function setTimeMode(enabled, jumpYear = null) {
 // FLOATING RABBIT HOLE TRAIL BREADCRUMB BAR & WIKIPEDIA BRIEF HELPER
 // =========================================================================
 
+function syncCardSummaryExpand() {
+  const el = document.getElementById("card-summary");
+  const btn = document.getElementById("btn-card-summary-more");
+  if (!el || !btn) return;
+  el.classList.add("line-clamp-3");
+  btn.textContent = "Read more";
+  requestAnimationFrame(() => {
+    const clipped = el.scrollHeight > el.clientHeight + 2;
+    btn.classList.toggle("hidden", !clipped);
+  });
+}
+
+function setRabbitTrailExpanded(expanded) {
+  const bar = document.getElementById("rabbit-trail-bar");
+  const meta = document.getElementById("trail-bar-meta");
+  const btn = document.getElementById("btn-trail-expand");
+  const stopsEl = document.getElementById("trail-bar-stops");
+  if (!bar) return;
+  bar.classList.toggle("is-expanded", expanded);
+  if (meta) meta.setAttribute("aria-expanded", expanded ? "true" : "false");
+  if (btn) {
+    btn.setAttribute("aria-expanded", expanded ? "true" : "false");
+    btn.title = expanded ? "Collapse trail story" : "Expand full story";
+  }
+  if (stopsEl) {
+    const hasStops = stopsEl.childElementCount > 0;
+    stopsEl.classList.toggle("hidden", !expanded || !hasStops);
+  }
+}
+
+function toggleRabbitTrailBarExpand() {
+  const bar = document.getElementById("rabbit-trail-bar");
+  if (!bar) return;
+  setRabbitTrailExpanded(!bar.classList.contains("is-expanded"));
+}
+
 function renderRabbitTrailBar() {
   const bar = document.getElementById("rabbit-trail-bar");
   const trail = store.state.activeTrail;
@@ -771,6 +808,7 @@ function renderRabbitTrailBar() {
   const stepEl = document.getElementById("trail-bar-step");
   const titleEl = document.getElementById("trail-bar-title");
   const bridgeEl = document.getElementById("trail-bar-bridge");
+  const stopsEl = document.getElementById("trail-bar-stops");
   const prevBtn = document.getElementById("btn-trail-prev");
   const nextBtn = document.getElementById("btn-trail-next");
 
@@ -782,12 +820,32 @@ function renderRabbitTrailBar() {
     if (bridgeEl) bridgeEl.textContent = stop.bridge || trail.tagline || "";
     if (prevBtn) prevBtn.disabled = idx === 0;
     if (nextBtn) nextBtn.textContent = idx >= trail.stops.length - 1 ? "Finish" : "Next →";
+
+    if (stopsEl) {
+      stopsEl.innerHTML = trail.stops.map((st, i) => `
+        <button type="button" data-trail-jump="${i}" class="trail-stop-chip ${i === idx ? "is-current" : ""}">
+          ${i + 1}. ${esc(st.title || st.hubId || "Stop")}
+        </button>
+      `).join("");
+      stopsEl.querySelectorAll("[data-trail-jump]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const targetIdx = Number(btn.dataset.trailJump);
+          if (!Number.isFinite(targetIdx) || !store.state.activeTrail) return;
+          store.state.activeTrail.index = targetIdx;
+          const targetStop = store.state.activeTrail.stops[targetIdx];
+          renderRabbitTrailBar();
+          if (targetStop?.hubId) selectHubNode(targetStop.hubId, true);
+        });
+      });
+      stopsEl.classList.toggle("hidden", !bar.classList.contains("is-expanded"));
+    }
+
     bar.classList.remove("hidden");
     document.body.classList.add("trail-open");
     return;
   }
 
-  // Free-roam curiosity walk bar (appears only after 2+ hops, whisper-clean 1-line bridge)
+  // Free-roam curiosity walk bar (appears only after 2+ hops, expandable to full narrative)
   const free = getFreeRoamState();
   if (store.state.viewMode === "earth" && !store.state.timeMode && free.history.length >= 2 && free.current) {
     if (stepEl) stepEl.textContent = `Hop ${free.cursor + 1}`;
@@ -795,11 +853,16 @@ function renderRabbitTrailBar() {
     if (bridgeEl) bridgeEl.textContent = free.current.reason || free.current.city || "";
     if (prevBtn) prevBtn.disabled = !free.canGoBack;
     if (nextBtn) nextBtn.textContent = "Next →";
+    if (stopsEl) {
+      stopsEl.innerHTML = "";
+      stopsEl.classList.add("hidden");
+    }
     bar.classList.remove("hidden");
     document.body.classList.add("trail-open");
     return;
   }
 
+  setRabbitTrailExpanded(false);
   bar.classList.add("hidden");
   document.body.classList.remove("trail-open");
 }
@@ -915,8 +978,9 @@ function loadWikipediaCardBrief(node) {
     if (isStubSummary && summaryEl) {
       const extract = String(data.extract || "").replace(/\s+/g, " ").trim();
       if (extract) {
-        const clipped = extract.length > 210 ? extract.slice(0, 205).replace(/\s+\S*$/, "") + "…" : extract;
+        const clipped = extract.length > 520 ? extract.slice(0, 515).replace(/\s+\S*$/, "") + "…" : extract;
         summaryEl.textContent = clipped;
+        syncCardSummaryExpand();
       }
     }
   };
@@ -1041,6 +1105,7 @@ export function selectHubNode(id, fly = true, opts = {}) {
   document.getElementById("card-title").textContent = node.name;
   document.getElementById("card-sub").textContent = node.city;
   document.getElementById("card-summary").textContent = node.summary;
+  syncCardSummaryExpand();
 
   updateBookmarkButtonUI(node.id);
 
@@ -1109,7 +1174,10 @@ export function selectHubNode(id, fly = true, opts = {}) {
   } else if (node.id?.startsWith("oa-") && !String(node.url || "").includes("openalex.org")) {
     links.push(`<a href="https://openalex.org/${esc(node.id.slice(3))}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">OpenAlex ↗</a>`);
   }
-  const gEarth = `https://earth.google.com/web/@${node.lat},${node.lng},500a,2500d,35y,0h,45t,0r`;
+  const latNum = Number(node.lat);
+  const lngNum = Number(node.lng);
+  const geCoords = `${Math.abs(latNum).toFixed(5)}°${latNum >= 0 ? "N" : "S"} ${Math.abs(lngNum).toFixed(5)}°${lngNum >= 0 ? "E" : "W"}`;
+  const gEarth = `https://earth.google.com/web/search/${encodeURIComponent(geCoords)}`;
   links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Google Earth ↗</a>`);
   links.push(`<button type="button" id="btn-card-deep-research" class="accent-chip rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer">Deep Research</button>`);
   if (linksEl) {
@@ -2865,7 +2933,23 @@ export function initUI() {
   });
   document.getElementById("btn-card-rabbit")?.addEventListener("click", () => jumpRabbitHole("walk"));
 
-  // Floating Rabbit Hole Trail Breadcrumb Bar controls
+  // Floating Rabbit Hole Trail Breadcrumb Bar controls (including expand/collapse full text)
+  document.getElementById("btn-trail-expand")?.addEventListener("click", toggleRabbitTrailBarExpand);
+  const trailMetaEl = document.getElementById("trail-bar-meta");
+  trailMetaEl?.addEventListener("click", toggleRabbitTrailBarExpand);
+  trailMetaEl?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      toggleRabbitTrailBarExpand();
+    }
+  });
+  document.getElementById("btn-card-summary-more")?.addEventListener("click", () => {
+    const el = document.getElementById("card-summary");
+    const btn = document.getElementById("btn-card-summary-more");
+    if (!el || !btn) return;
+    const isClamped = el.classList.toggle("line-clamp-3");
+    btn.textContent = isClamped ? "Read more" : "Show less";
+  });
   document.getElementById("btn-trail-prev")?.addEventListener("click", () => stepRabbitTrail(-1));
   document.getElementById("btn-trail-next")?.addEventListener("click", () => stepRabbitTrail(1));
   document.getElementById("btn-trail-exit")?.addEventListener("click", exitRabbitTrail);

@@ -238,7 +238,10 @@
         <div id="card-sub" class="text-[13.5px] text-neutral-400 mt-0.5 truncate"></div>
       </div>
 
-      <p id="card-summary" class="text-[14px] text-neutral-200 leading-relaxed line-clamp-3"></p>
+      <div class="space-y-1">
+        <p id="card-summary" class="text-[14px] text-neutral-200 leading-relaxed line-clamp-3"></p>
+        <button id="btn-card-summary-more" type="button" class="hidden text-[12.5px] accent-link bg-transparent border-0 p-0 cursor-pointer">Read more</button>
+      </div>
 
       <!-- Official Primary Doors -->
       <div id="card-links" class="flex flex-wrap items-center gap-x-2.5 gap-y-2 pt-0.5"></div>
@@ -306,20 +309,26 @@
     <div id="cluster-sheet-list" class="p-3 space-y-1.5 scroll-clean flex-1"></div>
   </aside>
 
-  <!-- Floating Rabbit Hole Trail Breadcrumb Bar (visible during curated or agent-generated trails) -->
+  <!-- Floating Rabbit Hole Trail Breadcrumb Bar (click text or chevron to expand full narrative & stops) -->
   <div id="rabbit-trail-bar" class="hidden liquid-pill" role="region" aria-label="Active Rabbit Hole Trail">
-    <div class="trail-bar-meta min-w-0">
-      <div class="flex items-center gap-2 min-w-0">
-        <span id="trail-bar-step" class="trail-step-pill shrink-0">1 / 6</span>
-        <span id="trail-bar-title" class="text-[13.5px] font-semibold text-white truncate"></span>
+    <div class="trail-bar-main">
+      <div id="trail-bar-meta" class="trail-bar-meta min-w-0" role="button" tabindex="0" aria-expanded="false" title="Click to expand full trail text">
+        <div class="flex items-center gap-2 min-w-0">
+          <span id="trail-bar-step" class="trail-step-pill shrink-0">1 / 6</span>
+          <span id="trail-bar-title" class="text-[13.5px] font-semibold text-white truncate"></span>
+        </div>
+        <div id="trail-bar-bridge" class="text-[12.5px] text-neutral-300 truncate mt-0.5"></div>
       </div>
-      <div id="trail-bar-bridge" class="text-[12.5px] text-neutral-300 truncate mt-0.5"></div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button id="btn-trail-expand" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[12px]" title="Expand full story" aria-label="Expand full trail story" aria-expanded="false">
+          <i data-lucide="chevron-up" class="w-3.5 h-3.5 trail-expand-icon"></i>
+        </button>
+        <button id="btn-trail-prev" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]" title="Previous hop">←</button>
+        <button id="btn-trail-next" type="button" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap">Next Hop →</button>
+        <button id="btn-trail-exit" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]" title="Exit trail" aria-label="Exit rabbit hole trail">✕</button>
+      </div>
     </div>
-    <div class="flex items-center gap-1.5 shrink-0">
-      <button id="btn-trail-prev" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]" title="Previous hop">←</button>
-      <button id="btn-trail-next" type="button" class="glass-btn-active rounded-full px-3.5 py-1.5 text-[13px] whitespace-nowrap">Next Hop →</button>
-      <button id="btn-trail-exit" type="button" class="glass-btn rounded-full w-8 h-8 flex items-center justify-center text-[13px]" title="Exit trail" aria-label="Exit rabbit hole trail">✕</button>
-    </div>
+    <div id="trail-bar-stops" class="trail-bar-stops hidden"></div>
   </div>
 
   <!-- Centered Chronological Timeline (1800 BCE → 2045 CE) -->

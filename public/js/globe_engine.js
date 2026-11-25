@@ -755,6 +755,87 @@ function initGlobeHudOverlay() {
     const hasNativeOcclusion = Boolean(transform && typeof transform.isLocationOccluded === "function" && window.maplibregl?.LngLat);
     const hasSurfaceRay = Boolean(transform && typeof transform.isPointOnMapSurface === "function");
 
+    // Photorealistic planetary shadow (solar terminator) & crisp sunlit atmospheric rim at orbital zoom
+    // Measured directly from MapLibre's own rayPlanetIntersection so alignment is sub-pixel exact!
+    if (zoom < 3.9 && hasSurfaceRay) {
+      const shadeStrength = Math.max(0, Math.min(1, 1 - (zoom - 2.35) / 1.55));
+      if (shadeStrength > 0.01) {
+        const cx0 = w * 0.5;
+        const cy0 = h * 0.5;
+        let onCenter = false;
+        try { onCenter = transform.isPointOnMapSurface({ x: cx0, y: cy0 }); } catch {}
+        if (onCenter) {
+          const probeEdge = (dx, dy, maxDist) => {
+            let lo = 0, hi = maxDist;
+            for (let step = 0; step < 10; step++) {
+              const mid = (lo + hi) * 0.5;
+              let hit = false;
+              try { hit = transform.isPointOnMapSurface({ x: cx0 + dx * mid, y: cy0 + dy * mid }); } catch {}
+              if (hit) lo = mid; else hi = mid;
+            }
+            return lo;
+          };
+          const maxSpan = Math.max(w, h) * 0.65;
+          const rRight = probeEdge(1, 0, maxSpan);
+          const rLeft = probeEdge(-1, 0, maxSpan);
+          const rDown = probeEdge(0, 1, maxSpan);
+          const rUp = probeEdge(0, -1, maxSpan);
+          const rx = (rRight + rLeft) * 0.5;
+          const ry = (rDown + rUp) * 0.5;
+          const gCx = cx0 + (rRight - rLeft) * 0.5;
+          const gCy = cy0 + (rDown - rUp) * 0.5;
+          const gR = Math.min(rx, ry);
+
+          if (gR > 60 && gR < Math.min(w, h) * 0.495) {
+            ctx.save();
+            // 1. Tight, concentric orbital Rayleigh atmospheric rim hugging Earth's exact silhouette
+            //    (centered strictly on gCx/gCy so there is ZERO lopsided bulge outside the sphere,
+            //     modulated subtly toward the upper-left sun direction like Google Earth)
+            const outerHalo = ctx.createRadialGradient(gCx, gCy, gR * 0.985, gCx, gCy, gR * 1.055);
+            outerHalo.addColorStop(0, `rgba(176, 212, 255, ${(0.26 * shadeStrength).toFixed(3)})`);
+            outerHalo.addColorStop(0.32, `rgba(126, 178, 245, ${(0.12 * shadeStrength).toFixed(3)})`);
+            outerHalo.addColorStop(0.68, `rgba(74, 126, 210, ${(0.035 * shadeStrength).toFixed(3)})`);
+            outerHalo.addColorStop(1, "rgba(0, 0, 0, 0)");
+            ctx.fillStyle = outerHalo;
+            ctx.beginPath();
+            ctx.arc(gCx, gCy, gR * 1.06, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 2. Clip strictly to Earth's exact sphere silhouette for internal terminator shadow & sunlit limb
+            ctx.beginPath();
+            ctx.arc(gCx, gCy, gR + 0.6, 0, Math.PI * 2);
+            ctx.clip();
+
+            // Clean Google-Earth-style curved solar terminator shadow across lower-right night limb
+            const shadowGrad = ctx.createRadialGradient(
+              gCx - gR * 0.38, gCy - gR * 0.34, gR * 0.48,
+              gCx - gR * 0.12, gCy - gR * 0.10, gR * 1.18
+            );
+            shadowGrad.addColorStop(0, "rgba(0, 0, 0, 0)");
+            shadowGrad.addColorStop(0.58, "rgba(0, 0, 0, 0)");
+            shadowGrad.addColorStop(0.79, `rgba(2, 4, 8, ${(0.24 * shadeStrength).toFixed(3)})`);
+            shadowGrad.addColorStop(0.92, `rgba(1, 2, 5, ${(0.60 * shadeStrength).toFixed(3)})`);
+            shadowGrad.addColorStop(1, `rgba(0, 1, 3, ${(0.82 * shadeStrength).toFixed(3)})`);
+            ctx.fillStyle = shadowGrad;
+            ctx.fillRect(gCx - gR - 2, gCy - gR - 2, gR * 2 + 4, gR * 2 + 4);
+
+            // Delicate sunlit upper-left atmospheric scattering Fresnel rim just inside the limb
+            const innerRim = ctx.createRadialGradient(
+              gCx + gR * 0.14, gCy + gR * 0.14, gR * 0.88,
+              gCx, gCy, gR
+            );
+            innerRim.addColorStop(0, "rgba(185, 218, 255, 0)");
+            innerRim.addColorStop(0.76, "rgba(185, 218, 255, 0)");
+            innerRim.addColorStop(0.94, `rgba(175, 214, 255, ${(0.16 * shadeStrength).toFixed(3)})`);
+            innerRim.addColorStop(1, `rgba(218, 236, 255, ${(0.34 * shadeStrength).toFixed(3)})`);
+            ctx.fillStyle = innerRim;
+            ctx.fillRect(gCx - gR - 2, gCy - gR - 2, gR * 2 + 4, gR * 2 + 4);
+            ctx.restore();
+          }
+        }
+      }
+    }
+
     const center = map.getCenter();
     const rad = Math.PI / 180;
     const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
@@ -1553,23 +1634,153 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
     }
   });
 
-  // Living deep-space starfield behind the 3D Earth globe with gentle rotation parallax
+  // Photorealistic deep-space starfield + subtle Milky Way galactic dust band (cached offscreen for 60fps!)
   (function initDeepSpaceBackdrop() {
     const bg = document.getElementById("space-bg-canvas");
     if (!bg) return;
     const bctx = bg.getContext("2d");
     if (!bctx) return;
 
-    const stars = Array.from({ length: 300 }, (_, i) => ({
-      x: ((i * 7919) % 10000) / 10000,
-      y: ((i * 6271) % 10000) / 10000,
-      r: i % 19 === 0 ? 1.65 : i % 5 === 0 ? 1.05 : 0.65,
-      baseA: i % 19 === 0 ? 0.85 : i % 5 === 0 ? 0.52 : 0.26,
-      phase: (i * 1.37) % (Math.PI * 2),
-      speed: 0.35 + (i % 7) * 0.14
-    }));
+    // Deterministic PRNG for realistic astronomical star distribution & Milky Way clustering
+    let seed = 42197;
+    const rand = () => {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      return seed / 4294967296;
+    };
+    const gauss = () => (rand() + rand() + rand() - 1.5) * 0.66;
 
-    let w = 0, h = 0;
+    // Build tileable offscreen deep-space sky texture (2x width for seamless parallax wrap)
+    const skyCanvas = document.createElement("canvas");
+    const sctx = skyCanvas.getContext("2d");
+    let w = 0, h = 0, skyW = 0, skyH = 0;
+
+    // Generate 1,150 multi-magnitude stars (45% clustered naturally along the diagonal Milky Way plane)
+    const starCatalog = [];
+    const totalStars = 1150;
+    for (let i = 0; i < totalStars; i++) {
+      const inBand = i < totalStars * 0.48;
+      let u, v;
+      if (inBand) {
+        u = rand();
+        // Diagonal galactic plane sloping softly from lower-left to upper-right (matching Google Earth sky)
+        const planeY = 0.72 - u * 0.44;
+        v = ((planeY + gauss() * 0.16) % 1 + 1) % 1;
+      } else {
+        u = rand();
+        v = rand();
+      }
+      const magRoll = rand();
+      const bright = magRoll > 0.982;
+      const med = !bright && magRoll > 0.87;
+      const r = bright ? (1.15 + rand() * 0.75) : med ? (0.72 + rand() * 0.42) : (0.34 + rand() * 0.36);
+      const a = bright ? (0.72 + rand() * 0.25) : med ? (0.38 + rand() * 0.30) : (0.14 + rand() * 0.24);
+      // Natural blackbody star color temperatures (cool white, crisp ivory, subtle warm amber)
+      const tempRoll = rand();
+      const rgb = tempRoll > 0.76 ? "214, 228, 250" : tempRoll > 0.30 ? "244, 244, 247" : "248, 232, 208";
+      starCatalog.push({ u, v, r, a, rgb, bright, phase: rand() * Math.PI * 2, speed: 0.25 + rand() * 0.5 });
+    }
+
+    // Subtle galactic dust cloud puffs along the diagonal Milky Way plane
+    const dustClouds = Array.from({ length: 44 }, (_, i) => {
+      const u = i / 44 + (rand() - 0.5) * 0.04;
+      const planeY = 0.72 - u * 0.44;
+      const offset = gauss() * 0.11;
+      return {
+        u: ((u % 1) + 1) % 1,
+        v: ((planeY + offset) % 1 + 1) % 1,
+        rx: 0.07 + rand() * 0.11,
+        ry: 0.045 + rand() * 0.075,
+        rot: -0.42 + (rand() - 0.5) * 0.35,
+        warm: rand() > 0.42,
+        a: 0.024 + rand() * 0.032
+      };
+    });
+
+    const darkRifts = Array.from({ length: 22 }, (_, i) => {
+      const u = (i + 0.5) / 22 + (rand() - 0.5) * 0.03;
+      const planeY = 0.72 - u * 0.44;
+      return {
+        u: ((u % 1) + 1) % 1,
+        v: ((planeY + gauss() * 0.04) % 1 + 1) % 1,
+        rx: 0.045 + rand() * 0.065,
+        ry: 0.018 + rand() * 0.028,
+        rot: -0.40 + (rand() - 0.5) * 0.25,
+        a: 0.26 + rand() * 0.22
+      };
+    });
+
+    const rebuildSkyTexture = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      skyW = Math.max(1024, Math.round(w * 1.35));
+      skyH = Math.max(768, Math.round(h * 1.2));
+      skyCanvas.width = Math.round(skyW * dpr);
+      skyCanvas.height = Math.round(skyH * dpr);
+      sctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Deep space obsidian base
+      sctx.fillStyle = "#030305";
+      sctx.fillRect(0, 0, skyW, skyH);
+
+      // 1. Subtle luminous Milky Way galactic dust clouds (warm cosmic charcoal/taupe + faint cool slate)
+      for (const c of dustClouds) {
+        const cx = c.u * skyW;
+        const cy = c.v * skyH;
+        const radPx = c.rx * skyW;
+        sctx.save();
+        sctx.translate(cx, cy);
+        sctx.rotate(c.rot);
+        sctx.scale(1, c.ry / c.rx);
+        const g = sctx.createRadialGradient(0, 0, 0, 0, 0, radPx);
+        const col = c.warm ? "94, 78, 66" : "68, 76, 94";
+        g.addColorStop(0, `rgba(${col}, ${c.a.toFixed(4)})`);
+        g.addColorStop(0.55, `rgba(${col}, ${(c.a * 0.42).toFixed(4)})`);
+        g.addColorStop(1, "rgba(0, 0, 0, 0)");
+        sctx.fillStyle = g;
+        sctx.beginPath();
+        sctx.arc(0, 0, radPx, 0, Math.PI * 2);
+        sctx.fill();
+        sctx.restore();
+      }
+
+      // 2. Great Rift dark dust absorption lanes down the center of the Milky Way
+      for (const d of darkRifts) {
+        const cx = d.u * skyW;
+        const cy = d.v * skyH;
+        const radPx = d.rx * skyW;
+        sctx.save();
+        sctx.translate(cx, cy);
+        sctx.rotate(d.rot);
+        sctx.scale(1, d.ry / d.rx);
+        const g = sctx.createRadialGradient(0, 0, 0, 0, 0, radPx);
+        g.addColorStop(0, `rgba(2, 2, 4, ${d.a.toFixed(3)})`);
+        g.addColorStop(1, "rgba(2, 2, 4, 0)");
+        sctx.fillStyle = g;
+        sctx.beginPath();
+        sctx.arc(0, 0, radPx, 0, Math.PI * 2);
+        sctx.fill();
+        sctx.restore();
+      }
+
+      // 3. Multi-magnitude crisp stellar field
+      for (const s of starCatalog) {
+        const sx = s.u * skyW;
+        const sy = s.v * skyH;
+        if (s.bright) {
+          const halo = sctx.createRadialGradient(sx, sy, 0, sx, sy, s.r * 3.8);
+          halo.addColorStop(0, `rgba(${s.rgb}, ${(s.a * 0.42).toFixed(3)})`);
+          halo.addColorStop(1, "rgba(0, 0, 0, 0)");
+          sctx.fillStyle = halo;
+          sctx.beginPath();
+          sctx.arc(sx, sy, s.r * 3.8, 0, Math.PI * 2);
+          sctx.fill();
+        }
+        sctx.fillStyle = `rgba(${s.rgb}, ${s.a.toFixed(3)})`;
+        sctx.beginPath();
+        sctx.arc(sx, sy, s.r, 0, Math.PI * 2);
+        sctx.fill();
+      }
+    };
+
     const resize = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       w = bg.clientWidth || window.innerWidth;
@@ -1577,39 +1788,31 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
       bg.width = Math.round(w * dpr);
       bg.height = Math.round(h * dpr);
       bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      rebuildSkyTexture();
     };
     resize();
     window.addEventListener("resize", resize);
 
-    const draw = (now) => {
+    let lastLng = null, lastLat = null, lastZ = null;
+    const draw = () => {
       if (store.state.viewMode === "earth") {
-        bctx.clearRect(0, 0, w, h);
         const c = map?.getCenter?.() || { lng: RESTING_GLOBE_CENTER[0], lat: RESTING_GLOBE_CENTER[1] };
         const z = map?.getZoom?.() ?? initialZoom;
-        const px = (-c.lng / 360) * 0.22;
-        const py = (c.lat / 180) * 0.12;
-        const t = now * 0.001;
-
-        // Subtle monochrome orbital rim halo behind the 3D Earth sphere (fades out cleanly as you zoom in)
-        if (z < 4.4) {
-          const haloStrength = Math.max(0, Math.min(1, 1 - (z - 1.0) / 3.4));
-          const globeR = getGlobeRadiusPx(h, z, c.lat);
-          const grad = bctx.createRadialGradient(w * 0.5, h * 0.5, globeR * 0.88, w * 0.5, h * 0.5, globeR * 1.32);
-          grad.addColorStop(0, `rgba(244, 244, 245, ${(0.10 * haloStrength).toFixed(3)})`);
-          grad.addColorStop(0.55, `rgba(212, 212, 216, ${(0.04 * haloStrength).toFixed(3)})`);
-          grad.addColorStop(1, "rgba(0, 0, 0, 0)");
-          bctx.fillStyle = grad;
-          bctx.fillRect(0, 0, w, h);
-        }
-
-        for (const s of stars) {
-          const sx = ((((s.x + px) % 1) + 1) % 1) * w;
-          const sy = ((((s.y + py) % 1) + 1) % 1) * h;
-          const alpha = REDUCED_MOTION ? s.baseA : s.baseA * (0.76 + 0.24 * Math.sin(t * s.speed + s.phase));
-          bctx.fillStyle = `rgba(244, 244, 245, ${alpha.toFixed(3)})`;
-          bctx.beginPath();
-          bctx.arc(sx, sy, s.r, 0, Math.PI * 2);
-          bctx.fill();
+        if (c.lng !== lastLng || c.lat !== lastLat || z !== lastZ) {
+          lastLng = c.lng;
+          lastLat = c.lat;
+          lastZ = z;
+          const offX = (((( -c.lng / 360) * 0.30) % 1) + 1) % 1 * (skyW - w);
+          const offY = Math.max(0, Math.min(skyH - h, (0.5 - (c.lat / 180) * 0.28) * (skyH - h)));
+          bctx.clearRect(0, 0, w, h);
+          bctx.drawImage(
+            skyCanvas,
+            offX * (skyCanvas.width / skyW),
+            offY * (skyCanvas.height / skyH),
+            w * (skyCanvas.width / skyW),
+            h * (skyCanvas.height / skyH),
+            0, 0, w, h
+          );
         }
       }
       requestAnimationFrame(draw);
