@@ -40,15 +40,33 @@ jobs:
           distribution: "temurin"
           java-version: "21"
 
-      - name: Install dependencies & sync Capacitor
+      - name: Install dependencies & sync lean Capacitor Android bundle
         run: |
           npm ci
           npx cap sync android
+          node scripts/prune_native_assets.mjs
 
       - name: Build Android Debug APK & Release AAB
+        env:
+          ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           chmod +x android/gradlew
           ./android/gradlew -p android assembleDebug bundleRelease
+          if [ -n "$ANDROID_KEYSTORE_BASE64" ] && [ -n "$ANDROID_KEYSTORE_PASSWORD" ] && [ -n "$ANDROID_KEY_ALIAS" ]; then
+            echo "$ANDROID_KEYSTORE_BASE64" | base64 -d > /tmp/upload-keystore.jks
+            jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 \
+              -keystore /tmp/upload-keystore.jks \
+              -storepass "$ANDROID_KEYSTORE_PASSWORD" \
+              -keypass "${ANDROID_KEY_PASSWORD:-$ANDROID_KEYSTORE_PASSWORD}" \
+              android/app/build/outputs/bundle/release/app-release.aab "$ANDROID_KEY_ALIAS"
+            rm -f /tmp/upload-keystore.jks
+            echo "Signed Android AAB with release upload keystore."
+          else
+            echo "No signing secrets configured; outputting unsigned release AAB."
+          fi
 
       - name: Upload Android APK artifact
         uses: actions/upload-artifact@v7
@@ -79,10 +97,11 @@ jobs:
           node-version: "22"
           cache: "npm"
 
-      - name: Install dependencies & sync Capacitor iOS
+      - name: Install dependencies & sync lean Capacitor iOS bundle
         run: |
           npm ci
           npx cap sync ios
+          node scripts/prune_native_assets.mjs
 
       - name: Build unsigned iOS Archive (Xcode)
         run: |

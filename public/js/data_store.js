@@ -56,10 +56,13 @@ export const store = {
     timeMode: false,         // false = Live Present, true = Time Counter active
     timeYear: 2026,
     timePlaying: false,
+    timelineDiscipline: "all",
     arcs: true,
     labels: false,
     tilted: false,
     sunLighting: true,
+    sunMode: "orbital",      // "orbital" | "utc" | "off"
+    compareIds: [],
     shortlist: new Set(),
     bookmarks: [],
     folders: ["Shortlist", "Study List", "Apply & Jobs", "Research"],
@@ -168,9 +171,18 @@ function mergeTimelineEvents(events) {
   for (const ev of events) {
     if (!ev || !ev.id || seen.has(ev.id)) continue;
     seen.add(ev.id);
-    store.timelineEvents.push(ev);
+    store.timelineEvents.push({
+      ...ev,
+      discipline: ev.discipline || "physics"
+    });
   }
   store.timelineEvents.sort((a, b) => a.year - b.year);
+}
+
+export function getFilteredTimelineEvents() {
+  const disc = store.state.timelineDiscipline || "all";
+  if (disc === "all") return store.timelineEvents;
+  return store.timelineEvents.filter(ev => (ev.discipline || "physics") === disc);
 }
 
 function mergeDomains(domains) {
@@ -247,13 +259,8 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
   const f = SUBJECT_CONFIG.dataFiles;
 
   // Stage 1: Instant core load (flagships + all STEM/AI hubs + startups + timelines + space + domains + rabbit trails)
-  const scrapedPromise = fetchJsonSafe(f.scrapedHubs);
-  const shanghaiPromise = fetchJsonSafe(f.shanghai2026);
-  const shanghaiExtraPromise = fetchJsonSafe(f.shanghaiExtraHubs);
-  const collabsPromise = fetchJsonSafe(f.collaborations);
-  const auditPromise = fetchJsonSafe(f.verificationReport);
-  const ledgerPromise = fetchJsonSafe(f.provenanceLedger);
-
+  // Heavy Stage-2 datasets (6,700+ global index + ShanghaiRanking 2026) are deferred until AFTER onCoreReady()
+  // so first paint & satellite globe tiles never compete for cellular bandwidth.
   const [
     flagships, startups, history, space, domains,
     stemAiCs, stemMath, stemBioMed, stemChemEarthEng, stemEngineering, stemPolar,
@@ -310,9 +317,14 @@ export async function loadAllDatasets({ onCoreReady } = {}) {
   rebuildIndexes();
   onCoreReady?.();
 
-  // Stage 2: Merge full 155-country index + ShanghaiRanking 2026 (ARWU + 57 GRAS subjects) + verified collaborations
+  // Stage 2: Background merge of full 155-country index + ShanghaiRanking 2026 (ARWU + 57 GRAS subjects) + verified collaborations
   const [scraped, shanghaiData, shanghaiExtra, collabsData, audit, ledger] = await Promise.all([
-    scrapedPromise, shanghaiPromise, shanghaiExtraPromise, collabsPromise, auditPromise, ledgerPromise
+    fetchJsonSafe(f.scrapedHubs),
+    fetchJsonSafe(f.shanghai2026),
+    fetchJsonSafe(f.shanghaiExtraHubs),
+    fetchJsonSafe(f.collaborations),
+    fetchJsonSafe(f.verificationReport),
+    fetchJsonSafe(f.provenanceLedger)
   ]);
   if (scraped?.hubs) mergeHubs(scraped.hubs, "scraped");
   if (shanghaiExtra?.hubs) mergeHubs(shanghaiExtra.hubs, "shanghai");
@@ -350,7 +362,8 @@ export function getVisibleGlobeNodes() {
   if (s.timeMode) {
     const year = s.timeYear;
     const windowSpan = year < 0 ? 350 : year < 1500 ? 220 : year < 1900 ? 60 : year <= 2026 ? 15 : 20;
-    const timelinePoints = store.timelineEvents
+    const tlEvents = getFilteredTimelineEvents();
+    const timelinePoints = tlEvents
       .filter(ev => {
         if (s.branch !== "all" && s.branch !== "history" && ev.branch !== s.branch) return false;
         if (s.countryFilter !== "all" && ev.country !== s.countryFilter) return false;

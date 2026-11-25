@@ -480,10 +480,16 @@ export async function downloadPack(packMetaOrId, onProgress) {
   }
 
   // Standard JSON data pack -> Stream & verify & persist to IndexedDB
-  const url = packMeta.url || `./data/packs/${packMeta.file || `${packMeta.id}.json`}`;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`Failed to download pack "${packMeta.id}" (HTTP ${res.status})`);
+  // Supports remote GitHub Pages fallback when native mobile builds prune duplicate pack files to save ~13 MB
+  const relPath = `data/packs/${packMeta.file || `${packMeta.id}.json`}`;
+  const localUrl = packMeta.url || `./${relPath}`;
+  let res = await fetch(localUrl).catch(() => null);
+  if (!res || !res.ok) {
+    const remoteUrl = `https://nothinkaffee.github.io/PhysAlts/${relPath}`;
+    res = await fetch(remoteUrl);
+  }
+  if (!res || !res.ok) {
+    throw new Error(`Failed to download pack "${packMeta.id}" (HTTP ${res?.status || 0})`);
   }
 
   const contentLengthHeader = Number(res.headers.get("content-length") || 0);

@@ -8,7 +8,7 @@
  */
 
 import { USE_DEV_PROXY, COLLABORATION_ARCS } from "./config.js";
-import { store, getVisibleGlobeNodes, getNodeById } from "./data_store.js";
+import { store, getVisibleGlobeNodes, getNodeById, getFilteredTimelineEvents } from "./data_store.js";
 import { getSelectedEcosystemArcs, getHubContextualRank } from "./shanghai_engine.js";
 
 const FONT_STACK = "'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif";
@@ -456,8 +456,9 @@ function buildArcsGeoJSON() {
   }
 
   // Chronological Timeline Discovery Path (subtle historical lineage + luminous active jump arc)
-  if (store.state.timeMode && store.timelineEvents?.length >= 2) {
-    const events = store.timelineEvents;
+  if (store.state.timeMode) {
+    const events = getFilteredTimelineEvents();
+    if (events.length >= 2) {
     let activeIdx = store.state.activeTimelineId
       ? events.findIndex(e => e.id === store.state.activeTimelineId)
       : -1;
@@ -482,6 +483,7 @@ function buildArcsGeoJSON() {
         geometry: { type: "LineString", coordinates: greatCircleCoords(a.lng, a.lat, b.lng, b.lat) },
         properties: { focused: isCurrentJump ? 1 : 0, rabbit: isCurrentJump ? 1 : 0, eco: 0 }
       });
+    }
     }
   }
 
@@ -785,23 +787,69 @@ function initGlobeHudOverlay() {
     const hasNativeOcclusion = Boolean(transform && typeof transform.isLocationOccluded === "function" && window.maplibregl?.LngLat);
     const hasSurfaceRay = Boolean(transform && typeof transform.isPointOnMapSurface === "function");
 
-    // True 3D spherical solar day/night terminator (toggleable via Sun button)
+    const center = map.getCenter();
+    const rad = Math.PI / 180;
+    const bearingDeg = typeof map.getBearing === "function" ? map.getBearing() : 0;
+
+    // True 3D spherical solar day/night terminator (3-state: Orbital 45° · Live UTC Astronomical · Off)
     // Strictly alpha = 0 across the entire sunlit hemisphere so Earth stays 100% vivid & crisp (zero grey wash!)
-    if (store.state.sunLighting && zoom < 4.7 && pitch < 32 && hasSurfaceRay) {
+    const sunMode = store.state.sunMode || (store.state.sunLighting ? "orbital" : "off");
+    if (sunMode !== "off" && zoom < 4.7 && pitch < 32 && hasSurfaceRay) {
       const sunFade = Math.max(0, Math.min(1, 1 - (zoom - 3.15) / 1.55));
       if (sunFade > 0.01) {
-        if (!renderHudNow._sunMask) {
-          const S = 180;
-          const sc = document.createElement("canvas");
-          sc.width = S;
-          sc.height = S;
-          const sctx = sc.getContext("2d");
-          const img = sctx.createImageData(S, S);
-          const data = img.data;
-          // Sun direction vector from upper-left orbital angle (~45 deg phase: vivid untouched sunlit hemisphere + crisp curved night limb)
+        let sx, sy, sz;
+        if (sunMode === "utc") {
+          const now = new Date();
+          const startOfYear = Date.UTC(now.getUTCFullYear(), 0, 0);
+          const doy = (Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - startOfYear) / 86400000;
+          const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
+          const sunLatRad = (-23.44 * Math.cos(((2 * Math.PI) / 365) * (doy + 10))) * rad;
+          let sunLngDeg = (12 - utcHours) * 15;
+          sunLngDeg = ((sunLngDeg + 540) % 360) - 180;
+          const sunLngRad = sunLngDeg * rad;
+
+          // ECEF sun unit vector (+Z = 0°E,0°N; +X = 90°E,0°N; +Y = North Pole)
+          const vx = Math.cos(sunLatRad) * Math.sin(sunLngRad);
+          const vy = Math.sin(sunLatRad);
+          const vz = Math.cos(sunLatRad) * Math.cos(sunLngRad);
+
+          // Transform into camera frame (center.lng, center.lat, bearing)
+          const cLng = center.lng * rad;
+          const cLat = center.lat * rad;
+          const bRad = bearingDeg * rad;
+          const x1 = vx * Math.cos(cLng) - vz * Math.sin(cLng);
+          const y1 = vy;
+          const z1 = vx * Math.sin(cLng) + vz * Math.cos(cLng);
+          const x2 = x1;
+          const y2 = y1 * Math.cos(cLat) - z1 * Math.sin(cLat);
+          const z2 = y1 * Math.sin(cLat) + z1 * Math.cos(cLat);
+          sx = x2 * Math.cos(bRad) - y2 * Math.sin(bRad);
+          sy = x2 * Math.sin(bRad) + y2 * Math.cos(bRad);
+          sz = z2;
+        } else {
+          // Orbital 45° showcase angle: vivid untouched sunlit hemisphere + crisp curved night limb
           const slx = -0.64, sly = 0.28, slz = 0.71;
           const slen = Math.hypot(slx, sly, slz);
-          const sx = slx / slen, sy = sly / slen, sz = slz / slen;
+          sx = slx / slen; sy = sly / slen; sz = slz / slen;
+        }
+
+        const prevSun = renderHudNow._lastSunVec;
+        const sunMoved = !prevSun
+          || Math.abs(prevSun.sx - sx) > 0.014
+          || Math.abs(prevSun.sy - sy) > 0.014
+          || Math.abs(prevSun.sz - sz) > 0.014;
+
+        if (!renderHudNow._sunMask || sunMoved) {
+          const S = 160;
+          const sc = renderHudNow._sunMask || document.createElement("canvas");
+          if (sc.width !== S || sc.height !== S) {
+            sc.width = S;
+            sc.height = S;
+          }
+          const sctx = sc.getContext("2d");
+          const img = renderHudNow._sunImg || sctx.createImageData(S, S);
+          const data = img.data;
+          data.fill(0);
           const half = S * 0.5;
           for (let py = 0; py < S; py++) {
             const v = (py + 0.5 - half) / half; // +down
@@ -829,6 +877,8 @@ function initGlobeHudOverlay() {
           }
           sctx.putImageData(img, 0, 0);
           renderHudNow._sunMask = sc;
+          renderHudNow._sunImg = img;
+          renderHudNow._lastSunVec = { sx, sy, sz };
         }
 
         const cx0 = w * 0.5;
@@ -862,14 +912,63 @@ function initGlobeHudOverlay() {
             ctx.clip();
             ctx.globalAlpha = sunFade;
             ctx.drawImage(renderHudNow._sunMask, gCx - gR - 0.8, gCy - gR - 0.8, (gR + 0.8) * 2, (gR + 0.8) * 2);
+
+            // Subtle warm golden city-light glints on Earth's night hemisphere (science metros & major hubs)
+            if (store.hubs.length && zoom < 4.3) {
+              if (!renderHudNow._nightCities || renderHudNow._nightCitiesCount !== store.hubs.length) {
+                const seenGrid = new Set();
+                const picked = [];
+                for (const hNode of store.hubs) {
+                  if (!Number.isFinite(hNode.lat) || !Number.isFinite(hNode.lng)) continue;
+                  const imp = hNode.impactScore || 0;
+                  if (imp < 52 && hNode.tier !== "flagship" && hNode.tier !== "stem") continue;
+                  const gKey = `${Math.round(hNode.lat * 0.9)}:${Math.round(hNode.lng * 0.9)}`;
+                  if (seenGrid.has(gKey)) continue;
+                  seenGrid.add(gKey);
+                  picked.push({ lat: hNode.lat, lng: hNode.lng, weight: Math.min(1, 0.45 + (imp / 110) * 0.55) });
+                  if (picked.length >= 260) break;
+                }
+                renderHudNow._nightCities = picked;
+                renderHudNow._nightCitiesCount = store.hubs.length;
+              }
+              const cLatR = center.lat * rad;
+              const cLngR = center.lng * rad;
+              const cX = Math.cos(cLatR) * Math.cos(cLngR);
+              const cY = Math.cos(cLatR) * Math.sin(cLngR);
+              const cZ = Math.sin(cLatR);
+              for (const city of renderHudNow._nightCities) {
+                const clat = city.lat * rad;
+                const clng = city.lng * rad;
+                const dotCam = Math.cos(clat) * Math.cos(clng) * cX + Math.cos(clat) * Math.sin(clng) * cY + Math.sin(clat) * cZ;
+                if (dotCam <= 0.14) continue;
+                const pt = map.project([city.lng, city.lat]);
+                if (!pt) continue;
+                const u = (pt.x - gCx) / gR;
+                const v = (pt.y - gCy) / gR;
+                const r2 = u * u + v * v;
+                if (r2 >= 0.95) continue;
+                const nz = Math.sqrt(1 - r2);
+                const ndotl = u * sx - v * sy + nz * sz;
+                if (ndotl >= -0.05) continue;
+                const nightT = Math.min(1, (-0.05 - ndotl) / 0.22);
+                const alpha = sunFade * nightT * city.weight;
+                const haloR = 3.6 + city.weight * 2.2;
+                const g = ctx.createRadialGradient(pt.x, pt.y, 0.2, pt.x, pt.y, haloR);
+                g.addColorStop(0, `rgba(255, 224, 168, ${(0.52 * alpha).toFixed(3)})`);
+                g.addColorStop(0.45, `rgba(246, 186, 102, ${(0.18 * alpha).toFixed(3)})`);
+                g.addColorStop(1, "rgba(246, 186, 102, 0)");
+                ctx.fillStyle = g;
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, haloR, 0, Math.PI * 2);
+                ctx.fill();
+              }
+            }
             ctx.restore();
           }
         }
       }
     }
 
-    const center = map.getCenter();
-    const rad = Math.PI / 180;
     const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
     const cy = Math.cos(center.lat * rad) * Math.sin(center.lng * rad);
     const cz = Math.sin(center.lat * rad);
@@ -997,14 +1096,15 @@ function initGlobeHudOverlay() {
       }
 
       // Active Timeline discovery beacon ring so the user's eye locks immediately onto the current milestone
-      if (store.state.timeMode && store.timelineEvents?.length) {
+      if (store.state.timeMode) {
+        const tlList = getFilteredTimelineEvents();
         let activeEv = store.state.activeTimelineId
-          ? store.timelineEvents.find(ev => ev.id === store.state.activeTimelineId)
+          ? tlList.find(ev => ev.id === store.state.activeTimelineId)
           : null;
-        if (!activeEv) {
-          activeEv = store.timelineEvents[0];
+        if (!activeEv && tlList.length) {
+          activeEv = tlList[0];
           let bestDist = Infinity;
-          for (const ev of store.timelineEvents) {
+          for (const ev of tlList) {
             const d = Math.abs(ev.year - store.state.timeYear);
             if (d < bestDist) { bestDist = d; activeEv = ev; }
           }

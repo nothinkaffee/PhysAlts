@@ -1,14 +1,14 @@
 {
   "schemaVersion": "1.0.0",
   "version": "2026-11-25",
-  "generatedAt": "2026-11-25T01:30:41.467Z",
+  "generatedAt": "2026-11-25T03:31:14.001Z",
   "stemDatasetsDetected": true,
   "summary": {
     "totalPacks": 15,
     "disciplinePacks": 7,
     "regionPacks": 7,
     "tilePacks": 1,
-    "totalBytes": 13236666,
+    "totalBytes": 13236608,
     "totalLabel": "12.62 MB",
     "indexedHubs": 6909,
     "indexedEvents": 133,
@@ -30,7 +30,7 @@
       "url": "./data/packs/pack_shanghai_2026.json",
       "sizeBytes": 2717206,
       "sizeLabel": "2.59 MB",
-      "sha256": "3c541dee78a7bade1896497ff835d60057dc499d1ad0e365f17e16612e9b9887",
+      "sha256": "e3cf155d8bd35571644f7524f0a349ece9f90020824610811e7bc01123d877fc",
       "counts": {
         "hubs": 1126,
         "events": 0,
@@ -52,7 +52,7 @@
       "url": "./data/packs/pack_polar_frontier.json",
       "sizeBytes": 53195,
       "sizeLabel": "51.9 KB",
-      "sha256": "b4924cb7b3e2c9114820f55b56aa5cd530527da382dea0108d57a54094eb5a86",
+      "sha256": "033c7d379895436cff6a4fc76519bb7d9875668c9ddbba7194f8cf9bb1126791",
       "counts": {
         "hubs": 75,
         "events": 0,
@@ -70,9 +70,9 @@
       "version": "2026-11-25",
       "file": "pack_physics.json",
       "url": "./data/packs/pack_physics.json",
-      "sizeBytes": 3818538,
+      "sizeBytes": 3818509,
       "sizeLabel": "3.64 MB",
-      "sha256": "42ca2a4db4a872e3761092d3a8584c95f97429a5af3591231eec3ecd9ca78651",
+      "sha256": "746c419e059043ad2309279063f5f5b26116943b7940824a756de77228ca57cd",
       "counts": {
         "hubs": 5419,
         "events": 71,
@@ -91,7 +91,7 @@
       "url": "./data/packs/pack_ai_cs.json",
       "sizeBytes": 185347,
       "sizeLabel": "181.0 KB",
-      "sha256": "8b189b364ce92c44e515853df8ff12df5dfdfda61eadc51317e0e3d505fccf42",
+      "sha256": "a086ef00fd2786325469bfa17704a96a07042b067fdf18a729d5cb709e9cb543",
       "counts": {
         "hubs": 99,
         "events": 16,
@@ -110,7 +110,7 @@
       "url": "./data/packs/pack_math.json",
       "sizeBytes": 176495,
       "sizeLabel": "172.4 KB",
-      "sha256": "6eee5810dcd858c7594b6a789785e8830d173b7385a0926c31d7fcf22402d5d8",
+      "sha256": "e27de5e2c40ad2cb8c65557280b8fbb65d9f2702fbf2b38c6cfe1ee27702f92a",
       "counts": {
         "hubs": 186,
         "events": 10,
@@ -129,7 +129,7 @@
       "url": "./data/packs/pack_bio_med.json",
       "sizeBytes": 431207,
       "sizeLabel": "421.1 KB",
-      "sha256": "0594818810b53126a9c67a98c7dad19fe89bab593a06b0fbb3ee790c5a62d3c3",
+      "sha256": "038e39594c1bcb2bec0126aff2bf19db2f3b73fe235bb1d750c0d80626799648",
       "counts": {
         "hubs": 578,
         "events": 16,
@@ -148,7 +148,7 @@
       "url": "./data/packs/pack_chem_earth.json",
       "sizeBytes": 140677,
       "sizeLabel": "137.4 KB",
-      "sha256": "24e415beee663805e19a0712efdd8c7a814785c575a5442470d9ed6a3ac02c73",
+      "sha256": "4b561dea5330e3875f5fa97eeda680496f1a9e9483f93c1cd21cbb934a107f2e",
       "counts": {
         "hubs": 92,
         "events": 8,
@@ -167,7 +167,7 @@
       "url": "./data/packs/pack_engineering.json",
       "sizeBytes": 405688,
       "sizeLabel": "396.2 KB",
-      "sha256": "78b1d071a78f8fa2032b7f114a0ccfd6ced76f4e2c17c717683c7b574c1a9d94",
+      "sha256": "334af74672ae31717a3eb71dc30ce2b5cf3bf2112247bc01fc25acc88df3531e",
       "counts": {
         "hubs": 535,
         "events": 12,
@@ -184,9 +184,9 @@
       "version": "2026-11-25",
       "file": "region_europe.json",
       "url": "./data/packs/region_europe.json",
-      "sizeBytes": 1836327,
+      "sizeBytes": 1836323,
       "sizeLabel": "1.75 MB",
-      "sha256": "7361f926bbda8270983bb02f50c66ee5a0d21549b08d295f3114788360df5525",
+      "sha256": "cb62775760a2bb510a8fd0dbf7df0252a01211b96feae8d65a893a13f9651bf3",
       "counts": {
         "hubs": 2454,
         "events": 66,
@@ -203,9 +203,9 @@
       "version": "2026-11-25",
       "file": "region_north_america.json",
       "url": "./data/packs/region_north_america.json",
-      "sizeBytes": 1189399,
+      "sizeBytes": 1189393,
       "sizeLabel": "1.13 MB",
-      "sha256": "dbf1a44cdf0d8091b6003e9359ad15c973fd0b64e5328b052b0ab3bde6bb148a",
+      "sha256": "d7922468d4e04755ace95ddb6f0fadb086324c2275257802f341c0054e247bfa",
       "counts": {
         "hubs": 1481,
         "events": 42,
@@ -222,9 +222,9 @@
       "version": "2026-11-25",
       "file": "region_asia.json",
       "url": "./data/packs/region_asia.json",
-      "sizeBytes": 1615470,
+      "sizeBytes": 1615451,
       "sizeLabel": "1.54 MB",
-      "sha256": "3a9ef706b94a4c224426b18f99031e021c623854c1ed3b3ad42f9a0d56c86e62",
+      "sha256": "cd0a3ca903ca0c7ec56dfee899db94967996dd3fdd68172da7f071cc4f6d3e7e",
       "counts": {
         "hubs": 2398,
         "events": 15,
@@ -243,7 +243,7 @@
       "url": "./data/packs/region_south_america.json",
       "sizeBytes": 146684,
       "sizeLabel": "143.2 KB",
-      "sha256": "44f2c187586f73a75d7b9b88bf16253621b7c8c7f90b5f4841a151069f643483",
+      "sha256": "8e356b0ea538bda3c47c1b6d1c5d96f20edd7b5409a515e1322f94f3f40df514",
       "counts": {
         "hubs": 212,
         "events": 4,
@@ -262,7 +262,7 @@
       "url": "./data/packs/region_africa.json",
       "sizeBytes": 141020,
       "sizeLabel": "137.7 KB",
-      "sha256": "c70206dc5bfa30d2df014118349ce3a994d10fd8bee70a70842d5fc0c67296d4",
+      "sha256": "326738998ff236203160f4326b0769d35cc3c51fa10bc83dccf1ea04aed45d22",
       "counts": {
         "hubs": 209,
         "events": 5,
@@ -281,7 +281,7 @@
       "url": "./data/packs/region_oceania_antarctica.json",
       "sizeBytes": 107755,
       "sizeLabel": "105.2 KB",
-      "sha256": "0ba8e16d849dc2618692290c011151784ec06d20fcaa258d8b01f309d96187cf",
+      "sha256": "888c703edef6f9ad9611afcc76cb5c4f5f36db5a664e4b2c872b4d345063d7b1",
       "counts": {
         "hubs": 155,
         "events": 1,

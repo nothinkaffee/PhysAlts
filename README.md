@@ -2,7 +2,7 @@
 
 **PhysALT** is an interactive, privacy-first **3D global STEM & physics atlas** — mapping **6,926 verified universities, national laboratories, polar off-grid stations, deep-tech startups, particle colliders, and observatories across 166 countries**, paired with **ShanghaiRanking 2026 (ARWU + 57 GRAS subjects)**, **176 verified research collaborations**, **16 Rabbit Hole journeys**, **15 SHA-256 offline packs**, **Deep Research Studio (arXiv / alphaXiv / ROR / Gemini)**, historical breakthroughs (`1800 BCE–2045`), and **36 Space Frontier missions out to 1 Light-Day**.
 
-Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.1.0 / Build 31)** with 100% shared web/native parity.
+Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.2.0 / Build 34)** with 100% shared web/native parity and pruned ~18 MB leaner mobile binaries.
 
 ---
 
@@ -10,14 +10,14 @@ Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.1.0 / 
 
 | Capability | Description |
 |---|---|
-| **3D Satellite Globe & 4K Milky Way Sky** | MapLibre GL CSP WebGL globe with Esri World Imagery + NASA Blue Marble, true 3D camera horizon occlusion, **4K ESO Photographic Milky Way WebGL skybox** (`eso0932a`) synced 1:1 with live globe rotation, and toggleable **3D Orbital Sun Lighting (`Sun`)**. |
-| **Global & Polar Open-Science Index** | **6,926 unique verified STEM hubs across 166 countries** — including **75 Polar Frontier off-grid Arctic, Svalbard, Greenland, Siberia & Antarctic stations** — preloaded from static open-registry JSON bundles. |
-| **Deep Research Studio (Free + BYOK Gemini)** | Free zero-key agentic discovery across **arXiv & alphaXiv** (via DataCite `10.48550`), **INSPIRE-HEP**, **ROR v2** (110k+ geocoded institutions), **OpenAlex**, and **Wikipedia**, plus optional **BYOK Gemini 2.5 Flash Grounded Search**, **Gemini Deep Research Interactions API**, 1-tap **Gemini App** handoff, and live **Plot & Fly →** globe pins. |
+| **3D Satellite Globe & Hybrid Milky Way Sky** | MapLibre GL CSP WebGL globe with Esri World Imagery + NASA Blue Marble, true 3D camera horizon occlusion, **2-pass hybrid WebGL skybox** (faded star-free ESO Milky Way dust + 3,200 crisp native-Retina stars locked 1:1 to live globe rotation), and **3-state 3D Sunlight (`Orbital 45°` · `Live UTC` · `Off`)** with subtle golden night-side city lights. |
+| **Global & Polar Open-Science Index** | **6,926 unique verified STEM hubs across 166 countries** — including **75 Polar Frontier off-grid Arctic, Svalbard, Greenland, Siberia & Antarctic stations** — with two-stage deferred boot for fast mobile startup. |
+| **Deep Research Studio & Side-by-Side Compare** | Free zero-key agentic discovery across **arXiv & alphaXiv**, **INSPIRE-HEP**, **ROR v2**, **OpenAlex**, and **Wikipedia**, optional **BYOK Gemini 2.5 Flash & Deep Research**, plus **Side-by-Side Institution Compare** (up to 3 hubs across ARWU/GRAS, Impact, Citations, Collaborators & arXiv). |
 | **ShanghaiRanking 2026 Integration** | Full ARWU & 57 GRAS subject tables, contextual institution badges, and 5-pillar impact breakdowns. |
-| **Rabbit Hole Trails & Time Counter** | **16 curated cross-STEM journeys** with clean full-text floating cards and 1-tap stop switchers, plus a chronological **1800 BCE → 2045** breakthrough timeline. |
-| **15 SHA-256 Offline Packs** | Modular downloadable discipline, region, Polar Frontier, and base Earth tile packs verified with SHA-256 into IndexedDB & Cache Storage. |
-| **1 Light-Day Space Frontier** | Interactive solar-to-interstellar visualizer with **36 verified space missions** from LEO out to Voyager 1 (`24h · 173.1 AU`). |
-| **Cross-Platform Parity (Web · iOS · Android)** | Byte-identical Web PWA + **Capacitor 6** native Android (`APK`/`AAB`) & iOS (`IPA`) builds (`org.worldofphysics.app`), automated in GitHub Actions. |
+| **Cinematic Timeline Tour & Rabbit Hole Trails** | **133 milestones (`1800 BCE–2045`)** with discipline filter tabs, documentary story spotlight, scrubber hover previews, 3 tour paces (`0.5× / 1× / 1.5×`), chronological geodesic arcs, and **16 curated cross-STEM Rabbit Hole journeys**. |
+| **15 SHA-256 Offline Packs** | Modular downloadable discipline, region, Polar Frontier, and base Earth tile packs verified with SHA-256 into IndexedDB & Cache Storage (with automatic CDN fallback on slim mobile builds). |
+| **1 Light-Day Space Frontier & Guided Tour** | Interactive solar-to-interstellar visualizer with **36 verified space missions** from LEO to Voyager 1 (`24h · 173.1 AU`), **Fire Light Pulse (`c`)**, and **Guided Space Tour (`▶ Tour`)**. |
+| **Cross-Platform Parity (Web · iOS · Android)** | Byte-identical Web PWA + **Capacitor 6** native Android (`APK`/`AAB` with optional CI signing) & iOS (`IPA`) builds (`org.worldofphysics.app`), mobile Globe Display controls, and native swipe-down-to-dismiss sheets. |
 
 ---
 
@@ -46,12 +46,13 @@ npm run dev
 
 ## Mobile Packaging (Android & iOS via Capacitor 6)
 
-PhysALT ships preconfigured for **Capacitor 6** (`org.worldofphysics.app` in `capacitor.config.json`, `v2.1.0` / Build `31`):
+PhysALT ships preconfigured for **Capacitor 6** (`org.worldofphysics.app` in `capacitor.config.json`, `v2.2.0` / Build `34`):
 
 ```bash
-# Sync web assets (public/) into Android & iOS native projects
+# Sync web assets (public/) into Android & iOS native projects and trim on-demand packs
 npx cap sync android
 npx cap sync ios
+node scripts/prune_native_assets.mjs
 
 # Open native IDEs
 npm run cap:android   # Android Studio

@@ -10,8 +10,8 @@ import {
   proxyUrl, formatYear, buildDefaultStages, classifyPhysicsBranch
 } from "./config.js";
 import {
-  store, getNodeById, getVisibleGlobeNodes, getFilteredHubs, universalSearch,
-  mergeHubs, mergeOfflinePackPayload
+  store, getNodeById, getVisibleGlobeNodes, getFilteredHubs, getFilteredTimelineEvents,
+  universalSearch, mergeHubs, mergeOfflinePackPayload
 } from "./data_store.js";
 import {
   syncGlobeMarkers, flyToHub, flyToTimelineEvent, resetGlobeToSpace,
@@ -640,6 +640,17 @@ function stopTimeTour() {
   updateTimeTourControlsUI();
 }
 
+const TIMELINE_DISCIPLINE_TABS = [
+  { id: "all", label: "All STEM" },
+  { id: "physics", label: "Physics" },
+  { id: "ai_cs", label: "AI & CS" },
+  { id: "math", label: "Math" },
+  { id: "bio_med", label: "Bio & Med" },
+  { id: "chem_materials", label: "Chemistry" },
+  { id: "earth_climate", label: "Earth" },
+  { id: "engineering", label: "Engineering" }
+];
+
 function tickTimeTour(ts) {
   if (!store.state.timePlaying || !store.state.timeMode) {
     timeTourRaf = null;
@@ -649,15 +660,17 @@ function tickTimeTour(ts) {
   const dt = Math.min(120, Math.max(0, ts - timeTourLastTs));
   timeTourLastTs = ts;
 
+  const events = getFilteredTimelineEvents();
   const dwellMs = TIME_TOUR_SPEEDS[timeTourSpeedIdx].dwellMs;
   if (!timeTourHoverPaused) {
     timeTourElapsedMs += dt;
     setTimeTourProgressPct((timeTourElapsedMs / dwellMs) * 100);
     if (timeTourElapsedMs >= dwellMs) {
       timeTourElapsedMs = 0;
-      if (activeTimelineIdx >= store.timelineEvents.length - 1) {
+      if (activeTimelineIdx >= events.length - 1) {
         stopTimeTour();
-        showToast("Completed Timeline Tour · 1800 BCE → 2045");
+        const discLbl = TIMELINE_DISCIPLINE_TABS.find(d => d.id === store.state.timelineDiscipline)?.label || "STEM";
+        showToast(`Completed ${discLbl} Timeline Tour`);
         return;
       }
       jumpToTimelineIndex(activeTimelineIdx + 1, false, true);
@@ -667,13 +680,14 @@ function tickTimeTour(ts) {
 }
 
 function startTimeTour() {
-  if (!store.timelineEvents.length) return;
+  const events = getFilteredTimelineEvents();
+  if (!events.length) return;
   closePlaceCard();
   store.state.timePlaying = true;
   timeTourHoverPaused = false;
   timeTourElapsedMs = 0;
   timeTourLastTs = 0;
-  if (activeTimelineIdx >= store.timelineEvents.length - 1) {
+  if (activeTimelineIdx >= events.length - 1) {
     activeTimelineIdx = -1;
   }
   updateTimeTourControlsUI();
@@ -687,11 +701,11 @@ function toggleTimeTour() {
   else startTimeTour();
 }
 
-function findNearestTimelineIndex(year) {
-  if (!store.timelineEvents.length) return 0;
+function findNearestTimelineIndex(year, list = getFilteredTimelineEvents()) {
+  if (!list.length) return 0;
   let bestIdx = 0;
   let bestDist = Infinity;
-  store.timelineEvents.forEach((ev, idx) => {
+  list.forEach((ev, idx) => {
     const d = Math.abs(ev.year - year);
     if (d < bestDist) {
       bestDist = d;
@@ -702,6 +716,7 @@ function findNearestTimelineIndex(year) {
 }
 
 function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = false) {
+  const events = getFilteredTimelineEvents();
   const y = store.state.timeYear;
   const pct = yearToPercent(y);
   const era = store.eras.find(e => y >= e.startYear && y <= e.endYear) || store.eras[0];
@@ -720,13 +735,13 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
   if (needleEl) needleEl.style.left = `${pct.toFixed(2)}%`;
   if (rulerEl) rulerEl.setAttribute("aria-valuenow", String(y));
 
-  if (!preserveIdx || !store.timelineEvents[activeTimelineIdx]) {
-    activeTimelineIdx = findNearestTimelineIndex(y);
+  if (!preserveIdx || !events[activeTimelineIdx]) {
+    activeTimelineIdx = findNearestTimelineIndex(y, events);
   }
-  const activeEv = store.timelineEvents[activeTimelineIdx];
+  const activeEv = events[activeTimelineIdx];
   store.state.activeTimelineId = activeEv?.id || null;
-  if (stepEl && store.timelineEvents.length) {
-    stepEl.textContent = `${activeTimelineIdx + 1} / ${store.timelineEvents.length}`;
+  if (stepEl && events.length) {
+    stepEl.textContent = `${activeTimelineIdx + 1} / ${events.length}`;
   }
 
   // Live Documentary Breakthrough Spotlight inside #time-bar
@@ -742,13 +757,45 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
     if (storyText) storyText.textContent = activeEv.summary || activeEv.impact || "";
   }
 
+  // Discipline filter chips for focused tours (e.g., AI & CS only, Physics only, Bio & Med only)
+  const discEl = document.getElementById("time-discipline-tabs");
+  if (discEl && store.timelineEvents.length) {
+    const curDisc = store.state.timelineDiscipline || "all";
+    discEl.innerHTML = TIMELINE_DISCIPLINE_TABS.map(d => {
+      const cnt = d.id === "all"
+        ? store.timelineEvents.length
+        : store.timelineEvents.filter(e => (e.discipline || "physics") === d.id).length;
+      if (d.id !== "all" && cnt === 0) return "";
+      const act = curDisc === d.id;
+      return `
+        <button type="button" data-tl-disc="${esc(d.id)}" class="time-disc-chip ${act ? "is-active" : ""}">
+          ${esc(d.label)} <span class="opacity-65 ml-0.5 tabular-nums">${cnt}</span>
+        </button>
+      `;
+    }).join("");
+    discEl.querySelectorAll("[data-tl-disc]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        stopTimeTour();
+        store.state.timelineDiscipline = btn.dataset.tlDisc || "all";
+        const nextList = getFilteredTimelineEvents();
+        activeTimelineIdx = 0;
+        if (nextList[0]) {
+          store.state.timeYear = nextList[0].year;
+          store.state.activeTimelineId = nextList[0].id;
+        }
+        renderTimelineUI(true, false, true);
+      });
+    });
+  }
+
   const tabsEl = document.getElementById("time-era-tabs");
   if (tabsEl && store.eras.length) {
     tabsEl.innerHTML = store.eras.map(e => {
+      const hasEvents = events.some(ev => ev.eraId === e.id);
       const act = era && era.id === e.id;
       const shortLabel = e.label.split(" (")[0];
       return `
-        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3 py-1 rounded-full text-[13px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"}">
+        <button type="button" data-era-id="${esc(e.id)}" class="era-tab px-3 py-1 rounded-full text-[13px] whitespace-nowrap transition ${act ? "glass-btn-active" : "glass-btn"} ${!hasEvents ? "opacity-45" : ""}">
           ${esc(shortLabel)}
         </button>
       `;
@@ -758,7 +805,7 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
         stopTimeTour();
         const targetEra = store.eras.find(e => e.id === btn.dataset.eraId);
         if (!targetEra) return;
-        const firstInEra = store.timelineEvents.findIndex(ev => ev.eraId === targetEra.id);
+        const firstInEra = events.findIndex(ev => ev.eraId === targetEra.id);
         if (firstInEra >= 0) {
           jumpToTimelineIndex(firstInEra, false);
         } else {
@@ -772,8 +819,8 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
   }
 
   const dotsEl = document.getElementById("timeline-dots");
-  if (dotsEl && store.timelineEvents.length) {
-    dotsEl.innerHTML = store.timelineEvents.map((ev, idx) => {
+  if (dotsEl && events.length) {
+    dotsEl.innerHTML = events.map((ev, idx) => {
       const ep = yearToPercent(ev.year);
       const isAct = idx === activeTimelineIdx;
       return `<span class="timeline-dot ${isAct ? "active" : ""}" style="left:${ep.toFixed(2)}%" title="${esc(formatYear(ev.year))}: ${esc(ev.title || "")}"></span>`;
@@ -782,12 +829,13 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
 
   // Date ticks for quick hopping inside the active era
   const stripEl = document.getElementById("timeline-event-strip");
-  if (stripEl && store.timelineEvents.length) {
+  if (stripEl && events.length) {
     const eraEvents = era
-      ? store.timelineEvents.filter(ev => ev.eraId === era.id)
-      : store.timelineEvents.slice(Math.max(0, activeTimelineIdx - 3), activeTimelineIdx + 5);
+      ? events.filter(ev => ev.eraId === era.id)
+      : events.slice(Math.max(0, activeTimelineIdx - 3), activeTimelineIdx + 5);
+    const pillsList = eraEvents.length ? eraEvents : events.slice(Math.max(0, activeTimelineIdx - 3), activeTimelineIdx + 5);
 
-    stripEl.innerHTML = eraEvents.map(ev => {
+    stripEl.innerHTML = pillsList.map(ev => {
       const isSel = activeEv && ev.id === activeEv.id;
       return `
         <button type="button" data-tl-card="${esc(ev.id)}" title="${esc(ev.title || "")}" class="tl-card shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium tabular-nums whitespace-nowrap transition ${isSel ? "glass-btn-active" : "glass-btn"}">
@@ -799,7 +847,7 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
     stripEl.querySelectorAll(".tl-card").forEach(btn => {
       btn.addEventListener("click", () => {
         stopTimeTour();
-        const idx = store.timelineEvents.findIndex(e => e.id === btn.dataset.tlCard);
+        const idx = events.findIndex(e => e.id === btn.dataset.tlCard);
         if (idx >= 0) jumpToTimelineIndex(idx, false);
       });
     });
@@ -818,10 +866,11 @@ function renderTimelineUI(flyToActive = false, isTourFly = false, preserveIdx = 
 }
 
 function jumpToTimelineIndex(idx, openCard = false, isTourFly = false) {
-  if (!store.timelineEvents.length) return;
-  const clamped = Math.max(0, Math.min(store.timelineEvents.length - 1, idx));
+  const events = getFilteredTimelineEvents();
+  if (!events.length) return;
+  const clamped = Math.max(0, Math.min(events.length - 1, idx));
   activeTimelineIdx = clamped;
-  const ev = store.timelineEvents[clamped];
+  const ev = events[clamped];
   store.state.timeYear = ev.year;
   store.state.activeTimelineId = ev.id;
   timeTourElapsedMs = 0;
@@ -832,13 +881,31 @@ function jumpToTimelineIndex(idx, openCard = false, isTourFly = false) {
 
 function bindTimelineRuler() {
   const ruler = document.getElementById("timeline-ruler");
+  const hoverTip = document.getElementById("timeline-hover-tip");
   if (!ruler) return;
   let dragging = false;
+
+  const updateHoverTip = (clientX) => {
+    if (!hoverTip) return;
+    const events = getFilteredTimelineEvents();
+    if (!events.length) { hoverTip.classList.add("hidden"); return; }
+    const rect = ruler.getBoundingClientRect();
+    const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / Math.max(1, rect.width)) * 100));
+    const hoverYear = percentToYear(pct);
+    const nearestIdx = findNearestTimelineIndex(hoverYear, events);
+    const ev = events[nearestIdx];
+    if (!ev) { hoverTip.classList.add("hidden"); return; }
+    const clampedPct = Math.max(14, Math.min(86, pct));
+    hoverTip.style.left = `${clampedPct.toFixed(1)}%`;
+    hoverTip.innerHTML = `<span class="tl-tip-year">${esc(formatYear(ev.year))}</span>${esc(ev.title || "")}`;
+    hoverTip.classList.remove("hidden");
+  };
 
   const scrubFromClientX = (clientX) => {
     const rect = ruler.getBoundingClientRect();
     const pct = Math.max(0, Math.min(100, ((clientX - rect.left) / Math.max(1, rect.width)) * 100));
     store.state.timeYear = percentToYear(pct);
+    updateHoverTip(clientX);
     renderTimelineUI(false);
   };
 
@@ -850,14 +917,19 @@ function bindTimelineRuler() {
   });
   ruler.addEventListener("pointermove", (e) => {
     if (dragging) scrubFromClientX(e.clientX);
+    else if (e.pointerType !== "touch") updateHoverTip(e.clientX);
+  });
+  ruler.addEventListener("pointerleave", () => {
+    if (!dragging && hoverTip) hoverTip.classList.add("hidden");
   });
   const endDrag = () => {
     if (!dragging) return;
     dragging = false;
-    const nearest = findNearestTimelineIndex(store.state.timeYear);
-    if (store.timelineEvents[nearest]) {
-      store.state.timeYear = store.timelineEvents[nearest].year;
-      renderTimelineUI(true);
+    if (hoverTip) hoverTip.classList.add("hidden");
+    const events = getFilteredTimelineEvents();
+    const nearest = findNearestTimelineIndex(store.state.timeYear, events);
+    if (events[nearest]) {
+      jumpToTimelineIndex(nearest, false);
     }
   };
   ruler.addEventListener("pointerup", endDrag);
@@ -897,8 +969,9 @@ export function setTimeMode(enabled, jumpYear = null) {
     bar?.classList.remove("hidden");
     document.body.classList.add("time-open");
     btn?.classList.add("glass-btn-active");
+    const events = getFilteredTimelineEvents();
     if (jumpYear !== null) store.state.timeYear = jumpYear;
-    else if (store.state.timeYear === 2026) store.state.timeYear = store.timelineEvents[0]?.year ?? -1800;
+    else if (store.state.timeYear === 2026) store.state.timeYear = events[0]?.year ?? -1800;
     updateTimeTourControlsUI();
     renderTimelineUI(true);
   } else {
@@ -1328,6 +1401,14 @@ export function selectHubNode(id, fly = true, opts = {}) {
   const gEarth = `https://earth.google.com/web/search/${encodeURIComponent(geCoords)}`;
   links.push(`<a href="${gEarth}" target="_blank" rel="noopener noreferrer" class="accent-link px-0.5 py-1 text-[13px] whitespace-nowrap">Google Earth ↗</a>`);
   links.push(`<button type="button" id="btn-card-deep-research" class="accent-chip rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer">Deep Research</button>`);
+  if (node.tier !== "timeline") {
+    const inCmp = (store.state.compareIds || []).includes(node.id);
+    const cmpCount = (store.state.compareIds || []).length;
+    const cmpLbl = inCmp
+      ? (cmpCount >= 2 ? `Compare (${cmpCount}) →` : "In Compare ✓")
+      : "+ Compare";
+    links.push(`<button type="button" id="btn-card-compare" class="${inCmp ? "glass-btn-active" : "glass-btn"} rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer">${cmpLbl}</button>`);
+  }
   if (linksEl) {
     linksEl.innerHTML = links.join("");
     linksEl.querySelector("#btn-card-deep-research")?.addEventListener("click", () => {
@@ -1335,6 +1416,28 @@ export function selectHubNode(id, fly = true, opts = {}) {
         query: `${node.name} active projects, collaborators & recent arXiv papers`,
         hubContext: node
       });
+    });
+    linksEl.querySelector("#btn-card-compare")?.addEventListener("click", (ev) => {
+      const list = Array.isArray(store.state.compareIds) ? store.state.compareIds : (store.state.compareIds = []);
+      const idx = list.indexOf(node.id);
+      if (idx >= 0) {
+        if (list.length >= 2) {
+          openModal("account", "compare");
+          return;
+        }
+        list.splice(idx, 1);
+        ev.currentTarget.className = "glass-btn rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer";
+        ev.currentTarget.textContent = "+ Compare";
+        showToast("Removed from Compare");
+      } else {
+        if (list.length >= 3) list.shift();
+        list.push(node.id);
+        ev.currentTarget.className = "glass-btn-active rounded-full px-3 py-1 text-[12.5px] font-medium inline-flex items-center gap-1 whitespace-nowrap cursor-pointer";
+        ev.currentTarget.textContent = list.length >= 2 ? `Compare (${list.length}) →` : "In Compare ✓";
+        showToast(list.length >= 2
+          ? `Added to Compare (${list.length}/3) — tap again to view side-by-side`
+          : `Added ${node.name.split(" (")[0]} — select 1 more hub to compare`);
+      }
     });
   }
 
@@ -3255,26 +3358,141 @@ export function initUI() {
   });
   document.getElementById("btn-mode-space")?.addEventListener("click", () => setViewMode("space"));
 
-  document.getElementById("btn-arcs")?.addEventListener("click", (e) => {
+  const syncGlobeLayerButtons = () => {
+    const sunMode = store.state.sunMode || (store.state.sunLighting ? "orbital" : "off");
+    const sunActive = sunMode !== "off";
+    const sunLabel = sunMode === "utc" ? "UTC" : "Sun";
+    const sunMobLabel = sunMode === "utc" ? "UTC" : "Sun";
+
+    const pairs = [
+      ["btn-arcs", "btn-layer-arcs", Boolean(store.state.arcs)],
+      ["btn-labels", "btn-layer-labels", Boolean(store.state.labels)],
+      ["btn-tilt", "btn-layer-tilt", Boolean(store.state.tilted)],
+      ["btn-sun", "btn-layer-sun", sunActive]
+    ];
+    for (const [deskId, mobId, isOn] of pairs) {
+      for (const id of [deskId, mobId]) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        el.classList.toggle("glass-btn-active", isOn);
+        el.classList.toggle("glass-btn", !isOn);
+      }
+    }
+    const deskSun = document.getElementById("btn-sun");
+    if (deskSun) deskSun.textContent = sunLabel;
+    const mobSun = document.getElementById("btn-layer-sun");
+    if (mobSun) mobSun.textContent = sunMobLabel;
+  };
+
+  const toggleArcsLayer = () => {
     store.state.arcs = !store.state.arcs;
-    e.currentTarget.classList.toggle("glass-btn-active", store.state.arcs);
+    syncGlobeLayerButtons();
     syncGlobeMarkers();
-  });
-  document.getElementById("btn-labels")?.addEventListener("click", (e) => {
+  };
+  const toggleLabelsLayer = () => {
     store.state.labels = !store.state.labels;
-    e.currentTarget.classList.toggle("glass-btn-active", store.state.labels);
+    syncGlobeLayerButtons();
     setGlobeLabels(store.state.labels);
-  });
-  document.getElementById("btn-tilt")?.addEventListener("click", (e) => {
+  };
+  const toggleTiltLayer = () => {
     store.state.tilted = !store.state.tilted;
-    e.currentTarget.classList.toggle("glass-btn-active", store.state.tilted);
+    syncGlobeLayerButtons();
     setGlobeTilt(store.state.tilted);
-  });
-  document.getElementById("btn-sun")?.addEventListener("click", (e) => {
-    store.state.sunLighting = !store.state.sunLighting;
-    e.currentTarget.classList.toggle("glass-btn-active", store.state.sunLighting);
+  };
+  const cycleSunMode = () => {
+    const cur = store.state.sunMode || (store.state.sunLighting ? "orbital" : "off");
+    const next = cur === "orbital" ? "utc" : cur === "utc" ? "off" : "orbital";
+    store.state.sunMode = next;
+    store.state.sunLighting = next !== "off";
+    syncGlobeLayerButtons();
     syncGlobeMarkers();
-  });
+    if (next === "utc") {
+      const now = new Date();
+      const hh = String(now.getUTCHours()).padStart(2, "0");
+      const mm = String(now.getUTCMinutes()).padStart(2, "0");
+      showToast(`Live UTC Sunlight · ${hh}:${mm} UTC`);
+    } else if (next === "orbital") {
+      showToast("Orbital Sun (45° showcase)");
+    } else {
+      showToast("Solar lighting off");
+    }
+  };
+
+  document.getElementById("btn-arcs")?.addEventListener("click", toggleArcsLayer);
+  document.getElementById("btn-layer-arcs")?.addEventListener("click", toggleArcsLayer);
+  document.getElementById("btn-labels")?.addEventListener("click", toggleLabelsLayer);
+  document.getElementById("btn-layer-labels")?.addEventListener("click", toggleLabelsLayer);
+  document.getElementById("btn-tilt")?.addEventListener("click", toggleTiltLayer);
+  document.getElementById("btn-layer-tilt")?.addEventListener("click", toggleTiltLayer);
+  document.getElementById("btn-sun")?.addEventListener("click", cycleSunMode);
+  document.getElementById("btn-layer-sun")?.addEventListener("click", cycleSunMode);
+  syncGlobeLayerButtons();
+
+  // Smooth native touch swipe-down-to-dismiss on mobile bottom sheets (#place-card & #cluster-sheet)
+  const bindMobileSheetSwipe = (sheetId, scrollId, onDismiss) => {
+    const sheet = document.getElementById(sheetId);
+    if (!sheet) return;
+    let startY = 0;
+    let deltaY = 0;
+    let tracking = false;
+
+    sheet.addEventListener("touchstart", (e) => {
+      if (window.innerWidth >= 768 || e.touches.length !== 1) return;
+      const scrollEl = document.getElementById(scrollId);
+      const t = e.touches[0];
+      const rect = sheet.getBoundingClientRect();
+      const nearTopHandle = (t.clientY - rect.top) < 58;
+      const atScrollTop = !scrollEl || scrollEl.scrollTop <= 2;
+      if (!nearTopHandle && !atScrollTop) return;
+      startY = t.clientY;
+      deltaY = 0;
+      tracking = true;
+      sheet.classList.remove("sheet-snap-back");
+    }, { passive: true });
+
+    sheet.addEventListener("touchmove", (e) => {
+      if (!tracking || e.touches.length !== 1) return;
+      const dy = e.touches[0].clientY - startY;
+      if (dy <= 0) {
+        if (deltaY > 0) {
+          deltaY = 0;
+          sheet.style.transform = "";
+          sheet.style.opacity = "";
+        }
+        return;
+      }
+      const scrollEl = document.getElementById(scrollId);
+      if (scrollEl && scrollEl.scrollTop > 2) {
+        tracking = false;
+        return;
+      }
+      deltaY = dy;
+      sheet.classList.add("sheet-swiping");
+      sheet.style.transform = `translateY(${Math.min(dy, 260)}px)`;
+      sheet.style.opacity = String(Math.max(0.35, 1 - dy / 300));
+    }, { passive: true });
+
+    const finishSwipe = () => {
+      if (!tracking) return;
+      tracking = false;
+      sheet.classList.remove("sheet-swiping");
+      if (deltaY >= 78) {
+        sheet.style.transform = "";
+        sheet.style.opacity = "";
+        onDismiss();
+      } else if (deltaY > 0) {
+        sheet.classList.add("sheet-snap-back");
+        sheet.style.transform = "";
+        sheet.style.opacity = "";
+        setTimeout(() => sheet.classList.remove("sheet-snap-back"), 220);
+      }
+      deltaY = 0;
+    };
+    sheet.addEventListener("touchend", finishSwipe, { passive: true });
+    sheet.addEventListener("touchcancel", finishSwipe, { passive: true });
+  };
+  bindMobileSheetSwipe("place-card", "card-scroll-body", closePlaceCard);
+  bindMobileSheetSwipe("cluster-sheet", "cluster-sheet-list", closeClusterSheet);
 
   document.getElementById("btn-zoom-in")?.addEventListener("click", zoomInGlobe);
   document.getElementById("btn-zoom-out")?.addEventListener("click", zoomOutGlobe);
@@ -3289,7 +3507,8 @@ export function initUI() {
   });
 
   document.getElementById("btn-toggle-time")?.addEventListener("click", () => {
-    setTimeMode(!store.state.timeMode, store.state.timeMode ? null : (store.timelineEvents[0]?.year ?? -1800));
+    const events = getFilteredTimelineEvents();
+    setTimeMode(!store.state.timeMode, store.state.timeMode ? null : (events[0]?.year ?? -1800));
   });
   document.getElementById("btn-open-domains")?.addEventListener("click", () => openModal("domains"));
   document.getElementById("btn-open-countries")?.addEventListener("click", () => openModal("countries"));
@@ -3311,7 +3530,7 @@ export function initUI() {
   });
   document.getElementById("btn-time-details")?.addEventListener("click", () => {
     stopTimeTour();
-    const ev = store.timelineEvents[activeTimelineIdx];
+    const ev = getFilteredTimelineEvents()[activeTimelineIdx];
     if (ev) selectHubNode(`tl-${ev.id}`, false);
   });
   document.getElementById("btn-time-close")?.addEventListener("click", () => setTimeMode(false));

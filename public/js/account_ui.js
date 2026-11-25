@@ -5,7 +5,10 @@
  */
 
 import { STAGE_META, STAGE_PORTALS } from "./config.js";
-import { store, mergeHubs } from "./data_store.js";
+import { store, mergeHubs, getNodeById } from "./data_store.js";
+import {
+  getShanghaiRecord, getHubGrasSubjectsSorted, getHubCollaborations
+} from "./shanghai_engine.js";
 import {
   getAuthSnapshot, getUserInitials, registerAccount, loginAccount,
   signInWithGoogle, requestPasswordReset, logoutAccount, changeAccountPassword,
@@ -340,18 +343,52 @@ export function renderAccountWorkspaceModal(bodyEl, {
   let activeTab = initialTab;
   let activeFolder = "All";
   let searchQuery = "";
+  let compareQuery = "";
   let editingNoteId = null;
+
+  const COMPARE_PRESETS = [
+    { label: "MIT · Stanford · ETH Zurich", names: ["Massachusetts Institute of Technology", "Stanford University", "ETH Zurich"] },
+    { label: "CERN · Fermilab · KEK", names: ["CERN", "Fermilab", "KEK"] },
+    { label: "DeepMind · OpenAI · Mila", names: ["Google DeepMind", "OpenAI", "Mila"] }
+  ];
+
+  const findHubByQueryName = (name) => {
+    const low = name.toLowerCase();
+    const matches = store.hubs.filter(h => (h.name || "").toLowerCase().includes(low));
+    if (!matches.length) return null;
+    matches.sort((a, b) => {
+      const aSr = getShanghaiRecord(a.id) ? 1 : 0;
+      const bSr = getShanghaiRecord(b.id) ? 1 : 0;
+      const aTier = a.tier === "flagship" ? 2 : a.tier === "stem" ? 1 : 0;
+      const bTier = b.tier === "flagship" ? 2 : b.tier === "stem" ? 1 : 0;
+      return (bSr - aSr) || (bTier - aTier) || ((b.impactScore || 0) - (a.impactScore || 0));
+    });
+    return matches[0];
+  };
+
+  const formatCompareType = (h) => h.sector || ({
+    uni: "University",
+    lab: "National Lab",
+    institute: "Research Institute",
+    startup: "Deep-Tech Startup",
+    company: "Tech Lab",
+    project: "Mega-Project"
+  }[h.entityType] || "STEM Hub");
 
   const render = () => {
     const snap = getAuthSnapshot();
     const st = store.state.stage;
     const stageInfo = STAGE_META[st] || STAGE_META.undergrad;
     const portals = STAGE_PORTALS[st] || STAGE_PORTALS.all;
+    const cmpIds = Array.isArray(store.state.compareIds) ? store.state.compareIds : (store.state.compareIds = []);
 
     const navHtml = `
       <div class="flex flex-wrap items-center gap-1.5 pb-4 border-b border-white/10">
         <button type="button" data-ws-tab="bookmarks" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${activeTab === "bookmarks" ? "glass-btn-active" : "glass-btn"}">
           Saved (${snap.bookmarks.length})
+        </button>
+        <button type="button" data-ws-tab="compare" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition ${activeTab === "compare" ? "glass-btn-active" : "glass-btn"}">
+          Compare${cmpIds.length ? ` (${cmpIds.length})` : ""}
         </button>
         <button type="button" id="ws-btn-offline" class="px-3.5 py-1.5 rounded-full text-[13.5px] whitespace-nowrap transition glass-btn">
           Offline
@@ -396,6 +433,8 @@ export function renderAccountWorkspaceModal(bodyEl, {
       const listHtml = filtered.length ? filtered.map(b => {
         const isEditing = editingNoteId === b.id;
         const kindLabel = b.kind === "space" ? "Space Mission" : b.kind === "timeline" ? "Historical Milestone" : b.kind === "material" ? "Open Material" : "STEM Hub";
+        const isHub = b.kind === "hub" || (!b.kind && !String(b.id).startsWith("sp-") && !String(b.id).startsWith("tl-"));
+        const inCmp = isHub && cmpIds.includes(b.id);
         return `
           <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 space-y-3">
             <div class="flex items-start justify-between gap-3">
@@ -424,6 +463,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
             ` : `
               <div class="flex flex-wrap items-center gap-2">
                 ${b.kind !== "material" ? `<button type="button" data-bm-open="${esc(b.id)}" data-bm-kind="${esc(b.kind)}" class="glass-btn rounded-full px-4 py-1.5 text-[14px]">Open on Globe</button>` : ""}
+                ${isHub ? `<button type="button" data-bm-compare="${esc(b.id)}" class="${inCmp ? "glass-btn-active" : "glass-btn"} rounded-full px-3.5 py-1.5 text-[13.5px]">${inCmp ? "Comparing ✓" : "+ Compare"}</button>` : ""}
                 ${b.url ? `<a href="${esc(b.url)}" target="_blank" rel="noopener noreferrer" class="accent-link text-[14px] px-2 py-1">Official Site ↗</a>` : ""}
                 <button type="button" data-bm-edit-meta="${esc(b.id)}" class="glass-btn rounded-full px-4 py-1.5 text-[14px] ml-auto">${b.note ? "Edit note" : "+ Note / folder"}</button>
               </div>
@@ -451,6 +491,135 @@ export function renderAccountWorkspaceModal(bodyEl, {
             ${snap.bookmarks.length ? `<button type="button" id="btn-export-bm-csv" class="glass-btn rounded-full px-4 py-2 text-[14px] whitespace-nowrap shrink-0">Export .CSV</button>` : ""}
           </div>
           <div class="space-y-3">${listHtml}</div>
+        </div>
+      `;
+    } else if (activeTab === "compare") {
+      const hubs = cmpIds.map(id => getNodeById(id)).filter(Boolean);
+      const q = compareQuery.trim().toLowerCase();
+      const matches = q.length >= 2
+        ? store.hubs
+          .filter(h => !cmpIds.includes(h.id) && (
+            (h.name || "").toLowerCase().includes(q)
+            || (h.city || "").toLowerCase().includes(q)
+            || (h.country || "").toLowerCase().includes(q)
+          ))
+          .sort((a, b) => (b.impactScore || 0) - (a.impactScore || 0))
+          .slice(0, 6)
+        : [];
+
+      const searchResultsHtml = matches.length ? `
+        <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-2 space-y-1">
+          ${matches.map(h => `
+            <button type="button" data-cmp-add="${esc(h.id)}" class="glass-row w-full text-left rounded-xl px-3 py-2 flex items-center justify-between gap-2 text-[13.5px]">
+              <div class="min-w-0">
+                <div class="text-white font-medium truncate">${esc(h.name)}</div>
+                <div class="text-[12px] text-neutral-400 truncate">${esc(h.city || h.country || "")}</div>
+              </div>
+              <span class="accent-text text-[12.5px] font-medium shrink-0">+ Add</span>
+            </button>
+          `).join("")}
+        </div>
+      ` : "";
+
+      const presetsHtml = `
+        <div class="space-y-2">
+          <div class="section-label">Quick Presets</div>
+          <div class="flex flex-wrap gap-1.5">
+            ${COMPARE_PRESETS.map((p, idx) => `
+              <button type="button" data-cmp-preset="${idx}" class="glass-btn rounded-full px-3.5 py-1.5 text-[13px]">${esc(p.label)}</button>
+            `).join("")}
+          </div>
+        </div>
+      `;
+
+      const colsHtml = hubs.length ? `
+        <div class="grid grid-cols-1 ${hubs.length === 2 ? "sm:grid-cols-2" : hubs.length >= 3 ? "sm:grid-cols-3" : ""} gap-3">
+          ${hubs.map(h => {
+            const sr = getShanghaiRecord(h.id);
+            const grasTop = getHubGrasSubjectsSorted(h.id).slice(0, 3);
+            const collabs = getHubCollaborations(h.id, store.hubsById) || [];
+            const impact = Math.round(h.impactScore || h._impact?.total || 0);
+            const cites = h.citedByCount || h.citations || 0;
+            const works = h.worksCount || 0;
+            const arxivHref = `https://arxiv.org/search/?query=${encodeURIComponent(h.name)}&searchtype=all`;
+            return `
+              <div class="rounded-2xl bg-white/[0.04] border border-white/10 p-4 flex flex-col justify-between gap-3.5 min-w-0">
+                <div class="space-y-3 min-w-0">
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="min-w-0">
+                      <div class="text-[12px] accent-text font-medium truncate">${esc(formatCompareType(h))}${h.foundedYear ? ` · ${h.foundedYear}` : ""}</div>
+                      <div class="text-[15.5px] font-semibold text-white leading-snug mt-0.5 break-words">${esc(h.name)}</div>
+                      <div class="text-[12.5px] text-neutral-400 truncate mt-0.5">${esc(h.city || h.country || "")}</div>
+                    </div>
+                    <button type="button" data-cmp-remove="${esc(h.id)}" aria-label="Remove from compare" class="glass-btn rounded-full w-7 h-7 flex items-center justify-center text-[12px] shrink-0">✕</button>
+                  </div>
+
+                  <div class="space-y-2 border-t border-white/10 pt-2.5 text-[12.5px]">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-neutral-400">Impact Score</span>
+                      <span class="text-white font-semibold tabular-nums">${impact || "—"}</span>
+                    </div>
+                    <div class="h-1.5 rounded-full bg-white/[0.08] overflow-hidden">
+                      <div class="h-full rounded-full" style="width:${Math.min(100, Math.max(8, impact))}%;background:rgb(185,90,90);"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between gap-2 pt-1">
+                      <span class="text-neutral-400">ARWU 2026</span>
+                      <span class="text-white font-medium tabular-nums">${sr?.arwu?.r ? `#${esc(sr.arwu.r)}` : "—"}</span>
+                    </div>
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-neutral-400">Citations</span>
+                      <span class="text-white font-medium tabular-nums">${cites ? cites.toLocaleString() : "—"}</span>
+                    </div>
+                    ${works ? `
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="text-neutral-400">Indexed Works</span>
+                        <span class="text-neutral-200 tabular-nums">${works.toLocaleString()}</span>
+                      </div>
+                    ` : ""}
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-neutral-400">Collaborators</span>
+                      <span class="text-neutral-200 tabular-nums">${collabs.length}</span>
+                    </div>
+                  </div>
+
+                  ${grasTop.length ? `
+                    <div class="space-y-1.5 border-t border-white/10 pt-2.5">
+                      <div class="text-[11.5px] text-neutral-400">Top GRAS 2026 Subjects</div>
+                      <div class="flex flex-wrap gap-1">
+                        ${grasTop.map(g => `
+                          <span class="text-[11.5px] px-2 py-0.5 rounded-full bg-white/[0.07] text-neutral-200 truncate max-w-full">${esc(g.name)} #${esc(g.rankLabel)}</span>
+                        `).join("")}
+                      </div>
+                    </div>
+                  ` : ""}
+                </div>
+
+                <div class="flex flex-wrap items-center gap-1.5 border-t border-white/10 pt-2.5">
+                  <button type="button" data-bm-open="${esc(h.id)}" data-bm-kind="hub" class="glass-btn rounded-full px-3 py-1 text-[12px]">Fly →</button>
+                  <a href="${esc(arxivHref)}" target="_blank" rel="noopener noreferrer" class="accent-link text-[12px] px-1.5">arXiv ↗</a>
+                  ${h.url ? `<a href="${esc(h.url)}" target="_blank" rel="noopener noreferrer" class="accent-link text-[12px] px-1.5">Site ↗</a>` : ""}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      ` : `
+        <div class="rounded-2xl bg-white/[0.03] border border-white/10 p-6 text-center space-y-2">
+          <div class="text-[16px] font-medium text-white">Compare up to 3 institutions side by side</div>
+          <p class="text-[13.5px] text-neutral-400">Search above, pick a preset below, or tap <strong class="text-white">+ Compare</strong> on any institution card on the globe.</p>
+        </div>
+      `;
+
+      panelHtml = `
+        <div class="space-y-4 pt-4">
+          <div class="flex items-center gap-2">
+            <input id="cmp-search-input" type="text" value="${esc(compareQuery)}" placeholder="Add institution to compare (max 3)…" class="glass-input py-2 text-[14px]" />
+            ${hubs.length ? `<button type="button" id="btn-cmp-clear" class="glass-btn rounded-full px-3.5 py-2 text-[13px] shrink-0">Clear</button>` : ""}
+          </div>
+          ${searchResultsHtml}
+          ${colsHtml}
+          ${hubs.length < 2 ? presetsHtml : ""}
         </div>
       `;
     } else if (activeTab === "pathways") {
@@ -658,6 +827,74 @@ export function renderAccountWorkspaceModal(bodyEl, {
     bodyEl.querySelectorAll("[data-bm-open]").forEach(btn => {
       btn.addEventListener("click", () => {
         onNavigateToBookmark?.(btn.dataset.bmOpen, btn.dataset.bmKind);
+      });
+    });
+
+    bodyEl.querySelectorAll("[data-bm-compare]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.bmCompare;
+        const list = Array.isArray(store.state.compareIds) ? store.state.compareIds : (store.state.compareIds = []);
+        const idx = list.indexOf(id);
+        if (idx >= 0) {
+          list.splice(idx, 1);
+          showToast?.("Removed from Compare");
+        } else {
+          if (list.length >= 3) list.shift();
+          list.push(id);
+          showToast?.(`Added to Compare (${list.length}/3)`);
+        }
+        render();
+      });
+    });
+
+    const cmpSearch = bodyEl.querySelector("#cmp-search-input");
+    cmpSearch?.addEventListener("input", () => {
+      compareQuery = cmpSearch.value;
+      const pos = cmpSearch.selectionStart;
+      render();
+      const el = bodyEl.querySelector("#cmp-search-input");
+      if (el) { el.focus(); el.setSelectionRange(pos, pos); }
+    });
+
+    bodyEl.querySelectorAll("[data-cmp-add]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.cmpAdd;
+        const list = Array.isArray(store.state.compareIds) ? store.state.compareIds : (store.state.compareIds = []);
+        if (!list.includes(id)) {
+          if (list.length >= 3) list.shift();
+          list.push(id);
+        }
+        compareQuery = "";
+        render();
+      });
+    });
+
+    bodyEl.querySelectorAll("[data-cmp-remove]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.dataset.cmpRemove;
+        const list = Array.isArray(store.state.compareIds) ? store.state.compareIds : [];
+        const idx = list.indexOf(id);
+        if (idx >= 0) list.splice(idx, 1);
+        render();
+      });
+    });
+
+    bodyEl.querySelector("#btn-cmp-clear")?.addEventListener("click", () => {
+      store.state.compareIds = [];
+      compareQuery = "";
+      render();
+    });
+
+    bodyEl.querySelectorAll("[data-cmp-preset]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const preset = COMPARE_PRESETS[Number(btn.dataset.cmpPreset)];
+        if (!preset) return;
+        const ids = preset.names.map(findHubByQueryName).filter(Boolean).map(h => h.id);
+        if (ids.length) {
+          store.state.compareIds = ids.slice(0, 3);
+          compareQuery = "";
+          render();
+        }
       });
     });
 

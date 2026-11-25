@@ -4,11 +4,11 @@
   "schemaVersion": "2.0.0",
   "jsonSchemaDraft": "https://json-schema.org/draft/2020-12/schema",
   "schemaRef": "physalts_schema.json",
-  "generatedAt": "2026-11-25T01:30:41.385Z",
-  "merkleRootSha256": "c862dde553f5bbaf3d242e27c04f24d37bbc8f1a428ac86f4bd2bd197297d77a",
+  "generatedAt": "2026-11-25T03:31:13.861Z",
+  "merkleRootSha256": "2f083b1f9db4ff231c2a83bacf2b54db91f595bd44d5064004c5bdfb064797b0",
   "summary": {
     "totalSourceFiles": 10,
-    "totalSourceBytes": 6367963,
+    "totalSourceBytes": 6367934,
     "totalUnifiedRecords": 6657,
     "totalDistinctCountries": 170,
     "byRecordType": {
@@ -37,8 +37,8 @@
     },
     {
       "file": "curated_flagships.json",
-      "sha256": "a14e22ffc7a89a81ff969dbe4c0391c4ad06b554caea2b7e924e019a50200fbb",
-      "byteSize": 130521,
+      "sha256": "a01f9d32b371babfe3e7e81c5c4b9a0922863e1b87140cad267ac9ca6d0750d8",
+      "byteSize": 130492,
       "recordType": "Hub",
       "tier": "curated_flagship",
       "recordCount": 70,
@@ -52,7 +52,7 @@
       "license": "Curated Nominative Fair Use + CC-BY-SA Reference Metadata",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-24T11:57:27.736Z"
+      "modifiedAt": "2026-11-25T03:14:12.808Z"
     },
     {
       "file": "domains_catalog.json",
@@ -205,8 +205,8 @@
     },
     "unifiedNdjson": {
       "file": "physalts_unified.ndjson",
-      "sha256": "698871f88b6578b38691b4ebfa629af1f9be9fb34f093b4a8d11375146d3c01d",
-      "byteSize": 5604434,
+      "sha256": "02ccecae446b9820fad230c6ba15cec0783e32e531462574eb9106c940c6e41a",
+      "byteSize": 5604405,
       "rowCount": 6657
     }
   }

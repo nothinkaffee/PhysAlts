@@ -406,7 +406,7 @@
       "shanghai": "Shanghai #6",
       "tuition": "~¥535k + MEXT",
       "visa": "JP Student Visa",
-      "url": "https://www.u-tokyo.ac.jp/en/prospective-students/mext_scholarship.html",
+      "url": "https://www.u-tokyo.ac.jp/en/prospective-students/scholarships.html",
       "wiki": "https://en.wikipedia.org/wiki/University_of_Tokyo",
       "wikiSlug": "University_of_Tokyo",
       "summary": "Asia's premier fundamental physics department—operating Super-Kamiokande, KAGRA gravitational waves, and Kavli IPMU.",
@@ -439,7 +439,7 @@
         {
           "name": "KAGRA Underground Gravitational-Wave Telescope",
           "status": "ongoing",
-          "url": "https://gwcenter.icrr.u-tokyo.ac.jp/en/"
+          "url": "https://www.icrr.u-tokyo.ac.jp/en/"
         }
       ]
     },
@@ -1744,7 +1744,7 @@
       "lat": 51.5344,
       "lng": 9.9323,
       "zoom": 16.4,
-      "url": "https://www.uni-goettingen.de/en/18500.html",
+      "url": "https://www.uni-goettingen.de/en/1.html",
       "wiki": "https://en.wikipedia.org/wiki/University_of_G%C3%B6ttingen",
       "wikiSlug": "University_of_Göttingen",
       "summary": "In the 1920s, Max Born, Werner Heisenberg, and Emmy Noether forged matrix quantum mechanics and symmetry theorems here.",
@@ -2886,7 +2886,7 @@
         {
           "name": "Giant Metrewave Radio Telescope (uGMRT / NCRA-TIFR)",
           "status": "ongoing",
-          "url": "https://www.gmrt.ncra.tifr.res.in/"
+          "url": "https://www.tifr.res.in/"
         },
         {
           "name": "ICTS-TIFR Theoretical Physics & LIGO-India Contributions",
@@ -3119,7 +3119,7 @@
         {
           "name": "HAWC High-Altitude Water Cherenkov Gamma-Ray Observatory",
           "status": "ongoing",
-          "url": "https://www.hawc-observatory.org/"
+          "url": "https://www.fisica.unam.mx/"
         }
       ],
       "next": [
