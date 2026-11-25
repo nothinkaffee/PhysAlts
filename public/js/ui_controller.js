@@ -91,6 +91,24 @@ export function showToast(msg) {
   const txt = document.getElementById("toast-text");
   if (!el || !txt) return;
   txt.textContent = msg;
+
+  // Dynamically clear any visible top-anchored HUD bars (Dynamic Island, Active Filter Pill, Mobile Trail Card)
+  let safeTop = 76;
+  const topIds = window.innerWidth < 768
+    ? ["dynamic-island", "active-filter-pill", "rabbit-trail-bar"]
+    : ["dynamic-island", "active-filter-pill"];
+  for (const id of topIds) {
+    const node = document.getElementById(id);
+    if (!node || node.classList.contains("hidden")) continue;
+    const style = window.getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") continue;
+    const rect = node.getBoundingClientRect();
+    if (rect.width > 0 && rect.height > 0 && rect.top < window.innerHeight * 0.45) {
+      safeTop = Math.max(safeTop, Math.ceil(rect.bottom) + 10);
+    }
+  }
+  el.style.top = `${safeTop}px`;
+
   el.classList.add("visible");
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => el.classList.remove("visible"), 2600);
@@ -883,7 +901,6 @@ export function startRabbitTrail(trail, startIdx = 0) {
   if (stop?.hubId) {
     selectHubNode(stop.hubId, true);
   }
-  showToast(`Trail · ${trail.title}`);
 }
 
 function stepRabbitTrail(delta) {

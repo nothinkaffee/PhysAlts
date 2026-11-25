@@ -1312,6 +1312,7 @@ body.space-mode #zoom-controls .zoom-divider {
   position: fixed;
   top: var(--island-bottom);
   left: 50%;
+  max-width: calc(100vw - 24px);
   transform: translate(-50%, -12px);
   opacity: 0;
   pointer-events: none;
@@ -1712,8 +1713,8 @@ body.space-mode #zoom-controls .zoom-divider {
   body.trail-open #active-filter-pill {
     display: none !important;
   }
-  body.trail-open #toast {
-    top: calc(var(--island-bottom) + 68px) !important;
+  body.trail-open #place-card {
+    max-height: 46dvh !important;
   }
   #card-photo-wrap {
     height: 112px !important;
