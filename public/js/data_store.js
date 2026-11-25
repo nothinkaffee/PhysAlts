@@ -61,7 +61,6 @@ export const store = {
     labels: false,
     tilted: false,
     sunLighting: true,
-    sunMode: "orbital",      // "orbital" | "utc" | "off"
     compareIds: [],
     shortlist: new Set(),
     bookmarks: [],

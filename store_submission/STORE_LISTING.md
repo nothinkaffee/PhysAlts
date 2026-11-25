@@ -17,7 +17,7 @@
 
 ## 2. Full Store Description (Play Store & App Store)
 
-Discover the entire world of science on one photoreal 3D globe — from ancient Miletus (580 BCE) to Voyager 1 at 1 Light-Day (173.1 AU) — set against a crisp native-Retina starfield & faded ESO Milky Way backdrop with live UTC astronomical sunlight and subtle golden night-side city lights.
+Discover the entire world of science on one photoreal 3D globe — from ancient Miletus (580 BCE) to Voyager 1 at 1 Light-Day (173.1 AU) — set against a crisp native-Retina starfield & faded ESO Milky Way backdrop with toggleable 3D orbital sunlight and subtle golden night-side city lights.
 
 **PhysALT** is an interactive, zero-clutter 3D satellite atlas built for curious minds, students, researchers, and engineers across **all of STEM & AI**:
 

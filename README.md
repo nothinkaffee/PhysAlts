@@ -10,7 +10,7 @@ Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.2.0 / 
 
 | Capability | Description |
 |---|---|
-| **3D Satellite Globe & Hybrid Milky Way Sky** | MapLibre GL CSP WebGL globe with Esri World Imagery + NASA Blue Marble, true 3D camera horizon occlusion, **2-pass hybrid WebGL skybox** (faded star-free ESO Milky Way dust + 3,200 crisp native-Retina stars locked 1:1 to live globe rotation), and **3-state 3D Sunlight (`Orbital 45°` · `Live UTC` · `Off`)** with subtle golden night-side city lights. |
+| **3D Satellite Globe & Hybrid Milky Way Sky** | MapLibre GL CSP WebGL globe with Esri World Imagery + NASA Blue Marble, true 3D camera horizon occlusion, **2-pass hybrid WebGL skybox** (faded star-free ESO Milky Way dust + 3,200 crisp native-Retina stars locked 1:1 to live globe rotation), and toggleable **3D Orbital Sunlight (`Sun`)** with subtle golden night-side city lights. |
 | **Global & Polar Open-Science Index** | **6,926 unique verified STEM hubs across 166 countries** — including **75 Polar Frontier off-grid Arctic, Svalbard, Greenland, Siberia & Antarctic stations** — with two-stage deferred boot for fast mobile startup. |
 | **Deep Research Studio & Side-by-Side Compare** | Free zero-key agentic discovery across **arXiv & alphaXiv**, **INSPIRE-HEP**, **ROR v2**, **OpenAlex**, and **Wikipedia**, optional **BYOK Gemini 2.5 Flash & Deep Research**, plus **Side-by-Side Institution Compare** (up to 3 hubs across ARWU/GRAS, Impact, Citations, Collaborators & arXiv). |
 | **ShanghaiRanking 2026 Integration** | Full ARWU & 57 GRAS subject tables, contextual institution badges, and 5-pillar impact breakdowns. |

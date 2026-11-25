@@ -347,7 +347,7 @@ export function renderAccountWorkspaceModal(bodyEl, {
   let editingNoteId = null;
 
   const COMPARE_PRESETS = [
-    { label: "MIT · Stanford · ETH Zurich", names: ["Massachusetts Institute of Technology", "Stanford University", "ETH Zurich"] },
+    { label: "MIT · Stanford · ETH Zurich", names: ["MIT Physics", "Stanford University", "ETH Zurich"] },
     { label: "CERN · Fermilab · KEK", names: ["CERN", "Fermilab", "KEK"] },
     { label: "DeepMind · OpenAI · Mila", names: ["Google DeepMind", "OpenAI", "Mila"] }
   ];

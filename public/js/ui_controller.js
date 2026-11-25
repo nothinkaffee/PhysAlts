@@ -3359,16 +3359,11 @@ export function initUI() {
   document.getElementById("btn-mode-space")?.addEventListener("click", () => setViewMode("space"));
 
   const syncGlobeLayerButtons = () => {
-    const sunMode = store.state.sunMode || (store.state.sunLighting ? "orbital" : "off");
-    const sunActive = sunMode !== "off";
-    const sunLabel = sunMode === "utc" ? "UTC" : "Sun";
-    const sunMobLabel = sunMode === "utc" ? "UTC" : "Sun";
-
     const pairs = [
       ["btn-arcs", "btn-layer-arcs", Boolean(store.state.arcs)],
       ["btn-labels", "btn-layer-labels", Boolean(store.state.labels)],
       ["btn-tilt", "btn-layer-tilt", Boolean(store.state.tilted)],
-      ["btn-sun", "btn-layer-sun", sunActive]
+      ["btn-sun", "btn-layer-sun", Boolean(store.state.sunLighting)]
     ];
     for (const [deskId, mobId, isOn] of pairs) {
       for (const id of [deskId, mobId]) {
@@ -3378,10 +3373,6 @@ export function initUI() {
         el.classList.toggle("glass-btn", !isOn);
       }
     }
-    const deskSun = document.getElementById("btn-sun");
-    if (deskSun) deskSun.textContent = sunLabel;
-    const mobSun = document.getElementById("btn-layer-sun");
-    if (mobSun) mobSun.textContent = sunMobLabel;
   };
 
   const toggleArcsLayer = () => {
@@ -3399,23 +3390,10 @@ export function initUI() {
     syncGlobeLayerButtons();
     setGlobeTilt(store.state.tilted);
   };
-  const cycleSunMode = () => {
-    const cur = store.state.sunMode || (store.state.sunLighting ? "orbital" : "off");
-    const next = cur === "orbital" ? "utc" : cur === "utc" ? "off" : "orbital";
-    store.state.sunMode = next;
-    store.state.sunLighting = next !== "off";
+  const toggleSunLayer = () => {
+    store.state.sunLighting = !store.state.sunLighting;
     syncGlobeLayerButtons();
     syncGlobeMarkers();
-    if (next === "utc") {
-      const now = new Date();
-      const hh = String(now.getUTCHours()).padStart(2, "0");
-      const mm = String(now.getUTCMinutes()).padStart(2, "0");
-      showToast(`Live UTC Sunlight · ${hh}:${mm} UTC`);
-    } else if (next === "orbital") {
-      showToast("Orbital Sun (45° showcase)");
-    } else {
-      showToast("Solar lighting off");
-    }
   };
 
   document.getElementById("btn-arcs")?.addEventListener("click", toggleArcsLayer);
@@ -3424,8 +3402,8 @@ export function initUI() {
   document.getElementById("btn-layer-labels")?.addEventListener("click", toggleLabelsLayer);
   document.getElementById("btn-tilt")?.addEventListener("click", toggleTiltLayer);
   document.getElementById("btn-layer-tilt")?.addEventListener("click", toggleTiltLayer);
-  document.getElementById("btn-sun")?.addEventListener("click", cycleSunMode);
-  document.getElementById("btn-layer-sun")?.addEventListener("click", cycleSunMode);
+  document.getElementById("btn-sun")?.addEventListener("click", toggleSunLayer);
+  document.getElementById("btn-layer-sun")?.addEventListener("click", toggleSunLayer);
   syncGlobeLayerButtons();
 
   // Smooth native touch swipe-down-to-dismiss on mobile bottom sheets (#place-card & #cluster-sheet)

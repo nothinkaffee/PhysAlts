@@ -789,67 +789,25 @@ function initGlobeHudOverlay() {
 
     const center = map.getCenter();
     const rad = Math.PI / 180;
-    const bearingDeg = typeof map.getBearing === "function" ? map.getBearing() : 0;
 
-    // True 3D spherical solar day/night terminator (3-state: Orbital 45° · Live UTC Astronomical · Off)
+    // True 3D spherical orbital solar day/night terminator (toggleable via Sun button)
     // Strictly alpha = 0 across the entire sunlit hemisphere so Earth stays 100% vivid & crisp (zero grey wash!)
-    const sunMode = store.state.sunMode || (store.state.sunLighting ? "orbital" : "off");
-    if (sunMode !== "off" && zoom < 4.7 && pitch < 32 && hasSurfaceRay) {
+    if (store.state.sunLighting && zoom < 4.7 && pitch < 32 && hasSurfaceRay) {
       const sunFade = Math.max(0, Math.min(1, 1 - (zoom - 3.15) / 1.55));
       if (sunFade > 0.01) {
-        let sx, sy, sz;
-        if (sunMode === "utc") {
-          const now = new Date();
-          const startOfYear = Date.UTC(now.getUTCFullYear(), 0, 0);
-          const doy = (Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()) - startOfYear) / 86400000;
-          const utcHours = now.getUTCHours() + now.getUTCMinutes() / 60 + now.getUTCSeconds() / 3600;
-          const sunLatRad = (-23.44 * Math.cos(((2 * Math.PI) / 365) * (doy + 10))) * rad;
-          let sunLngDeg = (12 - utcHours) * 15;
-          sunLngDeg = ((sunLngDeg + 540) % 360) - 180;
-          const sunLngRad = sunLngDeg * rad;
+        // Orbital 45° showcase angle: vivid untouched sunlit hemisphere + crisp curved night limb
+        const slx = -0.64, sly = 0.28, slz = 0.71;
+        const slen = Math.hypot(slx, sly, slz);
+        const sx = slx / slen, sy = sly / slen, sz = slz / slen;
 
-          // ECEF sun unit vector (+Z = 0°E,0°N; +X = 90°E,0°N; +Y = North Pole)
-          const vx = Math.cos(sunLatRad) * Math.sin(sunLngRad);
-          const vy = Math.sin(sunLatRad);
-          const vz = Math.cos(sunLatRad) * Math.cos(sunLngRad);
-
-          // Transform into camera frame (center.lng, center.lat, bearing)
-          const cLng = center.lng * rad;
-          const cLat = center.lat * rad;
-          const bRad = bearingDeg * rad;
-          const x1 = vx * Math.cos(cLng) - vz * Math.sin(cLng);
-          const y1 = vy;
-          const z1 = vx * Math.sin(cLng) + vz * Math.cos(cLng);
-          const x2 = x1;
-          const y2 = y1 * Math.cos(cLat) - z1 * Math.sin(cLat);
-          const z2 = y1 * Math.sin(cLat) + z1 * Math.cos(cLat);
-          sx = x2 * Math.cos(bRad) - y2 * Math.sin(bRad);
-          sy = x2 * Math.sin(bRad) + y2 * Math.cos(bRad);
-          sz = z2;
-        } else {
-          // Orbital 45° showcase angle: vivid untouched sunlit hemisphere + crisp curved night limb
-          const slx = -0.64, sly = 0.28, slz = 0.71;
-          const slen = Math.hypot(slx, sly, slz);
-          sx = slx / slen; sy = sly / slen; sz = slz / slen;
-        }
-
-        const prevSun = renderHudNow._lastSunVec;
-        const sunMoved = !prevSun
-          || Math.abs(prevSun.sx - sx) > 0.014
-          || Math.abs(prevSun.sy - sy) > 0.014
-          || Math.abs(prevSun.sz - sz) > 0.014;
-
-        if (!renderHudNow._sunMask || sunMoved) {
-          const S = 160;
-          const sc = renderHudNow._sunMask || document.createElement("canvas");
-          if (sc.width !== S || sc.height !== S) {
-            sc.width = S;
-            sc.height = S;
-          }
+        if (!renderHudNow._sunMask) {
+          const S = 180;
+          const sc = document.createElement("canvas");
+          sc.width = S;
+          sc.height = S;
           const sctx = sc.getContext("2d");
-          const img = renderHudNow._sunImg || sctx.createImageData(S, S);
+          const img = sctx.createImageData(S, S);
           const data = img.data;
-          data.fill(0);
           const half = S * 0.5;
           for (let py = 0; py < S; py++) {
             const v = (py + 0.5 - half) / half; // +down
@@ -877,8 +835,6 @@ function initGlobeHudOverlay() {
           }
           sctx.putImageData(img, 0, 0);
           renderHudNow._sunMask = sc;
-          renderHudNow._sunImg = img;
-          renderHudNow._lastSunVec = { sx, sy, sz };
         }
 
         const cx0 = w * 0.5;
