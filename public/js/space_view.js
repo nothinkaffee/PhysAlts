@@ -171,19 +171,6 @@ function ensureSpaceMilkyWayDust() {
   milkyWayDustImg.src = "./assets/milky_way_dust.jpg";
 }
 
-// Guided 1 Light-Day Space Tour state
-const SPACE_TOUR_ORDER = [
-  "hubble", "apollo_llr", "jwst", "parker_solar_probe",
-  "perseverance", "psyche", "juno", "cassini_huygens",
-  "new_horizons", "voyager2", "voyager1"
-];
-const SPACE_TOUR_DWELL_MS = 5200;
-const spaceTour = {
-  active: false,
-  index: -1,
-  timer: null
-};
-
 // Light Pulse (c) simulation state
 const pulse = {
   active: false,
@@ -200,8 +187,6 @@ const pulse = {
 let hudRoot = null;
 let pulseBtn = null;
 let pulseBtnLabel = null;
-let tourBtn = null;
-let tourBtnLabel = null;
 let pulseReadoutWrap = null;
 let pulseTimeEl = null;
 let pulseStatusEl = null;
@@ -615,9 +600,6 @@ function ensureSpaceHud() {
       <span class="sp-pulse-dot" aria-hidden="true"></span>
       <span id="space-pulse-btn-label">Fire Light Pulse (c)</span>
     </button>
-    <button id="btn-space-tour" type="button" class="glass-btn sp-reset-btn" title="Guided tour from Earth orbit to Voyager 1 at 1 Light-Day">
-      <span id="space-tour-btn-label">▶ Tour</span>
-    </button>
     <div id="space-pulse-readout" aria-live="polite">
       <span id="space-pulse-time">00h 00m 00.00s</span>
       <span id="space-pulse-status">Departing Earth · LEO</span>
@@ -635,8 +617,6 @@ function ensureSpaceHud() {
 
   pulseBtn = hudRoot.querySelector("#btn-space-pulse");
   pulseBtnLabel = hudRoot.querySelector("#space-pulse-btn-label");
-  tourBtn = hudRoot.querySelector("#btn-space-tour");
-  tourBtnLabel = hudRoot.querySelector("#space-tour-btn-label");
   pulseReadoutWrap = hudRoot.querySelector("#space-pulse-readout");
   pulseTimeEl = hudRoot.querySelector("#space-pulse-time");
   pulseStatusEl = hudRoot.querySelector("#space-pulse-status");
@@ -645,7 +625,6 @@ function ensureSpaceHud() {
 
   pulseBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
-    stopSpaceTour();
     if (pulse.active) {
       stopLightPulse();
     } else {
@@ -653,18 +632,8 @@ function ensureSpaceHud() {
     }
   });
 
-  tourBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    if (spaceTour.active) {
-      stopSpaceTour();
-    } else {
-      startSpaceTour();
-    }
-  });
-
   hudRoot.querySelector("#btn-space-zoom-in")?.addEventListener("click", (e) => {
     e.stopPropagation();
-    stopSpaceTour();
     hasInteracted = true;
     targetZoom *= 1.45;
     clampCameraTargets();
@@ -673,7 +642,6 @@ function ensureSpaceHud() {
 
   hudRoot.querySelector("#btn-space-zoom-out")?.addEventListener("click", (e) => {
     e.stopPropagation();
-    stopSpaceTour();
     hasInteracted = true;
     targetZoom /= 1.45;
     clampCameraTargets();
@@ -690,65 +658,6 @@ function ensureSpaceHud() {
   });
 }
 
-function getSpaceTourList() {
-  const all = Array.isArray(store.spaceMissions) ? store.spaceMissions : [];
-  if (!all.length) return [];
-  const byId = new Map(all.map(m => [m.id, m]));
-  const picked = SPACE_TOUR_ORDER.map(id => byId.get(id)).filter(Boolean);
-  return picked.length >= 3 ? picked : all;
-}
-
-function stepSpaceTour() {
-  if (!spaceTour.active || store.state.viewMode !== "space") {
-    stopSpaceTour();
-    return;
-  }
-  const list = getSpaceTourList();
-  if (!list.length) {
-    stopSpaceTour();
-    return;
-  }
-  spaceTour.index++;
-  if (spaceTour.index >= list.length) {
-    stopSpaceTour();
-    return;
-  }
-  const mission = list[spaceTour.index];
-  setSelectedSpaceMission(mission.id);
-  onSelectMissionCb?.(mission.id);
-  syncHudControls();
-}
-
-function startSpaceTour() {
-  const list = getSpaceTourList();
-  if (!list.length) return;
-  if (pulse.active) stopLightPulse();
-  activeZone = "all";
-  const bar = document.getElementById("space-zone-pills");
-  if (bar) {
-    bar.querySelectorAll(".szone-btn").forEach(btn => {
-      const isAll = btn.dataset.szone === "all";
-      btn.classList.toggle("glass-btn-active", isAll);
-      btn.classList.toggle("glass-btn", !isAll);
-    });
-  }
-  spaceTour.active = true;
-  if (spaceTour.index >= list.length - 1) spaceTour.index = -1;
-  if (spaceTour.timer) clearInterval(spaceTour.timer);
-  stepSpaceTour();
-  spaceTour.timer = setInterval(stepSpaceTour, SPACE_TOUR_DWELL_MS);
-  syncHudControls();
-}
-
-function stopSpaceTour() {
-  spaceTour.active = false;
-  if (spaceTour.timer) {
-    clearInterval(spaceTour.timer);
-    spaceTour.timer = null;
-  }
-  syncHudControls();
-}
-
 function syncHudControls() {
   if (!hudRoot) return;
   const zoomedOrFiltered = targetZoom > 1.06 || Math.abs(targetPanY) > 4 || activeZone !== "all";
@@ -762,15 +671,6 @@ function syncHudControls() {
   }
   if (resetBtnEl) {
     resetBtnEl.style.display = zoomedOrFiltered ? "inline-flex" : "none";
-  }
-
-  if (tourBtn && tourBtnLabel) {
-    tourBtn.classList.toggle("glass-btn-active", spaceTour.active);
-    tourBtn.classList.toggle("glass-btn", !spaceTour.active);
-    const total = getSpaceTourList().length;
-    tourBtnLabel.textContent = spaceTour.active
-      ? `❚❚ ${Math.min(spaceTour.index + 1, total)}/${total}`
-      : "▶ Tour";
   }
 
   if (pulseBtn && pulseBtnLabel) {
@@ -2233,8 +2133,6 @@ export function resetSpaceView() {
   targetZoom = 1.0;
   targetCenterU = 0.5;
   targetPanY = 0;
-  spaceTour.index = -1;
-  stopSpaceTour();
   stopLightPulse();
 
   // Keep #space-zone-pills visual state cleanly synced if already rendered
@@ -2263,7 +2161,6 @@ export function stopSpaceLoop() {
     cancelAnimationFrame(rafId);
     rafId = null;
   }
-  stopSpaceTour();
   if (pulse.active) {
     stopLightPulse();
   }

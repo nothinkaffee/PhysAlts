@@ -26,7 +26,7 @@ Discover the entire world of science on one photoreal 3D globe — from ancient 
 - **Deep Research Studio (Free arXiv / alphaXiv / ROR + Optional Gemini):** Run zero-key agentic literature & institution discovery across arXiv, alphaXiv, INSPIRE-HEP, ROR v2, OpenAlex, and Wikipedia — or plug in your own Gemini API key for Grounded Search & Deep Research — and plot newly discovered institutions directly onto the 3D globe.
 - **Cinematic Timeline Tour & 16 Rabbit Hole Trails:** Step through 133 milestones (`1800 BCE–2045`) filtered by STEM discipline with documentary spotlights, chronological arcs, and 16 curated cross-STEM journeys.
 - **15 SHA-256 Verified Offline Packages:** Download modular STEM Discipline Packs, Polar Frontier, Region Packs, and the Base Offline Earth Globe Tile Pack to explore 100% offline.
-- **Interactive 1 Light-Day Space Frontier & Guided Tour:** Inspect 36 verified missions from LEO to interstellar space, run the **Guided Space Tour**, or **Fire a Light Pulse (`c`)** from Earth to Voyager 1 (`24h 00m 00s · 173.1 AU`).
+- **Interactive 1 Light-Day Space Frontier:** Inspect 36 verified missions from LEO to interstellar space and **Fire a Light Pulse (`c`)** from Earth to Voyager 1 (`24h 00m 00s · 173.1 AU`).
 - **Wikipedia Briefs & Official Primary Links:** Every hub card pairs hero photography with an expandable summary, recent arXiv/alphaXiv preprints, and direct links to official sites, OpenAlex, ROR, and Google Earth.
 
 ---

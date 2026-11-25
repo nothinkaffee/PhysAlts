@@ -16,7 +16,7 @@ Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.2.0 / 
 | **ShanghaiRanking 2026 Integration** | Full ARWU & 57 GRAS subject tables, contextual institution badges, and 5-pillar impact breakdowns. |
 | **Cinematic Timeline Tour & Rabbit Hole Trails** | **133 milestones (`1800 BCE–2045`)** with discipline filter tabs, documentary story spotlight, scrubber hover previews, 3 tour paces (`0.5× / 1× / 1.5×`), chronological geodesic arcs, and **16 curated cross-STEM Rabbit Hole journeys**. |
 | **15 SHA-256 Offline Packs** | Modular downloadable discipline, region, Polar Frontier, and base Earth tile packs verified with SHA-256 into IndexedDB & Cache Storage (with automatic CDN fallback on slim mobile builds). |
-| **1 Light-Day Space Frontier & Guided Tour** | Interactive solar-to-interstellar visualizer with **36 verified space missions** from LEO to Voyager 1 (`24h · 173.1 AU`), **Fire Light Pulse (`c`)**, and **Guided Space Tour (`▶ Tour`)**. |
+| **1 Light-Day Space Frontier** | Interactive solar-to-interstellar visualizer with **36 verified space missions** from LEO to Voyager 1 (`24h · 173.1 AU`) and interactive **Fire Light Pulse (`c`)**. |
 | **Cross-Platform Parity (Web · iOS · Android)** | Byte-identical Web PWA + **Capacitor 6** native Android (`APK`/`AAB` with optional CI signing) & iOS (`IPA`) builds (`org.worldofphysics.app`), mobile Globe Display controls, and native swipe-down-to-dismiss sheets. |
 
 ---
