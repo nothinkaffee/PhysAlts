@@ -3121,6 +3121,11 @@ export function initUI() {
     e.currentTarget.classList.toggle("glass-btn-active", store.state.tilted);
     setGlobeTilt(store.state.tilted);
   });
+  document.getElementById("btn-sun")?.addEventListener("click", (e) => {
+    store.state.sunLighting = !store.state.sunLighting;
+    e.currentTarget.classList.toggle("glass-btn-active", store.state.sunLighting);
+    syncGlobeMarkers();
+  });
 
   document.getElementById("btn-zoom-in")?.addEventListener("click", zoomInGlobe);
   document.getElementById("btn-zoom-out")?.addEventListener("click", zoomOutGlobe);

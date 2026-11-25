@@ -755,6 +755,89 @@ function initGlobeHudOverlay() {
     const hasNativeOcclusion = Boolean(transform && typeof transform.isLocationOccluded === "function" && window.maplibregl?.LngLat);
     const hasSurfaceRay = Boolean(transform && typeof transform.isPointOnMapSurface === "function");
 
+    // True 3D spherical solar day/night terminator (toggleable via Sun button)
+    // Strictly alpha = 0 across the entire sunlit hemisphere so Earth stays 100% vivid & crisp (zero grey wash!)
+    if (store.state.sunLighting && zoom < 4.7 && pitch < 32 && hasSurfaceRay) {
+      const sunFade = Math.max(0, Math.min(1, 1 - (zoom - 3.15) / 1.55));
+      if (sunFade > 0.01) {
+        if (!renderHudNow._sunMask) {
+          const S = 180;
+          const sc = document.createElement("canvas");
+          sc.width = S;
+          sc.height = S;
+          const sctx = sc.getContext("2d");
+          const img = sctx.createImageData(S, S);
+          const data = img.data;
+          // Sun direction vector from upper-left orbital angle (~45 deg phase: vivid untouched sunlit hemisphere + crisp curved night limb)
+          const slx = -0.64, sly = 0.28, slz = 0.71;
+          const slen = Math.hypot(slx, sly, slz);
+          const sx = slx / slen, sy = sly / slen, sz = slz / slen;
+          const half = S * 0.5;
+          for (let py = 0; py < S; py++) {
+            const v = (py + 0.5 - half) / half; // +down
+            for (let px = 0; px < S; px++) {
+              const u = (px + 0.5 - half) / half; // +right
+              const r2 = u * u + v * v;
+              if (r2 > 1.0) continue;
+              const nz = Math.sqrt(Math.max(0, 1 - r2));
+              // Exact 3D unit sphere normal N = (u, -v, nz)
+              const ndotl = u * sx - v * sy + nz * sz;
+              // Sunlit day hemisphere (ndotl >= 0.12): strictly untouched (alpha = 0 -> ZERO grey veil!)
+              if (ndotl >= 0.12) continue;
+              // Smooth physically curved twilight transition from ndotl = +0.12 -> -0.16
+              let t = (0.12 - ndotl) / 0.28;
+              if (t > 1) t = 1;
+              const smooth = t * t * (3 - 2 * t);
+              // Subtle warm atmospheric dusk glow right along the razor terminator line
+              const duskBand = Math.exp(-Math.pow((ndotl + 0.01) / 0.055, 2));
+              const idx = (py * S + px) * 4;
+              data[idx] = Math.round(1 + duskBand * 26);
+              data[idx + 1] = Math.round(3 + duskBand * 11);
+              data[idx + 2] = Math.round(10 + duskBand * 6);
+              data[idx + 3] = Math.round(smooth * 228);
+            }
+          }
+          sctx.putImageData(img, 0, 0);
+          renderHudNow._sunMask = sc;
+        }
+
+        const cx0 = w * 0.5;
+        const cy0 = h * 0.5;
+        let onCenter = false;
+        try { onCenter = transform.isPointOnMapSurface({ x: cx0, y: cy0 }); } catch {}
+        if (onCenter) {
+          const probeEdge = (dx, dy, maxDist) => {
+            let lo = 0, hi = maxDist;
+            for (let step = 0; step < 10; step++) {
+              const mid = (lo + hi) * 0.5;
+              let hit = false;
+              try { hit = transform.isPointOnMapSurface({ x: cx0 + dx * mid, y: cy0 + dy * mid }); } catch {}
+              if (hit) lo = mid; else hi = mid;
+            }
+            return lo;
+          };
+          const maxSpan = Math.max(w, h) * 0.65;
+          const rRight = probeEdge(1, 0, maxSpan);
+          const rLeft = probeEdge(-1, 0, maxSpan);
+          const rDown = probeEdge(0, 1, maxSpan);
+          const rUp = probeEdge(0, -1, maxSpan);
+          const gCx = cx0 + (rRight - rLeft) * 0.5;
+          const gCy = cy0 + (rDown - rUp) * 0.5;
+          const gR = Math.min((rRight + rLeft) * 0.5, (rDown + rUp) * 0.5);
+
+          if (gR > 55 && gR < Math.min(w, h) * 0.498) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(gCx, gCy, gR + 0.6, 0, Math.PI * 2);
+            ctx.clip();
+            ctx.globalAlpha = sunFade;
+            ctx.drawImage(renderHudNow._sunMask, gCx - gR - 0.8, gCy - gR - 0.8, (gR + 0.8) * 2, (gR + 0.8) * 2);
+            ctx.restore();
+          }
+        }
+      }
+    }
+
     const center = map.getCenter();
     const rad = Math.PI / 180;
     const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
@@ -1553,15 +1636,15 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
     }
   });
 
-  // Google-Earth-style 3D celestial sphere backdrop (Milky Way galactic band + Great Rift + 1,650 stars)
-  // Rotates in true 3D with live globe lng, lat, bearing, pitch & zoom at 60fps — ZERO overlay over Earth!
+  // Google-Earth-style 3D celestial sphere backdrop (crisp granular Milky Way + Great Rift + 3,800 sharp stars)
+  // Rotates in true 3D with live globe lng, lat, bearing, pitch & zoom at 60fps — ZERO blurry fog!
   (function initDeepSpaceBackdrop() {
     const bg = document.getElementById("space-bg-canvas");
     if (!bg) return;
     const bctx = bg.getContext("2d");
     if (!bctx) return;
 
-    // Deterministic PRNG for realistic astronomical starfield & galactic band
+    // Deterministic PRNG for realistic astronomical starfield & fine Milky Way structure
     let seed = 42197;
     const rand = () => {
       seed = (seed * 1664525 + 1013904223) >>> 0;
@@ -1569,41 +1652,38 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
     };
     const gauss = () => (rand() + rand() + rand() - 1.5) * 0.66;
 
-    // Pre-bake 3 crisp radial sprites (warm galactic dust, cool star-cloud haze, dark Great Rift absorption)
-    // Drawing pre-baked sprites is 20x faster than creating gradients per frame -> buttery 60fps on every drag!
+    // Subtle, tightly-focused radial sprites for fine galactic dust wisps (low opacity — NO blurry white blobs!)
     const makeCloudSprite = (r, g, b, innerAlpha, midAlpha) => {
       const c = document.createElement("canvas");
-      c.width = 128;
-      c.height = 128;
+      c.width = 96;
+      c.height = 96;
       const gctx = c.getContext("2d");
-      const gr = gctx.createRadialGradient(64, 64, 0, 64, 64, 64);
+      const gr = gctx.createRadialGradient(48, 48, 0, 48, 48, 48);
       gr.addColorStop(0, `rgba(${r}, ${g}, ${b}, ${innerAlpha})`);
       gr.addColorStop(0.45, `rgba(${r}, ${g}, ${b}, ${midAlpha})`);
       gr.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
       gctx.fillStyle = gr;
-      gctx.fillRect(0, 0, 128, 128);
+      gctx.fillRect(0, 0, 96, 96);
       return c;
     };
-    const warmCloudSprite = makeCloudSprite(156, 146, 134, 0.22, 0.09);
-    const coolCloudSprite = makeCloudSprite(128, 148, 184, 0.20, 0.08);
-    const coreCloudSprite = makeCloudSprite(194, 178, 156, 0.26, 0.10);
-    const riftSprite = makeCloudSprite(2, 3, 6, 0.44, 0.20);
+    const warmDustSprite = makeCloudSprite(152, 140, 128, 0.085, 0.032);
+    const coolDustSprite = makeCloudSprite(118, 138, 174, 0.075, 0.028);
+    const coreDustSprite = makeCloudSprite(188, 170, 146, 0.11, 0.042);
+    const riftSprite = makeCloudSprite(1, 2, 4, 0.56, 0.24);
 
-    // Galactic plane tilted ~58 deg to Earth's equator (matching authentic sky orientation across globe)
+    // Galactic plane tilted ~58 deg to Earth's equator
     const G_TILT = 58 * Math.PI / 180;
     const cosT = Math.cos(G_TILT);
     const sinT = Math.sin(G_TILT);
-    const G_YAW = 28 * Math.PI / 180;
+    const G_YAW = 26 * Math.PI / 180;
     const cosY = Math.cos(G_YAW);
     const sinY = Math.sin(G_YAW);
 
-    // Convert galactic longitude (glon) & latitude (glat) to 3D celestial unit vector
     const galacticToUnit = (glon, glat) => {
       const cl = Math.cos(glat);
       const gx = cl * Math.cos(glon);
       const gy = Math.sin(glat);
       const gz = cl * Math.sin(glon);
-      // Tilt around Z, then yaw around Y
       const x1 = gx * cosT - gy * sinT;
       const y1 = gx * sinT + gy * cosT;
       const z1 = gz;
@@ -1614,52 +1694,56 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
       ];
     };
 
-    // 1. Milky Way luminous dust clouds & Sagittarius galactic core along the full 360 deg celestial ring
+    // 1. Tight, delicate Milky Way dust wisps (compact radii so it looks structured, never smeared!)
     const clouds = [];
-    for (let i = 0; i < 88; i++) {
-      const glon = (i / 88) * Math.PI * 2 + (rand() - 0.5) * 0.08;
-      // Galactic core sits cleanly visible behind default resting Atlantic/Europe view
-      const coreDist = Math.abs(Math.atan2(Math.sin(glon - 0.45), Math.cos(glon - 0.45)));
-      const coreBoost = Math.exp(-coreDist * coreDist * 1.45);
-      const glat = gauss() * (0.09 + coreBoost * 0.055);
+    for (let i = 0; i < 110; i++) {
+      const glon = (i / 110) * Math.PI * 2 + (rand() - 0.5) * 0.06;
+      const coreDist = Math.abs(Math.atan2(Math.sin(glon - 0.42), Math.cos(glon - 0.42)));
+      const coreBoost = Math.exp(-coreDist * coreDist * 1.6);
+      const glat = gauss() * (0.055 + coreBoost * 0.035);
       const [x, y, z] = galacticToUnit(glon, glat);
-      const sprite = coreBoost > 0.55 && rand() > 0.35
-        ? coreCloudSprite
-        : (rand() > 0.45 ? warmCloudSprite : coolCloudSprite);
+      const sprite = coreBoost > 0.52 && rand() > 0.35
+        ? coreDustSprite
+        : (rand() > 0.46 ? warmDustSprite : coolDustSprite);
       clouds.push({
         x, y, z,
-        size: 0.14 + rand() * 0.16 + coreBoost * 0.08,
-        alpha: 0.34 + rand() * 0.36 + coreBoost * 0.32,
+        size: 0.055 + rand() * 0.065 + coreBoost * 0.03,
+        alpha: 0.40 + rand() * 0.35 + coreBoost * 0.25,
         sprite
       });
     }
 
-    // 2. Dark Great Rift dust lanes bisecting the bright galactic plane for photorealistic structure
+    // 2. Crisp dark Great Rift dust absorption lanes carving fine photographic structure down the Milky Way
     const rifts = [];
-    for (let i = 0; i < 34; i++) {
-      const glon = (i / 34) * Math.PI * 2 + (rand() - 0.5) * 0.06;
-      const glat = gauss() * 0.028;
+    for (let i = 0; i < 48; i++) {
+      const glon = (i / 48) * Math.PI * 2 + (rand() - 0.5) * 0.05;
+      const glat = gauss() * 0.022;
       const [x, y, z] = galacticToUnit(glon, glat);
       rifts.push({
         x, y, z,
-        size: 0.075 + rand() * 0.075,
-        alpha: 0.45 + rand() * 0.35,
+        size: 0.038 + rand() * 0.042,
+        alpha: 0.52 + rand() * 0.32,
         sprite: riftSprite
       });
     }
 
-    // 3. 1,650 crisp pinpoint multi-magnitude stars on the true 3D celestial sphere
+    // 3. 3,800 razor-sharp pinpoint stars:
+    //    - 2,350 dense fine Milky Way star-dust grains (making the galaxy shimmer with crisp pinpoint granularity!)
+    //    - 1,450 isotropic background constellations across the whole celestial sphere
     const stars = [];
-    const totalStars = 1650;
+    const totalStars = 3800;
     for (let i = 0; i < totalStars; i++) {
       let x, y, z;
-      if (i < totalStars * 0.54) {
-        // Dense natural star clustering along the Milky Way plane
+      const isBandDust = i < 2350;
+      if (isBandDust) {
         const glon = rand() * Math.PI * 2;
-        const glat = gauss() * 0.19;
+        const coreDist = Math.abs(Math.atan2(Math.sin(glon - 0.42), Math.cos(glon - 0.42)));
+        const coreBoost = Math.exp(-coreDist * coreDist * 1.6);
+        // Tight band + subtle rift avoidance for natural Milky Way granularity
+        let glat = gauss() * (0.095 + coreBoost * 0.045);
+        if (Math.abs(glat) < 0.016 && rand() < 0.45) glat += (glat >= 0 ? 0.022 : -0.022);
         [x, y, z] = galacticToUnit(glon, glat);
       } else {
-        // Uniform isotropic background constellations over the whole celestial sphere
         const u = rand() * 2 - 1;
         const phi = rand() * Math.PI * 2;
         const s = Math.sqrt(Math.max(0, 1 - u * u));
@@ -1668,13 +1752,13 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
         z = s * Math.sin(phi);
       }
       const mag = rand();
-      const bright = mag > 0.980;
-      const med = !bright && mag > 0.86;
-      const r = bright ? (1.2 + rand() * 0.7) : med ? (0.72 + rand() * 0.42) : (0.38 + rand() * 0.34);
-      const a = bright ? (0.78 + rand() * 0.22) : med ? (0.42 + rand() * 0.32) : (0.16 + rand() * 0.24);
+      const bright = !isBandDust ? (mag > 0.968) : (mag > 0.992);
+      const med = !bright && (!isBandDust ? mag > 0.80 : mag > 0.88);
+      const r = bright ? (1.15 + rand() * 0.55) : med ? (0.78 + rand() * 0.34) : (0.55 + rand() * 0.30);
+      const a = bright ? (0.82 + rand() * 0.18) : med ? (0.44 + rand() * 0.32) : (0.14 + rand() * 0.24);
       const temp = rand();
-      const rgb = temp > 0.74 ? "212, 228, 255" : temp > 0.28 ? "246, 247, 250" : "252, 232, 206";
-      stars.push({ x, y, z, r, a, rgb, bright });
+      const rgb = temp > 0.72 ? "208, 226, 255" : temp > 0.26 ? "246, 248, 252" : "252, 230, 202";
+      stars.push({ x, y, z, r, a, rgb, bright, pinpoint: !bright && !med });
     }
 
     let w = 0, h = 0;
@@ -1704,11 +1788,11 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
           dirty = false;
           lastKey = key;
 
-          // Deep-space pure cosmic black base (crisp, zero grey fog)
-          bctx.fillStyle = "#020306";
+          // Deep-space pure crisp cosmic black
+          bctx.fillStyle = "#010204";
           bctx.fillRect(0, 0, w, h);
 
-          // Live 3D camera rotation angles coupled directly to the globe's orientation (1:1 responsive like Google Earth!)
+          // Live 3D celestial sphere rotation coupled directly to globe lng, lat, bearing & pitch
           const yaw = -c.lng * Math.PI / 180;
           const latRad = (c.lat * 0.92 + pitch * 0.72) * Math.PI / 180;
           const roll = -bearing * Math.PI / 180;
@@ -1717,22 +1801,19 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
           const cx = Math.cos(latRad), sx = Math.sin(latRad);
           const cr = Math.cos(roll), sr = Math.sin(roll);
 
-          // Pre-compute combined 3x3 rotation matrix R = Rz(roll) * Rx(latRad) * Ry(yaw)
-          // Step 1: M = Rx * Ry
           const m00 = cy,       m01 = 0,  m02 = sy;
           const m10 = sx * sy,  m11 = cx, m12 = -sx * cy;
           const m20 = -cx * sy, m21 = sx, m22 = cx * cy;
-          // Step 2: R = Rz * M
+
           const r00 = cr * m00 - sr * m10, r01 = cr * m01 - sr * m11, r02 = cr * m02 - sr * m12;
           const r10 = sr * m00 + cr * m10, r11 = sr * m01 + cr * m11, r12 = sr * m02 + cr * m12;
           const r20 = m20,                 r21 = m21,                 r22 = m22;
 
-          // Subtle FOV zoom responsiveness (cosmos gently widens/tightens as you zoom in/out)
           const fov = Math.max(w, h) * (0.76 + Math.min(z, 6) * 0.035);
           const halfW = w * 0.5;
           const halfH = h * 0.5;
 
-          // Pass 1: Milky Way luminous galactic dust band (additive soft glow)
+          // Pass 1: Delicate, tight Milky Way galactic dust sheen (never smeared!)
           bctx.save();
           bctx.globalCompositeOperation = "screen";
           for (let i = 0; i < clouds.length; i++) {
@@ -1751,12 +1832,12 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
           }
           bctx.restore();
 
-          // Pass 2: Great Rift dark absorption lanes inside the Milky Way
+          // Pass 2: Sharp dark Great Rift dust absorption lanes
           bctx.save();
           for (let i = 0; i < rifts.length; i++) {
             const rf = rifts[i];
             const cz = r20 * rf.x + r21 * rf.y + r22 * rf.z;
-            if (cz < 0.18) continue;
+            if (cz < 0.16) continue;
             const cxp = r00 * rf.x + r01 * rf.y + r02 * rf.z;
             const cyp = r10 * rf.x + r11 * rf.y + r12 * rf.z;
             const inv = fov / cz;
@@ -1764,12 +1845,12 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
             const syp = halfH - cyp * inv;
             const rad = rf.size * inv;
             if (sxp + rad < 0 || sxp - rad > w || syp + rad < 0 || syp - rad > h) continue;
-            bctx.globalAlpha = rf.alpha * Math.min(1, (cz - 0.18) * 2.5);
+            bctx.globalAlpha = rf.alpha * Math.min(1, (cz - 0.16) * 2.5);
             bctx.drawImage(rf.sprite, sxp - rad, syp - rad, rad * 2, rad * 2);
           }
           bctx.restore();
 
-          // Pass 3: Crisp multi-magnitude pinpoint stars across the celestial sphere
+          // Pass 3: 3,800 razor-sharp pinpoint stars & granular Milky Way starlight
           for (let i = 0; i < stars.length; i++) {
             const st = stars[i];
             const cz = r20 * st.x + r21 * st.y + r22 * st.z;
@@ -1779,18 +1860,24 @@ export async function initGlobe({ onSelectNode, onSelectStack, onBackgroundClick
             const inv = fov / cz;
             const sxp = halfW + cxp * inv;
             const syp = halfH - cyp * inv;
-            if (sxp < -6 || sxp > w + 6 || syp < -6 || syp > h + 6) continue;
+            if (sxp < -4 || sxp > w + 4 || syp < -4 || syp > h + 4) continue;
             const edgeFade = Math.min(1, (cz - 0.12) * 3.5);
-            if (st.bright) {
-              bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * 0.24 * edgeFade).toFixed(3)})`;
+            if (st.pinpoint) {
+              // Razor-sharp 1px pinpoint star-dust grain (zero anti-alias blur!)
+              bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * edgeFade).toFixed(3)})`;
+              bctx.fillRect(sxp, syp, st.r, st.r);
+            } else {
+              if (st.bright) {
+                bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * 0.22 * edgeFade).toFixed(3)})`;
+                bctx.beginPath();
+                bctx.arc(sxp, syp, st.r * 2.2, 0, Math.PI * 2);
+                bctx.fill();
+              }
+              bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * edgeFade).toFixed(3)})`;
               bctx.beginPath();
-              bctx.arc(sxp, syp, st.r * 2.8, 0, Math.PI * 2);
+              bctx.arc(sxp, syp, st.r, 0, Math.PI * 2);
               bctx.fill();
             }
-            bctx.fillStyle = `rgba(${st.rgb}, ${(st.a * edgeFade).toFixed(3)})`;
-            bctx.beginPath();
-            bctx.arc(sxp, syp, st.r, 0, Math.PI * 2);
-            bctx.fill();
           }
         }
       }

@@ -59,6 +59,7 @@ export const store = {
     arcs: true,
     labels: false,
     tilted: false,
+    sunLighting: true,
     shortlist: new Set(),
     bookmarks: [],
     folders: ["Shortlist", "Study List", "Apply & Jobs", "Research"],
