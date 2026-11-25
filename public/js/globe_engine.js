@@ -749,17 +749,66 @@ function initGlobeHudOverlay() {
     ctx.clearRect(0, 0, w, h);
 
     const zoom = map.getZoom();
+    const pitch = typeof map.getPitch === "function" ? map.getPitch() : 0;
+    const is3D = pitch > 10;
+    const transform = map.transform;
+    const hasNativeOcclusion = Boolean(transform && typeof transform.isLocationOccluded === "function" && window.maplibregl?.LngLat);
+    const hasSurfaceRay = Boolean(transform && typeof transform.isPointOnMapSurface === "function");
+
     const center = map.getCenter();
     const rad = Math.PI / 180;
     const cx = Math.cos(center.lat * rad) * Math.cos(center.lng * rad);
     const cy = Math.cos(center.lat * rad) * Math.sin(center.lng * rad);
     const cz = Math.sin(center.lat * rad);
     const minDot = zoom >= 7 ? 0.86 : zoom >= 4.5 ? 0.45 : 0.14;
-    const isVisibleOnGlobe = (lng, lat) => {
-      const x = Math.cos(lat * rad) * Math.cos(lng * rad);
-      const y = Math.cos(lat * rad) * Math.sin(lng * rad);
-      const z = Math.sin(lat * rad);
-      return (x * cx + y * cy + z * cz) > minDot;
+
+    // Exact 3D-camera-aware visibility & projection helper:
+    // - Uses MapLibre's exact tilted-globe horizon clipping plane (isLocationOccluded)
+    // - Uses MapLibre's 3D ray-vs-planet surface test (isPointOnMapSurface) so ZERO nodes/labels float in black space
+    // - Guards against behind-camera inverted clip-space projections (w <= 0) on steep 3D tilt
+    const projectVisible3D = (lng, lat, { horizonMarginPx = 0, allowEdge = false } = {}) => {
+      if (hasNativeOcclusion) {
+        try {
+          if (transform.isLocationOccluded(new window.maplibregl.LngLat(lng, lat))) return null;
+        } catch {}
+      }
+      // At whole-globe flat zoom (pitch <= 10°, z < 3.5), keep a gentle limb margin so bubbles stay inside Earth's rim
+      if (!is3D && (!hasNativeOcclusion || (zoom < 3.5 && !allowEdge))) {
+        const x = Math.cos(lat * rad) * Math.cos(lng * rad);
+        const y = Math.cos(lat * rad) * Math.sin(lng * rad);
+        const z = Math.sin(lat * rad);
+        if (x * cx + y * cy + z * cz <= minDot) return null;
+      }
+
+      const pt = map.project([lng, lat]);
+      if (!pt || !Number.isFinite(pt.x) || !Number.isFinite(pt.y)) return null;
+      const pad = allowEdge ? 140 : 36;
+      if (pt.x < -pad || pt.x > w + pad || pt.y < -pad || pt.y > h + pad) return null;
+
+      if (hasSurfaceRay && (is3D || !allowEdge)) {
+        try {
+          if (!transform.isPointOnMapSurface(pt)) return null;
+          // Keep bubbles seated cleanly inside Earth's curved horizon limb in 3D mode (never half-floating in space)
+          if (is3D && horizonMarginPx > 0 && !transform.isPointOnMapSurface({ x: pt.x, y: pt.y - horizonMarginPx })) {
+            return null;
+          }
+        } catch {}
+      }
+
+      // Guard against steep-pitch behind-camera wrap near upper screen edge
+      if (is3D && pt.y < h * 0.34 && typeof map.unproject === "function") {
+        try {
+          const back = map.unproject([pt.x, pt.y]);
+          if (back && Number.isFinite(back.lat) && Number.isFinite(back.lng)) {
+            const dLat = Math.abs(back.lat - lat);
+            const rawDLng = Math.abs(back.lng - lng) % 360;
+            const dLng = Math.min(rawDLng, 360 - rawDLng);
+            if (dLat > 4 || dLng > 6) return null;
+          }
+        } catch {}
+      }
+
+      return pt;
     };
 
     const hits = [];
@@ -787,8 +836,8 @@ function initGlobeHudOverlay() {
       ctx.textBaseline = "middle";
       for (const reg of WORLD_REGION_LABELS) {
         if (zoom < reg.minZ) continue;
-        if (!isVisibleOnGlobe(reg.lng, reg.lat)) continue;
-        const pt = map.project([reg.lng, reg.lat]);
+        const pt = projectVisible3D(reg.lng, reg.lat, { horizonMarginPx: 18 });
+        if (!pt) continue;
         if (pt.x < safeLeft + 40 || pt.x > safeRight - 40 || pt.y < safeTop + 12 || pt.y > safeBottom - 12) continue;
         const tw = ctx.measureText(reg.name).width;
         const rect = [pt.x - tw / 2 - 4, pt.y - 8, tw + 8, 16];
@@ -818,9 +867,8 @@ function initGlobeHudOverlay() {
           ctx.beginPath();
           let started = false;
           for (const [lng, lat] of coords) {
-            if (!isVisibleOnGlobe(lng, lat)) { started = false; continue; }
-            const pt = map.project([lng, lat]);
-            if (pt.x < -160 || pt.x > w + 160 || pt.y < -160 || pt.y > h + 160) { started = false; continue; }
+            const pt = projectVisible3D(lng, lat, { allowEdge: true });
+            if (!pt) { started = false; continue; }
             if (!started) { ctx.moveTo(pt.x, pt.y); started = true; }
             else ctx.lineTo(pt.x, pt.y);
           }
@@ -835,17 +883,31 @@ function initGlobeHudOverlay() {
         ctx.restore();
       }
 
-      // Pass 1: project nodes & clusters.
-      // Below z=9.5, merge any bubbles that collide due to globe limb foreshortening.
-      // At z>=9.5, NEVER re-merge into clusters — instead spiderfy co-located nodes into a clean ring!
-      const anchored = getAnchoredClusters(zoom);
-      const bubbleR = (count) => (count >= 150 ? 25 : count >= 60 ? 22 : count >= 15 ? 19 : 16);
+      // Pass 1: project nodes & clusters with true 3D horizon culling + perspective depth scaling.
+      // When pitched in 3D mode (pitch > 10°), slightly coarsen base cluster zoom below z=9.5 so
+      // perspective-foreshortened distant regions merge cleanly instead of swarming the horizon.
+      const clusterZoom = (is3D && zoom < 9.5)
+        ? Math.max(0.8, zoom - (Math.min(pitch, 60) / 55) * 0.95)
+        : zoom;
+      const anchored = getAnchoredClusters(clusterZoom);
+      const baseBubbleR = (count) => (count >= 150 ? 25 : count >= 60 ? 22 : count >= 15 ? 19 : 16);
+      const depthForY = (py) => {
+        if (!is3D) return 1;
+        return Math.max(0, Math.min(1, (py - h * 0.14) / (h * 0.56)));
+      };
+      const bubbleRFor = (count, py) => {
+        const base = baseBubbleR(count);
+        if (!is3D) return base;
+        const d = depthForY(py);
+        return Math.round(base * (0.68 + 0.32 * d));
+      };
+
       const projected = [];
       for (const item of anchored) {
-        if (!isVisibleOnGlobe(item.lng, item.lat)) continue;
-        const pt = map.project([item.lng, item.lat]);
-        if (pt.x < -36 || pt.x > w + 36 || pt.y < -36 || pt.y > h + 36) continue;
         const selected = !item.isCluster && store.state.selectedId === item.node.id;
+        const horizonMargin = selected ? 4 : (is3D ? (item.isCluster ? 24 : 14) : 0);
+        const pt = projectVisible3D(item.lng, item.lat, { horizonMarginPx: horizonMargin });
+        if (!pt) continue;
         const stableKey = item.isCluster ? (item.top?.id || `${item.lat}:${item.lng}`) : item.node.id;
         projected.push({
           isCluster: item.isCluster,
@@ -858,7 +920,8 @@ function initGlobeHudOverlay() {
           count: item.count,
           span: item.spanDeg || 0,
           selected,
-          stableKey
+          stableKey,
+          depthT: depthForY(pt.y)
         });
       }
       projected.sort((a, b) => (b.selected - a.selected) || (b.count - a.count) || (a.stableKey < b.stableKey ? -1 : 1));
@@ -925,20 +988,24 @@ function initGlobeHudOverlay() {
               count: members.length,
               span: 0,
               selected: g.items.some(it => it.selected),
+              depthT: depthForY(g.y),
               stableKey: `stack:${top?.id || Math.round(avgLat * 1000)}`
             });
           }
         }
       } else {
         for (const p of projected) {
-          const pr = p.isCluster ? bubbleR(p.count) : 9;
+          const pr = p.isCluster ? bubbleRFor(p.count, p.y) : 9;
           let host = null;
           if (!p.selected) {
+            // In 3D tilted mode, enforce generous perspective breathing room near the foreshortened horizon
+            const extraGap = is3D ? (12 + (1 - p.depthT) * 28) : 5;
             for (const k of kept) {
               if (k.selected) continue;
-              const kr = k.isCluster ? bubbleR(k.count) : 9;
+              const kr = k.isCluster ? bubbleRFor(k.count, k.y) : 9;
               const dx = k.x - p.x, dy = k.y - p.y;
-              if (dx * dx + dy * dy < (kr + pr + 4) * (kr + pr + 4)) { host = k; break; }
+              const minDist = kr + pr + extraGap;
+              if (dx * dx + dy * dy < minDist * minDist) { host = k; break; }
             }
           }
           if (host) {
@@ -961,14 +1028,19 @@ function initGlobeHudOverlay() {
       // Pass 2: draw markers & collect deterministic label candidates
       for (const item of kept) {
         const x = item.x, y = item.y;
+        const depthT = item.depthT ?? 1;
+        const depthAlpha = (is3D && !item.selected) ? (0.48 + 0.52 * depthT) : 1;
 
         if (item.isCluster) {
           const count = item.count;
-          const radius = bubbleR(count);
+          const radius = bubbleRFor(count, y);
           if (underUi(x, y, radius)) continue;
           const cKey = `c:${item.top?.id || ""}:${Math.round(item.lat * 100)}:${Math.round(item.lng * 100)}`;
           const isHov = hoveredKey === cKey;
           const isStack = Boolean(item.isStack);
+
+          ctx.save();
+          ctx.globalAlpha = isHov ? 1 : depthAlpha;
 
           ctx.beginPath();
           ctx.arc(x, y, radius + (isHov ? 8 : 5), 0, Math.PI * 2);
@@ -988,10 +1060,12 @@ function initGlobeHudOverlay() {
           ctx.stroke();
 
           ctx.fillStyle = "#f4f4f5";
-          ctx.font = `600 13px ${FONT_STACK}`;
+          const fontPx = Math.max(10, Math.round(13 * (is3D ? (0.78 + 0.22 * depthT) : 1)));
+          ctx.font = `600 ${fontPx}px ${FONT_STACK}`;
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
           ctx.fillText(fmtCount(count), x, y + 0.5);
+          ctx.restore();
 
           placedRects.push([x - radius - 2, y - radius - 2, (radius + 2) * 2, (radius + 2) * 2]);
           if (isStack) {
@@ -1027,8 +1101,12 @@ function initGlobeHudOverlay() {
           const selected = store.state.selectedId === n.id;
           const isHov = hoveredKey === `n:${n.id}`;
           const curated = n.tier === "flagship" || n.tier === "timeline";
-          const radius = selected ? 7.5 : curated ? 5.8 : 4.5;
+          const scale3D = (is3D && !selected) ? (0.78 + 0.22 * depthT) : 1;
+          const radius = (selected ? 7.5 : curated ? 5.8 : 4.5) * scale3D;
           if (!selected && underUi(x, y, radius + 4)) continue;
+
+          ctx.save();
+          ctx.globalAlpha = selected || isHov ? 1 : depthAlpha;
 
           if (item.spiderfied) {
             ctx.beginPath();
@@ -1040,7 +1118,7 @@ function initGlobeHudOverlay() {
           }
 
           ctx.beginPath();
-          ctx.arc(x, y, selected ? 15 : isHov ? 14 : curated ? 11 : 8, 0, Math.PI * 2);
+          ctx.arc(x, y, (selected ? 15 : isHov ? 14 : curated ? 11 : 8) * scale3D, 0, Math.PI * 2);
           ctx.fillStyle = selected ? "rgba(160, 70, 70, 0.48)" : isHov ? "rgba(255, 255, 255, 0.30)" : "rgba(212, 212, 216, 0.22)";
           ctx.fill();
 
@@ -1051,6 +1129,7 @@ function initGlobeHudOverlay() {
           ctx.lineWidth = selected ? 2.5 : isHov ? 2 : 1.5;
           ctx.strokeStyle = selected ? "rgb(160, 70, 70)" : "rgba(255, 255, 255, 0.90)";
           ctx.stroke();
+          ctx.restore();
 
           placedRects.push([x - radius - 1, y - radius - 1, (radius + 1) * 2, (radius + 1) * 2]);
           hits.push({ type: "node", key: `n:${n.id}`, id: n.id, name: n.name, x, y, r: Math.max(radius + 16, 22) });
@@ -1659,6 +1738,12 @@ export function flyToHub(node, zoomOverride = null) {
 
 export function resetGlobeToSpace(center = RESTING_GLOBE_CENTER, zoom = null) {
   if (!map) return;
+  store.state.tilted = false;
+  const tiltBtn = typeof document !== "undefined" ? document.getElementById("btn-tilt") : null;
+  if (tiltBtn) {
+    tiltBtn.classList.remove("glass-btn-active");
+    tiltBtn.classList.add("glass-btn");
+  }
   const targetCenter = Array.isArray(center) && center.length === 2 ? center : RESTING_GLOBE_CENTER;
   const targetZoom = Number.isFinite(zoom)
     ? zoom
@@ -1683,7 +1768,9 @@ export function setGlobeLabels(visible) {
 
 export function setGlobeTilt(tilted) {
   if (!map) return;
-  map.easeTo({ pitch: tilted ? 54 : 0, duration: 650, easing: t => 1 - Math.pow(1 - t, 3) });
+  const z = map.getZoom();
+  const targetPitch = tilted ? (z < 2.8 ? 36 : 48) : 0;
+  map.easeTo({ pitch: targetPitch, duration: 650, easing: t => 1 - Math.pow(1 - t, 3) });
 }
 
 export function zoomInGlobe() {
