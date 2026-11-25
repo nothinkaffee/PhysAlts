@@ -779,14 +779,12 @@ function syncCardSummaryExpand() {
 function setRabbitTrailExpanded(expanded) {
   const bar = document.getElementById("rabbit-trail-bar");
   const meta = document.getElementById("trail-bar-meta");
-  const btn = document.getElementById("btn-trail-expand");
   const stopsEl = document.getElementById("trail-bar-stops");
   if (!bar) return;
   bar.classList.toggle("is-expanded", expanded);
-  if (meta) meta.setAttribute("aria-expanded", expanded ? "true" : "false");
-  if (btn) {
-    btn.setAttribute("aria-expanded", expanded ? "true" : "false");
-    btn.title = expanded ? "Collapse trail story" : "Expand full story";
+  if (meta) {
+    meta.setAttribute("aria-expanded", expanded ? "true" : "false");
+    meta.title = expanded ? "Hide stops" : "Show all stops";
   }
   if (stopsEl) {
     const hasStops = stopsEl.childElementCount > 0;
@@ -805,7 +803,7 @@ function renderRabbitTrailBar() {
   const trail = store.state.activeTrail;
   if (!bar) return;
 
-  const stepEl = document.getElementById("trail-bar-step");
+  const stepTextEl = document.getElementById("trail-bar-step-text") || document.getElementById("trail-bar-step");
   const titleEl = document.getElementById("trail-bar-title");
   const bridgeEl = document.getElementById("trail-bar-bridge");
   const stopsEl = document.getElementById("trail-bar-stops");
@@ -815,8 +813,8 @@ function renderRabbitTrailBar() {
   if (store.state.viewMode === "earth" && !store.state.timeMode && trail && Array.isArray(trail.stops) && trail.stops.length) {
     const idx = Math.max(0, Math.min(trail.stops.length - 1, trail.index || 0));
     const stop = trail.stops[idx];
-    if (stepEl) stepEl.textContent = `${idx + 1} / ${trail.stops.length}`;
-    if (titleEl) titleEl.textContent = `${trail.title} · ${stop.title || ""}`;
+    if (stepTextEl) stepTextEl.textContent = `${idx + 1} / ${trail.stops.length}`;
+    if (titleEl) titleEl.textContent = trail.title || stop.title || "";
     if (bridgeEl) bridgeEl.textContent = stop.bridge || trail.tagline || "";
     if (prevBtn) prevBtn.disabled = idx === 0;
     if (nextBtn) nextBtn.textContent = idx >= trail.stops.length - 1 ? "Finish" : "Next →";
@@ -833,6 +831,7 @@ function renderRabbitTrailBar() {
           if (!Number.isFinite(targetIdx) || !store.state.activeTrail) return;
           store.state.activeTrail.index = targetIdx;
           const targetStop = store.state.activeTrail.stops[targetIdx];
+          setRabbitTrailExpanded(false);
           renderRabbitTrailBar();
           if (targetStop?.hubId) selectHubNode(targetStop.hubId, true);
         });
@@ -845,10 +844,10 @@ function renderRabbitTrailBar() {
     return;
   }
 
-  // Free-roam curiosity walk bar (appears only after 2+ hops, expandable to full narrative)
+  // Free-roam curiosity walk bar (appears only after 2+ hops)
   const free = getFreeRoamState();
   if (store.state.viewMode === "earth" && !store.state.timeMode && free.history.length >= 2 && free.current) {
-    if (stepEl) stepEl.textContent = `Hop ${free.cursor + 1}`;
+    if (stepTextEl) stepTextEl.textContent = `Hop ${free.cursor + 1}`;
     if (titleEl) titleEl.textContent = free.current.title || "";
     if (bridgeEl) bridgeEl.textContent = free.current.reason || free.current.city || "";
     if (prevBtn) prevBtn.disabled = !free.canGoBack;

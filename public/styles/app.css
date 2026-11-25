@@ -1113,61 +1113,53 @@ select optgroup,
   display: none;
 }
 
-/* Rabbit Hole Trail Breadcrumb Bar (true viewport-centered above dock on desktop, expandable on click) */
+/* Clean Floating Rabbit Hole Trail Card (viewport-centered above dock on desktop) */
 #rabbit-trail-bar {
   position: fixed;
   bottom: 82px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 37;
-  width: min(620px, calc(100vw - 32px));
-  border-radius: 999px;
-  padding: 8px 10px 8px 16px;
+  width: min(580px, calc(100vw - 32px));
+  border-radius: 20px;
+  padding: 11px 14px 12px;
   display: flex;
   flex-direction: column;
-  gap: 0;
-  transition: border-radius 180ms ease, padding 180ms ease;
+  gap: 7px;
 }
 #rabbit-trail-bar.hidden {
   display: none !important;
 }
-.trail-bar-main {
+.trail-bar-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
   min-width: 0;
 }
 .trail-bar-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   flex: 1 1 auto;
   min-width: 0;
   cursor: pointer;
 }
+.trail-bar-meta:hover #trail-bar-title {
+  color: #ffffff;
+}
+.trail-bar-bridge {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.48;
+  color: #ededed;
+  white-space: normal;
+  word-wrap: break-word;
+}
 .trail-expand-icon {
   transition: transform 180ms ease;
-}
-#rabbit-trail-bar.is-expanded {
-  border-radius: 22px !important;
-  padding: 13px 14px 13px 16px !important;
-  gap: 10px;
-}
-#rabbit-trail-bar.is-expanded .trail-bar-main {
-  align-items: flex-start;
-}
-#rabbit-trail-bar.is-expanded #trail-bar-title {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  line-height: 1.35;
-}
-#rabbit-trail-bar.is-expanded #trail-bar-bridge {
-  white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  line-height: 1.5;
-  color: #e5e5e5;
-  margin-top: 6px;
+  opacity: 0.78;
 }
 #rabbit-trail-bar.is-expanded .trail-expand-icon {
   transform: rotate(180deg);
@@ -1176,8 +1168,9 @@ select optgroup,
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  padding-top: 10px;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 9px;
+  margin-top: 2px;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
 }
 .trail-bar-stops.hidden {
   display: none !important;
@@ -1190,7 +1183,7 @@ select optgroup,
   border-radius: 999px;
   padding: 3px 10px;
   cursor: pointer;
-  max-width: 220px;
+  max-width: 230px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1210,6 +1203,7 @@ select optgroup,
 .trail-step-pill {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   padding: 2px 8px;
   border-radius: 999px;
   background: var(--accent-link-soft);
@@ -1703,34 +1697,17 @@ body.space-mode #zoom-controls .zoom-divider {
     top: var(--island-bottom) !important;
     bottom: auto !important;
     border-radius: 18px !important;
-    padding: 7px 9px 7px 12px !important;
-    gap: 8px !important;
+    padding: 10px 12px !important;
+    gap: 6px !important;
   }
   #rabbit-trail-bar.is-expanded {
     z-index: 46 !important;
     max-height: calc(100vh - var(--island-bottom) - 104px);
     overflow-y: auto;
-    padding: 13px 14px !important;
   }
-  #rabbit-trail-bar.is-expanded .trail-bar-main {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 10px;
-  }
-  #rabbit-trail-bar.is-expanded .trail-bar-main > .flex {
-    justify-content: flex-end;
-  }
-  #rabbit-trail-bar.is-expanded #trail-bar-title {
-    font-size: 14px;
-  }
-  #rabbit-trail-bar.is-expanded #trail-bar-bridge {
-    font-size: 13px;
-  }
-  #rabbit-trail-bar .trail-expand-icon {
-    transform: rotate(180deg);
-  }
-  #rabbit-trail-bar.is-expanded .trail-expand-icon {
-    transform: rotate(0deg);
+  #rabbit-trail-bar .trail-bar-bridge {
+    font-size: 12.5px;
+    line-height: 1.42;
   }
   body.trail-open #active-filter-pill {
     display: none !important;
