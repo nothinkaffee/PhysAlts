@@ -1410,8 +1410,9 @@ export function selectHubNode(id, fly = true, opts = {}) {
     linksEl.innerHTML = links.join("");
     linksEl.querySelector("#btn-card-deep-research")?.addEventListener("click", () => {
       openModal("research", {
-        query: `${node.name} active projects, collaborators & recent arXiv papers`,
-        hubContext: node
+        query: node.name,
+        hubContext: node,
+        autoRun: true
       });
     });
     linksEl.querySelector("#btn-card-compare")?.addEventListener("click", (ev) => {
@@ -1608,10 +1609,7 @@ async function runAgentRabbitHole(rawQuery) {
         <div class="section-label px-1">Matching Curated Journeys</div>
         ${matchedTrails.map(tr => `
           <button type="button" data-agent-curated-trail="${esc(tr.id)}" class="glass-row w-full text-left rounded-2xl px-4 py-3 flex items-center justify-between gap-3">
-            <div class="min-w-0">
-              <div class="text-[14px] font-semibold text-white truncate">${esc(tr.title)}</div>
-              <div class="text-[12.5px] text-neutral-400 truncate mt-0.5">${esc(tr.tagline)} · ${(tr.stops || []).length} stops</div>
-            </div>
+            <div class="text-[14px] font-semibold text-white leading-snug min-w-0">${esc(tr.title)}</div>
             <span class="accent-text text-[13px] shrink-0">Start Trail →</span>
           </button>
         `).join("")}
@@ -1741,10 +1739,7 @@ function renderSearchDropdown(query) {
     parts.push(`<div class="section-label px-2 pt-2 pb-1">Curated STEM Rabbit Hole Journeys</div>`);
     parts.push(trails.map(t => `
       <button type="button" data-pick-trail="${esc(t.id)}" class="spot-row pick-trail w-full text-left px-4 py-3 rounded-2xl border border-transparent hover:bg-white/10 transition flex items-center justify-between gap-3 cursor-pointer">
-        <div class="min-w-0">
-          <div class="text-[14.5px] font-medium text-white truncate">${esc(t.title)}</div>
-          <div class="text-[13px] text-neutral-400 truncate mt-0.5">${esc(t.tagline)} · ${(t.stops || []).length} stops</div>
-        </div>
+        <div class="text-[14.5px] font-medium text-white leading-snug min-w-0">${esc(t.title)}</div>
         <span class="text-[13px] accent-text font-medium shrink-0">Start Trail →</span>
       </button>
     `).join(""));
@@ -2299,12 +2294,9 @@ function renderDomainsModal(bodyEl, focusDomainId = null, focusDiscipline = null
       <div class="section-label">Curated Cross-STEM Journeys (${store.rabbitTrails.length})</div>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
         ${store.rabbitTrails.map(tr => `
-          <button type="button" data-dom-trail="${esc(tr.id)}" class="glass-row text-left rounded-2xl p-3.5 space-y-1 transition">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-[14px] font-semibold text-white truncate">${esc(tr.title)}</span>
-              <span class="text-[12px] accent-text shrink-0">${(tr.stops || []).length} stops →</span>
-            </div>
-            <div class="text-[12.5px] text-neutral-400 line-clamp-2">${esc(tr.tagline)}</div>
+          <button type="button" data-dom-trail="${esc(tr.id)}" class="glass-row text-left rounded-2xl px-3.5 py-3 flex items-center justify-between gap-2.5 transition">
+            <span class="text-[13.5px] font-semibold text-white leading-snug min-w-0">${esc(tr.title)}</span>
+            <span class="text-[12px] accent-text shrink-0">${(tr.stops || []).length} stops →</span>
           </button>
         `).join("")}
       </div>

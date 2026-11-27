@@ -375,54 +375,24 @@ export function renderDeepResearchModal(container, initialPayload = null, callba
 
     const parts = [];
 
-    // 1. Discovered Institutions Ready to Plot on the 3D Globe
-    const hubs = res.discoveredHubs || [];
-    if (hubs.length) {
-      const newCount = hubs.filter((h) => !h.alreadyInAtlas).length;
-      parts.push(`
-        <section class="dr-card space-y-2.5">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <div>
-              <div class="section-label">Discovered Institutions (${hubs.length})</div>
-              <div class="text-[12px] text-neutral-400">${newCount > 0 ? `${newCount} newly found outside the 6,926-hub base atlas — plot live on the 3D globe` : "Verified coordinates ready to fly to on the 3D globe"}</div>
-            </div>
-            <button type="button" id="dr-plot-all" class="accent-chip rounded-full px-3 py-1.5 text-[12px] font-medium cursor-pointer shrink-0">
-              Plot All on Globe (${hubs.length})
-            </button>
+    // 1. Main Synthesized Report (always lead with actual research synthesis & overview)
+    parts.push(`
+      <section class="dr-card space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2.5">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="dr-badge dr-badge-accent">${escHtml(formatModeLabel(res.mode))}</span>
+            <span class="text-[12px] text-neutral-400 truncate">${escHtml(res.query)}</span>
           </div>
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            ${hubs
-              .map((h, idx) => {
-                const saved = isHubSavedLocally(h.id);
-                return `
-                  <div class="dr-hub-item">
-                    <div class="min-w-0">
-                      <div class="flex items-center gap-1.5">
-                        <span class="text-[13px] font-semibold text-white truncate">${escHtml(h.name)}</span>
-                        ${h.alreadyInAtlas ? `<span class="dr-badge shrink-0">In Atlas</span>` : `<span class="dr-badge dr-badge-accent shrink-0">New</span>`}
-                      </div>
-                      <div class="text-[12px] text-neutral-400 truncate mt-0.5">${escHtml(h.city || h.country)} · ${h.lat.toFixed(2)}°, ${h.lng.toFixed(2)}°</div>
-                      <div class="text-[12px] text-neutral-300 line-clamp-2 mt-1 leading-snug">${escHtml(h.summary)}</div>
-                    </div>
-                    <div class="flex items-center gap-1.5 pt-2">
-                      <button type="button" data-plot-idx="${idx}" class="glass-btn rounded-full px-2.5 py-1 text-[11.5px] font-medium text-white">Plot & Fly →</button>
-                      ${
-                        !h.alreadyInAtlas
-                          ? `<button type="button" data-save-idx="${idx}" class="glass-btn rounded-full px-2.5 py-1 text-[11.5px] ${saved ? "accent-text" : "text-neutral-300"}">${saved ? "✓ Saved" : "+ Save"}</button>`
-                          : ""
-                      }
-                      ${safeHref(h.url) ? `<a href="${escHtml(safeHref(h.url))}" target="_blank" rel="noopener noreferrer" class="text-[11.5px] accent-link ml-auto">Site ↗</a>` : ""}
-                    </div>
-                  </div>
-                `;
-              })
-              .join("")}
+          <div class="flex items-center gap-1.5 shrink-0">
+            <button type="button" id="dr-copy-md" class="glass-btn rounded-full px-2.5 py-1 text-[12px]">Copy MD</button>
+            <button type="button" id="dr-download-md" class="glass-btn rounded-full px-2.5 py-1 text-[12px]">Export .md</button>
           </div>
-        </section>
-      `);
-    }
+        </div>
+        <div class="dr-markdown space-y-2">${renderSafeMarkdown(res.markdown)}</div>
+      </section>
+    `);
 
-    // 2. Live arXiv + alphaXiv Preprint Papers (100% Free!)
+    // 2. Live arXiv + alphaXiv Preprint Papers (strictly relevance-filtered!)
     const arxivPapers = res.arxivPapers || [];
     if (arxivPapers.length) {
       parts.push(`
@@ -430,7 +400,7 @@ export function renderDeepResearchModal(container, initialPayload = null, callba
           <div class="flex items-center justify-between gap-2">
             <div>
               <div class="section-label">arXiv &amp; alphaXiv Preprints (${arxivPapers.length})</div>
-              <div class="text-[12px] text-neutral-400">Free open preprints with 1-tap arXiv, PDF &amp; alphaXiv AI overview links</div>
+              <div class="text-[12px] text-neutral-400">Title &amp; abstract matched preprints — 1-tap alphaXiv, arXiv &amp; PDF</div>
             </div>
           </div>
           <div class="space-y-2">
@@ -461,22 +431,54 @@ export function renderDeepResearchModal(container, initialPayload = null, callba
       `);
     }
 
-    // 3. Main Synthesized Report
-    parts.push(`
-      <section class="dr-card space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-2.5">
-          <div class="flex items-center gap-2 min-w-0">
-            <span class="dr-badge dr-badge-accent">${escHtml(formatModeLabel(res.mode))}</span>
-            <span class="text-[12px] text-neutral-400 truncate">${escHtml(res.query)}</span>
+    // 3. Verified Related & Discovered Institutions Ready to Fly / Plot on the 3D Globe
+    const hubs = res.discoveredHubs || [];
+    if (hubs.length) {
+      const newCount = hubs.filter((h) => !h.alreadyInAtlas).length;
+      parts.push(`
+        <section class="dr-card space-y-2.5">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <div class="section-label">${newCount > 0 ? "Discovered &amp; Related Institutions" : "Related Institutions"} (${hubs.length})</div>
+              <div class="text-[12px] text-neutral-400">${newCount > 0 ? `${newCount} new verified pin${newCount === 1 ? "" : "s"} ready to plot on the 3D globe` : "Verified collaborators &amp; nearby labs on the 3D globe"}</div>
+            </div>
+            ${newCount > 0 ? `
+              <button type="button" id="dr-plot-all" class="accent-chip rounded-full px-3 py-1.5 text-[12px] font-medium cursor-pointer shrink-0">
+                Plot New (${newCount})
+              </button>
+            ` : ""}
           </div>
-          <div class="flex items-center gap-1.5 shrink-0">
-            <button type="button" id="dr-copy-md" class="glass-btn rounded-full px-2.5 py-1 text-[12px]">Copy MD</button>
-            <button type="button" id="dr-download-md" class="glass-btn rounded-full px-2.5 py-1 text-[12px]">Export .md</button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            ${hubs
+              .map((h, idx) => {
+                const saved = isHubSavedLocally(h.id);
+                return `
+                  <div class="dr-hub-item">
+                    <div class="min-w-0">
+                      <div class="flex items-center gap-1.5">
+                        <span class="text-[13px] font-semibold text-white truncate">${escHtml(h.name)}</span>
+                        ${h.alreadyInAtlas ? `<span class="dr-badge shrink-0">In Atlas</span>` : `<span class="dr-badge dr-badge-accent shrink-0">New</span>`}
+                      </div>
+                      <div class="text-[12px] text-neutral-400 truncate mt-0.5">${escHtml(h.city || h.country)}${h.branch ? ` · ${escHtml(h.branch)}` : ""}</div>
+                      <div class="text-[12px] text-neutral-300 line-clamp-2 mt-1 leading-snug">${escHtml(h.summary)}</div>
+                    </div>
+                    <div class="flex items-center gap-1.5 pt-2">
+                      <button type="button" data-plot-idx="${idx}" class="glass-btn rounded-full px-2.5 py-1 text-[11.5px] font-medium text-white">${h.alreadyInAtlas ? "Fly →" : "Plot & Fly →"}</button>
+                      ${
+                        !h.alreadyInAtlas
+                          ? `<button type="button" data-save-idx="${idx}" class="glass-btn rounded-full px-2.5 py-1 text-[11.5px] ${saved ? "accent-text" : "text-neutral-300"}">${saved ? "✓ Saved" : "+ Save"}</button>`
+                          : ""
+                      }
+                      ${safeHref(h.url) ? `<a href="${escHtml(safeHref(h.url))}" target="_blank" rel="noopener noreferrer" class="text-[11.5px] accent-link ml-auto">Site ↗</a>` : ""}
+                    </div>
+                  </div>
+                `;
+              })
+              .join("")}
           </div>
-        </div>
-        <div class="dr-markdown space-y-2">${renderSafeMarkdown(res.markdown)}</div>
-      </section>
-    `);
+        </section>
+      `);
+    }
 
     // 4. Verified Grounding / Academic Sources
     const sources = res.sources || [];

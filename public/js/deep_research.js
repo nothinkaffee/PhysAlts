@@ -14,7 +14,7 @@
 
 import { proxyUrl } from "./config.js";
 import { store, universalSearch, mergeHubs } from "./data_store.js";
-import { getShanghaiRecord, getHubCollaborations } from "./shanghai_engine.js";
+import { getShanghaiRecord, getHubCollaborations, getNearbyEcosystem } from "./shanghai_engine.js";
 
 const KEY_STORAGE = "physalts_gemini_api_key_v1";
 const DISCOVERED_STORAGE = "physalts_discovered_hubs_v1";
@@ -172,33 +172,177 @@ export function buildArxivLinks(arxivId) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Smart Query Intent Extraction (prevents natural-language noise in ROR/arXiv)
+// ---------------------------------------------------------------------------
+
+const PROMPT_STOP_PHRASES = [
+  /\bactive\s+projects?\b/gi,
+  /\brecent\s+(?:20\d\d[–-]?20\d\d\s+)?(?:arxiv|alphaxiv)?\s*(?:papers?|preprints?|publications?)\b/gi,
+  /\blatest\s+(?:arxiv|alphaxiv)?\s*(?:papers?|preprints?|breakthroughs?)\b/gi,
+  /\b(?:arxiv|alphaxiv)\s*(?:papers?|preprints?|breakthroughs?)\b/gi,
+  /\btop\s+global\s+peer\s+labs?\b/gi,
+  /\bphd\/?research\s+programs?\b/gi,
+  /\blesser-known\s+research\s+facilities\b/gi,
+  /\bresearch\s+(?:facilities|programs?|overview|collaborations?|partners?)\b/gi,
+  /\bconnected\s+to\b/gi,
+  /\bworking\s+on\b/gi,
+  /\bin\s+20\d\d\b/gi,
+  /\b20\d\d[–-]20\d\d\b/gi
+];
+
+const PROMPT_STOP_WORDS = new Set([
+  "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in", "into",
+  "is", "it", "near", "of", "on", "or", "the", "to", "with", "about", "across",
+  "active", "arxiv", "alphaxiv", "breakthrough", "breakthroughs", "collaborator",
+  "collaborators", "collaboration", "collaborations", "compare", "comparing",
+  "discover", "discovering", "emerging", "facilities", "facility", "find",
+  "global", "hub", "hubs", "institution", "institutions", "lab", "labs",
+  "latest", "leading", "lesser", "list", "major", "new", "overview", "paper",
+  "papers", "peer", "peers", "phd", "preprint", "preprints", "program",
+  "programs", "project", "projects", "publication", "publications", "recent",
+  "research", "search", "show", "spinout", "spinouts", "startup", "startups",
+  "top", "universities", "university", "vs", "versus", "what", "which", "who"
+]);
+
+const PHYSICS_HINT_RE = /\b(physics|quantum|particle|collider|cern|lhc|fermilab|ligo|neutrino|icecube|fusion|tokamak|iter|plasma|astro|astronomy|cosmology|telescope|jwst|gravity|relativity|superconduct|photon|photonic|optics|laser|condensed|hadron|boson|quark|dark\s+matter|black\s+hole|math|mathematics|algebra|topology|geometry|manifold)\b/i;
+
+function normalizeOrgKey(name) {
+  return String(name || "")
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, " ")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+export function extractResearchIntent(rawQuery, hubContext = null) {
+  let cleaned = String(rawQuery || "").trim();
+  const hubName = String(hubContext?.name || "").trim();
+  const hubNorm = normalizeOrgKey(hubName);
+
+  for (const re of PROMPT_STOP_PHRASES) {
+    cleaned = cleaned.replace(re, " ");
+  }
+
+  // Strip the hub name out of the topic remainder so we don't duplicate ("OpenAI OpenAI ...")
+  let topicRemainder = cleaned;
+  if (hubName) {
+    const escapedHub = hubName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    topicRemainder = topicRemainder.replace(new RegExp(escapedHub, "gi"), " ");
+  }
+
+  const tokenize = (s) =>
+    String(s || "")
+      .replace(/[^\p{L}\p{N}\s-]/gu, " ")
+      .split(/\s+/)
+      .map((w) => w.trim())
+      .filter((w) => w.length >= 2 && !PROMPT_STOP_WORDS.has(w.toLowerCase()));
+
+  const topicTokens = [...new Set(tokenize(topicRemainder).map((w) => w.toLowerCase()))];
+  const rawTokens = [...new Set(tokenize(cleaned).map((w) => w.toLowerCase()))];
+  const hubShort = hubName
+    .replace(/\s*\([^)]*\)\s*/g, " ")
+    .replace(/\b(Department of Physics|Physics Department|Physics)\b/gi, "")
+    .trim() || hubName;
+
+  const isPhysicsTopic =
+    PHYSICS_HINT_RE.test(cleaned) ||
+    (hubContext && ["physics", "math"].includes(String(hubContext.discipline || "").toLowerCase()));
+
+  // Core query used for papers (concise, zero duplicate entity name, zero prompt noise)
+  const paperTokens = hubContext
+    ? [hubShort, ...topicTokens.filter((t) => !hubNorm.includes(t)).slice(0, 3)]
+    : (rawTokens.length ? rawTokens.slice(0, 4) : [String(rawQuery || "").trim()]);
+
+  const topicPhrase = topicTokens.length ? topicTokens.slice(0, 4).join(" ") : "";
+  const cleanPhrase = rawTokens.length ? rawTokens.slice(0, 4).join(" ") : String(rawQuery || "").trim();
+
+  // Wikipedia target: exact hub page when researching a hub without extra subtopic
+  const wikiTerm = hubContext && !topicTokens.length ? hubShort : cleanPhrase;
+
+  // ROR organization lookup target: ONLY meaningful entity/topic words (never "papers"/"arxiv")
+  const orgQuery = hubContext && !topicTokens.length ? hubShort : cleanPhrase;
+
+  return {
+    rawQuery: String(rawQuery || "").trim(),
+    hubName,
+    hubShort,
+    hubNorm,
+    topicTokens,
+    topicPhrase,
+    coreTokens: hubContext
+      ? [...new Set([...tokenize(hubShort).map((w) => w.toLowerCase()), ...topicTokens])]
+      : rawTokens,
+    paperTokens,
+    paperQuery: paperTokens.filter(Boolean).join(" ").trim(),
+    wikiTerm,
+    orgQuery,
+    isPhysicsTopic,
+    isPureHubLookup: Boolean(hubContext && topicTokens.length === 0)
+  };
+}
+
 /**
  * Queries arXiv preprints 100% free & CORS-safe directly from the browser via DataCite's
- * official 10.48550/arXiv DOI registry + InspireHEP (for physics/astro/quantum), returning
- * unified paper cards with direct arXiv, PDF, and alphaXiv links.
+ * official 10.48550/arXiv DOI registry (+ InspireHEP for physics/astro/math queries),
+ * with title-scoped Lucene matching and strict client-side relevance filtering.
  */
-export async function fetchArxivAlphaXivPapers(rawQuery, { limit = 6, signal } = {}) {
-  const query = String(rawQuery || "").trim();
-  if (!query) return [];
+export async function fetchArxivAlphaXivPapers(rawQuery, { limit = 6, signal, hubContext = null, isPhysics = null } = {}) {
+  const intent = extractResearchIntent(rawQuery, hubContext);
+  const terms = intent.paperTokens.filter(Boolean);
+  if (!terms.length) return [];
 
-  const [dcData, hepData] = await Promise.all([
+  const allowHep = isPhysics !== null ? Boolean(isPhysics) : intent.isPhysicsTopic;
+
+  // Build precise Lucene query targeting titles first (dramatically higher precision than untargeted full-text)
+  const luceneTerms = terms.slice(0, 3).map((t) => {
+    const safe = String(t).replace(/["\\:()]/g, " ").trim();
+    return safe.includes(" ") ? `titles.title:"${safe}"` : `titles.title:${safe}`;
+  });
+  const titleQuery = luceneTerms.join(" AND ");
+  const broadQuery = terms.slice(0, 3).map((t) => `"${String(t).replace(/"/g, "")}"`).join(" AND ");
+
+  const [dcTitleData, dcBroadData, hepData] = await Promise.all([
     fetchJsonSafe(
-      `https://api.datacite.org/dois?prefix=10.48550&query=${encodeURIComponent(query)}&page[size]=${Math.min(limit + 2, 10)}&sort=-published`,
+      `https://api.datacite.org/dois?prefix=10.48550&query=${encodeURIComponent(titleQuery)}&page[size]=14&sort=-published`,
       { signal },
       8500
     ),
     fetchJsonSafe(
-      `https://inspirehep.net/api/literature?q=${encodeURIComponent(query)}&size=${Math.min(limit, 5)}&sort=mostrecent`,
+      `https://api.datacite.org/dois?prefix=10.48550&query=${encodeURIComponent(broadQuery)}&page[size]=10`,
       { signal },
-      7500
-    )
+      8500
+    ),
+    allowHep
+      ? fetchJsonSafe(
+          `https://inspirehep.net/api/literature?q=${encodeURIComponent(intent.paperQuery)}&size=${Math.min(limit, 5)}&sort=mostrecent`,
+          { signal },
+          7500
+        )
+      : Promise.resolve(null)
   ]);
 
-  const papers = [];
+  const matchTokens = intent.coreTokens.filter((t) => t.length >= 2);
+  const scoreRelevance = (title, abstract, authors) => {
+    if (!matchTokens.length) return 1;
+    const tLow = String(title || "").toLowerCase();
+    const aLow = String(abstract || "").toLowerCase();
+    const cLow = String(authors || "").toLowerCase();
+    let score = 0;
+    for (const tok of matchTokens) {
+      if (tLow.includes(tok)) score += 4;
+      else if (aLow.includes(tok)) score += 1.5;
+      else if (cLow.includes(tok)) score += 1;
+    }
+    return score;
+  };
+
+  const candidates = [];
   const seenIds = new Set();
 
-  // 1. DataCite official arXiv DOI stream (all STEM fields: cs, physics, math, q-bio, stat, eess)
-  for (const item of dcData?.data || []) {
+  // 1. DataCite official arXiv DOI stream (title-matched first, then broad relevance supplement)
+  const dcItems = [...(dcTitleData?.data || []), ...(dcBroadData?.data || [])];
+  for (const item of dcItems) {
     const attr = item?.attributes || {};
     const arxivIdent =
       (attr.identifiers || []).find((i) => String(i.identifierType || "").toLowerCase() === "arxiv")?.identifier ||
@@ -208,26 +352,33 @@ export async function fetchArxivAlphaXivPapers(rawQuery, { limit = 6, signal } =
     if (!links || seenIds.has(links.arxivId)) continue;
     const title = (attr.titles?.[0]?.title || "").replace(/\s+/g, " ").trim();
     if (!title) continue;
-    seenIds.add(links.arxivId);
 
     const creators = (attr.creators || []).map((c) => c.name || [c.givenName, c.familyName].filter(Boolean).join(" ")).filter(Boolean);
     const authorLine =
       creators.length > 2 ? `${creators[0]}, ${creators[1]} et al.` : creators.join(", ") || "arXiv Authors";
     const abstractRaw = (attr.descriptions || []).find((d) => d.description)?.description || "";
-    const category = (attr.subjects || []).map((s) => s.subject).filter(Boolean)[0] || "arXiv Preprint";
+    const relScore = scoreRelevance(title, abstractRaw, authorLine);
+    const titleMatched = matchTokens.some((tok) => title.toLowerCase().includes(tok));
+    if (relScore < 1.5) continue; // Strict relevance gate: drop off-topic noise
 
-    papers.push({
+    seenIds.add(links.arxivId);
+    const category = (attr.subjects || []).map((s) => s.subject).filter(Boolean)[0] || "arXiv Preprint";
+    const yearNum = Number(attr.publicationYear) || 0;
+
+    candidates.push({
       ...links,
       title,
       authors: authorLine,
       year: attr.publicationYear || "",
       category: String(category).slice(0, 60),
       abstract: String(abstractRaw).replace(/\s+/g, " ").trim().slice(0, 220),
-      source: "arXiv"
+      source: "arXiv",
+      _titleMatched: titleMatched,
+      _rank: (titleMatched ? 100 : 0) + relScore * 10 + (yearNum >= 2024 ? 5 : yearNum >= 2021 ? 2 : 0)
     });
   }
 
-  // 2. InspireHEP supplement (rich physics, astrophysics, particle & quantum metadata + citations)
+  // 2. InspireHEP supplement (only for physics/astro/quantum/math queries)
   for (const hit of hepData?.hits?.hits || []) {
     const m = hit?.metadata || {};
     const eprint = m.arxiv_eprints?.[0]?.value;
@@ -235,17 +386,21 @@ export async function fetchArxivAlphaXivPapers(rawQuery, { limit = 6, signal } =
     if (!links || seenIds.has(links.arxivId)) continue;
     const title = (m.titles?.[0]?.title || "").replace(/\s+/g, " ").trim();
     if (!title) continue;
-    seenIds.add(links.arxivId);
 
     const authors = (m.authors || []).slice(0, 2).map((a) => a.full_name).filter(Boolean);
     const authorLine =
       (m.authors?.length || 0) > 2 ? `${authors.join(", ")} et al.` : authors.join(", ") || "Collaboration";
+    const abstractRaw = m.abstracts?.[0]?.value || "";
+    const relScore = scoreRelevance(title, abstractRaw, authorLine);
+    const titleMatched = matchTokens.some((tok) => title.toLowerCase().includes(tok));
+    if (relScore < 1.5) continue;
+
+    seenIds.add(links.arxivId);
     const year = String(m.earliest_date || "").slice(0, 4);
     const category = m.arxiv_eprints?.[0]?.categories?.[0] || "Physics / HEP";
-    const abstractRaw = m.abstracts?.[0]?.value || "";
     const cites = Number(m.citation_count) || 0;
 
-    papers.push({
+    candidates.push({
       ...links,
       title,
       authors: authorLine,
@@ -253,11 +408,16 @@ export async function fetchArxivAlphaXivPapers(rawQuery, { limit = 6, signal } =
       category,
       citations: cites,
       abstract: String(abstractRaw).replace(/\s+/g, " ").trim().slice(0, 220),
-      source: "INSPIRE / arXiv"
+      source: "INSPIRE / arXiv",
+      _titleMatched: titleMatched,
+      _rank: (titleMatched ? 100 : 0) + relScore * 10 + (Number(year) >= 2024 ? 4 : 0) + Math.min(4, Math.log10(cites + 1))
     });
   }
 
-  return papers.slice(0, limit);
+  candidates.sort((a, b) => (b._rank - a._rank) || (Number(b.year || 0) - Number(a.year || 0)));
+  const titleHits = candidates.filter((c) => c._titleMatched);
+  const finalPool = titleHits.length >= 3 ? titleHits : candidates;
+  return finalPool.slice(0, limit).map(({ _rank, _titleMatched, ...rest }) => rest);
 }
 
 // ---------------------------------------------------------------------------
@@ -277,15 +437,15 @@ export function buildAtlasContextSummary(hubContext) {
 
   const sr = getShanghaiRecord(hubContext.id);
   if (sr) {
-    if (sr.arwu?.rank) lines.push(`ShanghaiRanking ARWU 2026: #${sr.arwu.rank} (Score ${sr.arwu.score || "—"})`);
+    if (sr.arwu?.r) lines.push(`ShanghaiRanking ARWU 2026: #${sr.arwu.r}`);
     const topSubjs = Object.entries(sr.subjects || {})
-      .sort((a, b) => (a[1].rankNum || 9999) - (b[1].rankNum || 9999))
+      .sort((a, b) => (a[1].n || 9999) - (b[1].n || 9999))
       .slice(0, 5)
-      .map(([code, s]) => `${code} #${s.rank}`);
+      .map(([code, s]) => `${code} #${s.r}`);
     if (topSubjs.length) lines.push(`Top GRAS 2026 Subjects: ${topSubjs.join(", ")}`);
   }
 
-  const collabs = getHubCollaborations(hubContext.id, store.byId) || [];
+  const collabs = getHubCollaborations(hubContext.id, store.hubsById) || [];
   if (collabs.length) {
     lines.push(
       `Known Collaborations: ${collabs
@@ -316,21 +476,45 @@ export function getSuggestedPrompts(hubContext) {
   if (hubContext) {
     const n = hubContext.name;
     return [
-      `Recent 2025–2026 arXiv papers, active projects & spinouts connected to ${n}`,
-      `Compare ${n} with top global peer labs and PhD/research programs`,
-      `Discover lesser-known research facilities and startups near ${n}`
+      `${n} recent breakthroughs & key papers`,
+      `${n} research collaborations & peer labs`,
+      `Facilities and startups near ${n}`
     ];
   }
   return [
-    "Photonic & neutral-atom quantum computing labs and latest arXiv breakthroughs",
-    "EUV semiconductor lithography & GaN wafer research collaborations in 2026",
-    "Off-grid Arctic, Svalbard, and Antarctic climate & neutrino observatories"
+    "Photonic quantum computing",
+    "EUV semiconductor lithography",
+    "Antarctic neutrino & climate observatories"
   ];
 }
 
 // ---------------------------------------------------------------------------
-// Helpers: Hub Sanitization & Deduplication Against Existing 6,926 Atlas Hubs
+// Helpers: Hub Sanitization, Relevance Gate & Deduplication Against Atlas
 // ---------------------------------------------------------------------------
+
+const ORG_NOISE_RE = /\b(arxiv|biorxiv|medrxiv|chemrxiv|zenodo|ssrn|researchgate|osf|figshare|crossref|datacite|orcid|pubmed|papers|paper\s+mill|paper\s+mills|publishing|publisher|publishers|university\s+press|journal|journals)\b/i;
+
+function isRelevantOrgCandidate(displayName, intent) {
+  const raw = String(displayName || "").trim();
+  if (!raw || raw.length < 3) return false;
+  // Block preprint servers, paper companies, and journal/publisher noise
+  if (ORG_NOISE_RE.test(raw)) return false;
+
+  const normName = normalizeOrgKey(raw);
+  const tokens = (intent?.coreTokens || []).filter((t) => t.length >= 2);
+  if (!tokens.length) return true;
+
+  // Require at least one meaningful core token match in the organization name (word-boundary or prefix)
+  const nameWords = normName.split(/\s+/).filter(Boolean);
+  let matched = 0;
+  for (const tok of tokens) {
+    if (nameWords.some((w) => w === tok || (tok.length >= 4 && w.startsWith(tok)) || (w.length >= 4 && tok.startsWith(w)))) {
+      matched++;
+    }
+  }
+  if (tokens.length === 1) return matched >= 1;
+  return matched >= 1;
+}
 
 function slugify(str) {
   return String(str || "")
@@ -338,6 +522,27 @@ function slugify(str) {
     .replace(/[^a-z0-9]+/g, "_")
     .replace(/^_+|_+$/g, "")
     .slice(0, 48);
+}
+
+function findMatchingAtlasHub(name, lat, lng) {
+  const norm = normalizeOrgKey(name);
+  if (!norm) return null;
+  for (const h of store.hubs) {
+    const hn = normalizeOrgKey(h.name);
+    if (hn === norm) return h;
+    // Match "OpenAI (United States)" -> "OpenAI", or close geo match with shared core token
+    if (
+      Number.isFinite(lat) &&
+      Number.isFinite(lng) &&
+      Number.isFinite(h.lat) &&
+      Number.isFinite(h.lng) &&
+      Math.abs(h.lat - lat) < 0.2 &&
+      Math.abs(h.lng - lng) < 0.2
+    ) {
+      if (hn.includes(norm) || norm.includes(hn)) return h;
+    }
+  }
+  return null;
 }
 
 function sanitizeDiscoveredHub(raw, sourceTag = "agent") {
@@ -350,9 +555,9 @@ function sanitizeDiscoveredHub(raw, sourceTag = "agent") {
   if (lat < -90 || lat > 90 || lng < -180 || lng > 180) return null;
   if (Math.abs(lat) < 0.001 && Math.abs(lng) < 0.001) return null;
 
-  const existing = store.hubs.find(
-    (h) => h.name.toLowerCase() === name.toLowerCase()
-  );
+  const existing = raw.id && store.hubsById?.get?.(raw.id)
+    ? store.hubsById.get(raw.id)
+    : findMatchingAtlasHub(name, lat, lng);
 
   const entityRaw = String(raw.entityType || raw.group || "lab").toLowerCase();
   let group = "lab";
@@ -369,26 +574,26 @@ function sanitizeDiscoveredHub(raw, sourceTag = "agent") {
   const validDisc = ["physics", "ai_cs", "math", "bio_med", "chem_earth", "engineering"];
   const discipline = validDisc.includes(discRaw) ? discRaw : "physics";
 
-  let url = String(raw.url || "").trim();
+  let url = String(raw.url || existing?.url || "").trim();
   if (url && !/^https?:\/\//i.test(url)) url = "";
 
   return {
     id: existing ? existing.id : `disc_${slugify(name)}_${Math.abs(Math.round(lat * 100))}`,
     alreadyInAtlas: Boolean(existing),
-    name,
-    city: String(raw.city || raw.country || "Discovered Location").trim(),
-    country: String(raw.country || "").trim(),
-    lat: Number(lat.toFixed(4)),
-    lng: Number(lng.toFixed(4)),
+    name: existing ? existing.name : name,
+    city: String(raw.city || existing?.city || raw.country || "Discovered Location").trim(),
+    country: String(raw.country || existing?.country || "").trim(),
+    lat: Number((existing?.lat ?? lat).toFixed(4)),
+    lng: Number((existing?.lng ?? lng).toFixed(4)),
     group,
     entityType,
     discipline,
-    branch: String(raw.branch || "Discovered via Research Agent").trim(),
+    branch: String(raw.branch || existing?.branch || "Verified Research Hub").trim(),
     url,
-    wiki: String(raw.wiki || "").trim(),
-    summary: String(raw.summary || `Discovered via PhysALT ${sourceTag} search.`).trim().slice(0, 320),
-    foundedYear: Number.isFinite(Number(raw.foundedYear)) ? Number(raw.foundedYear) : null,
-    tier: "custom",
+    wiki: String(raw.wiki || existing?.wiki || "").trim(),
+    summary: String(raw.summary || existing?.summary || `Verified via PhysALT ${sourceTag}.`).trim().slice(0, 320),
+    foundedYear: Number.isFinite(Number(raw.foundedYear)) ? Number(raw.foundedYear) : (existing?.foundedYear || null),
+    tier: existing?.tier || "custom",
     discoveredBy: sourceTag
   };
 }
@@ -412,121 +617,173 @@ async function fetchJsonSafe(url, opts = {}, timeoutMs = 9000) {
 
 // ---------------------------------------------------------------------------
 // ENGINE 1: Live Open-API Agentic Discovery (100% Free, Zero API Key)
-//   ROR v2 (110k+ geocoded orgs) + arXiv/alphaXiv (DataCite + InspireHEP) + OpenAlex + Wikipedia
+//   arXiv/alphaXiv (DataCite + physics-gated InspireHEP) + Crossref + Wikipedia +
+//   Verified Atlas Collaborators / Ecosystem + Strictly Filtered ROR v2
 // ---------------------------------------------------------------------------
 
 export async function runOpenAgenticDiscovery(rawQuery, { hubContext = null, onProgress, signal } = {}) {
   const query = String(rawQuery || "").trim();
   if (!query) throw new Error("Please enter a research question or topic.");
 
-  const searchTerm = hubContext ? `${hubContext.name} ${query}` : query;
-  onProgress?.("Searching arXiv / alphaXiv, ROR v2 Registry, OpenAlex & Wikipedia…");
+  const intent = extractResearchIntent(query, hubContext);
+  onProgress?.("Searching arXiv / alphaXiv, Crossref, Wikipedia & verified registries…");
 
-  const local = universalSearch(query, 8);
+  const localQuery = intent.orgQuery || query;
+  const local = universalSearch(localQuery, 8);
 
-  const [rorData, arxivPapers, oaInst, oaWorks, wikiSearch] = await Promise.all([
+  // Extract direct Wikipedia slug when researching a known Atlas hub with no subtopic override
+  let directWikiSlug = "";
+  if (intent.isPureHubLookup && hubContext) {
+    if (hubContext.wikiSlug) directWikiSlug = hubContext.wikiSlug;
+    else if (hubContext.wiki && hubContext.wiki.includes("/wiki/")) {
+      try {
+        directWikiSlug = decodeURIComponent(hubContext.wiki.split("/wiki/")[1].split(/[?#]/)[0]);
+      } catch {
+        directWikiSlug = hubContext.wiki.split("/wiki/")[1].split(/[?#]/)[0];
+      }
+    }
+  }
+
+  const shouldQueryRor = Boolean(intent.orgQuery && intent.orgQuery.length >= 2 && intent.coreTokens.length <= 4);
+
+  const [rorData, arxivPapers, crossrefData, directWiki, wikiSearch] = await Promise.all([
+    shouldQueryRor
+      ? fetchJsonSafe(
+          `https://api.ror.org/v2/organizations?query=${encodeURIComponent(intent.orgQuery)}`,
+          { signal },
+          8500
+        )
+      : Promise.resolve(null),
+    fetchArxivAlphaXivPapers(query, { limit: 6, signal, hubContext }),
     fetchJsonSafe(
-      `https://api.ror.org/v2/organizations?query=${encodeURIComponent(query)}`,
+      `https://api.crossref.org/works?query=${encodeURIComponent(intent.paperQuery || intent.orgQuery)}&rows=5&select=DOI,title,author,published,is-referenced-by-count,URL`,
       { signal },
-      8500
+      8000
     ),
-    fetchArxivAlphaXivPapers(searchTerm, { limit: 6, signal }),
-    fetchJsonSafe(
-      proxyUrl(
-        `https://api.openalex.org/institutions?search=${encodeURIComponent(query)}&per-page=8&sort=cited_by_count:desc`
-      ),
-      { signal },
-      7500
-    ),
-    fetchJsonSafe(
-      proxyUrl(
-        `https://api.openalex.org/works?search=${encodeURIComponent(searchTerm)}&sort=cited_by_count:desc&per-page=4&select=id,title,publication_year,cited_by_count,doi,primary_location,authorships`
-      ),
-      { signal },
-      7500
-    ),
-    fetchJsonSafe(
-      proxyUrl(
-        `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&srlimit=2&format=json&origin=*`
-      ),
-      { signal },
-      7000
-    )
+    directWikiSlug
+      ? fetchJsonSafe(
+          proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(directWikiSlug)}`),
+          { signal },
+          6500
+        )
+      : Promise.resolve(null),
+    !directWikiSlug && intent.wikiTerm
+      ? fetchJsonSafe(
+          proxyUrl(
+            `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(intent.wikiTerm)}&srlimit=2&format=json&origin=*`
+          ),
+          { signal },
+          7000
+        )
+      : Promise.resolve(null)
   ]);
 
-  let wikiSummary = null;
-  const topWikiTitle = wikiSearch?.query?.search?.[0]?.title;
-  if (topWikiTitle) {
+  let wikiSummary = directWiki && directWiki.type !== "disambiguation" && directWiki.extract ? directWiki : null;
+  let topWikiTitle = wikiSummary?.title || wikiSearch?.query?.search?.[0]?.title || "";
+  if (!wikiSummary && topWikiTitle) {
     const slug = encodeURIComponent(topWikiTitle.replace(/ /g, "_"));
-    wikiSummary = await fetchJsonSafe(
+    const fetched = await fetchJsonSafe(
       proxyUrl(`https://en.wikipedia.org/api/rest_v1/page/summary/${slug}`),
       { signal },
       6500
     );
+    if (fetched && fetched.type !== "disambiguation" && fetched.extract) {
+      wikiSummary = fetched;
+    }
   }
 
-  // Merge geocoded institutions from ROR v2 (100% reliable, zero rate-limit) + OpenAlex
+  // Build high-precision Related & Discovered Institutions list (zero paper-mill/stopword junk!)
   const discoveredHubs = [];
-  const seenNames = new Set();
+  const seenKeys = new Set();
+  const pushHub = (clean) => {
+    if (!clean) return;
+    const key = normalizeOrgKey(clean.name);
+    if (!key || seenKeys.has(key)) return;
+    // Don't echo the focused hub itself back as a "discovered" card
+    if (hubContext && (clean.id === hubContext.id || key === intent.hubNorm)) return;
+    seenKeys.add(key);
+    discoveredHubs.push(clean);
+  };
 
-  for (const item of (rorData?.items || []).slice(0, 8)) {
+  // 1. If focused on a hub: include its verified Research Collaborators first!
+  const collabs = hubContext ? (getHubCollaborations(hubContext.id, store.hubsById) || []) : [];
+  for (const c of collabs.slice(0, 6)) {
+    const p = c.partner;
+    if (!p || !Number.isFinite(p.lat) || !Number.isFinite(p.lng)) continue;
+    pushHub(
+      sanitizeDiscoveredHub(
+        {
+          ...p,
+          branch: c.role ? `Collaborator · ${c.role}` : "Verified Collaborator",
+          summary: c.note || p.summary || `${p.name} — verified research collaborator with ${hubContext.name}.`
+        },
+        "Verified Collaborator"
+      )
+    );
+  }
+
+  // 2. Strictly relevance-gated ROR v2 organizations (filters out arXiv, paper mills, publishers, stopword noise)
+  for (const item of (rorData?.items || []).slice(0, 10)) {
     const loc = item?.locations?.[0]?.geonames_details;
     if (!loc || !Number.isFinite(loc.lat) || !Number.isFinite(loc.lng)) continue;
     const displayName =
       (item.names || []).find((n) => (n.types || []).includes("ror_display"))?.value ||
       item.names?.[0]?.value;
-    if (!displayName) continue;
+    if (!displayName || !isRelevantOrgCandidate(displayName, intent)) continue;
     const primaryType = (item.types || [])[0] || "facility";
     const website = (item.links || []).find((l) => l.type === "website")?.value || item.links?.[0]?.value || item.id;
     const cityLabel = [loc.name, loc.country_name].filter(Boolean).join(", ");
-    const clean = sanitizeDiscoveredHub(
-      {
-        name: displayName,
-        city: cityLabel || loc.country_name || "Research Center",
-        country: loc.country_name || "",
-        lat: loc.lat,
-        lng: loc.lng,
-        entityType: primaryType,
-        discipline: hubContext?.discipline || "physics",
-        branch: `ROR Verified · ${primaryType}`,
-        url: website,
-        foundedYear: item.established || null,
-        summary: `${displayName} (${cityLabel || loc.country_name || "Global"}) — verified Research Organization Registry (ROR) ${primaryType}${item.established ? `, established ${item.established}` : ""}.`
-      },
-      "ROR Registry"
+    pushHub(
+      sanitizeDiscoveredHub(
+        {
+          name: displayName,
+          city: cityLabel || loc.country_name || "Research Center",
+          country: loc.country_name || "",
+          lat: loc.lat,
+          lng: loc.lng,
+          entityType: primaryType,
+          discipline: hubContext?.discipline || "physics",
+          branch: `ROR Verified · ${primaryType}`,
+          url: website,
+          foundedYear: item.established || null,
+          summary: `${displayName} (${cityLabel || loc.country_name || "Global"}) — verified Research Organization Registry (ROR) ${primaryType}${item.established ? `, established ${item.established}` : ""}.`
+        },
+        "ROR Registry"
+      )
     );
-    if (clean && !seenNames.has(clean.name.toLowerCase())) {
-      seenNames.add(clean.name.toLowerCase());
-      discoveredHubs.push(clean);
+    if (discoveredHubs.length >= 8) break;
+  }
+
+  // 3. If focused on a hub and user asked for nearby/peer labs (or few collaborators found), surface verified nearby labs!
+  if (hubContext && discoveredHubs.length < 6) {
+    const exclude = new Set([hubContext.id, ...discoveredHubs.map((h) => h.id)]);
+    const nearby = getNearbyEcosystem(hubContext, store.hubs, { maxKm: 65, limit: 6, excludeIds: exclude }) || [];
+    for (const nb of nearby) {
+      const p = nb.hub || nb;
+      if (!p || !Number.isFinite(p.lat) || !Number.isFinite(p.lng)) continue;
+      pushHub(
+        sanitizeDiscoveredHub(
+          {
+            ...p,
+            branch: nb.distKm != null ? `Nearby · ${nb.distKm < 1 ? "<1 km" : Math.round(nb.distKm) + " km"}` : "Nearby Lab"
+          },
+          "Nearby Ecosystem"
+        )
+      );
+      if (discoveredHubs.length >= 6) break;
     }
   }
 
-  for (const inst of oaInst?.results || []) {
-    const geo = inst?.geo;
-    if (!geo || !Number.isFinite(geo.latitude) || !Number.isFinite(geo.longitude)) continue;
-    const cityLabel = [geo.city, geo.region, geo.country].filter(Boolean).join(", ");
-    const clean = sanitizeDiscoveredHub(
-      {
-        name: inst.display_name,
-        city: cityLabel || geo.country || "Research Center",
-        country: geo.country || "",
-        lat: geo.latitude,
-        lng: geo.longitude,
-        entityType: inst.type || "lab",
-        discipline: hubContext?.discipline || "physics",
-        branch: `${inst.type || "research"} · ${(inst.works_count || 0).toLocaleString()} works`,
-        url: inst.homepage_url || inst.ror || "",
-        summary: `${inst.display_name} (${cityLabel || geo.country || "Global"}) — ${(inst.works_count || 0).toLocaleString()} indexed works and ${(inst.cited_by_count || 0).toLocaleString()} citations in OpenAlex.`
-      },
-      "OpenAlex"
-    );
-    if (clean && !seenNames.has(clean.name.toLowerCase())) {
-      seenNames.add(clean.name.toLowerCase());
-      discoveredHubs.push(clean);
+  // 4. For pure topic queries, also surface top verified Atlas institutions matching the topic
+  if (!hubContext && discoveredHubs.length < 6) {
+    for (const h of (local.hubs || []).slice(0, 6)) {
+      if (!Number.isFinite(h.lat) || !Number.isFinite(h.lng)) continue;
+      pushHub(sanitizeDiscoveredHub(h, "PhysALT Atlas"));
+      if (discoveredHubs.length >= 6) break;
     }
   }
 
-  // Verified reference sources
+  // Verified reference sources (Wikipedia + strictly relevant Crossref journal works)
   const sources = [];
   const seenUrls = new Set();
   const addSource = (title, url, meta) => {
@@ -535,54 +792,55 @@ export async function runOpenAgenticDiscovery(rawQuery, { hubContext = null, onP
     sources.push({ title, url, meta });
   };
 
+  if (hubContext?.url) {
+    addSource(`${hubContext.name} — Official Site`, hubContext.url, "Official Institution");
+  }
   if (wikiSummary?.extract) {
     const wUrl = wikiSummary.content_urls?.desktop?.page || `https://en.wikipedia.org/wiki/${encodeURIComponent(topWikiTitle)}`;
     addSource(`Wikipedia: ${wikiSummary.title}`, wUrl, "Encyclopedic Overview");
   }
 
-  for (const w of oaWorks?.results || []) {
-    if (!w?.title) continue;
-    const url =
-      w.primary_location?.landing_page_url ||
-      (w.doi ? (w.doi.startsWith("http") ? w.doi : `https://doi.org/${w.doi}`) : "") ||
-      w.id;
-    const cites = (w.cited_by_count || 0).toLocaleString("en-US");
-    addSource(w.title, url, `OpenAlex · ${w.publication_year || ""} · ${cites} cites`);
+  const crTokens = intent.coreTokens.filter((t) => t.length >= 2);
+  for (const w of crossrefData?.message?.items || []) {
+    const title = Array.isArray(w?.title) ? w.title[0] : w?.title;
+    if (!title) continue;
+    const tLow = String(title).toLowerCase();
+    if (crTokens.length && !crTokens.some((tok) => tLow.includes(tok))) continue;
+    const url = w.DOI ? `https://doi.org/${w.DOI}` : (w.URL || "");
+    const yr = w.published?.["date-parts"]?.[0]?.[0] || "";
+    const cites = Number(w["is-referenced-by-count"] || 0).toLocaleString("en-US");
+    addSource(title, url, `Crossref${yr ? ` · ${yr}` : ""} · ${cites} cites`);
   }
 
-  // Build crisp structured Markdown report
+  // Build crisp structured Markdown synthesis
   const md = [];
-  md.push(`## Open-Science Synthesis: ${query}`);
+  md.push(`## Open-Science Synthesis: ${intent.isPureHubLookup ? hubContext.name : query}`);
   if (hubContext) {
-    md.push(`*Contextualized around **${hubContext.name}** (${hubContext.city || hubContext.country || ""}).*`);
+    md.push(`*Grounded in **${hubContext.name}** (${hubContext.city || hubContext.country || ""}).*`);
   }
   if (wikiSummary?.extract) {
-    md.push(`\n### Concept Overview\n${wikiSummary.extract}`);
+    md.push(`\n### Overview\n${wikiSummary.extract}`);
+  } else if (hubContext?.summary) {
+    md.push(`\n### Overview\n${hubContext.summary}`);
   }
-  if (local.hubs?.length) {
-    md.push(`\n### Top Matching Institutions Already in PhysALT`);
+  if (collabs.length) {
+    md.push(`\n### Verified Research Collaborations`);
+    for (const c of collabs.slice(0, 5)) {
+      md.push(`- **${c.partner?.name || c.partnerId}** — ${c.note || c.role || "Verified research partner"}`);
+    }
+  } else if (!hubContext && local.hubs?.length) {
+    md.push(`\n### Leading Institutions in PhysALT`);
     for (const h of local.hubs.slice(0, 5)) {
       md.push(`- **${h.name}** (${h.city || h.country}) — ${h.summary ? h.summary.slice(0, 150) : h.branch || "Verified hub"}`);
     }
   }
-  if (discoveredHubs.length) {
-    const newOnes = discoveredHubs.filter((h) => !h.alreadyInAtlas);
-    md.push(
-      `\n### Live Geocoded Institutions Discovered (${newOnes.length} new to plot on 3D globe)`
-    );
-    for (const h of discoveredHubs.slice(0, 6)) {
-      md.push(
-        `- **${h.name}** (${h.city}) — ${h.alreadyInAtlas ? "Already mapped" : "New discovery ready to plot"}`
-      );
-    }
-  }
   if (arxivPapers.length) {
-    md.push(`\n### Latest arXiv & alphaXiv Preprints (${arxivPapers.length} found)`);
-    md.push(`Open any card below on **arXiv**, **alphaXiv** (AI overview + peer discussion), or direct **PDF**.`);
+    md.push(`\n### Relevant arXiv & alphaXiv Preprints (${arxivPapers.length})`);
+    md.push(`Filtered strictly for **${intent.paperQuery}** — open any paper below on **alphaXiv**, **arXiv**, or **PDF**.`);
   }
-  if (!wikiSummary?.extract && !arxivPapers.length && !discoveredHubs.length && !local.hubs?.length) {
+  if (!wikiSummary?.extract && !hubContext?.summary && !arxivPapers.length && !discoveredHubs.length) {
     md.push(
-      `\nNo open-registry matches returned right now. Try **Gemini Search (Fast)** or **Open in Gemini App ↗** for live web synthesis.`
+      `\nNo direct open-registry matches found for **${query}**. Try a shorter topic keyword, **Gemini Search**, or **Gemini App ↗** for live web synthesis.`
     );
   }
 
@@ -665,7 +923,7 @@ export async function runGeminiFastDiscovery(rawQuery, { hubContext = null, apiK
       }),
       signal
     }),
-    fetchArxivAlphaXivPapers(hubContext ? `${hubContext.name} ${query}` : query, { limit: 4, signal }).catch(() => [])
+    fetchArxivAlphaXivPapers(query, { limit: 4, signal, hubContext }).catch(() => [])
   ]);
 
   if (!res.ok) {
