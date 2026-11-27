@@ -4,11 +4,11 @@
   "schemaVersion": "2.0.0",
   "jsonSchemaDraft": "https://json-schema.org/draft/2020-12/schema",
   "schemaRef": "physalts_schema.json",
-  "generatedAt": "2026-11-27T08:50:14.851Z",
-  "merkleRootSha256": "9f72da2130e00102667342ad724ebd9dd1a570649a37aa0a8356c1c24186f529",
+  "generatedAt": "2026-11-27T22:27:35.570Z",
+  "merkleRootSha256": "52a17755388875288df45bd933c5611d20c9e6dcd8f46ec65d58083e16579960",
   "summary": {
     "totalSourceFiles": 10,
-    "totalSourceBytes": 6372392,
+    "totalSourceBytes": 6372150,
     "totalUnifiedRecords": 6663,
     "totalDistinctCountries": 170,
     "byRecordType": {
@@ -33,7 +33,7 @@
       "license": "Curated Nominative Fair Use",
       "schemaVersion": "2.0.0",
       "datasetVersion": "1.0",
-      "modifiedAt": "2026-11-27T08:49:27.199Z"
+      "modifiedAt": "2026-11-27T22:26:46.227Z"
     },
     {
       "file": "curated_flagships.json",
@@ -52,7 +52,7 @@
       "license": "Curated Nominative Fair Use + CC-BY-SA Reference Metadata",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-27T08:49:27.199Z"
+      "modifiedAt": "2026-11-27T22:26:46.228Z"
     },
     {
       "file": "domains_catalog.json",
@@ -71,7 +71,7 @@
       "license": "Curated Taxonomy + CC0/CC-BY-SA References",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-27T08:49:27.199Z"
+      "modifiedAt": "2026-11-27T22:26:46.228Z"
     },
     {
       "file": "history_timeline.json",
@@ -89,12 +89,12 @@
       "license": "Curated Factual Chronology + CC-BY-SA Reference Links",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-27T08:49:27.199Z"
+      "modifiedAt": "2026-11-27T22:26:46.228Z"
     },
     {
       "file": "physics_hubs.json",
-      "sha256": "4cea0d7ef513af70def6b4f439e9f361d7cb5a04091b0bda46a4c0a2f935c792",
-      "byteSize": 3243035,
+      "sha256": "eb319d4705d4b8f8e5ff783dbc8629abc59fed7c67b5bc92c6db2ea31ef38ea4",
+      "byteSize": 3242793,
       "recordType": "Hub",
       "tier": "global_index",
       "recordCount": 5254,
@@ -106,7 +106,7 @@
       "license": "CC0 (OpenAlex, ROR v2)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-27T08:50:14.584Z"
+      "modifiedAt": "2026-11-27T22:27:35.301Z"
     },
     {
       "file": "private_startups.json",
@@ -125,7 +125,7 @@
       "license": "Curated Nominative Fair Use",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-27T08:49:27.248Z"
+      "modifiedAt": "2026-11-27T22:26:46.296Z"
     },
     {
       "file": "shanghai_2026.json",
@@ -141,7 +141,7 @@
       "license": "Curated Nominative Fair Use",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-27T08:49:27.254Z"
+      "modifiedAt": "2026-11-27T22:26:46.303Z"
     },
     {
       "file": "shanghai_extra_hubs.json",
@@ -157,7 +157,7 @@
       "license": "Curated Nominative Fair Use",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-27T08:49:27.255Z"
+      "modifiedAt": "2026-11-27T22:26:46.304Z"
     },
     {
       "file": "space_frontier.json",
@@ -178,7 +178,7 @@
       "license": "Public Domain Agency Facts + CC-BY-SA Reference Links",
       "schemaVersion": "2.0.0",
       "datasetVersion": "2.0",
-      "modifiedAt": "2026-11-27T08:49:27.255Z"
+      "modifiedAt": "2026-11-27T22:26:46.305Z"
     },
     {
       "file": "verification_report.json",
@@ -194,7 +194,7 @@
       "license": "CC0 (Generated Audit Telemetry)",
       "schemaVersion": "2.0.0",
       "datasetVersion": null,
-      "modifiedAt": "2026-11-27T08:49:27.258Z"
+      "modifiedAt": "2026-11-27T22:26:46.308Z"
     }
   ],
   "generatedArtifacts": {
@@ -205,8 +205,8 @@
     },
     "unifiedNdjson": {
       "file": "physalts_unified.ndjson",
-      "sha256": "77300c71e95ba5bad8bc7b6ffec25dd125e64fd25da055b61f4c726d5d5ea2bc",
-      "byteSize": 5610135,
+      "sha256": "557ddc64987d46c2a295a8aaf0b92ad25d69eb717a71f3e8aadc5d878ae4d513",
+      "byteSize": 5609893,
       "rowCount": 6663
     }
   }
