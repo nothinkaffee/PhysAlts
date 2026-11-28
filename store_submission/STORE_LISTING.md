@@ -1,7 +1,7 @@
-# PhysALT — App Store & Google Play Store Submission Kit
+# physY — App Store & Google Play Store Submission Kit
 
 ## 1. Core App Identity
-- **App Name:** PhysALT — 3D STEM & Physics Atlas
+- **App Name:** physY — 3D STEM & Physics Atlas
 - **Subtitle (iOS, 30 chars max):** 3D Globe for STEM, AI & Space
 - **Short Description (Google Play, 80 chars max):** Explore 6,900+ STEM & polar labs, arXiv research, offline packs & 1 light-day.
 - **Bundle ID / Application ID:** `org.worldofphysics.app`
@@ -9,9 +9,9 @@
 - **Primary Category:** Education (Secondary: Reference)
 - **Age Rating:** 4+ (iOS) / Everyone (Google Play)
 - **Pricing:** Free · Zero Ads · Open Science
-- **Support & Website URL:** `https://nothinkaffee.github.io/PhysAlts/`
-- **Privacy Policy URL:** `https://nothinkaffee.github.io/PhysAlts/privacy.html`
-- **Terms of Service URL:** `https://nothinkaffee.github.io/PhysAlts/terms.html`
+- **Support & Website URL:** `https://planckmaxxing.github.io/physY/`
+- **Privacy Policy URL:** `https://planckmaxxing.github.io/physY/privacy.html`
+- **Terms of Service URL:** `https://planckmaxxing.github.io/physY/terms.html`
 
 ---
 
@@ -19,7 +19,7 @@
 
 Discover the entire world of science on one photoreal 3D globe — from ancient Miletus (580 BCE) to Voyager 1 at 1 Light-Day (173.1 AU) — set against a crisp native-Retina starfield & faded ESO Milky Way backdrop with toggleable 3D orbital sunlight and subtle golden night-side city lights.
 
-**PhysALT** is an interactive, zero-clutter 3D satellite atlas built for curious minds, students, researchers, and engineers across **all of STEM & AI**:
+**physY** is an interactive, zero-clutter 3D satellite atlas built for curious minds, students, researchers, and engineers across **all of STEM & AI**:
 
 - **6,926 Verified Institutions Across 166 Countries (Including 75 Polar Frontier Off-Grid Bases):** Physics colliders & observatories (CERN, IceCube, LIGO, ITER, ALMA), frontier AI & CS labs (Google DeepMind, OpenAI, Anthropic, MIT CSAIL, Mila), Arctic/Svalbard/Greenland/Siberia/Antarctic research stations, Mathematics, Biology, Chemistry, Earth & Climate, and Robotics & Semiconductors.
 - **ShanghaiRanking 2026 & Side-by-Side Institution Compare:** Official ARWU & 57 GRAS subject tables, contextual institution badges, and a dedicated Compare view for evaluating up to 3 universities or labs side by side.

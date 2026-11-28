@@ -1,5 +1,5 @@
 /**
- * PhysAlts — Interactive Production UI Controller (Atlas Engine v2.1)
+ * physY — Interactive Production UI Controller (Atlas Engine v2.1)
  * Pure neutral grey palette + rgb(160, 70, 70) editorial link accent (zero blue, zero yellow, zero all-caps).
  * Generous 8pt spacing, 14–16px Helvetica/Inter typography, sleek Continent + Country selector,
  * full Account/Login/Bookmarks workspace, Deep-Link sharing, Keyboard Shortcuts, and GDPR controls.
@@ -2711,7 +2711,7 @@ function renderAuditAndPrivacyModal(bodyEl) {
 
   document.getElementById("btn-exp-json")?.addEventListener("click", () => {
     downloadBlob(JSON.stringify({
-      meta: { name: "PhysALT Dataset", exportedAt: new Date().toISOString() },
+      meta: { name: "physY Dataset", exportedAt: new Date().toISOString() },
       hubs: store.hubs,
       timelineEvents: store.timelineEvents,
       spaceMissions: store.spaceMissions
@@ -2722,7 +2722,7 @@ function renderAuditAndPrivacyModal(bodyEl) {
   document.getElementById("btn-exp-kml")?.addEventListener("click", () => {
     const nodes = getVisibleGlobeNodes();
     const marks = nodes.map(n => `\n    <Placemark><name>${esc(n.name)}</name><description>${esc(n.summary)}</description><Point><coordinates>${n.lng},${n.lat},0</coordinates></Point></Placemark>`).join("");
-    const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>PhysALT</name>${marks}\n</Document></kml>`;
+    const kml = `<?xml version="1.0" encoding="UTF-8"?>\n<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>physY</name>${marks}\n</Document></kml>`;
     downloadBlob(kml, "physalt.kml", "application/vnd.google-earth.kml+xml");
     showToast("Exported physalt.kml");
   });
@@ -3094,7 +3094,7 @@ function copyCurrentShareLink() {
   if (id.startsWith("sp-")) query = `?space=${encodeURIComponent(id.slice(3))}`;
   else query = `?hub=${encodeURIComponent(id)}`;
 
-  const base = location.protocol === "blob:" ? "https://nothinkaffee.github.io/PhysAlts/" : `${location.origin}${location.pathname}`;
+  const base = location.protocol === "blob:" ? "https://planckmaxxing.github.io/physY/" : `${location.origin}${location.pathname}`;
   const fullUrl = `${base}${query}`;
   if (navigator.clipboard?.writeText) {
     navigator.clipboard.writeText(fullUrl).then(() => showToast("Share link copied")).catch(() => showToast(fullUrl));

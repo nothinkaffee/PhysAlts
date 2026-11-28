@@ -1,5 +1,5 @@
 /**
- * PhysAlts — Production Account, Auth Modal, Rich Bookmarks Workspace,
+ * physY — Production Account, Auth Modal, Rich Bookmarks Workspace,
  * Community Institution Submission, and Keyboard Shortcuts UI.
  * Pure neutral grey palette + rgb(160, 70, 70) editorial link accents (zero blue, zero yellow, zero all-caps).
  */

@@ -1,4 +1,4 @@
-name: Update PhysAlts Index & Deploy Web
+name: Update physY Index & Deploy Web
 
 on:
   push:

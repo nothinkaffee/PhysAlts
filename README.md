@@ -1,6 +1,6 @@
-# PhysALT
+# physY
 
-**PhysALT** is an interactive, privacy-first **3D global STEM & physics atlas** — mapping **6,926 verified universities, national laboratories, polar off-grid stations, deep-tech startups, particle colliders, and observatories across 166 countries**, paired with **ShanghaiRanking 2026 (ARWU + 57 GRAS subjects)**, **176 verified research collaborations**, **16 Rabbit Hole journeys**, **15 SHA-256 offline packs**, **Deep Research Studio (arXiv / alphaXiv / ROR / Gemini)**, historical breakthroughs (`1800 BCE–2045`), and **36 Space Frontier missions out to 1 Light-Day**.
+**physY** is an interactive, privacy-first **3D global STEM & physics atlas** — mapping **6,926 verified universities, national laboratories, polar off-grid stations, deep-tech startups, particle colliders, and observatories across 166 countries**, paired with **ShanghaiRanking 2026 (ARWU + 57 GRAS subjects)**, **176 verified research collaborations**, **16 Rabbit Hole journeys**, **15 SHA-256 offline packs**, **Deep Research Studio (arXiv / alphaXiv / ROR / Gemini)**, historical breakthroughs (`1800 BCE–2045`), and **36 Space Frontier missions out to 1 Light-Day**.
 
 Built as a **static-first PWA + Capacitor 6 native app (iOS & Android, v2.2.0 / Build 34)** with 100% shared web/native parity and pruned ~18 MB leaner mobile binaries.
 
@@ -46,7 +46,7 @@ npm run dev
 
 ## Mobile Packaging (Android & iOS via Capacitor 6)
 
-PhysALT ships preconfigured for **Capacitor 6** (`org.worldofphysics.app` in `capacitor.config.json`, `v2.2.0` / Build `34`):
+physY ships preconfigured for **Capacitor 6** (`org.worldofphysics.app` in `capacitor.config.json`, `v2.2.0` / Build `34`):
 
 ```bash
 # Sync web assets (public/) into Android & iOS native projects and trim on-demand packs
@@ -71,7 +71,7 @@ See [`docs/MOBILE_RELEASE_GUIDE.md`](./docs/MOBILE_RELEASE_GUIDE.md) and [`store
 - **Privacy & Open Data Policy ([`public/privacy.html`](./public/privacy.html)):** Zero ads, zero GPS tracking, 1-click JSON/CSV export (`GDPR Art. 20`), and permanent local + cloud erasure.
 - **Automated CI Workflows:**
   - [`.github/workflows/security-and-qa.yml`](./.github/workflows/security-and-qa.yml) — Schema & live link verification, `npm audit`, secret scan, and `firestore.rules` validation.
-  - [`.github/workflows/update-and-deploy.yml`](./.github/workflows/update-and-deploy.yml) — Automated GitHub Pages deployment (`https://nothinkaffee.github.io/PhysAlts/`).
+  - [`.github/workflows/update-and-deploy.yml`](./.github/workflows/update-and-deploy.yml) — Automated GitHub Pages deployment (`https://planckmaxxing.github.io/physY/`).
   - [`.github/workflows/build-mobile-apps.yml`](./.github/workflows/build-mobile-apps.yml) — Automated Android (`APK`/`AAB`) and iOS (`IPA`) builds.
 
 ---
@@ -86,4 +86,4 @@ See [`docs/MOBILE_RELEASE_GUIDE.md`](./docs/MOBILE_RELEASE_GUIDE.md) and [`store
 - **ESO / Serge Brunier Milky Way Panorama (`eso0932a`)** — CC BY 4.0
 - **NASA Blue Marble & Esri World Imagery** — Global satellite basemap imagery
 
-Institution names are listed for factual educational directory purposes under nominative fair use. PhysALT is an independent open-science platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.
+Institution names are listed for factual educational directory purposes under nominative fair use. physY is an independent open-science platform and is not affiliated with or endorsed by CERN, NASA, ESO, or any listed institution.

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">PhysALT</string>
-    <string name="title_activity_main">PhysALT</string>
+    <string name="app_name">physY</string>
+    <string name="title_activity_main">physY</string>
     <string name="package_name">org.worldofphysics.app</string>
     <string name="custom_url_scheme">org.worldofphysics.app</string>
 </resources>

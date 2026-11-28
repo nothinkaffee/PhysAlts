@@ -1,5 +1,5 @@
 /**
- * World of Science / PhysAlts — Offline Pack Manager (Organic Maps Style)
+ * World of Science / physY — Offline Pack Manager (Organic Maps Style)
  *
  * Zero-dependency browser ES module managing modular downloadable packs:
  *  - IndexedDB ("world-stem-offline-v1", store "packs") for full offline JSON data packs
@@ -485,7 +485,7 @@ export async function downloadPack(packMetaOrId, onProgress) {
   const localUrl = packMeta.url || `./${relPath}`;
   let res = await fetch(localUrl).catch(() => null);
   if (!res || !res.ok) {
-    const remoteUrl = `https://nothinkaffee.github.io/PhysAlts/${relPath}`;
+    const remoteUrl = `https://planckmaxxing.github.io/physY/${relPath}`;
     res = await fetch(remoteUrl);
   }
   if (!res || !res.ok) {

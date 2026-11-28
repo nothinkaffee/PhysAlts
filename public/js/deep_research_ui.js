@@ -1,7 +1,7 @@
 /**
- * PhysALT — Deep Research & Agentic Discovery UI (Obsidian Liquid Glass)
+ * physY — Deep Research & Agentic Discovery UI (Obsidian Liquid Glass)
  *
- * Renders the unified 3-engine Research Studio inside PhysALT's centered workspace modal:
+ * Renders the unified 3-engine Research Studio inside physY's centered workspace modal:
  *   1. Open Discovery (Free · arXiv + alphaXiv + ROR v2 + OpenAlex + Wikipedia)
  *   2. Gemini Search (Fast · gemini-2.5-flash + Google Search Grounding + Globe Pin Plotting)
  *   3. Gemini Deep Research (Autonomous · Interactions API deep-research-preview-04-2026 / Max)
@@ -622,7 +622,7 @@ export function renderDeepResearchModal(container, initialPayload = null, callba
       showKeyEditor = true;
       renderKeyPanel(true);
       elError.textContent =
-        "Paste a Google AI Studio API key above to run Gemini directly in PhysALT — or switch to Open Discovery (free, includes arXiv & alphaXiv) or tap Gemini App ↗.";
+        "Paste a Google AI Studio API key above to run Gemini directly in physY — or switch to Open Discovery (free, includes arXiv & alphaXiv) or tap Gemini App ↗.";
       elError.classList.remove("hidden");
       return;
     }

@@ -1,11 +1,11 @@
 /**
- * PhysALT — Production PWA Service Worker
+ * physY — Production PWA Service Worker
  * - Cache-First persistent caching for 3D Earth globe imagery tiles (both proxied & direct Esri)
  * - Pre-caches core globe tiles (z=0..2) + app shell + physics JSON datasets for instant reloads
  * - Always bypasses /api/* auth/account endpoints and /_diag
  */
 
-const APP_CACHE = "world-physics-app-v38";
+const APP_CACHE = "world-physics-app-v39";
 const TILE_CACHE = "world-physics-tiles-v1";
 
 const PRECACHE_TILES = (() => {

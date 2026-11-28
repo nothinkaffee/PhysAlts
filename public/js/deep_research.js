@@ -1,5 +1,5 @@
 /**
- * PhysALT — Agentic Discovery, arXiv / alphaXiv & Gemini Deep Research Engine
+ * physY — Agentic Discovery, arXiv / alphaXiv & Gemini Deep Research Engine
  *
  * Three cleanly layered research engines (100% static-host & Capacitor safe):
  *   1. Open Discovery (Free, Zero Key)   — Live ROR v2 + OpenAlex Institutions (geocoded!),
@@ -460,7 +460,7 @@ export function buildAtlasContextSummary(hubContext) {
 export function buildGeminiAppHandoffPrompt(query, hubContext) {
   const ctx = buildAtlasContextSummary(hubContext);
   const parts = [
-    `I am exploring this topic in PhysALT (a global 3D STEM & research atlas) and want a deep, up-to-date, cited research dossier.`
+    `I am exploring this topic in physY (a global 3D STEM & research atlas) and want a deep, up-to-date, cited research dossier.`
   ];
   if (ctx) {
     parts.push(`\n--- ATLAS CONTEXT ---\n${ctx}\n--- END CONTEXT ---`);
@@ -591,7 +591,7 @@ function sanitizeDiscoveredHub(raw, sourceTag = "agent") {
     branch: String(raw.branch || existing?.branch || "Verified Research Hub").trim(),
     url,
     wiki: String(raw.wiki || existing?.wiki || "").trim(),
-    summary: String(raw.summary || existing?.summary || `Verified via PhysALT ${sourceTag}.`).trim().slice(0, 320),
+    summary: String(raw.summary || existing?.summary || `Verified via physY ${sourceTag}.`).trim().slice(0, 320),
     foundedYear: Number.isFinite(Number(raw.foundedYear)) ? Number(raw.foundedYear) : (existing?.foundedYear || null),
     tier: existing?.tier || "custom",
     discoveredBy: sourceTag
@@ -778,7 +778,7 @@ export async function runOpenAgenticDiscovery(rawQuery, { hubContext = null, onP
   if (!hubContext && discoveredHubs.length < 6) {
     for (const h of (local.hubs || []).slice(0, 6)) {
       if (!Number.isFinite(h.lat) || !Number.isFinite(h.lng)) continue;
-      pushHub(sanitizeDiscoveredHub(h, "PhysALT Atlas"));
+      pushHub(sanitizeDiscoveredHub(h, "physY Atlas"));
       if (discoveredHubs.length >= 6) break;
     }
   }
@@ -829,7 +829,7 @@ export async function runOpenAgenticDiscovery(rawQuery, { hubContext = null, onP
       md.push(`- **${c.partner?.name || c.partnerId}** — ${c.note || c.role || "Verified research partner"}`);
     }
   } else if (!hubContext && local.hubs?.length) {
-    md.push(`\n### Leading Institutions in PhysALT`);
+    md.push(`\n### Leading Institutions in physY`);
     for (const h of local.hubs.slice(0, 5)) {
       md.push(`- **${h.name}** (${h.city || h.country}) — ${h.summary ? h.summary.slice(0, 150) : h.branch || "Verified hub"}`);
     }
@@ -895,7 +895,7 @@ export async function runGeminiFastDiscovery(rawQuery, { hubContext = null, apiK
 
   const ctx = buildAtlasContextSummary(hubContext);
   const prompt = [
-    `You are PhysALT's scientific research agent inside an interactive 3D global STEM atlas.`,
+    `You are physY's scientific research agent inside an interactive 3D global STEM atlas.`,
     `Use live Google Search to answer the user's question with up-to-date, factual, well-structured Markdown (headings + concise bullet points, citing real organizations, projects, and papers).`,
     ctx ? `\n--- CURRENT ATLAS CONTEXT ---\n${ctx}\n--- END CONTEXT ---` : "",
     `\nUser Question: ${query}`,
@@ -1037,7 +1037,7 @@ export async function runGeminiDeepResearch(
   const ctx = buildAtlasContextSummary(hubContext);
 
   const inputPrompt = [
-    `Produce a thorough, rigorously cited scientific research report for a user exploring PhysALT (a global 3D STEM & research atlas).`,
+    `Produce a thorough, rigorously cited scientific research report for a user exploring physY (a global 3D STEM & research atlas).`,
     ctx ? `\n--- ATLAS CONTEXT ---\n${ctx}\n--- END CONTEXT ---` : "",
     `\nResearch Prompt:\n${query}`,
     `\nStructure the report with clear Markdown headings, inline citations [Source Title](URL), key findings, institutional comparisons, and recent 2024–2026 developments.`,

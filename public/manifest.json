@@ -1,6 +1,6 @@
 {
-  "name": "PhysALT",
-  "short_name": "PhysALT",
+  "name": "physY",
+  "short_name": "physY",
   "description": "Interactive 3D global atlas of Physics, Engineering, AI, Math, Biology, Chemistry, Earth & Climate hubs, historical discoveries (1800 BCE–2045), offline packs, and space missions out to 1 light-day.",
   "start_url": "./index.html",
   "display": "standalone",
